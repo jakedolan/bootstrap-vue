@@ -19,154 +19,154 @@ import { listenersMixin } from '../../mixins/listeners'
 
 // Valid supported input types
 const TYPES = [
-  'text',
-  'password',
-  'email',
-  'number',
-  'url',
-  'tel',
-  'search',
-  'range',
-  'color',
-  'date',
-  'time',
-  'datetime',
-  'datetime-local',
-  'month',
-  'week'
+    'text',
+    'password',
+    'email',
+    'number',
+    'url',
+    'tel',
+    'search',
+    'range',
+    'color',
+    'date',
+    'time',
+    'datetime',
+    'datetime-local',
+    'month',
+    'week'
 ]
 
 // --- Props ---
 
 export const props = makePropsConfigurable(
-  sortKeys({
-    ...idProps,
-    ...formControlProps,
-    ...formSizeProps,
-    ...formStateProps,
-    ...formTextProps,
-    list: makeProp(PROP_TYPE_STRING),
-    max: makeProp(PROP_TYPE_NUMBER_STRING),
-    min: makeProp(PROP_TYPE_NUMBER_STRING),
-    // Disable mousewheel to prevent wheel from changing values (i.e. number/date)
-    noWheel: makeProp(PROP_TYPE_BOOLEAN, false),
-    step: makeProp(PROP_TYPE_NUMBER_STRING),
-    type: makeProp(PROP_TYPE_STRING, 'text', type => {
-      return arrayIncludes(TYPES, type)
-    })
-  }),
-  NAME_FORM_INPUT
+    sortKeys({
+        ...idProps,
+        ...formControlProps,
+        ...formSizeProps,
+        ...formStateProps,
+        ...formTextProps,
+        list: makeProp(PROP_TYPE_STRING),
+        max: makeProp(PROP_TYPE_NUMBER_STRING),
+        min: makeProp(PROP_TYPE_NUMBER_STRING),
+        // Disable mousewheel to prevent wheel from changing values (i.e. number/date)
+        noWheel: makeProp(PROP_TYPE_BOOLEAN, false),
+        step: makeProp(PROP_TYPE_NUMBER_STRING),
+        type: makeProp(PROP_TYPE_STRING, 'text', type => {
+            return arrayIncludes(TYPES, type)
+        })
+    }),
+    NAME_FORM_INPUT
 )
 
 // --- Main component ---
 
 // @vue/component
 export const BFormInput = /*#__PURE__*/ defineComponent({
-  name: NAME_FORM_INPUT,
-  compatConfig: {
-    MODE: 3,
-    OPTIONS_BEFORE_DESTROY: 'suppress-warning'
-  },
-  // Mixin order is important!
-  mixins: [
-    listenersMixin,
-    idMixin,
-    formControlMixin,
-    formSizeMixin,
-    formStateMixin,
-    formTextMixin,
-    formSelectionMixin,
-    formValidityMixin
-  ],
-  props,
-  computed: {
-    localType() {
-      // We only allow certain types
-      const { type } = this
-      return arrayIncludes(TYPES, type) ? type : 'text'
-    },
-    computedAttrs() {
-      const { localType: type, name, form, disabled, placeholder, required, min, max, step } = this
+    name: NAME_FORM_INPUT,
+    compatConfig: {
+        MODE: 3,
 
-      return {
-        id: this.safeId(),
-        name,
-        form,
-        type,
-        disabled,
-        placeholder,
-        required,
-        autocomplete: this.autocomplete || null,
-        readonly: this.readonly || this.plaintext,
-        min,
-        max,
-        step,
-        list: type !== 'password' ? this.list : null,
-        'aria-required': required ? 'true' : null,
-        'aria-invalid': this.computedAriaInvalid
-      }
     },
-    computedListeners() {
-      return {
-        ...this.bvListeners,
-        input: this.onInput,
-        change: this.onChange,
-        blur: this.onBlur
-      }
-    }
-  },
-  watch: {
-    noWheel(newValue) {
-      this.setWheelStopper(newValue)
-    }
-  },
-  mounted() {
-    this.setWheelStopper(this.noWheel)
-  },
-  /* istanbul ignore next */
-  deactivated() {
-    // Turn off listeners when keep-alive component deactivated
+    // Mixin order is important!
+    mixins: [
+        listenersMixin,
+        idMixin,
+        formControlMixin,
+        formSizeMixin,
+        formStateMixin,
+        formTextMixin,
+        formSelectionMixin,
+        formValidityMixin
+    ],
+    props,
+    computed: {
+        localType() {
+            // We only allow certain types
+            const { type } = this
+            return arrayIncludes(TYPES, type) ? type : 'text'
+        },
+        computedAttrs() {
+            const { localType: type, name, form, disabled, placeholder, required, min, max, step } = this
+
+            return {
+                id: this.safeId(),
+                name,
+                form,
+                type,
+                disabled,
+                placeholder,
+                required,
+                autocomplete: this.autocomplete || null,
+                readonly: this.readonly || this.plaintext,
+                min,
+                max,
+                step,
+                list: type !== 'password' ? this.list : null,
+                'aria-required': required ? 'true' : null,
+                'aria-invalid': this.computedAriaInvalid
+            }
+        },
+        computedListeners() {
+            return {
+                ...this.bvListeners,
+                input: this.onInput,
+                change: this.onChange,
+                blur: this.onBlur
+            }
+        }
+    },
+    watch: {
+        noWheel(newValue) {
+            this.setWheelStopper(newValue)
+        }
+    },
+    mounted() {
+        this.setWheelStopper(this.noWheel)
+    },
     /* istanbul ignore next */
-    this.setWheelStopper(false)
-  },
-  /* istanbul ignore next */
-  activated() {
-    // Turn on listeners (if no-wheel) when keep-alive component activated
+    deactivated() {
+        // Turn off listeners when keep-alive component deactivated
+        /* istanbul ignore next */
+        this.setWheelStopper(false)
+    },
     /* istanbul ignore next */
-    this.setWheelStopper(this.noWheel)
-  },
-  beforeDestroy() {
-    /* istanbul ignore next */
-    this.setWheelStopper(false)
-  },
-  methods: {
-    setWheelStopper(on) {
-      const input = this.$el
-      // We use native events, so that we don't interfere with propagation
-      eventOnOff(on, input, 'focus', this.onWheelFocus)
-      eventOnOff(on, input, 'blur', this.onWheelBlur)
-      if (!on) {
-        eventOff(document, 'wheel', this.stopWheel)
-      }
+    activated() {
+        // Turn on listeners (if no-wheel) when keep-alive component activated
+        /* istanbul ignore next */
+        this.setWheelStopper(this.noWheel)
     },
-    onWheelFocus() {
-      eventOn(document, 'wheel', this.stopWheel)
+    beforeUnmount() {
+        /* istanbul ignore next */
+        this.setWheelStopper(false)
     },
-    onWheelBlur() {
-      eventOff(document, 'wheel', this.stopWheel)
+    methods: {
+        setWheelStopper(on) {
+            const input = this.$el
+                // We use native events, so that we don't interfere with propagation
+            eventOnOff(on, input, 'focus', this.onWheelFocus)
+            eventOnOff(on, input, 'blur', this.onWheelBlur)
+            if (!on) {
+                eventOff(document, 'wheel', this.stopWheel)
+            }
+        },
+        onWheelFocus() {
+            eventOn(document, 'wheel', this.stopWheel)
+        },
+        onWheelBlur() {
+            eventOff(document, 'wheel', this.stopWheel)
+        },
+        stopWheel(event) {
+            stopEvent(event, { propagation: false })
+            attemptBlur(this.$el)
+        }
     },
-    stopWheel(event) {
-      stopEvent(event, { propagation: false })
-      attemptBlur(this.$el)
+    render(h) {
+        return h('input', {
+            class: this.computedClass,
+            attrs: this.computedAttrs,
+            domProps: { value: this.localValue },
+            on: this.computedListeners,
+            ref: 'input'
+        })
     }
-  },
-  render(h) {
-    return h('input', {
-      class: this.computedClass,
-      attrs: this.computedAttrs,
-      domProps: { value: this.localValue },
-      on: this.computedListeners,
-      ref: 'input'
-    })
-  }
 })

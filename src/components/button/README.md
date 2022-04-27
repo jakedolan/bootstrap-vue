@@ -187,6 +187,21 @@ rendered as `<a>` elements and `<router-link>` (i.e. with the `href` or `to` pro
 <!-- b-button-disabled.vue -->
 ```
 
+## Aria-disabled state
+
+Set the `aria-disabled` prop to disable button while keeping it perceivable by assistive technology.
+`aria-disabled` sets button to a `disabled` class and prevents `click` events.
+
+```html
+<div>
+  <b-button aria-disabled="true" size="lg" variant="primary">Disabled</b-button>
+  <b-button aria-disabled="true" size="lg">Also Disabled</b-button>
+</div>
+
+<!-- b-button-aria-disabled.vue -->
+```
+
+
 ## Pressed state and toggling
 
 Buttons will appear pressed (with a darker background, darker border, and inset shadow) when the

@@ -20,6 +20,7 @@ delete linkProps.to.default
 export const props = makePropsConfigurable(
   sortKeys({
     ...linkProps,
+    ariaDisabled: makeProp(PROP_TYPE_BOOLEAN, null),
     block: makeProp(PROP_TYPE_BOOLEAN, false),
     disabled: makeProp(PROP_TYPE_BOOLEAN, false),
     pill: makeProp(PROP_TYPE_BOOLEAN, false),
@@ -68,7 +69,7 @@ const computeClass = props => [
     'btn-block': props.block,
     'rounded-pill': props.pill,
     'rounded-0': props.squared && !props.pill,
-    disabled: props.disabled,
+    disabled: props.disabled || props.ariaDisabled,
     active: props.pressed
   }
 ]
@@ -98,7 +99,11 @@ const computeAttrs = (props, data) => {
     // Except when link has `href` of `#`
     role: nonStandardTag || hashLink ? 'button' : role,
     // We set the `aria-disabled` state for non-standard tags
-    'aria-disabled': nonStandardTag ? String(props.disabled) : null,
+    'aria-disabled': nonStandardTag
+      ? String(props.disabled)
+      : props.ariaDisabled
+        ? String(props.ariaDisabled)
+        : null,
     // For toggles, we need to set the pressed state for ARIA
     'aria-pressed': toggle ? String(props.pressed) : null,
     // `autocomplete="off"` is needed in toggle mode to prevent some browsers
@@ -130,20 +135,20 @@ export const BButton = /*#__PURE__*/ defineComponent({
         // we add a keydown handlers for CODE_SPACE/CODE_ENTER
         /* istanbul ignore next */
         if (props.disabled || !(nonStandardTag || hashLink)) {
-          return
+          return false
         }
         const { keyCode } = event
         // Add CODE_SPACE handler for `href="#"` and CODE_ENTER handler for non-standard tags
-        if (keyCode === CODE_SPACE || (keyCode === CODE_ENTER && nonStandardTag)) {
-          const target = event.currentTarget || event.target
+        if (props.ariaDisabled && (keyCode === CODE_SPACE || keyCode === CODE_ENTER)) {
           stopEvent(event, { propagation: false })
-          target.click()
+          return false
         }
       },
       click(event) {
         /* istanbul ignore if: blink/button disabled should handle this */
-        if (props.disabled && isEvent(event)) {
-          stopEvent(event)
+        if ((props.disabled || props.ariaDisabled) && isEvent(event)) {
+          stopEvent(event, { immediatePropagation: true })
+          return false
         } else if (toggle && listeners && listeners['update:pressed']) {
           // Send `.sync` updates to any "pressed" prop (if `.sync` listeners)
           // `concat()` will normalize the value to an array without

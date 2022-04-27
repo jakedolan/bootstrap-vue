@@ -1,3 +1,4 @@
+.history/
 .idea/
 .now/
 .nuxt/
@@ -16,3 +17,4 @@ RELEASE-NOTES.md
 package-lock.json
 sw.js
 workbox*.js*
+yarn.lock

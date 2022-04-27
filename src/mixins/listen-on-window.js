@@ -13,56 +13,56 @@ const PROP = '$_windowListeners'
 
 // @vue/component
 export const listenOnWindowMixin = defineComponent({
-  compatConfig: {
-    MODE: 3,
-    OPTIONS_BEFORE_DESTROY: 'suppress-warning'
-  },
-  created() {
-    // Define non-reactive property
-    // Object of arrays, keyed by event name,
-    // where value is an array of callbacks
-    this[PROP] = {}
-  },
-  beforeDestroy() {
-    // Unregister all registered listeners
-    keys(this[PROP] || {}).forEach(event => {
-      this[PROP][event].forEach(callback => {
-        this.listenOffWindow(event, callback)
-      })
-    })
+    compatConfig: {
+        MODE: 3,
 
-    this[PROP] = null
-  },
-  methods: {
-    registerWindowListener(event, callback) {
-      if (this[PROP]) {
-        this[PROP][event] = this[PROP][event] || []
-        if (!arrayIncludes(this[PROP][event], callback)) {
-          this[PROP][event].push(callback)
+    },
+    created() {
+        // Define non-reactive property
+        // Object of arrays, keyed by event name,
+        // where value is an array of callbacks
+        this[PROP] = {}
+    },
+    beforeUnmount() {
+        // Unregister all registered listeners
+        keys(this[PROP] || {}).forEach(event => {
+            this[PROP][event].forEach(callback => {
+                this.listenOffWindow(event, callback)
+            })
+        })
+
+        this[PROP] = null
+    },
+    methods: {
+        registerWindowListener(event, callback) {
+            if (this[PROP]) {
+                this[PROP][event] = this[PROP][event] || []
+                if (!arrayIncludes(this[PROP][event], callback)) {
+                    this[PROP][event].push(callback)
+                }
+            }
+        },
+        unregisterWindowListener(event, callback) {
+            if (this[PROP] && this[PROP][event]) {
+                this[PROP][event] = this[PROP][event].filter(cb => cb !== callback)
+            }
+        },
+
+        listenWindow(on, event, callback) {
+            on ? this.listenOnWindow(event, callback) : this.listenOffWindow(event, callback)
+        },
+        listenOnWindow(event, callback) {
+            if (IS_BROWSER) {
+                eventOn(window, event, callback, EVENT_OPTIONS_NO_CAPTURE)
+                this.registerWindowListener(event, callback)
+            }
+        },
+        listenOffWindow(event, callback) {
+            if (IS_BROWSER) {
+                eventOff(window, event, callback, EVENT_OPTIONS_NO_CAPTURE)
+            }
+
+            this.unregisterWindowListener(event, callback)
         }
-      }
-    },
-    unregisterWindowListener(event, callback) {
-      if (this[PROP] && this[PROP][event]) {
-        this[PROP][event] = this[PROP][event].filter(cb => cb !== callback)
-      }
-    },
-
-    listenWindow(on, event, callback) {
-      on ? this.listenOnWindow(event, callback) : this.listenOffWindow(event, callback)
-    },
-    listenOnWindow(event, callback) {
-      if (IS_BROWSER) {
-        eventOn(window, event, callback, EVENT_OPTIONS_NO_CAPTURE)
-        this.registerWindowListener(event, callback)
-      }
-    },
-    listenOffWindow(event, callback) {
-      if (IS_BROWSER) {
-        eventOff(window, event, callback, EVENT_OPTIONS_NO_CAPTURE)
-      }
-
-      this.unregisterWindowListener(event, callback)
     }
-  }
 })

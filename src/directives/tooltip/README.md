@@ -289,7 +289,7 @@ whenever the content changes.
         this.date = new Date()
       }, 1000)
     },
-    beforeDestroy() {
+    beforeUnmount() {
       clearInterval(this.timer)
     },
     methods: {

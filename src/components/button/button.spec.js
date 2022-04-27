@@ -382,4 +382,22 @@ describe('button', () => {
 
     wrapper.destroy()
   })
+
+  it('button has attribute aria-disabled when aria-disabled set', async () => {
+    const wrapper = mount(BButton, {
+      propsData: {
+        ariaDisabled: true
+      }
+    })
+
+    expect(wrapper.element.tagName).toBe('BUTTON')
+    expect(wrapper.attributes('type')).toBe('button')
+    expect(wrapper.classes()).toContain('btn')
+    expect(wrapper.classes()).toContain('btn-secondary')
+    expect(wrapper.classes()).toContain('disabled')
+    expect(wrapper.classes().length).toBe(3)
+    expect(wrapper.attributes('aria-disabled')).toBe('true')
+
+    wrapper.destroy()
+  })
 })
