@@ -4,6 +4,7 @@ import { EVENT_NAME_DISMISSED, EVENT_NAME_DISMISS_COUNT_DOWN } from '../../const
 import {
     PROP_TYPE_BOOLEAN,
     PROP_TYPE_BOOLEAN_NUMBER_STRING,
+    PROP_TYPE_OBJECT,
     PROP_TYPE_STRING
 } from '../../constants/props'
 import { SLOT_NAME_DISMISS } from '../../constants/slots'
@@ -59,7 +60,9 @@ export const props = makePropsConfigurable(
         ...modelProps,
         dismissLabel: makeProp(PROP_TYPE_STRING, 'Close'),
         dismissible: makeProp(PROP_TYPE_BOOLEAN, false),
+        emitter: makeProp(PROP_TYPE_OBJECT, null),
         fade: makeProp(PROP_TYPE_BOOLEAN, false),
+
         variant: makeProp(PROP_TYPE_STRING, 'info')
     }),
     NAME_ALERT

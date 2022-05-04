@@ -16,7 +16,12 @@ export const listenOnRootMixin = defineComponent({
     },
     computed: {
         bvEventRoot() {
-            return getEventRoot(this)
+            if (this.emitter) {
+                return this.emitter
+            } else {
+                return getEventRoot(this)
+            }
+
         }
     },
     created() {
@@ -64,6 +69,7 @@ export const listenOnRootMixin = defineComponent({
          * @param {function} callback
          */
         listenOnRoot(event, callback) {
+            // console.log('## BV_EVENT_ROOT', this.bvEventRoot);
             if (this.bvEventRoot) {
                 this.bvEventRoot.$on(event, callback)
                 this.registerRootListener(event, callback)
@@ -84,6 +90,8 @@ export const listenOnRootMixin = defineComponent({
          * @param {function} callback
          */
         listenOnRootOnce(event, callback) {
+
+            // console.log('## BV_EVENT_ROOT', this.bvEventRoot);
             if (this.bvEventRoot) {
                 const _callback = (...args) => {
                     this.unregisterRootListener(_callback)
@@ -91,9 +99,11 @@ export const listenOnRootMixin = defineComponent({
                     callback(...args)
                 }
 
+
                 this.bvEventRoot.$once(event, _callback)
                 this.registerRootListener(event, _callback)
             }
+
         },
 
         /**
@@ -105,6 +115,7 @@ export const listenOnRootMixin = defineComponent({
         listenOffRoot(event, callback) {
             this.unregisterRootListener(event, callback)
 
+            // console.log('## BV_EVENT_ROOT', this.bvEventRoot);
             if (this.bvEventRoot) {
                 this.bvEventRoot.$off(event, callback)
             }
@@ -117,6 +128,8 @@ export const listenOnRootMixin = defineComponent({
          * @param {*} args
          */
         emitOnRoot(event, ...args) {
+
+            // console.log('## BV_EVENT_ROOT', this.bvEventRoot);
             if (this.bvEventRoot) {
                 this.bvEventRoot.$emit(event, ...args)
             }

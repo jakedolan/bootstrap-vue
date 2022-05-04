@@ -98,6 +98,7 @@ const OBSERVER_CONFIG = {
     attributes: true,
     attributeFilter: ['style', 'class']
 }
+const uuidv1 = require('uuid/v1');
 
 // --- Props ---
 
@@ -126,6 +127,7 @@ export const props = makePropsConfigurable(
         centered: makeProp(PROP_TYPE_BOOLEAN, false),
         contentClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
         dialogClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
+        emitter: makeProp(PROP_TYPE_OBJECT, null),
         footerBgVariant: makeProp(PROP_TYPE_STRING),
         footerBorderVariant: makeProp(PROP_TYPE_STRING),
         footerClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
@@ -210,7 +212,8 @@ export const BModal = /*#__PURE__*/ defineComponent({
             scrollbarWidth: 0,
             zIndex: modalManager.getBaseZIndex(),
             isTop: true,
-            isBodyOverflowing: false
+            isBodyOverflowing: false,
+            uuid: uuidv1(),
         }
     },
     computed: {
@@ -428,8 +431,12 @@ export const BModal = /*#__PURE__*/ defineComponent({
             if (this.isClosing) {
                 // If we are in the process of closing, wait until hidden before re-opening
                 /* istanbul ignore next */
-                this.$once(EVENT_NAME_HIDDEN, this.show)
-                    /* istanbul ignore next */
+                if (this.emitter) {
+                    this.emitter.once(`${EVENT_NAME_HIDDEN}:${this.uuid}`, this.show)
+                } else {
+                    this.$once(EVENT_NAME_HIDDEN, this.show)
+                }
+                /* istanbul ignore next */
                 return
             }
             this.isOpening = true
@@ -594,6 +601,9 @@ export const BModal = /*#__PURE__*/ defineComponent({
             // We emit on `$root` first in case a global listener wants to cancel
             // the event first before the instance emits its event
             this.emitOnRoot(getRootEventName(NAME_MODAL, type), bvEvent, bvEvent.componentId)
+            if (this.emitter) {
+                this.emitter.emit(`${type}:${this.uuid}`, bvEvent);
+            }
             this.$emit(type, bvEvent)
         },
         // UI event handlers
@@ -643,6 +653,7 @@ export const BModal = /*#__PURE__*/ defineComponent({
         },
         // Document focusin listener
         focusHandler(event) {
+            // console.log("## focusHandler", event);
             // If focus leaves modal content, bring it back
             const content = this.$refs.content
             const { target } = event
@@ -664,6 +675,7 @@ export const BModal = /*#__PURE__*/ defineComponent({
             if (bottomTrap && target === bottomTrap) {
                 // If user pressed TAB out of modal into our bottom trab trap element
                 // Find the first tabable element in the modal content and focus it
+                // console.log("## attemptFocus (bottomTrap)", tabables[0]);
                 if (attemptFocus(tabables[0])) {
                     // Focus was successful
                     return
@@ -671,12 +683,14 @@ export const BModal = /*#__PURE__*/ defineComponent({
             } else if (topTrap && target === topTrap) {
                 // If user pressed CTRL-TAB out of modal and into our top tab trap element
                 // Find the last tabable element in the modal content and focus it
+                // console.log("## attemptFocus (topTrap)", tabables[tabables.length - 1]);
                 if (attemptFocus(tabables[tabables.length - 1])) {
                     // Focus was successful
                     return
                 }
             }
             // Otherwise focus the modal content container
+            // console.log("## attemptFocus (other)", content);
             attemptFocus(content, { preventScroll: true })
         },
         // Turn on/off focusin listener

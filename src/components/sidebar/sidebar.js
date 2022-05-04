@@ -8,6 +8,7 @@ import {
     PROP_TYPE_BOOLEAN,
     PROP_TYPE_BOOLEAN_STRING,
     PROP_TYPE_NUMBER_STRING,
+    PROP_TYPE_OBJECT,
     PROP_TYPE_STRING
 } from '../../constants/props'
 import {
@@ -66,6 +67,7 @@ export const props = makePropsConfigurable(
         bodyClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
         // `aria-label` for close button
         closeLabel: makeProp(PROP_TYPE_STRING),
+        emitter: makeProp(PROP_TYPE_OBJECT, null),
         footerClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
         footerTag: makeProp(PROP_TYPE_STRING, 'footer'),
         headerClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
