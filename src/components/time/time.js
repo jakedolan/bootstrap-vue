@@ -7,6 +7,7 @@ import {
     PROP_TYPE_ARRAY_STRING,
     PROP_TYPE_BOOLEAN,
     PROP_TYPE_NUMBER_STRING,
+    PROP_TYPE_OBJECT,
     PROP_TYPE_STRING
 } from '../../constants/props'
 import { RX_TIME } from '../../constants/regex'
@@ -49,7 +50,7 @@ const padLeftZeros = value => `00${value || ''}`.slice(-2)
 const parseHMS = value => {
     value = toString(value)
     let [hh, mm, ss] = [null, null, null]
-    if (RX_TIME.test(value)) {;
+    if (RX_TIME.test(value)) {
         [hh, mm, ss] = value.split(':').map(v => toInteger(v, null))
     }
     return {
@@ -78,6 +79,8 @@ export const props = makePropsConfigurable(
         // ID of label element
         ariaLabelledby: makeProp(PROP_TYPE_STRING),
         disabled: makeProp(PROP_TYPE_BOOLEAN, false),
+        // Adding custom emitter
+        emitter: makeProp(PROP_TYPE_OBJECT, null),
         footerTag: makeProp(PROP_TYPE_STRING, 'footer'),
         headerTag: makeProp(PROP_TYPE_STRING, 'header'),
         hidden: makeProp(PROP_TYPE_BOOLEAN, false),
@@ -125,7 +128,9 @@ export const BTime = /*#__PURE__*/ defineComponent({
             modelSeconds: parsed.seconds,
             modelAmpm: parsed.ampm,
             // Internal flag to enable aria-live regions
-            isLive: false
+            isLive: false,
+            // Workaround for V_FOR_REF
+            refSpinners: []
         }
     },
     computed: {
@@ -309,6 +314,9 @@ export const BTime = /*#__PURE__*/ defineComponent({
     deactivated() {
         this.setLive(false)
     },
+    beforeUpdate() {
+        this.refSpinners = []
+    },
     beforeUnmount() {
         this.setLive(false)
     },
@@ -317,7 +325,9 @@ export const BTime = /*#__PURE__*/ defineComponent({
         focus() {
             if (!this.disabled) {
                 // We focus the first spin button
-                attemptFocus(this.$refs.spinners[0])
+                if (this.refSpinners.length > 0) {
+                    attemptFocus(this.refSpinners[0])
+                }
             }
         },
         blur() {
@@ -377,7 +387,7 @@ export const BTime = /*#__PURE__*/ defineComponent({
                 (keyCode === CODE_LEFT || keyCode === CODE_RIGHT)
             ) {
                 stopEvent(event)
-                const spinners = this.$refs.spinners || []
+                const spinners = this.refSpinners || []
                 let index = spinners.map(cmp => !!cmp.hasFocus).indexOf(true)
                 index = index + (keyCode === CODE_LEFT ? -1 : 1)
                 index = index >= spinners.length ? 0 : index < 0 ? spinners.length - 1 : index
@@ -393,6 +403,11 @@ export const BTime = /*#__PURE__*/ defineComponent({
                 })
             } else {
                 this.isLive = false
+            }
+        },
+        setSpinnerRef(el) {
+            if (el) {
+                this.refSpinners.push(el)
             }
         }
     },
@@ -446,8 +461,7 @@ export const BTime = /*#__PURE__*/ defineComponent({
                     change: handler
                 },
                 key,
-                ref: 'spinners',
-                refInFor: true
+                ref: this.setSpinnerRef
             })
         }
 
@@ -466,6 +480,7 @@ export const BTime = /*#__PURE__*/ defineComponent({
         }
 
         let $spinners = []
+
 
         // Hours
         $spinners.push(
