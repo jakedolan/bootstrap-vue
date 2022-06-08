@@ -1,7 +1,6 @@
 //
 // Button Toolbar
 //
-import Vue from 'vue'
 import { BvPlugin, BvComponent } from '../../'
 
 // Plugin

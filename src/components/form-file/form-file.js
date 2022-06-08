@@ -1,4 +1,4 @@
-import { defineComponent } from '../../vue'
+import { defineComponent, h } from 'vue'
 import { NAME_FORM_FILE } from '../../constants/components'
 import { HAS_PROMISE_SUPPORT } from '../../constants/env'
 import { EVENT_NAME_CHANGE, EVENT_OPTIONS_PASSIVE } from '../../constants/events'
@@ -501,7 +501,7 @@ export const BFormFile = /*#__PURE__*/ defineComponent({
             this.onChange(event)
         }
     },
-    render(h) {
+    render() {
         const { custom, plain, size, dragging, stateClass, bvAttrs } = this
 
         // Form Input
@@ -517,13 +517,11 @@ export const BFormFile = /*#__PURE__*/ defineComponent({
             // so we move it out of the way by putting it behind the label
             // Bootstrap v4 has it in front
             style: custom ? { zIndex: -5 } : {},
-            attrs: this.computedAttrs,
-            on: {
-                change: this.onChange,
-                focusin: this.focusHandler,
-                focusout: this.focusHandler,
-                reset: this.reset
-            },
+            ...this.computedAttrs,
+            onChange: this.onChange,
+            onFocusin: this.focusHandler,
+            onFocusout: this.focusHandler,
+            onReset: this.reset,
             ref: 'input'
         })
 
@@ -534,17 +532,14 @@ export const BFormFile = /*#__PURE__*/ defineComponent({
         // Overlay label
         const $label = h(
             'label', {
-                staticClass: 'custom-file-label',
-                class: { dragging },
-                attrs: {
-                    for: this.safeId(),
-                    // This goes away in Bootstrap v5
-                    'data-browse': this.browseText || null
-                }
+                class: ['custom-file-label', { dragging }],
+                for: this.safeId(),
+                // This goes away in Bootstrap v5
+                'data-browse': this.browseText || null
             }, [
                 h(
                     'span', {
-                        staticClass: 'd-block form-file-text',
+                        class: 'd-block form-file-text',
                         // `pointer-events: none` is used to make sure
                         // the drag events fire only on the label
                         style: { pointerEvents: 'none' }
@@ -556,18 +551,15 @@ export const BFormFile = /*#__PURE__*/ defineComponent({
         // Return rendered custom file input
         return h(
             'div', {
-                staticClass: 'custom-file b-form-file',
-                class: [{
+                class: ['custom-file b-form-file', {
                     [`b-custom-control-${size}`]: size
                 }, stateClass, bvAttrs.class],
                 style: bvAttrs.style,
-                attrs: { id: this.safeId('_BV_file_outer_') },
-                on: {
-                    dragenter: this.onDragenter,
-                    dragover: this.onDragover,
-                    dragleave: this.onDragleave,
-                    drop: this.onDrop
-                }
+                id: this.safeId('_BV_file_outer_'),
+                onDragenter: this.onDragenter,
+                onDragover: this.onDragover,
+                onDragleave: this.onDragleave,
+                onDrop: this.onDrop
             }, [$input, $label]
         )
     }

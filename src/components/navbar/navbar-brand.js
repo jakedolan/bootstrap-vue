@@ -1,4 +1,5 @@
-import { defineComponent, mergeData } from '../../vue'
+import { defineComponent } from 'vue'
+import { mergeData } from 'vue-functional-data-merge'
 import { NAME_NAVBAR_BRAND } from '../../constants/components'
 import { PROP_TYPE_STRING } from '../../constants/props'
 import { omit, sortKeys } from '../../utils/object'
@@ -12,31 +13,31 @@ linkProps.href.default = undefined
 linkProps.to.default = undefined
 
 export const props = makePropsConfigurable(
-  sortKeys({
-    ...linkProps,
-    tag: makeProp(PROP_TYPE_STRING, 'div')
-  }),
-  NAME_NAVBAR_BRAND
+    sortKeys({
+        ...linkProps,
+        tag: makeProp(PROP_TYPE_STRING, 'div')
+    }),
+    NAME_NAVBAR_BRAND
 )
 
 // --- Main component ---
 
 // @vue/component
 export const BNavbarBrand = /*#__PURE__*/ defineComponent({
-  name: NAME_NAVBAR_BRAND,
-  functional: true,
-  props,
-  render(h, { props, data, children }) {
-    const isLink = props.to || props.href
-    const tag = isLink ? BLink : props.tag
+    name: NAME_NAVBAR_BRAND,
+    functional: true,
+    props,
+    render(h, { props, data, children }) {
+        const isLink = props.to || props.href
+        const tag = isLink ? BLink : props.tag
 
-    return h(
-      tag,
-      mergeData(data, {
-        staticClass: 'navbar-brand',
-        props: isLink ? pluckProps(linkProps, props) : {}
-      }),
-      children
-    )
-  }
+        return h(
+            tag,
+            mergeData(data, {
+                staticClass: 'navbar-brand',
+                props: isLink ? pluckProps(linkProps, props) : {}
+            }),
+            children
+        )
+    }
 })

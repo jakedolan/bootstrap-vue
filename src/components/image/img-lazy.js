@@ -1,4 +1,4 @@
-import { defineComponent } from '../../vue'
+import { defineComponent, h } from 'vue'
 import { NAME_IMG_LAZY } from '../../constants/components'
 import { HAS_INTERACTION_OBSERVER_SUPPORT } from '../../constants/env'
 import { MODEL_EVENT_NAME_PREFIX } from '../../constants/events'
@@ -21,141 +21,138 @@ const MODEL_EVENT_NAME_SHOW = MODEL_EVENT_NAME_PREFIX + MODEL_PROP_NAME_SHOW
 
 const imgProps = omit(BImgProps, ['blank'])
 
-export const props = makePropsConfigurable(
-  {
-    ...imgProps,
-    blankHeight: makeProp(PROP_TYPE_NUMBER_STRING),
-    // If `null`, a blank image is generated
-    blankSrc: makeProp(PROP_TYPE_STRING, null),
-    blankWidth: makeProp(PROP_TYPE_NUMBER_STRING),
-    // Distance away from viewport (in pixels)
-    // before being considered "visible"
-    offset: makeProp(PROP_TYPE_NUMBER_STRING, 360),
-    [MODEL_PROP_NAME_SHOW]: makeProp(PROP_TYPE_BOOLEAN, false)
-  },
-  NAME_IMG_LAZY
+export const props = makePropsConfigurable({
+        ...imgProps,
+        blankHeight: makeProp(PROP_TYPE_NUMBER_STRING),
+        // If `null`, a blank image is generated
+        blankSrc: makeProp(PROP_TYPE_STRING, null),
+        blankWidth: makeProp(PROP_TYPE_NUMBER_STRING),
+        // Distance away from viewport (in pixels)
+        // before being considered "visible"
+        offset: makeProp(PROP_TYPE_NUMBER_STRING, 360),
+        [MODEL_PROP_NAME_SHOW]: makeProp(PROP_TYPE_BOOLEAN, false)
+    },
+    NAME_IMG_LAZY
 )
 
 // --- Main component ---
 
 // @vue/component
 export const BImgLazy = /*#__PURE__*/ defineComponent({
-  name: NAME_IMG_LAZY,
-  directives: {
-    'b-visible': VBVisible
-  },
-  props,
-  data() {
-    return {
-      isShown: this[MODEL_PROP_NAME_SHOW]
-    }
-  },
-  computed: {
-    computedSrc() {
-      const { blankSrc } = this
-      return !blankSrc || this.isShown ? this.src : blankSrc
+    name: NAME_IMG_LAZY,
+    directives: {
+        'b-visible': VBVisible
     },
-    computedBlank() {
-      return !(this.isShown || this.blankSrc)
-    },
-    computedWidth() {
-      const { width } = this
-      return this.isShown ? width : this.blankWidth || width
-    },
-    computedHeight() {
-      const { height } = this
-      return this.isShown ? height : this.blankHeight || height
-    },
-    computedSrcset() {
-      const srcset = concat(this.srcset)
-        .filter(identity)
-        .join(',')
-
-      return srcset && (!this.blankSrc || this.isShown) ? srcset : null
-    },
-    computedSizes() {
-      const sizes = concat(this.sizes)
-        .filter(identity)
-        .join(',')
-
-      return sizes && (!this.blankSrc || this.isShown) ? sizes : null
-    }
-  },
-  watch: {
-    [MODEL_PROP_NAME_SHOW](newValue, oldValue) {
-      if (newValue !== oldValue) {
-        // If `IntersectionObserver` support is not available, image is always shown
-        const visible = HAS_INTERACTION_OBSERVER_SUPPORT ? newValue : true
-
-        this.isShown = visible
-
-        // Ensure the show prop is synced (when no `IntersectionObserver`)
-        if (newValue !== visible) {
-          this.$nextTick(this.updateShowProp)
+    props,
+    data() {
+        return {
+            isShown: this[MODEL_PROP_NAME_SHOW]
         }
-      }
     },
-    isShown(newValue, oldValue) {
-      // Update synched show prop
-      if (newValue !== oldValue) {
-        this.updateShowProp()
-      }
-    }
-  },
-  mounted() {
-    // If `IntersectionObserver` is not available, image is always shown
-    this.$nextTick(() => {
-      this.isShown = HAS_INTERACTION_OBSERVER_SUPPORT ? this[MODEL_PROP_NAME_SHOW] : true
-    })
-  },
-  methods: {
-    updateShowProp() {
-      this.$emit(MODEL_EVENT_NAME_SHOW, this.isShown)
+    computed: {
+        computedSrc() {
+            const { blankSrc } = this
+            return !blankSrc || this.isShown ? this.src : blankSrc
+        },
+        computedBlank() {
+            return !(this.isShown || this.blankSrc)
+        },
+        computedWidth() {
+            const { width } = this
+            return this.isShown ? width : this.blankWidth || width
+        },
+        computedHeight() {
+            const { height } = this
+            return this.isShown ? height : this.blankHeight || height
+        },
+        computedSrcset() {
+            const srcset = concat(this.srcset)
+                .filter(identity)
+                .join(',')
+
+            return srcset && (!this.blankSrc || this.isShown) ? srcset : null
+        },
+        computedSizes() {
+            const sizes = concat(this.sizes)
+                .filter(identity)
+                .join(',')
+
+            return sizes && (!this.blankSrc || this.isShown) ? sizes : null
+        }
     },
-    doShow(visible) {
-      // If IntersectionObserver is not supported, the callback
-      // will be called with `null` rather than `true` or `false`
-      if ((visible || visible === null) && !this.isShown) {
-        // In a `requestAF()` to render the `blank` placeholder properly
-        // for fast loading images in some browsers (i.e. Firefox)
-        requestAF(() => {
-          this.isShown = true
+    watch: {
+        [MODEL_PROP_NAME_SHOW](newValue, oldValue) {
+            if (newValue !== oldValue) {
+                // If `IntersectionObserver` support is not available, image is always shown
+                const visible = HAS_INTERACTION_OBSERVER_SUPPORT ? newValue : true
+
+                this.isShown = visible
+
+                // Ensure the show prop is synced (when no `IntersectionObserver`)
+                if (newValue !== visible) {
+                    this.$nextTick(this.updateShowProp)
+                }
+            }
+        },
+        isShown(newValue, oldValue) {
+            // Update synched show prop
+            if (newValue !== oldValue) {
+                this.updateShowProp()
+            }
+        }
+    },
+    mounted() {
+        // If `IntersectionObserver` is not available, image is always shown
+        this.$nextTick(() => {
+            this.isShown = HAS_INTERACTION_OBSERVER_SUPPORT ? this[MODEL_PROP_NAME_SHOW] : true
         })
-      }
-    }
-  },
-  render(h) {
-    const directives = []
-    if (!this.isShown) {
-      // We only add the visible directive if we are not shown
-      directives.push({
-        // Visible directive will silently do nothing if
-        // `IntersectionObserver` is not supported
-        name: 'b-visible',
-        // Value expects a callback (passed one arg of `visible` = `true` or `false`)
-        value: this.doShow,
-        modifiers: {
-          // Root margin from viewport
-          [`${toInteger(this.offset, 0)}`]: true,
-          // Once the image is shown, stop observing
-          once: true
+    },
+    methods: {
+        updateShowProp() {
+            this.$emit(MODEL_EVENT_NAME_SHOW, this.isShown)
+        },
+        doShow(visible) {
+            // If IntersectionObserver is not supported, the callback
+            // will be called with `null` rather than `true` or `false`
+            if ((visible || visible === null) && !this.isShown) {
+                // In a `requestAF()` to render the `blank` placeholder properly
+                // for fast loading images in some browsers (i.e. Firefox)
+                requestAF(() => {
+                    this.isShown = true
+                })
+            }
         }
-      })
-    }
+    },
+    render() {
+        const directives = []
+        if (!this.isShown) {
+            // We only add the visible directive if we are not shown
+            directives.push({
+                // Visible directive will silently do nothing if
+                // `IntersectionObserver` is not supported
+                name: 'b-visible',
+                // Value expects a callback (passed one arg of `visible` = `true` or `false`)
+                value: this.doShow,
+                modifiers: {
+                    // Root margin from viewport
+                    [`${toInteger(this.offset, 0)}`]: true,
+                    // Once the image is shown, stop observing
+                    once: true
+                }
+            })
+        }
 
-    return h(BImg, {
-      directives,
-      props: {
-        // Passthrough props
-        ...pluckProps(imgProps, this.$props),
-        // Computed value props
-        src: this.computedSrc,
-        blank: this.computedBlank,
-        width: this.computedWidth,
-        height: this.computedHeight,
-        srcset: this.computedSrcset,
-        sizes: this.computedSizes
-      }
-    })
-  }
+        return h(BImg, {
+            directives,
+            // Passthrough props
+            ...pluckProps(imgProps, this.$props),
+            // Computed value props
+            src: this.computedSrc,
+            blank: this.computedBlank,
+            width: this.computedWidth,
+            height: this.computedHeight,
+            srcset: this.computedSrcset,
+            sizes: this.computedSizes
+        })
+    }
 })

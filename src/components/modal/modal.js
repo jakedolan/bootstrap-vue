@@ -1,5 +1,5 @@
-import { COMPONENT_UID_KEY, defineComponent } from '../../vue'
-import { NAME_MODAL } from '../../constants/components'
+import { defineComponent, h, Transition, vShow, withDirectives } from 'vue'
+import { COMPONENT_UID_KEY, NAME_MODAL } from '../../constants/components'
 import { IS_BROWSER } from '../../constants/env'
 import {
     EVENT_NAME_CANCEL,
@@ -62,7 +62,7 @@ import { BButtonClose } from '../button/button-close'
 import { BVTransition } from '../transition/bv-transition'
 import { BVTransporter } from '../transporter/transporter'
 import { BvModalEvent } from './helpers/bv-modal-event.class'
-import { modalManager } from './helpers/modal-manager'
+import { useModalManager } from '../../composables/modal-manager'
 
 // --- Constants ---
 
@@ -98,7 +98,6 @@ const OBSERVER_CONFIG = {
     attributes: true,
     attributeFilter: ['style', 'class']
 }
-const uuidv1 = require('uuid/v1');
 
 // --- Props ---
 
@@ -197,6 +196,7 @@ export const BModal = /*#__PURE__*/ defineComponent({
     ],
     inheritAttrs: false,
     props,
+    setup: () => ({ modalManager: useModalManager() }),
     data() {
         return {
             isHidden: true, // If modal should not be in document
@@ -210,10 +210,9 @@ export const BModal = /*#__PURE__*/ defineComponent({
             isModalOverflowing: false,
             // The following items are controlled by the modalManager instance
             scrollbarWidth: 0,
-            zIndex: modalManager.getBaseZIndex(),
+            zIndex: this.modalManager.getBaseZIndex(),
             isTop: true,
             isBodyOverflowing: false,
-            uuid: uuidv1(),
         }
     },
     computed: {
@@ -363,7 +362,7 @@ export const BModal = /*#__PURE__*/ defineComponent({
     },
     mounted() {
         // Set initial z-index as queried from the DOM
-        this.zIndex = modalManager.getBaseZIndex()
+        this.zIndex = this.modalManager.getBaseZIndex()
             // Listen for events from others to either open or close ourselves
             // and listen to all modals to enable/disable enforce focus
         this.listenOnRoot(getRootActionEventName(NAME_MODAL, EVENT_NAME_SHOW), this.showHandler)
@@ -379,7 +378,7 @@ export const BModal = /*#__PURE__*/ defineComponent({
     },
     beforeUnmount() {
         // Ensure everything is back to normal
-        modalManager.unregisterModal(this)
+        this.modalManager.unregisterModal(this)
         this.setObserver(false)
         if (this.isVisible) {
             this.isVisible = false
@@ -432,7 +431,7 @@ export const BModal = /*#__PURE__*/ defineComponent({
                 // If we are in the process of closing, wait until hidden before re-opening
                 /* istanbul ignore next */
                 if (this.emitter) {
-                    this.emitter.once(`${EVENT_NAME_HIDDEN}:${this.uuid}`, this.show)
+                    this.emitter.once(`${EVENT_NAME_HIDDEN}:${this[COMPONENT_UID_KEY]}`, this.show)
                 } else {
                     this.$once(EVENT_NAME_HIDDEN, this.show)
                 }
@@ -518,12 +517,12 @@ export const BModal = /*#__PURE__*/ defineComponent({
         // Private method to finish showing modal
         doShow() {
             /* istanbul ignore next: commenting out for now until we can test stacking */
-            if (modalManager.modalsAreOpen && this.noStacking) {
+            if (this.modalManager.modalsAreOpen && this.noStacking) {
                 // If another modal(s) is already open, wait for it(them) to close
                 this.listenOnRootOnce(getRootEventName(NAME_MODAL, EVENT_NAME_HIDDEN), this.doShow)
                 return
             }
-            modalManager.registerModal(this)
+            this.modalManager.registerModal(this)
                 // Place modal in DOM
             this.isHidden = false
             this.$nextTick(() => {
@@ -589,7 +588,7 @@ export const BModal = /*#__PURE__*/ defineComponent({
             this.isHidden = true
             this.$nextTick(() => {
                 this.isClosing = false
-                modalManager.unregisterModal(this)
+                this.modalManager.unregisterModal(this)
                 this.returnFocusTo()
                     // TODO: Need to find a way to pass the `trigger` property
                     //       to the `hidden` event, not just only the `hide` event
@@ -602,7 +601,7 @@ export const BModal = /*#__PURE__*/ defineComponent({
             // the event first before the instance emits its event
             this.emitOnRoot(getRootEventName(NAME_MODAL, type), bvEvent, bvEvent.componentId)
             if (this.emitter) {
-                this.emitter.emit(`${type}:${this.uuid}`, bvEvent);
+                this.emitter.emit(`${type}:${this[COMPONENT_UID_KEY]}`, bvEvent);
             }
             this.$emit(type, bvEvent)
         },
@@ -782,24 +781,22 @@ export const BModal = /*#__PURE__*/ defineComponent({
                 this.isModalOverflowing = modal.scrollHeight > document.documentElement.clientHeight
             }
         },
-        makeModal(h) {
+        makeModal() {
             // Modal header
-            let $header = h()
+            let $header = null
             if (!this.hideHeader) {
                 // TODO: Rename slot to `header` and deprecate `modal-header`
                 let $modalHeader = this.normalizeSlot(SLOT_NAME_MODAL_HEADER, this.slotScope)
                 if (!$modalHeader) {
-                    let $closeButton = h()
+                    let $closeButton = null
                     if (!this.hideHeaderClose) {
                         $closeButton = h(
                             BButtonClose, {
-                                props: {
-                                    content: this.headerCloseContent,
-                                    disabled: this.isTransitioning,
-                                    ariaLabel: this.headerCloseLabel,
-                                    textVariant: this.headerCloseVariant || this.headerTextVariant
-                                },
-                                on: { click: this.onClose },
+                                content: this.headerCloseContent,
+                                disabled: this.isTransitioning,
+                                ariaLabel: this.headerCloseLabel,
+                                textVariant: this.headerCloseVariant || this.headerTextVariant,
+                                onClick: this.onClose,
                                 ref: 'close-button'
                             },
                             // TODO: Rename slot to `header-close` and deprecate `modal-header-close`
@@ -807,14 +804,15 @@ export const BModal = /*#__PURE__*/ defineComponent({
                         )
                     }
 
+                    const domPropsContent = this.hasNormalizedSlot(SLOT_NAME_MODAL_TITLE) ? {} : htmlOrText(this.titleHtml, this.title)
+
                     $modalHeader = [
                         h(
                             this.titleTag, {
-                                staticClass: 'modal-title',
-                                class: this.titleClasses,
-                                attrs: { id: this.modalTitleId },
+                                class: ['modal-title', ...this.titleClasses],
+                                id: this.modalTitleId,
                                 // TODO: Rename slot to `title` and deprecate `modal-title`
-                                domProps: this.hasNormalizedSlot(SLOT_NAME_MODAL_TITLE) ? {} : htmlOrText(this.titleHtml, this.title)
+                                ...domPropsContent
                             },
                             // TODO: Rename slot to `title` and deprecate `modal-title`
                             this.normalizeSlot(SLOT_NAME_MODAL_TITLE, this.slotScope)
@@ -825,9 +823,8 @@ export const BModal = /*#__PURE__*/ defineComponent({
 
                 $header = h(
                     this.headerTag, {
-                        staticClass: 'modal-header',
-                        class: this.headerClasses,
-                        attrs: { id: this.modalHeaderId },
+                        class: ['modal-header', ...this.headerClasses],
+                        id: this.modalHeaderId,
                         ref: 'header'
                     }, [$modalHeader]
                 )
@@ -836,32 +833,34 @@ export const BModal = /*#__PURE__*/ defineComponent({
             // Modal body
             const $body = h(
                 'div', {
-                    staticClass: 'modal-body',
-                    class: this.bodyClasses,
-                    attrs: { id: this.modalBodyId },
+                    class: ['modal-body', this.bodyClasses],
+                    id: this.modalBodyId,
                     ref: 'body'
                 },
                 this.normalizeSlot(SLOT_NAME_DEFAULT, this.slotScope)
             )
 
             // Modal footer
-            let $footer = h()
+            let $footer = null
+
+            
             if (!this.hideFooter) {
                 // TODO: Rename slot to `footer` and deprecate `modal-footer`
                 let $modalFooter = this.normalizeSlot(SLOT_NAME_MODAL_FOOTER, this.slotScope)
                 if (!$modalFooter) {
-                    let $cancelButton = h()
+                    let $cancelButton = null
+
                     if (!this.okOnly) {
+                        // TODO: Rename slot to `cancel-button` and deprecate `modal-cancel`
+                        const domPropsContent = this.hasNormalizedSlot(SLOT_NAME_MODAL_CANCEL) ? {} : htmlOrText(this.cancelTitleHtml, this.cancelTitle)
+
                         $cancelButton = h(
                             BButton, {
-                                props: {
-                                    variant: this.cancelVariant,
-                                    size: this.buttonSize,
-                                    disabled: this.cancelDisabled || this.busy || this.isTransitioning
-                                },
-                                // TODO: Rename slot to `cancel-button` and deprecate `modal-cancel`
-                                domProps: this.hasNormalizedSlot(SLOT_NAME_MODAL_CANCEL) ? {} : htmlOrText(this.cancelTitleHtml, this.cancelTitle),
-                                on: { click: this.onCancel },
+                                variant: this.cancelVariant,
+                                size: this.buttonSize,
+                                disabled: this.cancelDisabled || this.busy || this.isTransitioning,
+                                ...domPropsContent,
+                                onClick: this.onCancel,
                                 ref: 'cancel-button'
                             },
                             // TODO: Rename slot to `cancel-button` and deprecate `modal-cancel`
@@ -869,16 +868,16 @@ export const BModal = /*#__PURE__*/ defineComponent({
                         )
                     }
 
+                    // TODO: Rename slot to `ok-button` and deprecate `modal-ok`
+                    const domPropsContent = this.hasNormalizedSlot(SLOT_NAME_MODAL_OK) ? {} : htmlOrText(this.okTitleHtml, this.okTitle)
+
                     const $okButton = h(
                         BButton, {
-                            props: {
-                                variant: this.okVariant,
-                                size: this.buttonSize,
-                                disabled: this.okDisabled || this.busy || this.isTransitioning
-                            },
-                            // TODO: Rename slot to `ok-button` and deprecate `modal-ok`
-                            domProps: this.hasNormalizedSlot(SLOT_NAME_MODAL_OK) ? {} : htmlOrText(this.okTitleHtml, this.okTitle),
-                            on: { click: this.onOk },
+                            variant: this.okVariant,
+                            size: this.buttonSize,
+                            disabled: this.okDisabled || this.busy || this.isTransitioning,
+                            ...domPropsContent,
+                            onClick: this.onOk,
                             ref: 'ok-button'
                         },
                         // TODO: Rename slot to `ok-button` and deprecate `modal-ok`
@@ -890,9 +889,8 @@ export const BModal = /*#__PURE__*/ defineComponent({
 
                 $footer = h(
                     this.footerTag, {
-                        staticClass: 'modal-footer',
-                        class: this.footerClasses,
-                        attrs: { id: this.modalFooterId },
+                        class: ['modal-footer', this.footerClasses],
+                        id: this.modalFooterId,
                         ref: 'footer'
                     }, [$modalFooter]
                 )
@@ -901,27 +899,24 @@ export const BModal = /*#__PURE__*/ defineComponent({
             // Assemble modal content
             const $modalContent = h(
                 'div', {
-                    staticClass: 'modal-content',
-                    class: this.contentClass,
-                    attrs: {
-                        id: this.modalContentId,
-                        tabindex: '-1'
-                    },
+                    class: ['modal-content', ...this.contentClass],
+                    id: this.modalContentId,
+                    tabindex: '-1',
                     ref: 'content'
                 }, [$header, $body, $footer]
             )
 
             // Tab traps to prevent page from scrolling to next element in
             // tab index during enforce-focus tab cycle
-            let $tabTrapTop = h()
-            let $tabTrapBottom = h()
+            let $tabTrapTop = null
+            let $tabTrapBottom = null
             if (this.isVisible && !this.noEnforceFocus) {
                 $tabTrapTop = h('span', {
-                    attrs: { tabindex: '0' },
+                    tabindex: '0',
                     ref: 'top-trap'
                 })
                 $tabTrapBottom = h('span', {
-                    attrs: { tabindex: '0' },
+                    tabindex: '0',
                     ref: 'bottom-trap'
                 })
             }
@@ -929,58 +924,51 @@ export const BModal = /*#__PURE__*/ defineComponent({
             // Modal dialog wrapper
             const $modalDialog = h(
                 'div', {
-                    staticClass: 'modal-dialog',
-                    class: this.dialogClasses,
-                    on: { mousedown: this.onDialogMousedown },
+                    class: ['modal-dialog', ...this.dialogClasses],
+                    onMousedown: this.onDialogMousedown,
                     ref: 'dialog'
                 }, [$tabTrapTop, $modalContent, $tabTrapBottom]
             )
 
             // Modal
-            let $modal = h(
-                'div', {
-                    staticClass: 'modal',
-                    class: this.modalClasses,
-                    style: this.modalStyles,
-                    attrs: this.computedModalAttrs,
-                    on: { keydown: this.onEsc, click: this.onClickOut },
-                    directives: [{ name: 'show', value: this.isVisible }],
-                    ref: 'modal'
-                }, [$modalDialog]
-            )
+            let $modal = withDirectives(h(
+                    'div', {
+                        class: ['modal', ...this.modalClasses],
+                        style: this.modalStyles,
+                        ...this.computedModalAttrs,                    
+                        onClick: this.onClickOut,
+                        onKeydown: this.onEsc, 
+                        ref: 'modal'
+                    }, [$modalDialog]
+                ), [[vShow, this.isVisible]])
 
             // Wrap modal in transition
             // Sadly, we can't use `BVTransition` here due to the differences in
             // transition durations for `.modal` and `.modal-dialog`
             // At least until https://github.com/vuejs/vue/issues/9986 is resolved
-            $modal = h(
-                'transition', {
-                    props: {
-                        enterClass: '',
-                        enterToClass: '',
-                        enterActiveClass: '',
-                        leaveClass: '',
-                        leaveActiveClass: '',
-                        leaveToClass: ''
-                    },
-                    on: {
-                        beforeEnter: this.onBeforeEnter,
-                        enter: this.onEnter,
-                        afterEnter: this.onAfterEnter,
-                        beforeLeave: this.onBeforeLeave,
-                        leave: this.onLeave,
-                        afterLeave: this.onAfterLeave
-                    }
+            $modal = h(Transition, {
+                    enterFromClass: '',
+                    enterToClass: '',
+                    enterActiveClass: '',
+                    leaveFromClass: '',
+                    leaveActiveClass: '',
+                    leaveToClass: '',
+                    onBeforeEnter: this.onBeforeEnter,
+                    onEnter: this.onEnter,
+                    onAfterEnter: this.onAfterEnter,
+                    onBeforeLeave: this.onBeforeLeave,
+                    onLeave: this.onLeave,
+                    onAfterLeave: this.onAfterLeave
                 }, [$modal]
             )
 
             // Modal backdrop
-            let $backdrop = h()
+            let $backdrop = null
             if (!this.hideBackdrop && this.isVisible) {
                 $backdrop = h(
                     'div', {
-                        staticClass: 'modal-backdrop',
-                        attrs: { id: this.modalBackdropId }
+                        class: 'modal-backdrop',
+                        id: this.modalBackdropId
                     },
                     // TODO: Rename slot to `backdrop` and deprecate `modal-backdrop`
                     this.normalizeSlot(SLOT_NAME_MODAL_BACKDROP)
@@ -992,17 +980,17 @@ export const BModal = /*#__PURE__*/ defineComponent({
             return h(
                 'div', {
                     style: this.modalOuterStyle,
-                    attrs: this.computedAttrs,
+                    ...this.computedAttrs,
                     key: `modal-outer-${this[COMPONENT_UID_KEY]}`
                 }, [$modal, $backdrop]
             )
         }
     },
-    render(h) {
+    render() {
         if (this.static) {
-            return this.lazy && this.isHidden ? h() : this.makeModal(h)
+            return this.lazy && this.isHidden ? null : this.makeModal(h)
         } else {
-            return this.isHidden ? h() : h(BVTransporter, [this.makeModal(h)])
+            return this.isHidden ? null : h(BVTransporter, [this.makeModal(h)])
         }
     }
 })

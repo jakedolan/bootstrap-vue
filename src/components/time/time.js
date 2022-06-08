@@ -1,5 +1,5 @@
 // BTime control (not form input control)
-import { defineComponent } from '../../vue'
+import { defineComponent, h } from 'vue'
 import { NAME_TIME } from '../../constants/components'
 import { EVENT_NAME_CONTEXT } from '../../constants/events'
 import { CODE_LEFT, CODE_RIGHT } from '../../constants/key-codes'
@@ -411,11 +411,11 @@ export const BTime = /*#__PURE__*/ defineComponent({
             }
         }
     },
-    render(h) {
+    render() {
         // If hidden, we just render a placeholder comment
         /* istanbul ignore if */
         if (this.hidden) {
-            return h()
+            return null
         }
 
         const {
@@ -437,44 +437,39 @@ export const BTime = /*#__PURE__*/ defineComponent({
 
             return h(BFormSpinbutton, {
                 class: classes,
-                props: {
-                    id,
-                    placeholder: '--',
-                    vertical: true,
-                    required: true,
-                    disabled,
-                    readonly,
-                    locale,
-                    labelIncrement,
-                    labelDecrement,
-                    wrap: true,
-                    ariaControls: valueId,
-                    min: 0,
-                    ...spinbuttonProps
-                },
-                scopedSlots: this.spinScopedSlots,
-                on: {
-                    // We use `change` event to minimize SR verbosity
-                    // As the spinbutton will announce each value change
-                    // and we don't want the formatted time to be announced
-                    // on each value input if repeat is happening
-                    change: handler
-                },
+                id,
+                placeholder: '--',
+                vertical: true,
+                required: true,
+                disabled,
+                readonly,
+                locale,
+                labelIncrement,
+                labelDecrement,
+                wrap: true,
+                ariaControls: valueId,
+                min: 0,
+                ...spinbuttonProps,
+                // We use `change` event to minimize SR verbosity
+                // As the spinbutton will announce each value change
+                // and we don't want the formatted time to be announced
+                // on each value input if repeat is happening
+                onChange: handler,
                 key,
                 ref: this.setSpinnerRef
-            })
+            }, 
+            this.spinScopedSlots)
         }
 
         // Helper method to return a "colon" separator
         const makeColon = () => {
             return h(
                 'div', {
-                    staticClass: 'd-flex flex-column',
-                    class: { 'text-muted': disabled || readonly },
-                    attrs: { 'aria-hidden': 'true' }
+                    class: ['d-flex flex-column', { 'text-muted': disabled || readonly }],
+                    'aria-hidden': 'true'
                 }, [
-                    h(BIconCircleFill, { props: { shiftV: 4, scale: 0.5 } }),
-                    h(BIconCircleFill, { props: { shiftV: -4, scale: 0.5 } })
+                    h(BIconCircleFill, { shiftV: 4, scale: 0.5  }),
+                    h(BIconCircleFill, { shiftV: -4, scale: 0.5  })
                 ]
             )
         }
@@ -543,18 +538,14 @@ export const BTime = /*#__PURE__*/ defineComponent({
         // Assemble spinners
         $spinners = h(
             'div', {
-                staticClass: 'd-flex align-items-center justify-content-center mx-auto',
-                attrs: {
-                    role: 'group',
-                    tabindex: disabled || readonly ? null : '-1',
-                    'aria-labelledby': ariaLabelledby
-                },
-                on: {
-                    keydown: this.onSpinLeftRight,
-                    click: /* istanbul ignore next */ event => {
-                        if (event.target === event.currentTarget) {
-                            focusHandler()
-                        }
+                class: 'd-flex align-items-center justify-content-center mx-auto',
+                role: 'group',
+                tabindex: disabled || readonly ? null : '-1',
+                'aria-labelledby': ariaLabelledby,
+                onKeydown: this.onSpinLeftRight,
+                onClick: /* istanbul ignore next */ event => {
+                    if (event.target === event.currentTarget) {
+                        focusHandler()
                     }
                 }
             },
@@ -564,48 +555,40 @@ export const BTime = /*#__PURE__*/ defineComponent({
         // Selected type display
         const $value = h(
             'output', {
-                staticClass: 'form-control form-control-sm text-center',
-                class: {
+                class: ['form-control form-control-sm text-center', {
                     disabled: disabled || readonly
-                },
-                attrs: {
-                    id: valueId,
-                    role: 'status',
-                    for: spinIds.filter(identity).join(' ') || null,
-                    tabindex: disabled ? null : '-1',
-                    'aria-live': this.isLive ? 'polite' : 'off',
-                    'aria-atomic': 'true'
-                },
-                on: {
-                    // Transfer focus/click to focus hours spinner
-                    click: focusHandler,
-                    focus: focusHandler
-                }
+                }],
+                id: valueId,
+                role: 'status',
+                for: spinIds.filter(identity).join(' ') || null,
+                tabindex: disabled ? null : '-1',
+                'aria-live': this.isLive ? 'polite' : 'off',
+                'aria-atomic': 'true',
+                // Transfer focus/click to focus hours spinner
+                onClick: focusHandler,
+                onFocus: focusHandler
             }, [
                 h('bdi', this.formattedTimeString),
-                this.computedHMS ? h('span', { staticClass: 'sr-only' }, ` (${this.labelSelected}) `) : ''
+                this.computedHMS ? h('span', { class: 'sr-only' }, ` (${this.labelSelected}) `) : ''
             ]
         )
         const $header = h(
             this.headerTag, {
-                staticClass: 'b-time-header',
-                class: { 'sr-only': this.hideHeader }
+                class: ['b-time-header', { 'sr-only': this.hideHeader }]
             }, [$value]
         )
 
         const $content = this.normalizeSlot()
-        const $footer = $content ? h(this.footerTag, { staticClass: 'b-time-footer' }, $content) : h()
+        const $footer = $content ? h(this.footerTag, { class: 'b-time-footer' }, $content) : null
 
         return h(
             'div', {
-                staticClass: 'b-time d-inline-flex flex-column text-center',
-                attrs: {
-                    role: 'group',
-                    lang: this.computedLang || null,
-                    'aria-labelledby': ariaLabelledby || null,
-                    'aria-disabled': disabled ? 'true' : null,
-                    'aria-readonly': readonly && !disabled ? 'true' : null
-                }
+                class: 'b-time d-inline-flex flex-column text-center',
+                role: 'group',
+                lang: this.computedLang || null,
+                'aria-labelledby': ariaLabelledby || null,
+                'aria-disabled': disabled ? 'true' : null,
+                'aria-readonly': readonly && !disabled ? 'true' : null
             }, [$header, $spinners, $footer]
         )
     }

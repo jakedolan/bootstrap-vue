@@ -1,4 +1,4 @@
-import { defineComponent } from '../../vue'
+import { defineComponent } from 'vue'
 import { NAME_TABLE } from '../../constants/components'
 import { sortKeys } from '../../utils/object'
 import { makePropsConfigurable } from '../../utils/props'
@@ -27,63 +27,63 @@ import { topRowMixin, props as topRowProps } from './helpers/mixin-top-row'
 // --- Props ---
 
 export const props = makePropsConfigurable(
-  sortKeys({
-    ...idProps,
-    ...bottomRowProps,
-    ...busyProps,
-    ...captionProps,
-    ...colgroupProps,
-    ...emptyProps,
-    ...filteringProps,
-    ...itemsProps,
-    ...paginationProps,
-    ...providerProps,
-    ...selectableProps,
-    ...sortingProps,
-    ...stackedProps,
-    ...tableRendererProps,
-    ...tbodyProps,
-    ...tfootProps,
-    ...theadProps,
-    ...topRowProps
-  }),
-  NAME_TABLE
+    sortKeys({
+        ...idProps,
+        ...bottomRowProps,
+        ...busyProps,
+        ...captionProps,
+        ...colgroupProps,
+        ...emptyProps,
+        ...filteringProps,
+        ...itemsProps,
+        ...paginationProps,
+        ...providerProps,
+        ...selectableProps,
+        ...sortingProps,
+        ...stackedProps,
+        ...tableRendererProps,
+        ...tbodyProps,
+        ...tfootProps,
+        ...theadProps,
+        ...topRowProps
+    }),
+    NAME_TABLE
 )
 
 // --- Main component ---
 
 // @vue/component
 export const BTable = /*#__PURE__*/ defineComponent({
-  name: NAME_TABLE,
-  // Order of mixins is important!
-  // They are merged from first to last, followed by this component
-  mixins: [
-    // General mixins
-    attrsMixin,
-    hasListenerMixin,
-    idMixin,
-    normalizeSlotMixin,
-    // Required table mixins
-    itemsMixin,
-    tableRendererMixin,
-    stackedMixin,
-    theadMixin,
-    tfootMixin,
-    tbodyMixin,
-    // Table features mixins
-    stackedMixin,
-    filteringMixin,
-    sortingMixin,
-    paginationMixin,
-    captionMixin,
-    colgroupMixin,
-    selectableMixin,
-    emptyMixin,
-    topRowMixin,
-    bottomRowMixin,
-    busyMixin,
-    providerMixin
-  ],
-  props
-  // Render function is provided by `tableRendererMixin`
+    name: NAME_TABLE,
+    // Order of mixins is important!
+    // They are merged from first to last, followed by this component
+    mixins: [
+        // General mixins
+        attrsMixin,
+        hasListenerMixin,
+        idMixin,
+        normalizeSlotMixin,
+        // Required table mixins
+        itemsMixin,
+        tableRendererMixin,
+        stackedMixin,
+        theadMixin,
+        tfootMixin,
+        tbodyMixin,
+        // Table features mixins
+        stackedMixin,
+        filteringMixin,
+        sortingMixin,
+        paginationMixin,
+        captionMixin,
+        colgroupMixin,
+        selectableMixin,
+        emptyMixin,
+        topRowMixin,
+        bottomRowMixin,
+        busyMixin,
+        providerMixin
+    ],
+    props
+    // Render function is provided by `tableRendererMixin`
 })

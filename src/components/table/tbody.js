@@ -1,4 +1,4 @@
-import { defineComponent } from '../../vue'
+import { defineComponent, h, TransitionGroup } from 'vue'
 import { NAME_TBODY } from '../../constants/components'
 import { PROP_TYPE_OBJECT } from '../../constants/props'
 import { makeProp, makePropsConfigurable } from '../../utils/props'
@@ -8,12 +8,11 @@ import { normalizeSlotMixin } from '../../mixins/normalize-slot'
 
 // --- Props ---
 
-export const props = makePropsConfigurable(
-  {
-    tbodyTransitionHandlers: makeProp(PROP_TYPE_OBJECT),
-    tbodyTransitionProps: makeProp(PROP_TYPE_OBJECT)
-  },
-  NAME_TBODY
+export const props = makePropsConfigurable({
+        tbodyTransitionHandlers: makeProp(PROP_TYPE_OBJECT),
+        tbodyTransitionProps: makeProp(PROP_TYPE_OBJECT)
+    },
+    NAME_TBODY
 )
 
 // --- Main component ---
@@ -23,81 +22,86 @@ export const props = makePropsConfigurable(
 //   to the child elements, so this can be converted to a functional component
 // @vue/component
 export const BTbody = /*#__PURE__*/ defineComponent({
-  name: NAME_TBODY,
-  mixins: [attrsMixin, listenersMixin, normalizeSlotMixin],
-  provide() {
-    return {
-      getBvTableRowGroup: () => this
-    }
-  },
-  inject: {
-    // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
-    getBvTable: {
-      default: /* istanbul ignore next */ () => () => ({})
-    }
-  },
-  inheritAttrs: false,
-  props,
-  computed: {
-    bvTable() {
-      return this.getBvTable()
+    name: NAME_TBODY,
+    mixins: [attrsMixin, listenersMixin, normalizeSlotMixin],
+    provide() {
+        return {
+            getBvTableRowGroup: () => this
+        }
     },
-    // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
-    isTbody() {
-      return true
+    inject: {
+        // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
+        getBvTable: {
+            default: /* istanbul ignore next */ () => () => ({})
+        }
     },
-    // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
-    isDark() {
-      return this.bvTable.dark
+    inheritAttrs: false,
+    props,
+    computed: {
+        bvTable() {
+            return this.getBvTable()
+        },
+        // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
+        isTbody() {
+            return true
+        },
+        // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
+        isDark() {
+            return this.bvTable.dark
+        },
+        // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
+        isStacked() {
+            return this.bvTable.isStacked
+        },
+        // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
+        isResponsive() {
+            return this.bvTable.isResponsive
+        },
+        // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
+        // Sticky headers are only supported in thead
+        isStickyHeader() {
+            return false
+        },
+        // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
+        // Needed to handle header background classes, due to lack of
+        // background color inheritance with Bootstrap v4 table CSS
+        hasStickyHeader() {
+            return !this.isStacked && this.bvTable.stickyHeader
+        },
+        // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
+        tableVariant() {
+            return this.bvTable.tableVariant
+        },
+        isTransitionGroup() {
+            return this.tbodyTransitionProps || this.tbodyTransitionHandlers
+        },
+        tbodyAttrs() {
+            return { role: 'rowgroup', ...this.bvAttrs }
+        },
+        tbodyProps() {
+            const { tbodyTransitionProps } = this
+            return tbodyTransitionProps ? {...tbodyTransitionProps, tag: 'tbody' } : {}
+        }
     },
-    // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
-    isStacked() {
-      return this.bvTable.isStacked
-    },
-    // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
-    isResponsive() {
-      return this.bvTable.isResponsive
-    },
-    // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
-    // Sticky headers are only supported in thead
-    isStickyHeader() {
-      return false
-    },
-    // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
-    // Needed to handle header background classes, due to lack of
-    // background color inheritance with Bootstrap v4 table CSS
-    hasStickyHeader() {
-      return !this.isStacked && this.bvTable.stickyHeader
-    },
-    // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
-    tableVariant() {
-      return this.bvTable.tableVariant
-    },
-    isTransitionGroup() {
-      return this.tbodyTransitionProps || this.tbodyTransitionHandlers
-    },
-    tbodyAttrs() {
-      return { role: 'rowgroup', ...this.bvAttrs }
-    },
-    tbodyProps() {
-      const { tbodyTransitionProps } = this
-      return tbodyTransitionProps ? { ...tbodyTransitionProps, tag: 'tbody' } : {}
-    }
-  },
-  render(h) {
-    const data = {
-      props: this.tbodyProps,
-      attrs: this.tbodyAttrs
-    }
-    if (this.isTransitionGroup) {
-      // We use native listeners if a transition group for any delegated events
-      data.on = this.tbodyTransitionHandlers || {}
-      data.nativeOn = this.bvListeners
-    } else {
-      // Otherwise we place any listeners on the tbody element
-      data.on = this.bvListeners
-    }
+    render() {
+        let nativeOnContent = {}
+        let onContent = {}
+        if (this.isTransitionGroup) {
+            // We use native listeners if a transition group for any delegated events
+            onContent = this.tbodyTransitionHandlers || {}
+            nativeOnContent = this.bvListeners
+        } else {
+            // Otherwise we place any listeners on the tbody element
+            onContent = this.bvListeners
+        }
 
-    return h(this.isTransitionGroup ? 'transition-group' : 'tbody', data, this.normalizeSlot())
-  }
+        const data = {
+          ...this.tbodyProps,
+          ...this.tbodyAttrs,
+          ...onContent,
+          ...nativeOnContent
+        }
+
+        return h(this.isTransitionGroup ? TransitionGroup : 'tbody', data, this.normalizeSlot())
+    }
 })

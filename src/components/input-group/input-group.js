@@ -1,4 +1,5 @@
-import { defineComponent, mergeData } from '../../vue'
+import { defineComponent } from 'vue'
+import { mergeData } from 'vue-functional-data-merge'
 import { NAME_INPUT_GROUP } from '../../constants/components'
 import { PROP_TYPE_STRING } from '../../constants/props'
 import { SLOT_NAME_APPEND, SLOT_NAME_DEFAULT, SLOT_NAME_PREPEND } from '../../constants/slots'
@@ -11,67 +12,66 @@ import { BInputGroupText } from './input-group-text'
 
 // --- Props ---
 
-export const props = makePropsConfigurable(
-  {
-    append: makeProp(PROP_TYPE_STRING),
-    appendHtml: makeProp(PROP_TYPE_STRING),
-    id: makeProp(PROP_TYPE_STRING),
-    prepend: makeProp(PROP_TYPE_STRING),
-    prependHtml: makeProp(PROP_TYPE_STRING),
-    size: makeProp(PROP_TYPE_STRING),
-    tag: makeProp(PROP_TYPE_STRING, 'div')
-  },
-  NAME_INPUT_GROUP
+export const props = makePropsConfigurable({
+        append: makeProp(PROP_TYPE_STRING),
+        appendHtml: makeProp(PROP_TYPE_STRING),
+        id: makeProp(PROP_TYPE_STRING),
+        prepend: makeProp(PROP_TYPE_STRING),
+        prependHtml: makeProp(PROP_TYPE_STRING),
+        size: makeProp(PROP_TYPE_STRING),
+        tag: makeProp(PROP_TYPE_STRING, 'div')
+    },
+    NAME_INPUT_GROUP
 )
 
 // --- Main component ---
 
 // @vue/component
 export const BInputGroup = /*#__PURE__*/ defineComponent({
-  name: NAME_INPUT_GROUP,
-  compatConfig: {
-    MODE: 3,
-    INSTANCE_SCOPED_SLOTS: 'suppress-warning'
-  },
-  functional: true,
-  props,
-  render(h, { props, data, slots, scopedSlots }) {
-    const { prepend, prependHtml, append, appendHtml, size } = props
-    const $scopedSlots = scopedSlots || {}
-    const $slots = slots()
-    const slotScope = {}
+    name: NAME_INPUT_GROUP,
+    compatConfig: {
+        MODE: 3,
+        INSTANCE_SCOPED_SLOTS: 'suppress-warning'
+    },
+    functional: true,
+    props,
+    render(h, { props, data, slots, scopedSlots }) {
+        const { prepend, prependHtml, append, appendHtml, size } = props
+        const $scopedSlots = scopedSlots || {}
+        const $slots = slots()
+        const slotScope = {}
 
-    let $prepend = h()
-    const hasPrependSlot = hasNormalizedSlot(SLOT_NAME_PREPEND, $scopedSlots, $slots)
-    if (hasPrependSlot || prepend || prependHtml) {
-      $prepend = h(BInputGroupPrepend, [
-        hasPrependSlot
-          ? normalizeSlot(SLOT_NAME_PREPEND, slotScope, $scopedSlots, $slots)
-          : h(BInputGroupText, { domProps: htmlOrText(prependHtml, prepend) })
-      ])
-    }
-
-    let $append = h()
-    const hasAppendSlot = hasNormalizedSlot(SLOT_NAME_APPEND, $scopedSlots, $slots)
-    if (hasAppendSlot || append || appendHtml) {
-      $append = h(BInputGroupAppend, [
-        hasAppendSlot
-          ? normalizeSlot(SLOT_NAME_APPEND, slotScope, $scopedSlots, $slots)
-          : h(BInputGroupText, { domProps: htmlOrText(appendHtml, append) })
-      ])
-    }
-
-    return h(
-      props.tag,
-      mergeData(data, {
-        staticClass: 'input-group',
-        class: { [`input-group-${size}`]: size },
-        attrs: {
-          id: props.id || null,
-          role: 'group'
+        let $prepend = null
+        const hasPrependSlot = hasNormalizedSlot(SLOT_NAME_PREPEND, $scopedSlots, $slots)
+        if (hasPrependSlot || prepend || prependHtml) {
+            $prepend = h(BInputGroupPrepend, [
+                hasPrependSlot ?
+                normalizeSlot(SLOT_NAME_PREPEND, slotScope, $scopedSlots, $slots) :
+                h(BInputGroupText, { domProps: htmlOrText(prependHtml, prepend) })
+            ])
         }
-      }),
-      [$prepend, normalizeSlot(SLOT_NAME_DEFAULT, slotScope, $scopedSlots, $slots), $append]
-    )
-  }
+
+        let $append = null
+        const hasAppendSlot = hasNormalizedSlot(SLOT_NAME_APPEND, $scopedSlots, $slots)
+        if (hasAppendSlot || append || appendHtml) {
+            $append = h(BInputGroupAppend, [
+                hasAppendSlot ?
+                normalizeSlot(SLOT_NAME_APPEND, slotScope, $scopedSlots, $slots) :
+                h(BInputGroupText, { domProps: htmlOrText(appendHtml, append) })
+            ])
+        }
+
+        return h(
+            props.tag,
+            mergeData(data, {
+                staticClass: 'input-group',
+                class: {
+                    [`input-group-${size}`]: size },
+                attrs: {
+                    id: props.id || null,
+                    role: 'group'
+                }
+            }), [$prepend, normalizeSlot(SLOT_NAME_DEFAULT, slotScope, $scopedSlots, $slots), $append]
+        )
+    }
 })

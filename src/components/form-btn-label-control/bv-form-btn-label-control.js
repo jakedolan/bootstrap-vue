@@ -1,7 +1,7 @@
 //
 // Private component used by `b-form-datepicker` and `b-form-timepicker`
 //
-import { defineComponent } from '../../vue'
+import { defineComponent, h, withDirectives } from 'vue'
 import { NAME_FORM_BUTTON_LABEL_CONTROL } from '../../constants/components'
 import {
     PROP_TYPE_ARRAY_OBJECT_STRING,
@@ -110,7 +110,7 @@ export const BVFormBtnLabelControl = /*#__PURE__*/ defineComponent({
             this.isHovered = hovered
         }
     },
-    render(h) {
+    render() {
         const {
             idButton,
             idLabel,
@@ -133,122 +133,109 @@ export const BVFormBtnLabelControl = /*#__PURE__*/ defineComponent({
         const invalid = state === false || (required && !value)
 
         const btnScope = { isHovered, hasFocus, state, opened: visible }
-        const $button = h(
-            'button', {
-                staticClass: 'btn',
-                class: {
-                    [`btn-${buttonVariant}`]: buttonOnly,
-                    [`btn-${size}`]: size,
-                    'h-auto': !buttonOnly,
-                    // `dropdown-toggle` is needed for proper
-                    // corner rounding in button only mode
-                    'dropdown-toggle': buttonOnly,
-                    'dropdown-toggle-no-caret': buttonOnly
-                },
-                attrs: {
-                    id: idButton,
-                    type: 'button',
-                    disabled,
-                    'aria-haspopup': 'dialog',
-                    'aria-expanded': visible ? 'true' : 'false',
-                    'aria-invalid': invalid ? 'true' : null,
-                    'aria-required': required ? 'true' : null
-                },
-                directives: [{ name: 'b-hover', value: this.handleHover }],
-                on: {
-                    mousedown: this.onMousedown,
-                    click: this.toggle,
-                    keydown: this.toggle, // Handle ENTER, SPACE and DOWN
-                    '!focus': this.setFocus,
-                    '!blur': this.setFocus
-                },
-                ref: 'toggle'
-            }, [
-                this.hasNormalizedSlot(SLOT_NAME_BUTTON_CONTENT) ?
-                this.normalizeSlot(SLOT_NAME_BUTTON_CONTENT, btnScope) :
-                /* istanbul ignore next */
-                h(BIconChevronDown, { props: { scale: 1.25 } })
-            ]
-        )
+        const $button = withDirectives(
+            h(
+              'button', {
+                  class: ['btn', {
+                      [`btn-${buttonVariant}`]: buttonOnly,
+                      [`btn-${size}`]: size,
+                      'h-auto': !buttonOnly,
+                      // `dropdown-toggle` is needed for proper
+                      // corner rounding in button only mode
+                      'dropdown-toggle': buttonOnly,
+                      'dropdown-toggle-no-caret': buttonOnly
+                  }],
+                  id: idButton,
+                  type: 'button',
+                  disabled,
+                  'aria-haspopup': 'dialog',
+                  'aria-expanded': visible ? 'true' : 'false',
+                  'aria-invalid': invalid ? 'true' : null,
+                  'aria-required': required ? 'true' : null,
+                  onMousedown: this.onMousedown,
+                  onClick: this.toggle,
+                  // Handle ENTER, SPACE and DOWN
+                  onKeydown: this.toggle, 
+                  // We use capture phase (`!` prefix) since focus and blur do not bubble
+                  '!onFocus': this.setFocus,
+                  '!onBlur': this.setFocus,
+                  ref: 'toggle'
+              }, [
+                  this.hasNormalizedSlot(SLOT_NAME_BUTTON_CONTENT) ?
+                  this.normalizeSlot(SLOT_NAME_BUTTON_CONTENT, btnScope) :
+                  /* istanbul ignore next */
+                  h(BIconChevronDown, { scale: 1.25 })
+              ]
+            ), 
+            [['b-hover', this.handleHover]])
 
         // Hidden input
-        let $hidden = h()
+        let $hidden = null
         if (name && !disabled) {
             $hidden = h('input', {
-                attrs: {
-                    type: 'hidden',
-                    name: name || null,
-                    form: this.form || null,
-                    value
-                }
+                type: 'hidden',
+                name: name || null,
+                form: this.form || null,
+                value
             })
         }
 
         // Dropdown content
         const $menu = h(
             'div', {
-                staticClass: 'dropdown-menu',
-                class: [
+                class: ['dropdown-menu',
                     this.menuClass,
                     {
                         show: visible,
                         'dropdown-menu-right': this.right
                     }
                 ],
-                attrs: {
-                    id: idMenu,
-                    role: 'dialog',
-                    tabindex: '-1',
-                    'aria-modal': 'false',
-                    'aria-labelledby': idLabel
-                },
-                on: {
-                    keydown: this.onKeydown // Handle ESC
-                },
+                id: idMenu,
+                role: 'dialog',
+                tabindex: '-1',
+                'aria-modal': 'false',
+                'aria-labelledby': idLabel,
+                 // Handle ESC
+                onKeydown: this.onKeydown,
                 ref: 'menu'
             }, [this.normalizeSlot(SLOT_NAME_DEFAULT, { opened: visible })]
         )
 
         // Value label
-        const $label = h(
-            'label', {
-                class: buttonOnly ?
-                    'sr-only' // Hidden in button only mode
-                    :
-                    [
-                        'form-control',
-                        // Mute the text if showing the placeholder
-                        { 'text-muted': !value },
-                        this.stateClass,
-                        this.sizeFormClass
-                    ],
-                attrs: {
+        const $label = withDirectives(
+            h(
+                'label', {
+                    class: buttonOnly ?
+                        'sr-only' // Hidden in button only mode
+                        :
+                        [
+                            'form-control',
+                            // Mute the text if showing the placeholder
+                            { 'text-muted': !value },
+                            this.stateClass,
+                            this.sizeFormClass
+                        ],
                     id: idLabel,
                     for: idButton,
                     'aria-invalid': invalid ? 'true' : null,
-                    'aria-required': required ? 'true' : null
-                },
-                directives: [{ name: 'b-hover', value: this.handleHover }],
-                on: {
+                    'aria-required': required ? 'true' : null,
                     // Disable bubbling of the click event to
                     // prevent menu from closing and re-opening
-
-                    '!click': /* istanbul ignore next */ event => {
+                    onClick: /* istanbul ignore next */ event => {
                         stopEvent(event, { preventDefault: false })
                     }
-                }
-            }, [
-                value ? this.formattedValue || value : this.placeholder || '',
-                // Add the selected label for screen readers when a value is provided
-                value && labelSelected ? h('bdi', { staticClass: 'sr-only' }, labelSelected) : ''
-            ]
-        )
+                }, [
+                    value ? this.formattedValue || value : this.placeholder || '',
+                    // Add the selected label for screen readers when a value is provided
+                    value && labelSelected ? h('bdi', { class: 'sr-only' }, labelSelected) : ''
+                ]
+            ), 
+            [['b-hover', this.handleHover]])
 
         // Return the custom form control wrapper
         return h(
             'div', {
-                staticClass: 'b-form-btn-label-control dropdown',
-                class: [
+                class: ['b-form-btn-label-control dropdown',
                     this.directionClass,
                     this.boundaryClass, [{
                             'btn-group': buttonOnly,
@@ -261,17 +248,15 @@ export const BVFormBtnLabelControl = /*#__PURE__*/ defineComponent({
                         buttonOnly ? null : this.sizeFormClass
                     ]
                 ],
-                attrs: {
-                    id: idWrapper,
-                    role: buttonOnly ? null : 'group',
-                    lang: this.lang || null,
-                    dir: this.computedDir,
-                    'aria-disabled': disabled,
-                    'aria-readonly': readonly && !disabled,
-                    'aria-labelledby': idLabel,
-                    'aria-invalid': state === false || (required && !value) ? 'true' : null,
-                    'aria-required': required ? 'true' : null
-                }
+                id: idWrapper,
+                role: buttonOnly ? null : 'group',
+                lang: this.lang || null,
+                dir: this.computedDir,
+                'aria-disabled': disabled,
+                'aria-readonly': readonly && !disabled,
+                'aria-labelledby': idLabel,
+                'aria-invalid': state === false || (required && !value) ? 'true' : null,
+                'aria-required': required ? 'true' : null
             }, [$button, $hidden, $menu, $label]
         )
     }

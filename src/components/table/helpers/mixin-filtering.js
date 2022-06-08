@@ -1,4 +1,4 @@
-import { defineComponent } from '../../../vue'
+import { defineComponent } from 'vue'
 import { NAME_TABLE } from '../../../constants/components'
 import { EVENT_NAME_FILTERED } from '../../../constants/events'
 import {

@@ -1,4 +1,4 @@
-import { defineComponent } from '../vue'
+import { defineComponent } from 'vue'
 import {
     EVENT_NAME_BLUR,
     EVENT_NAME_CHANGE,

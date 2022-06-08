@@ -1,4 +1,5 @@
-import { defineComponent, mergeData } from '../../vue'
+import { defineComponent, h } from 'vue'
+import { mergeData } from 'vue-functional-data-merge'
 import { NAME_BUTTON } from '../../constants/components'
 import { CODE_ENTER, CODE_SPACE } from '../../constants/key-codes'
 import { PROP_TYPE_BOOLEAN, PROP_TYPE_STRING } from '../../constants/props'
@@ -124,38 +125,40 @@ export const BButton = /*#__PURE__*/ defineComponent({
   name: NAME_BUTTON,
   functional: true,
   props,
-  render(h, { props, data, listeners, children }) {
-    const toggle = isToggle(props)
-    const link = isLink(props)
-    const nonStandardTag = isNonStandardTag(props)
-    const hashLink = link && props.href === '#'
+  render() {
+    const { $props, $data, $attrs, $slots } = this
+    console.log("## $attrs", $attrs);
+    const toggle = isToggle($props)
+    const link = isLink($props)
+    const nonStandardTag = isNonStandardTag($props)
+    const hashLink = link && $props.href === '#'
     const on = {
-      keydown(event) {
+      onKeydown(event) {
         // When the link is a `href="#"` or a non-standard tag (has `role="button"`),
         // we add a keydown handlers for CODE_SPACE/CODE_ENTER
         /* istanbul ignore next */
-        if (props.disabled || !(nonStandardTag || hashLink)) {
+        if ($props.disabled || !(nonStandardTag || hashLink)) {
           return false
         }
         const { keyCode } = event
         // Add CODE_SPACE handler for `href="#"` and CODE_ENTER handler for non-standard tags
-        if (props.ariaDisabled && (keyCode === CODE_SPACE || keyCode === CODE_ENTER)) {
+        if ($props.ariaDisabled && (keyCode === CODE_SPACE || keyCode === CODE_ENTER)) {
           stopEvent(event, { propagation: false })
           return false
         }
       },
-      click(event) {
+      onClick(event) {
         /* istanbul ignore if: blink/button disabled should handle this */
-        if ((props.disabled || props.ariaDisabled) && isEvent(event)) {
+        if (($props.disabled || $props.ariaDisabled) && isEvent(event)) {
           stopEvent(event, { immediatePropagation: true })
           return false
-        } else if (toggle && listeners && listeners['update:pressed']) {
+        } else if (toggle && $attrs && $attrs['onUpdate:pressed']) {
           // Send `.sync` updates to any "pressed" prop (if `.sync` listeners)
           // `concat()` will normalize the value to an array without
           // double wrapping an array value in an array
-          concat(listeners['update:pressed']).forEach(fn => {
+          concat($attrs['onUpdate:pressed']).forEach(fn => {
             if (isFunction(fn)) {
-              fn(!props.pressed)
+              fn(!$props.pressed)
             }
           })
         }
@@ -163,18 +166,26 @@ export const BButton = /*#__PURE__*/ defineComponent({
     }
 
     if (toggle) {
-      on.focusin = handleFocus
-      on.focusout = handleFocus
+      on.onFocusin = handleFocus
+      on.onFocusout = handleFocus
     }
 
     const componentData = {
-      staticClass: 'btn',
-      class: computeClass(props),
-      props: computeLinkProps(props),
-      attrs: computeAttrs(props, data),
-      on
+      class: ['btn', ...computeClass($props)],
+      ...computeLinkProps($props),
+      ...computeAttrs($props, $data),
+      ...on
     }
 
-    return h(link ? BLink : props.tag, mergeData(data, componentData), children)
+    console.log("## componentData", componentData);
+
+    const merged = mergeData($data, componentData);
+    console.log('## merged', merged);
+
+    return h(link ? BLink : $props.tag, 
+      componentData, 
+      {
+        default: () => $slots.default() 
+      })
   }
 })

@@ -19,7 +19,7 @@ import { toInteger } from '../../utils/number'
 import { keys } from '../../utils/object'
 import { createNewChildComponent } from '../../utils/create-new-child-component'
 import { BVPopover } from '../../components/popover/helpers/bv-popover'
-import { nextTick } from '../../vue'
+import { nextTick } from 'vue'
 
 // Key which we use to store tooltip object on element
 const BV_POPOVER = '__BV_Popover__'

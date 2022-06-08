@@ -1,5 +1,5 @@
-import { COMPONENT_UID_KEY, defineComponent } from '../../vue'
-import { NAME_ALERT } from '../../constants/components'
+import { defineComponent, h } from 'vue'
+import { COMPONENT_UID_KEY, NAME_ALERT } from '../../constants/components'
 import { EVENT_NAME_DISMISSED, EVENT_NAME_DISMISS_COUNT_DOWN } from '../../constants/events'
 import {
     PROP_TYPE_BOOLEAN,
@@ -18,6 +18,7 @@ import { normalizeSlotMixin } from '../../mixins/normalize-slot'
 import { BButtonClose } from '../button/button-close'
 import { BVTransition } from '../transition/bv-transition'
 
+const uuidv1 = require('uuid/v1');
 // --- Constants ---
 
 const {
@@ -62,7 +63,6 @@ export const props = makePropsConfigurable(
         dismissible: makeProp(PROP_TYPE_BOOLEAN, false),
         emitter: makeProp(PROP_TYPE_OBJECT, null),
         fade: makeProp(PROP_TYPE_BOOLEAN, false),
-
         variant: makeProp(PROP_TYPE_STRING, 'info')
     }),
     NAME_ALERT
@@ -75,7 +75,6 @@ export const BAlert = /*#__PURE__*/ defineComponent({
     name: NAME_ALERT,
     compatConfig: {
         MODE: 3,
-
     },
     mixins: [modelMixin, normalizeSlotMixin],
     props,
@@ -83,7 +82,8 @@ export const BAlert = /*#__PURE__*/ defineComponent({
         return {
             countDown: 0,
             // If initially shown, we need to set these for SSR
-            localShow: parseShow(this[MODEL_PROP_NAME])
+            localShow: parseShow(this[MODEL_PROP_NAME]),
+            [COMPONENT_UID_KEY]: uuidv1()
         }
     },
     watch: {
@@ -150,38 +150,47 @@ export const BAlert = /*#__PURE__*/ defineComponent({
             this.$_countDownTimeout = null
         }
     },
-    render(h) {
-        let $alert = h()
+    render() {
+        const returnContent = []
+        let $alert = null
         if (this.localShow) {
             const { dismissible, variant } = this
 
-            let $dismissButton = h()
+            const alertContent = [this.normalizeSlot()]
+            let $dismissButton = null
             if (dismissible) {
                 // Add dismiss button
                 $dismissButton = h(
                     BButtonClose, {
-                        attrs: { 'aria-label': this.dismissLabel },
-                        on: { click: this.dismiss }
-                    }, [this.normalizeSlot(SLOT_NAME_DISMISS)]
+                        'aria-label': this.dismissLabel,
+                        onClick: this.dismiss,
+                    }, {
+                        default: () => [this.normalizeSlot(SLOT_NAME_DISMISS)]
+                    }
                 )
+                alertContent.unshift($dismissButton)
             }
 
-            $alert = h(
+            $alert = [h(
                 'div', {
-                    staticClass: 'alert',
-                    class: {
-                        'alert-dismissible': dismissible, [`alert-${variant}`]: variant
-                    },
-                    attrs: {
-                        role: 'alert',
-                        'aria-live': 'polite',
-                        'aria-atomic': true
-                    },
+                    class: ['alert', {
+                        'alert-dismissible': dismissible,
+                        [`alert-${variant}`]: variant
+                    }],
+                    role: 'alert',
+                    'aria-live': 'polite',
+                    'aria-atomic': true,
                     key: this[COMPONENT_UID_KEY]
-                }, [$dismissButton, this.normalizeSlot()]
-            )
+                }, {
+                    default: () => alertContent
+                }
+            )]
+
+            returnContent.push($alert)
         }
 
-        return h(BVTransition, { props: { noFade: !this.fade } }, [$alert])
+        return h(BVTransition, { noFade: !this.fade }, {
+            default: () => returnContent
+        })
     }
 })

@@ -1,4 +1,4 @@
-import { defineComponent } from '../../vue'
+import { defineComponent, h } from 'vue'
 import { NAME_FORM_SPINBUTTON } from '../../constants/components'
 import { EVENT_NAME_CHANGE } from '../../constants/events'
 import {
@@ -438,7 +438,7 @@ export const BFormSpinbutton = /*#__PURE__*/ defineComponent({
             this.$_keyIsDown = false
         }
     },
-    render(h) {
+    render() {
         const {
             spinId,
             localValue: value,
@@ -452,8 +452,8 @@ export const BFormSpinbutton = /*#__PURE__*/ defineComponent({
 
         const makeButton = (stepper, label, IconCmp, keyRef, shortcut, btnDisabled, slotName) => {
                 const $icon = h(IconCmp, {
-                    props: { scale: this.hasFocus ? 1.5 : 1.25 },
-                    attrs: { 'aria-hidden': 'true' }
+                    scale: this.hasFocus ? 1.5 : 1.25,
+                    'aria-hidden': 'true'
                 })
                 const scope = { hasFocus: this.hasFocus }
                 const handler = event => {
@@ -467,21 +467,17 @@ export const BFormSpinbutton = /*#__PURE__*/ defineComponent({
                 }
                 return h(
                     'button', {
-                        staticClass: 'btn btn-sm border-0 rounded-0',
-                        class: { 'py-0': !vertical },
-                        attrs: {
-                            tabindex: '-1',
-                            type: 'button',
-                            disabled: disabled || readonly || btnDisabled,
-                            'aria-disabled': disabled || readonly || btnDisabled ? 'true' : null,
-                            'aria-controls': spinId,
-                            'aria-label': label || null,
-                            'aria-keyshortcuts': shortcut || null
-                        },
-                        on: {
-                            mousedown: handler,
-                            touchstart: handler
-                        },
+                        
+                        class: ['btn btn-sm border-0 rounded-0', { 'py-0': !vertical }],
+                        tabindex: '-1',
+                        type: 'button',
+                        disabled: disabled || readonly || btnDisabled,
+                        'aria-disabled': disabled || readonly || btnDisabled ? 'true' : null,
+                        'aria-controls': spinId,
+                        'aria-label': label || null,
+                        'aria-keyshortcuts': shortcut || null,
+                        onMousedown: handler,
+                        onTouchstart: handler,
                         key: keyRef || null,
                         ref: keyRef
                     }, [this.normalizeSlot(slotName, scope) || $icon]
@@ -507,16 +503,14 @@ export const BFormSpinbutton = /*#__PURE__*/ defineComponent({
             SLOT_NAME_DECREMENT
         )
 
-        let $hidden = h()
+        let $hidden = null
         if (this.name && !disabled) {
             $hidden = h('input', {
-                attrs: {
-                    type: 'hidden',
-                    name: this.name,
-                    form: this.form || null,
-                    // TODO: Should this be set to '' if value is out of range?
-                    value: this.valueAsFixed
-                },
+                type: 'hidden',
+                name: this.name,
+                form: this.form || null,
+                // TODO: Should this be set to '' if value is out of range?
+                value: this.valueAsFixed,
                 key: 'hidden'
             })
         }
@@ -524,17 +518,16 @@ export const BFormSpinbutton = /*#__PURE__*/ defineComponent({
         const $spin = h(
             // We use 'output' element to make this accept a `<label for="id">` (Except IE)
             'output', {
-                staticClass: 'flex-grow-1',
-                class: {
-                    'd-flex': vertical,
-                    'align-self-center': !vertical,
-                    'align-items-center': vertical,
-                    'border-top': vertical,
-                    'border-bottom': vertical,
-                    'border-left': !vertical,
-                    'border-right': !vertical
-                },
-                attrs: this.computedSpinAttrs,
+                class: ['flex-grow-1', {
+                  'd-flex': vertical,
+                  'align-self-center': !vertical,
+                  'align-items-center': vertical,
+                  'border-top': vertical,
+                  'border-bottom': vertical,
+                  'border-left': !vertical,
+                  'border-right': !vertical
+                }],
+                ...this.computedSpinAttrs,
                 key: 'output',
                 ref: 'spinner'
             }, [h('bdi', hasValue ? computedFormatter(value) : this.placeholder || '')]
@@ -542,8 +535,7 @@ export const BFormSpinbutton = /*#__PURE__*/ defineComponent({
 
         return h(
             'div', {
-                staticClass: 'b-form-spinbutton form-control',
-                class: [{
+                class: ['b-form-spinbutton form-control', {
                         disabled,
                         readonly,
                         focus: this.hasFocus,
@@ -555,14 +547,12 @@ export const BFormSpinbutton = /*#__PURE__*/ defineComponent({
                     this.sizeFormClass,
                     this.stateClass
                 ],
-                attrs: this.computedAttrs,
-                on: {
-                    keydown: this.onKeydown,
-                    keyup: this.onKeyup,
-                    // We use capture phase (`!` prefix) since focus and blur do not bubble
-                    '!focus': this.onFocusBlur,
-                    '!blur': this.onFocusBlur
-                }
+                ...this.computedAttrs,
+                onKeydown: this.onKeydown,
+                onKeyup: this.onKeyup,
+                // We use capture phase (`!` prefix) since focus and blur do not bubble
+                '!onFocus': this.onFocusBlur,
+                '!onBlur': this.onFocusBlur
             },
             vertical ? [$increment, $hidden, $spin, $decrement] : [$decrement, $hidden, $spin, $increment]
         )

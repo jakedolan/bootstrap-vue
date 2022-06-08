@@ -1,8 +1,5 @@
-const useVue2 = 'USE_VUE2' in process.env
 
-const moduleNameMapper = useVue2
-  ? {}
-  : {
+const moduleNameMapper = {
       '^vue$': '@vue/compat',
       '^@vue/test-utils$': '@vue/test-utils-vue3'
     }

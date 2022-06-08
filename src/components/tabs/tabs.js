@@ -1,5 +1,5 @@
-import { COMPONENT_UID_KEY, defineComponent } from '../../vue'
-import { NAME_TABS, NAME_TAB_BUTTON_HELPER } from '../../constants/components'
+import { defineComponent, h } from 'vue'
+import { COMPONENT_UID_KEY, NAME_TABS, NAME_TAB_BUTTON_HELPER } from '../../constants/components'
 import { IS_BROWSER } from '../../constants/env'
 import {
     EVENT_NAME_ACTIVATE_TAB,
@@ -41,6 +41,7 @@ import { looseEqual } from '../../utils/loose-equal'
 import { mathMax } from '../../utils/math'
 import { makeModelMixin } from '../../utils/model'
 import { toInteger } from '../../utils/number'
+import { pascalCase } from '../../utils/string' 
 import { omit, sortKeys } from '../../utils/object'
 import { observeDom } from '../../utils/observe-dom'
 import { makeProp, makePropsConfigurable } from '../../utils/props'
@@ -128,7 +129,7 @@ const BVTabButton = /*#__PURE__*/ defineComponent({
             }
         }
     },
-    render(h) {
+    render() {
         const { id, tabIndex, setSize, posInSet, controls, handleEvent } = this
         const {
             title,
@@ -141,8 +142,7 @@ const BVTabButton = /*#__PURE__*/ defineComponent({
 
         const $link = h(
             BLink, {
-                staticClass: 'nav-link',
-                class: [{
+                class: ['nav-link', {
                         active: localActive && !disabled,
                         disabled
                     },
@@ -150,31 +150,26 @@ const BVTabButton = /*#__PURE__*/ defineComponent({
                     // Apply <b-tabs> `activeNavItemClass` styles when the tab is active
                     localActive ? this.bvTabs.activeNavItemClass : null
                 ],
-                props: { disabled },
-                attrs: {
-                    ...titleLinkAttributes,
-                    id,
-                    role: 'tab',
-                    // Roving tab index when keynav enabled
-                    tabindex: tabIndex,
-                    'aria-selected': localActive && !disabled ? 'true' : 'false',
-                    'aria-setsize': setSize,
-                    'aria-posinset': posInSet,
-                    'aria-controls': controls
-                },
-                on: {
-                    click: handleEvent,
-                    keydown: handleEvent
-                },
+                disabled,
+                ...titleLinkAttributes,
+                id,
+                role: 'tab',
+                // Roving tab index when keynav enabled
+                tabindex: tabIndex,
+                'aria-selected': localActive && !disabled ? 'true' : 'false',
+                'aria-setsize': setSize,
+                'aria-posinset': posInSet,
+                'aria-controls': controls,
+                onClick: handleEvent,
+                onKeydown: handleEvent,
                 ref: 'link'
             }, [this.tab.normalizeSlot(SLOT_NAME_TITLE) || title]
         )
 
         return h(
             'li', {
-                staticClass: 'nav-item',
-                class: [titleItemClass],
-                attrs: { role: 'presentation' }
+                class: ['nav-item', titleItemClass],
+                role: 'presentation'
             }, [$link]
         )
     }
@@ -535,7 +530,7 @@ export const BTabs = /*#__PURE__*/ defineComponent({
             }
         }
     },
-    render(h) {
+    render() {
         const {
             align,
             card,
@@ -576,24 +571,20 @@ export const BTabs = /*#__PURE__*/ defineComponent({
             }
 
             return h(BVTabButton, {
-                props: {
-                    controls: safeId ? safeId() : null,
-                    id: $tab.controlledBy || (safeId ? safeId(`_BV_tab_button_`) : null),
-                    noKeyNav,
-                    posInSet: index + 1,
-                    setSize: $tabs.length,
-                    tab: $tab,
-                    tabIndex
+                controls: safeId ? safeId() : null,
+                id: $tab.controlledBy || (safeId ? safeId(`_BV_tab_button_`) : null),
+                noKeyNav,
+                posInSet: index + 1,
+                setSize: $tabs.length,
+                tab: $tab,
+                tabIndex,
+                [`on${pascalCase(EVENT_NAME_CLICK)}`]: event => {
+                    this.clickTab($tab, event)
                 },
-                on: {
-                    [EVENT_NAME_CLICK]: event => {
-                        this.clickTab($tab, event)
-                    },
-                    [EVENT_NAME_FIRST]: firstTab,
-                    [EVENT_NAME_PREV]: previousTab,
-                    [EVENT_NAME_NEXT]: nextTab,
-                    [EVENT_NAME_LAST]: lastTab
-                },
+                [`on${pascalCase(EVENT_NAME_FIRST)}`]: firstTab,
+                [`on${pascalCase(EVENT_NAME_PREV)}`]: previousTab,
+                [`on${pascalCase(EVENT_NAME_NEXT)}`]: nextTab,
+                [`on${pascalCase(EVENT_NAME_LAST)}`]: lastTab,
                 key: $tab[COMPONENT_UID_KEY] || index,
                 ref: 'buttons',
                 // Needed to make `this.$refs.buttons` an array
@@ -604,20 +595,16 @@ export const BTabs = /*#__PURE__*/ defineComponent({
         let $nav = h(
             BNav, {
                 class: this.localNavClass,
-                attrs: {
-                    role: 'tablist',
-                    id: this.safeId('_BV_tab_controls_')
-                },
-                props: {
-                    fill,
-                    justified,
-                    align,
-                    tabs: !noNavStyle && !pills,
-                    pills: !noNavStyle && pills,
-                    vertical,
-                    small,
-                    cardHeader: card && !vertical
-                },
+                role: 'tablist',
+                id: this.safeId('_BV_tab_controls_'),
+                fill,
+                justified,
+                align,
+                tabs: !noNavStyle && !pills,
+                pills: !noNavStyle && pills,
+                vertical,
+                small,
+                cardHeader: card && !vertical,
                 ref: 'nav'
             }, [
                 this.normalizeSlot(SLOT_NAME_TABS_START) || h(),
@@ -654,9 +641,8 @@ export const BTabs = /*#__PURE__*/ defineComponent({
 
         const $content = h(
             'div', {
-                staticClass: 'tab-content',
-                class: [{ col: vertical }, this.contentClass],
-                attrs: { id: this.safeId('_BV_tab_container_') },
+                class: ['tab-content', { col: vertical }, this.contentClass],
+                id: this.safeId('_BV_tab_container_'),
                 key: 'bv-content',
                 ref: 'content'
             }, [$children, $empty]
@@ -665,12 +651,11 @@ export const BTabs = /*#__PURE__*/ defineComponent({
         // Render final output
         return h(
             this.tag, {
-                staticClass: 'tabs',
-                class: {
+                class: ['tabs', {
                     row: vertical,
                         'no-gutters': vertical && card
-                },
-                attrs: { id: this.safeId() }
+                }],
+                id: this.safeId(),
             }, [end ? $content : h(), $nav, end ? h() : $content]
         )
     }

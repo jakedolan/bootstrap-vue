@@ -1,4 +1,4 @@
-import { defineComponent, mergeData, Vue } from '../vue'
+import { defineComponent, h } from 'vue'
 import { NAME_ICON } from '../constants/components'
 import { PROP_TYPE_STRING } from '../constants/props'
 import { RX_ICON_PREFIX } from '../constants/regex'
@@ -40,15 +40,24 @@ export const BIcon = /*#__PURE__*/ defineComponent({
   name: NAME_ICON,
   functional: true,
   props,
-  render(h, { data, props, parent }) {
-    const icon = pascalCase(trim(props.icon || '')).replace(RX_ICON_PREFIX, '')
+  render() {
+    const { $props, $parent } = this
+    const icon = pascalCase(trim($props.icon || '')).replace(RX_ICON_PREFIX, '')
 
+
+    console.log("## iconProps", iconProps);
+    console.log("## $props", $props);
+    const componentData = {
+      ...pluckProps(iconProps, $props)      
+    }
+
+    console.log('## componentData', componentData)
     // If parent context exists, we check to see if the icon has been registered
     // either locally in the parent component, or globally at the `$root` level
     // If not registered, we render a blank icon
     return h(
-      icon ? findIconComponent(parent, `BIcon${icon}`) || BIconBlank : BIconBlank,
-      mergeData(data, { props: pluckProps(iconProps, props) })
-    )
+      icon ? findIconComponent($parent, `BIcon${icon}`) || BIconBlank : BIconBlank,
+      componentData)
+    
   }
 })

@@ -1,4 +1,4 @@
-import { defineComponent } from '../../../vue'
+import { defineComponent } from 'vue'
 import {
     EVENT_NAME_ROW_CLICKED,
     EVENT_NAME_ROW_CONTEXTMENU,

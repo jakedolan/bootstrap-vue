@@ -1,10 +1,10 @@
-import { defineComponent } from '../../vue'
+import { defineComponent, h } from 'vue'
 import { NAME_FORM_SELECT } from '../../constants/components'
 import { EVENT_NAME_CHANGE } from '../../constants/events'
 import {
-  PROP_TYPE_BOOLEAN,
-  PROP_TYPE_BOOLEAN_STRING,
-  PROP_TYPE_NUMBER
+    PROP_TYPE_BOOLEAN,
+    PROP_TYPE_BOOLEAN_STRING,
+    PROP_TYPE_NUMBER
 } from '../../constants/props'
 import { SLOT_NAME_FIRST } from '../../constants/slots'
 import { from as arrayFrom } from '../../utils/array'
@@ -19,10 +19,10 @@ import { formSizeMixin, props as formSizeProps } from '../../mixins/form-size'
 import { formStateMixin, props as formStateProps } from '../../mixins/form-state'
 import { idMixin, props as idProps } from '../../mixins/id'
 import {
-  MODEL_EVENT_NAME,
-  MODEL_PROP_NAME,
-  modelMixin,
-  props as modelProps
+    MODEL_EVENT_NAME,
+    MODEL_PROP_NAME,
+    modelMixin,
+    props as modelProps
 } from '../../mixins/model'
 import { normalizeSlotMixin } from '../../mixins/normalize-slot'
 import { optionsMixin } from './helpers/mixin-options'
@@ -32,122 +32,119 @@ import { BFormSelectOptionGroup } from './form-select-option-group'
 // --- Props ---
 
 export const props = makePropsConfigurable(
-  sortKeys({
-    ...idProps,
-    ...modelProps,
-    ...formControlProps,
-    ...formCustomProps,
-    ...formSizeProps,
-    ...formStateProps,
-    ariaInvalid: makeProp(PROP_TYPE_BOOLEAN_STRING, false),
-    multiple: makeProp(PROP_TYPE_BOOLEAN, false),
-    // Browsers default size to `0`, which shows 4 rows in most browsers in multiple mode
-    // Size of `1` can bork out Firefox
-    selectSize: makeProp(PROP_TYPE_NUMBER, 0)
-  }),
-  NAME_FORM_SELECT
+    sortKeys({
+        ...idProps,
+        ...modelProps,
+        ...formControlProps,
+        ...formCustomProps,
+        ...formSizeProps,
+        ...formStateProps,
+        ariaInvalid: makeProp(PROP_TYPE_BOOLEAN_STRING, false),
+        multiple: makeProp(PROP_TYPE_BOOLEAN, false),
+        // Browsers default size to `0`, which shows 4 rows in most browsers in multiple mode
+        // Size of `1` can bork out Firefox
+        selectSize: makeProp(PROP_TYPE_NUMBER, 0)
+    }),
+    NAME_FORM_SELECT
 )
 
 // --- Main component ---
 
 // @vue/component
 export const BFormSelect = /*#__PURE__*/ defineComponent({
-  name: NAME_FORM_SELECT,
-  mixins: [
-    idMixin,
-    modelMixin,
-    formControlMixin,
-    formSizeMixin,
-    formStateMixin,
-    formCustomMixin,
-    optionsMixin,
-    normalizeSlotMixin
-  ],
-  props,
-  data() {
-    return {
-      localValue: this[MODEL_PROP_NAME]
-    }
-  },
-  computed: {
-    computedSelectSize() {
-      // Custom selects with a size of zero causes the arrows to be hidden,
-      // so dont render the size attribute in this case
-      return !this.plain && this.selectSize === 0 ? null : this.selectSize
+    name: NAME_FORM_SELECT,
+    mixins: [
+        idMixin,
+        modelMixin,
+        formControlMixin,
+        formSizeMixin,
+        formStateMixin,
+        formCustomMixin,
+        optionsMixin,
+        normalizeSlotMixin
+    ],
+    props,
+    data() {
+        return {
+            localValue: this[MODEL_PROP_NAME]
+        }
     },
-    inputClass() {
-      return [
-        this.plain ? 'form-control' : 'custom-select',
-        this.size && this.plain ? `form-control-${this.size}` : null,
-        this.size && !this.plain ? `custom-select-${this.size}` : null,
-        this.stateClass
-      ]
-    }
-  },
-  watch: {
-    value(newValue) {
-      this.localValue = newValue
-    },
-    localValue() {
-      this.$emit(MODEL_EVENT_NAME, this.localValue)
-    }
-  },
-  methods: {
-    focus() {
-      attemptFocus(this.$refs.input)
-    },
-    blur() {
-      attemptBlur(this.$refs.input)
-    },
-    onChange(event) {
-      const { target } = event
-      const selectedValue = arrayFrom(target.options)
-        .filter(o => o.selected)
-        .map(o => ('_value' in o ? o._value : o.value))
-
-      this.localValue = target.multiple ? selectedValue : selectedValue[0]
-
-      this.$nextTick(() => {
-        this.$emit(EVENT_NAME_CHANGE, this.localValue)
-      })
-    }
-  },
-  render(h) {
-    const { name, disabled, required, computedSelectSize: size, localValue: value } = this
-
-    const $options = this.formOptions.map((option, index) => {
-      const { value, label, options, disabled } = option
-      const key = `option_${index}`
-
-      return isArray(options)
-        ? h(BFormSelectOptionGroup, { props: { label, options }, key })
-        : h(BFormSelectOption, {
-            props: { value, disabled },
-            domProps: htmlOrText(option.html, option.text),
-            key
-          })
-    })
-
-    return h(
-      'select',
-      {
-        class: this.inputClass,
-        attrs: {
-          id: this.safeId(),
-          name,
-          form: this.form || null,
-          multiple: this.multiple || null,
-          size,
-          disabled,
-          required,
-          'aria-required': required ? 'true' : null,
-          'aria-invalid': this.computedAriaInvalid
+    computed: {
+        computedSelectSize() {
+            // Custom selects with a size of zero causes the arrows to be hidden,
+            // so dont render the size attribute in this case
+            return !this.plain && this.selectSize === 0 ? null : this.selectSize
         },
-        on: { change: this.onChange },
-        directives: [{ name: 'model', value }],
-        ref: 'input'
-      },
-      [this.normalizeSlot(SLOT_NAME_FIRST), $options, this.normalizeSlot()]
-    )
-  }
+        inputClass() {
+            return [
+                this.plain ? 'form-control' : 'custom-select',
+                this.size && this.plain ? `form-control-${this.size}` : null,
+                this.size && !this.plain ? `custom-select-${this.size}` : null,
+                this.stateClass
+            ]
+        }
+    },
+    watch: {
+        value(newValue) {
+            this.localValue = newValue
+        },
+        localValue() {
+            this.$emit(MODEL_EVENT_NAME, this.localValue)
+        }
+    },
+    methods: {
+        focus() {
+            attemptFocus(this.$refs.input)
+        },
+        blur() {
+            attemptBlur(this.$refs.input)
+        },
+        onChange(event) {
+            const { target } = event
+            const selectedValue = arrayFrom(target.options)
+                .filter(o => o.selected)
+                .map(o => ('_value' in o ? o._value : o.value))
+
+            this.localValue = target.multiple ? selectedValue : selectedValue[0]
+
+            this.$nextTick(() => {
+                this.$emit(EVENT_NAME_CHANGE, this.localValue)
+            })
+        }
+    },
+    render() {
+        const { name, disabled, required, computedSelectSize: size, localValue: value } = this
+
+        const $options = this.formOptions.map((option, index) => {
+            const { value, label, options, disabled } = option
+            const key = `option_${index}`
+
+            return isArray(options) ?
+                h(BFormSelectOptionGroup, { label, options, key }) :
+                h(BFormSelectOption, {
+                    value, 
+                    disabled,
+                    ...htmlOrText(option.html, option.text),
+                    key
+                })
+        })
+
+        return h(
+                'select', {
+                    class: this.inputClass,
+                    id: this.safeId(),
+                    name,
+                    form: this.form || null,
+                    multiple: this.multiple || null,
+                    size,
+                    disabled,
+                    required,
+                    'aria-required': required ? 'true' : null,
+                    'aria-invalid': this.computedAriaInvalid,
+                    onChange: this.onChange,
+
+                    ref: 'input'
+                }, [this.normalizeSlot(SLOT_NAME_FIRST), $options, this.normalizeSlot()]
+            )
+    }
 })

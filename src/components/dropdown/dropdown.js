@@ -1,4 +1,4 @@
-import { defineComponent } from '../../vue'
+import { defineComponent, h } from 'vue'
 import { NAME_DROPDOWN } from '../../constants/components'
 import {
     PROP_TYPE_ARRAY_OBJECT_STRING,
@@ -99,7 +99,7 @@ export const BDropdown = /*#__PURE__*/ defineComponent({
             ]
         }
     },
-    render(h) {
+    render() {
         const { visible, variant, size, block, disabled, split, role, hide, toggle } = this
         const commonProps = { variant, size, block, disabled }
 
@@ -107,7 +107,7 @@ export const BDropdown = /*#__PURE__*/ defineComponent({
         let buttonContentDomProps = this.hasNormalizedSlot(SLOT_NAME_BUTTON_CONTENT) ? {} :
             htmlOrText(this.html, this.text)
 
-        let $split = h()
+        let $split = null
         if (split) {
             const { splitTo, splitHref, splitButtonType } = this
             const btnProps = {
@@ -128,13 +128,15 @@ export const BDropdown = /*#__PURE__*/ defineComponent({
             $split = h(
                 BButton, {
                     class: this.splitClass,
-                    attrs: { id: this.safeId('_BV_button_') },
-                    props: btnProps,
-                    domProps: buttonContentDomProps,
-                    on: { click: this.onSplitClick },
+                    id: this.safeId('_BV_button_'), 
+                    onClick: this.onSplitClick,
+                    ...btnProps,
+                    ...buttonContentDomProps,
                     ref: 'button'
                 },
-                $buttonChildren
+                {
+                  default: () => $buttonChildren
+                }                
             )
 
             // Overwrite button content for the toggle when in `split` mode
@@ -145,54 +147,48 @@ export const BDropdown = /*#__PURE__*/ defineComponent({
 
         const $toggle = h(
             BButton, {
-                staticClass: 'dropdown-toggle',
-                class: this.toggleClasses,
-                attrs: {
-                    // Merge in user supplied attributes
-                    ...this.toggleAttrs,
-                    // Must have attributes
-                    id: this.safeId('_BV_toggle_'),
-                    'aria-haspopup': ariaHasPopupRoles.includes(role) ? role : 'false',
-                    'aria-expanded': toString(visible)
-                },
-                props: {
-                    ...commonProps,
-                    tag: this.toggleTag,
-                    block: block && !split
-                },
-                domProps: buttonContentDomProps,
-                on: {
-                    mousedown: this.onMousedown,
-                    click: toggle,
-                    keydown: toggle // Handle ENTER, SPACE and DOWN
-                },
+                class: ['dropdown-toggle', ...this.toggleClasses],
+                // Merge in user supplied attributes
+                ...this.toggleAttrs,
+                // Must have attributes
+                id: this.safeId('_BV_toggle_'),
+                'aria-haspopup': ariaHasPopupRoles.includes(role) ? role : 'false',
+                'aria-expanded': toString(visible),
+                onMousedown: this.onMousedown,
+                onClick: toggle,
+                onKeydown: toggle,
+                ...commonProps,
+                tag: this.toggleTag,
+                block: block && !split,
+                ...buttonContentDomProps,
                 ref: 'toggle'
             },
-            $buttonChildren
+            {
+              default: () => $buttonChildren
+            }
         )
 
         const $menu = h(
             'ul', {
-                staticClass: 'dropdown-menu',
-                class: this.menuClasses,
-                attrs: {
-                    role,
-                    tabindex: '-1',
-                    'aria-labelledby': this.safeId(split ? '_BV_button_' : '_BV_toggle_')
-                },
-                on: {
-                    keydown: this.onKeydown // Handle UP, DOWN and ESC
-                },
+                class: ['dropdown-menu', ...this.menuClasses],
+                role,
+                tabindex: '-1',
+                'aria-labelledby': this.safeId(split ? '_BV_button_' : '_BV_toggle_'),
+                // Handle UP, DOWN and ESC
+                onKeydown: this.onKeydown,
                 ref: 'menu'
-            }, [!this.lazy || visible ? this.normalizeSlot(SLOT_NAME_DEFAULT, { hide }) : h()]
+            }, {
+              default: () => [!this.lazy || visible ? this.normalizeSlot(SLOT_NAME_DEFAULT, { hide }) : null]
+            }
         )
 
         return h(
             'div', {
-                staticClass: 'dropdown b-dropdown',
-                class: this.dropdownClasses,
-                attrs: { id: this.safeId() }
-            }, [$split, $toggle, $menu]
+                class: ['dropdown b-dropdown', ...this.dropdownClasses],
+                id: this.safeId()
+            }, {
+              default: () => [$split, $toggle, $menu]
+            }
         )
     }
 })

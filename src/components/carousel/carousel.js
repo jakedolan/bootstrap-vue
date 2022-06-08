@@ -1,4 +1,4 @@
-import { defineComponent } from '../../vue'
+import { defineComponent, h, vShow, withDirectives } from 'vue'
 import { NAME_CAROUSEL } from '../../constants/components'
 import { IS_BROWSER, HAS_POINTER_EVENT_SUPPORT, HAS_TOUCH_SUPPORT } from '../../constants/env'
 import {
@@ -43,7 +43,7 @@ const {
     props: modelProps,
     prop: MODEL_PROP_NAME,
     event: MODEL_EVENT_NAME
-} = makeModelMixin('value', {
+} = makeModelMixin('modelValue', {
     type: PROP_TYPE_NUMBER,
     defaultValue: 0
 })
@@ -490,7 +490,7 @@ export const BCarousel = /*#__PURE__*/ defineComponent({
             )
         }
     },
-    render(h) {
+    render() {
         const {
             indicators,
             background,
@@ -509,11 +509,9 @@ export const BCarousel = /*#__PURE__*/ defineComponent({
         // Wrapper for slides
         const $inner = h(
             'div', {
-                staticClass: 'carousel-inner',
-                attrs: {
-                    id: idInner,
-                    role: 'list'
-                },
+                class: 'carousel-inner',
+                id: idInner,
+                role: 'list',
                 ref: 'inner'
             }, [this.normalizeSlot()]
         )
@@ -533,21 +531,17 @@ export const BCarousel = /*#__PURE__*/ defineComponent({
 
                 return h(
                     'a', {
-                        staticClass: `carousel-control-${direction}`,
-                        attrs: {
-                            href: '#',
-                            role: 'button',
-                            'aria-controls': idInner,
-                            'aria-disabled': isSliding ? 'true' : null
-                        },
-                        on: {
-                            click: handlerWrapper,
-                            keydown: handlerWrapper
-                        }
+                        class: `carousel-control-${direction}`,
+                        href: '#',
+                        role: 'button',
+                        'aria-controls': idInner,
+                        'aria-disabled': isSliding ? 'true' : null,
+                        onClick: handlerWrapper,
+                        onKeydown: handlerWrapper
                     }, [
                         h('span', {
-                            staticClass: `carousel-control-${direction}-icon`,
-                            attrs: { 'aria-hidden': 'true' }
+                            class: `carousel-control-${direction}-icon`,
+                            'aria-hidden': 'true'
                         }),
                         h('span', { class: 'sr-only' }, [label])
                     ]
@@ -561,50 +555,44 @@ export const BCarousel = /*#__PURE__*/ defineComponent({
         }
 
         // Indicators
-        const $indicators = h(
-            'ol', {
-                staticClass: 'carousel-indicators',
-                directives: [{ name: 'show', value: indicators }],
-                attrs: {
-                    id: this.safeId('__BV_indicators_'),
-                    'aria-hidden': indicators ? 'false' : 'true',
-                    'aria-label': this.labelIndicators,
-                    'aria-owns': idInner
-                }
-            },
-            this.slides.map((slide, i) => {
-                const handler = event => {
-                    this.handleClick(event, () => {
-                        this.setSlide(i)
-                    })
-                }
+        const $indicators = withDirectives(h(
+              'ol', {
+                  class: 'carousel-indicators',
+                  id: this.safeId('__BV_indicators_'),
+                  'aria-hidden': indicators ? 'false' : 'true',
+                  'aria-label': this.labelIndicators,
+                  'aria-owns': idInner
+                  
+              },
+              this.slides.map((slide, i) => {
+                  const handler = event => {
+                      this.handleClick(event, () => {
+                          this.setSlide(i)
+                      })
+                  }
 
-                return h('li', {
-                    class: { active: i === index },
-                    attrs: {
-                        role: 'button',
-                        id: this.safeId(`__BV_indicator_${i + 1}_`),
-                        tabindex: indicators ? '0' : '-1',
-                        'aria-current': i === index ? 'true' : 'false',
-                        'aria-label': `${this.labelGotoSlide} ${i + 1}`,
-                        'aria-describedby': slide.id || null,
-                        'aria-controls': idInner
-                    },
-                    on: {
-                        click: handler,
-                        keydown: handler
-                    },
-                    key: `slide_${i}`
-                })
-            })
-        )
+                  return h('li', {
+                      class: { active: i === index },
+                      role: 'button',
+                      id: this.safeId(`__BV_indicator_${i + 1}_`),
+                      tabindex: indicators ? '0' : '-1',
+                      'aria-current': i === index ? 'true' : 'false',
+                      'aria-label': `${this.labelGotoSlide} ${i + 1}`,
+                      'aria-describedby': slide.id || null,
+                      'aria-controls': idInner,
+                      onClick: handler,
+                      onKeydown: handler,
+                      key: `slide_${i}`
+                  })
+              })
+          ), [[vShow, indicators]])
 
         const on = {
-                mouseenter: noHoverPause ? noop : pause,
-                mouseleave: noHoverPause ? noop : restart,
-                focusin: pause,
-                focusout: restart,
-                keydown: event => {
+                onMouseenter: noHoverPause ? noop : pause,
+                onMouseleave: noHoverPause ? noop : restart,
+                onFocusin: pause,
+                onFocusout: restart,
+                onKeydown: event => {
                     /* istanbul ignore next */
                     if (/input|textarea/i.test(event.target.tagName)) {
                         return
@@ -621,31 +609,28 @@ export const BCarousel = /*#__PURE__*/ defineComponent({
             // Attach appropriate listeners (prepend event name with '&' for passive mode)
             /* istanbul ignore next: JSDOM doesn't support touch events */
             if (HAS_POINTER_EVENT_SUPPORT) {
-                on['&pointerdown'] = touchStart
-                on['&pointerup'] = touchEnd
+                on['&onPointerdown'] = touchStart
+                on['&onPointerup'] = touchEnd
             } else {
-                on['&touchstart'] = touchStart
-                on['&touchmove'] = this.touchMove
-                on['&touchend'] = touchEnd
+                on['&onTouchstart'] = touchStart
+                on['&onTouchmove'] = this.touchMove
+                on['&onTouchend'] = touchEnd
             }
         }
 
         // Return the carousel
         return h(
             'div', {
-                staticClass: 'carousel',
-                class: {
+                class: ['carousel', {
                     slide: !noAnimation,
                         'carousel-fade': !noAnimation && this.fade,
                         'pointer-event': HAS_TOUCH_SUPPORT && HAS_POINTER_EVENT_SUPPORT && !noTouch
-                },
+                }],
                 style: { background },
-                attrs: {
-                    role: 'region',
-                    id: this.safeId(),
-                    'aria-busy': isSliding ? 'true' : 'false'
-                },
-                on
+                role: 'region',
+                id: this.safeId(),
+                'aria-busy': isSliding ? 'true' : 'false',
+                ...on
             }, [$inner, $controls, $indicators]
         )
     }

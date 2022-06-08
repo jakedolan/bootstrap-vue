@@ -1,4 +1,4 @@
-import { defineComponent } from '../vue'
+import { defineComponent } from 'vue'
 import { EVENT_OPTIONS_NO_CAPTURE } from '../constants/events'
 import { eventOn, eventOff } from '../utils/events'
 

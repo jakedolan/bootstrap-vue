@@ -1,4 +1,4 @@
-import { defineComponent } from '../vue'
+import { defineComponent } from 'vue'
 import { IS_BROWSER } from '../constants/env'
 import { EVENT_OPTIONS_NO_CAPTURE } from '../constants/events'
 import { arrayIncludes } from '../utils/array'

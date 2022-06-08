@@ -1,4 +1,5 @@
-import { defineComponent, mergeData } from '../../vue'
+import { defineComponent } from 'vue'
+import { mergeData } from 'vue-functional-data-merge'
 import { NAME_BADGE } from '../../constants/components'
 import { PROP_TYPE_BOOLEAN, PROP_TYPE_STRING } from '../../constants/props'
 import { omit, sortKeys } from '../../utils/object'
@@ -13,43 +14,43 @@ delete linkProps.href.default
 delete linkProps.to.default
 
 export const props = makePropsConfigurable(
-  sortKeys({
-    ...linkProps,
-    pill: makeProp(PROP_TYPE_BOOLEAN, false),
-    tag: makeProp(PROP_TYPE_STRING, 'span'),
-    variant: makeProp(PROP_TYPE_STRING, 'secondary')
-  }),
-  NAME_BADGE
+    sortKeys({
+        ...linkProps,
+        pill: makeProp(PROP_TYPE_BOOLEAN, false),
+        tag: makeProp(PROP_TYPE_STRING, 'span'),
+        variant: makeProp(PROP_TYPE_STRING, 'secondary')
+    }),
+    NAME_BADGE
 )
 
 // --- Main component ---
 
 // @vue/component
 export const BBadge = /*#__PURE__*/ defineComponent({
-  name: NAME_BADGE,
-  functional: true,
-  props,
-  render(h, { props, data, children }) {
-    const { active, disabled } = props
-    const link = isLink(props)
-    const tag = link ? BLink : props.tag
-    const variant = props.variant || 'secondary'
+    name: NAME_BADGE,
+    functional: true,
+    props,
+    render(h, { props, data, children }) {
+        const { active, disabled } = props
+        const link = isLink(props)
+        const tag = link ? BLink : props.tag
+        const variant = props.variant || 'secondary'
 
-    return h(
-      tag,
-      mergeData(data, {
-        staticClass: 'badge',
-        class: [
-          `badge-${variant}`,
-          {
-            'badge-pill': props.pill,
-            active,
-            disabled
-          }
-        ],
-        props: link ? pluckProps(linkProps, props) : {}
-      }),
-      children
-    )
-  }
+        return h(
+            tag,
+            mergeData(data, {
+                staticClass: 'badge',
+                class: [
+                    `badge-${variant}`,
+                    {
+                        'badge-pill': props.pill,
+                        active,
+                        disabled
+                    }
+                ],
+                props: link ? pluckProps(linkProps, props) : {}
+            }),
+            children
+        )
+    }
 })

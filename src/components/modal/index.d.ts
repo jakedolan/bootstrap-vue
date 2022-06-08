@@ -1,5 +1,5 @@
 // --- Modals ---
-import Vue, { VNode } from 'vue'
+import { VNode } from 'vue'
 import { BvPlugin, BvComponent, BvEvent } from '../../'
 
 // Modal plugin

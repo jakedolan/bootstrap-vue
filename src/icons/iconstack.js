@@ -1,4 +1,5 @@
-import { defineComponent, mergeData } from '../vue'
+import { defineComponent } from 'vue'
+import { mergeData } from 'vue-functional-data-merge'
 import { NAME_ICONSTACK } from '../constants/components'
 import { omit } from '../utils/object'
 import { makePropsConfigurable } from '../utils/props'

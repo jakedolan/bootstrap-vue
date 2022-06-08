@@ -6,7 +6,7 @@
 //
 
 import Popper from 'popper.js'
-import { defineComponent } from '../../../vue'
+import { defineComponent, h } from 'vue'
 import { NAME_POPPER } from '../../../constants/components'
 import {
     EVENT_NAME_HIDDEN,
@@ -231,21 +231,20 @@ export const BVPopper = /*#__PURE__*/ defineComponent({
             return h('div')
         }
     },
-    render(h) {
+    render() {
         const { noFade } = this
 
         // Note: 'show' and 'fade' classes are only appled during transition
         return h(
             BVTransition, {
                 // Transitions as soon as mounted
-                props: { appear: true, noFade },
-                on: {
-                    // Events used by parent component/instance
-                    beforeEnter: el => this.$emit(EVENT_NAME_SHOW, el),
-                    afterEnter: el => this.$emit(EVENT_NAME_SHOWN, el),
-                    beforeLeave: el => this.$emit(EVENT_NAME_HIDE, el),
-                    afterLeave: el => this.$emit(EVENT_NAME_HIDDEN, el)
-                }
+                appear: true, 
+                noFade,
+                // Events used by parent component/instance
+                beforeEnter: el => this.$emit(EVENT_NAME_SHOW, el),
+                afterEnter: el => this.$emit(EVENT_NAME_SHOWN, el),
+                beforeLeave: el => this.$emit(EVENT_NAME_HIDE, el),
+                afterLeave: el => this.$emit(EVENT_NAME_HIDDEN, el)
             }, [this.localShow ? this.renderTemplate(h) : h()]
         )
     }

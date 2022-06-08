@@ -1,4 +1,4 @@
-import { defineComponent } from '../../vue'
+import { defineComponent, h } from 'vue'
 import { NAME_TFOOT } from '../../constants/components'
 import { PROP_TYPE_STRING } from '../../constants/props'
 import { makeProp, makePropsConfigurable } from '../../utils/props'
@@ -8,12 +8,11 @@ import { normalizeSlotMixin } from '../../mixins/normalize-slot'
 
 // --- Props ---
 
-export const props = makePropsConfigurable(
-  {
-    // Supported values: 'lite', 'dark', or null
-    footVariant: makeProp(PROP_TYPE_STRING)
-  },
-  NAME_TFOOT
+export const props = makePropsConfigurable({
+        // Supported values: 'lite', 'dark', or null
+        footVariant: makeProp(PROP_TYPE_STRING)
+    },
+    NAME_TFOOT
 )
 
 // --- Main component ---
@@ -23,73 +22,73 @@ export const props = makePropsConfigurable(
 //   to the child elements, so this can be converted to a functional component
 // @vue/component
 export const BTfoot = /*#__PURE__*/ defineComponent({
-  name: NAME_TFOOT,
-  mixins: [attrsMixin, listenersMixin, normalizeSlotMixin],
-  provide() {
-    return {
-      getBvTableRowGroup: () => this
+    name: NAME_TFOOT,
+    mixins: [attrsMixin, listenersMixin, normalizeSlotMixin],
+    provide() {
+        return {
+            getBvTableRowGroup: () => this
+        }
+    },
+    inject: {
+        // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
+        getBvTable: {
+            default: /* istanbul ignore next */ () => () => ({})
+        }
+    },
+    inheritAttrs: false,
+    props,
+    computed: {
+        bvTable() {
+            return this.getBvTable()
+        },
+        // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
+        isTfoot() {
+            return true
+        },
+        // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
+        isDark() {
+            return this.bvTable.dark
+        },
+        // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
+        isStacked() {
+            return this.bvTable.isStacked
+        },
+        // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
+        isResponsive() {
+            return this.bvTable.isResponsive
+        },
+        // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
+        // Sticky headers are only supported in thead
+        isStickyHeader() {
+            return false
+        },
+        // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
+        // Needed to handle header background classes, due to lack of
+        // background color inheritance with Bootstrap v4 table CSS
+        hasStickyHeader() {
+            return !this.isStacked && this.bvTable.stickyHeader
+        },
+        // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
+        tableVariant() {
+            return this.bvTable.tableVariant
+        },
+        tfootClasses() {
+            return [this.footVariant ? `thead-${this.footVariant}` : null]
+        },
+        tfootAttrs() {
+            return {...this.bvAttrs, role: 'rowgroup' }
+        }
+    },
+    render() {
+        return h(
+            'tfoot', {
+                class: this.tfootClasses,
+                ...this.tfootAttrs,
+                // Pass down any native listeners
+                // on: this.bvListeners
+                ...this.bvListeners
+            },
+            this.normalizeSlot()
+        )
     }
-  },
-  inject: {
-    // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
-    getBvTable: {
-      default: /* istanbul ignore next */ () => () => ({})
-    }
-  },
-  inheritAttrs: false,
-  props,
-  computed: {
-    bvTable() {
-      return this.getBvTable()
-    },
-    // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
-    isTfoot() {
-      return true
-    },
-    // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
-    isDark() {
-      return this.bvTable.dark
-    },
-    // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
-    isStacked() {
-      return this.bvTable.isStacked
-    },
-    // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
-    isResponsive() {
-      return this.bvTable.isResponsive
-    },
-    // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
-    // Sticky headers are only supported in thead
-    isStickyHeader() {
-      return false
-    },
-    // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
-    // Needed to handle header background classes, due to lack of
-    // background color inheritance with Bootstrap v4 table CSS
-    hasStickyHeader() {
-      return !this.isStacked && this.bvTable.stickyHeader
-    },
-    // Sniffed by `<b-tr>` / `<b-td>` / `<b-th>`
-    tableVariant() {
-      return this.bvTable.tableVariant
-    },
-    tfootClasses() {
-      return [this.footVariant ? `thead-${this.footVariant}` : null]
-    },
-    tfootAttrs() {
-      return { ...this.bvAttrs, role: 'rowgroup' }
-    }
-  },
-  render(h) {
-    return h(
-      'tfoot',
-      {
-        class: this.tfootClasses,
-        attrs: this.tfootAttrs,
-        // Pass down any native listeners
-        on: this.bvListeners
-      },
-      this.normalizeSlot()
-    )
-  }
 })

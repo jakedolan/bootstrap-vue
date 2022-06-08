@@ -1,4 +1,4 @@
-import { defineComponent } from '../../vue'
+import { defineComponent, h } from 'vue'
 import { NAME_FORM_INPUT } from '../../constants/components'
 import { PROP_TYPE_BOOLEAN, PROP_TYPE_NUMBER_STRING, PROP_TYPE_STRING } from '../../constants/props'
 import { arrayIncludes } from '../../utils/array'
@@ -109,9 +109,9 @@ export const BFormInput = /*#__PURE__*/ defineComponent({
         computedListeners() {
             return {
                 ...this.bvListeners,
-                input: this.onInput,
-                change: this.onChange,
-                blur: this.onBlur
+                onInput: this.onInput,
+                onChange: this.onChange,
+                onBblur: this.onBlur
             }
         }
     },
@@ -160,12 +160,12 @@ export const BFormInput = /*#__PURE__*/ defineComponent({
             attemptBlur(this.$el)
         }
     },
-    render(h) {
+    render() {
         return h('input', {
             class: this.computedClass,
-            attrs: this.computedAttrs,
-            domProps: { value: this.localValue },
-            on: this.computedListeners,
+            ...this.computedAttrs,
+            value: this.localValue,
+            ...this.computedListeners,
             ref: 'input'
         })
     }

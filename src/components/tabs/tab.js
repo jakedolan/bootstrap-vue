@@ -1,4 +1,4 @@
-import { defineComponent } from '../../vue'
+import { defineComponent, h, vShow, withDirectives } from 'vue'
 import { NAME_TAB } from '../../constants/components'
 import { MODEL_EVENT_NAME_PREFIX } from '../../constants/events'
 import {
@@ -165,32 +165,28 @@ export const BTab = /*#__PURE__*/ defineComponent({
             return deactivateTab && this.localActive ? deactivateTab(this) : false
         }
     },
-    render(h) {
+    render() {
         const { localActive } = this
 
-        const $content = h(
-            this.tag, {
-                staticClass: 'tab-pane',
-                class: this.tabClasses,
-                directives: [{ name: 'show', value: localActive }],
-                attrs: {
+        const $content = withDirectives(
+            h(
+                this.tag, {
+                    class: ['tab-pane', ...this.tabClasses],
                     role: 'tabpanel',
                     id: this.safeId(),
                     'aria-hidden': localActive ? 'false' : 'true',
-                    'aria-labelledby': this.controlledBy || null
+                    'aria-labelledby': this.controlledBy || null,
+                    ref: 'panel'
                 },
-                ref: 'panel'
-            },
-            // Render content lazily if requested
-            [localActive || !this.computedLazy ? this.normalizeSlot() : h()]
-        )
+                // Render content lazily if requested
+                [localActive || !this.computedLazy ? this.normalizeSlot() : h()]
+            ),
+            [[vShow, localActive]])
 
         return h(
             BVTransition, {
-                props: {
-                    mode: 'out-in',
-                    noFade: this.computedNoFade
-                }
+                mode: 'out-in',
+                noFade: this.computedNoFade                
             }, [$content]
         )
     }

@@ -82,7 +82,6 @@
         "@nuxt/opencollective": "^0.3.2",
         "bootstrap": ">=4.5.3 <5.0.0",
         "popper.js": "^1.16.1",
-        "portal-vue": "^2.1.7",
         "uuid": "^3.3.3",
         "vue-functional-data-merge": "^3.1.0"
     },
@@ -101,6 +100,7 @@
         "@testing-library/jest-dom": "^5.12.0",
         "@vue/compat": "^3.2.24",
         "@vue/compiler-dom": "^3.2.24",
+        "@vue/compiler-sfc": "^3.2.37",
         "@vue/test-utils": "^1.3.0",
         "@vue/test-utils-vue3": "npm:@vue/test-utils@^2.0.0",
         "autoprefixer": "^10.2.5",
@@ -150,10 +150,9 @@
         "sass-loader": "^10.1.1",
         "standard-version": "^9.3.0",
         "terser": "^5.7.0",
-        "vue": "^2.6.12",
+        "vue": "^3.1.0",
         "vue-router": "^3.5.1",
         "vue-server-renderer": "^2.6.12",
-        "vue-template-compiler": "^2.6.12",
         "vue-test-utils-compat": "0.0.3"
     },
     "keywords": [
@@ -214,7 +213,6 @@
         "Tags",
         "Time picker",
         "Timepicker",
-        "Toast",
         "Tooltip"
     ],
     "collective": {

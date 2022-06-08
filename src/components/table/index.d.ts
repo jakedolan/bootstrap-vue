@@ -1,7 +1,6 @@
 //
 // Table
 //
-import Vue, { VNode } from 'vue'
 import { BvPlugin, BvComponent } from '../../'
 
 // Table Plugins
@@ -157,9 +156,9 @@ export interface BvTableTbodyTransitionProps {
   type?: string
   duration?: number
   moveClass?: string
-  enterClass?: string
-  leaveClass?: string
-  appearClass?: string
+  enterFromClass?: string
+  leaveFromClass?: string
+  appearFromClass?: string
   enterToClass?: string
   leaveToClass?: string
   appearToClass?: string

@@ -1,12 +1,11 @@
 import '@testing-library/jest-dom'
-import Vue from 'vue'
+import { configureCompat, createApp, h } from 'vue'
 import VueRouter from 'vue-router'
 import * as VTU from '@vue/test-utils'
 import { installCompat as installVTUCompat, fullCompatConfig } from 'vue-test-utils-compat'
 
-const useVue2 = 'USE_VUE2' in process.env
-if (!useVue2) {
-    Vue.configureCompat({
+
+    configureCompat({
         MODE: 3,
         // required by Vue-router
         CONFIG_OPTION_MERGE_STRATS: 'suppress-warning',
@@ -26,55 +25,33 @@ if (!useVue2) {
         GLOBAL_MOUNT: 'suppress-warning'
     })
 
-    Vue.use(VueRouter)
+    const app = createApp({
+      compatConfig: {
+          MODE: 3,
+          RENDER_FUNCTION: 'suppress-warning'
+      },
+      render() {
+          compatH = h
+      }
+  });
 
-    Vue.component('RouterLink').compatConfig = {
+    app.use(VueRouter)
+
+    app.component('RouterLink').compatConfig = {
         MODE: 2,
         RENDER_FUNCTION: 'suppress-warning',
         INSTANCE_SCOPED_SLOTS: 'suppress-warning'
     }
 
-    Vue.component('RouterView').compatConfig = {
+    app.component('RouterView').compatConfig = {
         MODE: 2,
         RENDER_FUNCTION: 'suppress-warning',
         COMPONENT_FUNCTIONAL: 'suppress-warning'
     }
 
-    const PortalVue = require('portal-vue')
-    PortalVue.Portal = PortalVue.Portal.extend({
-        compatConfig: {
-            MODE: 2,
-            RENDER_FUNCTION: 'suppress-warning',
-            INSTANCE_SCOPED_SLOTS: 'suppress-warning',
-
-        }
-    })
-    PortalVue.PortalTarget = PortalVue.PortalTarget.extend({
-        compatConfig: {
-            MODE: 2,
-            RENDER_FUNCTION: 'suppress-warning',
-            WATCH_ARRAY: 'suppress-warning',
-            INSTANCE_SCOPED_SLOTS: 'suppress-warning'
-        }
-    })
-
-    PortalVue.Wormhole.$.type.compatConfig = {
-        MODE: 3,
-        INSTANCE_SET: 'suppress-warning',
-        INSTANCE_DELETE: 'suppress-warning'
-    }
-
     let compatH
-    Vue.config.compilerOptions.whitespace = 'condense'
-    Vue.createApp({
-        compatConfig: {
-            MODE: 3,
-            RENDER_FUNCTION: 'suppress-warning'
-        },
-        render(h) {
-            compatH = h
-        }
-    }).mount(document.createElement('div'))
+    app.config.compilerOptions.whitespace = 'condense'
+    .mount(document.createElement('div'))
     installVTUCompat(VTU, fullCompatConfig, compatH)
 }
 

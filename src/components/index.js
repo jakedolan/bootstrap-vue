@@ -50,7 +50,6 @@ import { SpinnerPlugin } from './spinner'
 import { TablePlugin } from './table'
 import { TabsPlugin } from './tabs'
 import { TimePlugin } from './time'
-import { ToastPlugin } from './toast'
 import { TooltipPlugin } from './tooltip'
 
 // Main plugin to install all component group plugins
@@ -104,7 +103,6 @@ export const componentsPlugin = /*#__PURE__*/ pluginFactory({
     TablePlugin,
     TabsPlugin,
     TimePlugin,
-    ToastPlugin,
     TooltipPlugin
   }
 })

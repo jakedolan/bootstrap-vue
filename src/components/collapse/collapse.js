@@ -1,4 +1,4 @@
-import { defineComponent } from '../../vue'
+import { defineComponent, h, vShow, withDirectives } from 'vue'
 import { NAME_COLLAPSE } from '../../constants/components'
 import { CLASS_NAME_SHOW } from '../../constants/classes'
 import { IS_BROWSER } from '../../constants/env'
@@ -60,7 +60,6 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
     name: NAME_COLLAPSE,
     compatConfig: {
         MODE: 3,
-
     },
     mixins: [idMixin, modelMixin, normalizeSlotMixin, listenOnRootMixin],
     props,
@@ -91,7 +90,9 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
     },
     watch: {
         [MODEL_PROP_NAME](newValue) {
+            console.log(`[${MODEL_PROP_NAME}] ${newValue} ${this.show}`)
             if (newValue !== this.show) {
+                console.log("set show", newValue);
                 this.show = newValue
             }
         },
@@ -120,6 +121,7 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
             })
             // Listen for "Sync state" requests from `v-b-toggle`
         this.listenOnRoot(ROOT_ACTION_EVENT_NAME_REQUEST_STATE, id => {
+            console.log("## setting listenOnRoot", { ROOT_ACTION_EVENT_NAME_REQUEST_STATE, id, safeId: this.safeId() })
             if (id === this.safeId()) {
                 this.$nextTick(this.emitSync)
             }
@@ -181,6 +183,7 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
             const { show, accordion } = this
             const id = this.safeId()
 
+            console.log(`emitting ${MODEL_EVENT_NAME} ${show} ${id}`)
             this.$emit(MODEL_EVENT_NAME, show)
 
             // Let `v-b-toggle` know the state of this collapse
@@ -191,9 +194,10 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
             }
         },
         emitSync() {
-            // Emit a private event every time this component updates to ensure
-            // the toggle button is in sync with the collapse's state
-            // It is emitted regardless if the visible state changes
+            console.log('## emitSync', { show: this.show, safeId: this.safeId(), ROOT_EVENT_NAME_SYNC_STATE })
+                // Emit a private event every time this component updates to ensure
+                // the toggle button is in sync with the collapse's state
+                // It is emitted regardless if the visible state changes
             this.emitOnRoot(ROOT_EVENT_NAME_SYNC_STATE, this.safeId(), this.show)
         },
         checkDisplayBlock() {
@@ -246,29 +250,32 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
             this.show = getCS(this.$el).display === 'block'
         }
     },
-    render(h) {
-        const { appear } = this
+    render() {
+        const { appear, visible } = this
 
-        const $content = h(
+        const $content = withDirectives(h(
             this.tag, {
                 class: this.classObject,
-                directives: [{ name: 'show', value: this.show }],
-                attrs: { id: this.safeId() },
-                on: { click: this.clickHandler }
+                id: this.safeId(),
+                onClick: this.clickHandler
             },
             this.normalizeSlot(SLOT_NAME_DEFAULT, this.slotScope)
-        )
+        ), [
+            [vShow, this.show]
+        ])
 
-        return h(
+        const test = h('span', `#${visible}#`);
+
+        return h('div', [test, h(
             BVCollapse, {
-                props: { appear },
-                on: {
-                    enter: this.onEnter,
-                    afterEnter: this.onAfterEnter,
-                    leave: this.onLeave,
-                    afterLeave: this.onAfterLeave
-                }
-            }, [$content]
-        )
+                appear,
+                onEnter: this.onEnter,
+                onAfterEnter: this.onAfterEnter,
+                onLeave: this.onLeave,
+                onAfterLeave: this.onAfterLeave
+            }, {
+                default: () => [$content]
+            }
+        )])
     }
 })

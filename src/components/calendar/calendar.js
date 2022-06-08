@@ -1,4 +1,4 @@
-import { defineComponent } from '../../vue'
+import { defineComponent, h } from 'vue'
 import { NAME_CALENDAR } from '../../constants/components'
 import {
     CALENDAR_GREGORY,
@@ -86,7 +86,7 @@ const {
     props: modelProps,
     prop: MODEL_PROP_NAME,
     event: MODEL_EVENT_NAME
-} = makeModelMixin('value', { type: PROP_TYPE_DATE_STRING })
+} = makeModelMixin('modelValue', { type: PROP_TYPE_DATE_STRING })
 
 // --- Props ---
 
@@ -746,10 +746,10 @@ export const BCalendar = defineComponent({
             }
         }
     },
-    render(h) {
+    render() {
         // If `hidden` prop is set, render just a placeholder node
         if (this.hidden) {
-            return h()
+            return null
         }
 
         const {
@@ -775,41 +775,35 @@ export const BCalendar = defineComponent({
         // Header showing current selected date
         let $header = h(
             'output', {
-                staticClass: 'form-control form-control-sm text-center',
-                class: { 'text-muted': disabled, readonly: this.readonly || disabled },
-                attrs: {
-                    id: valueId,
-                    for: gridId,
-                    role: 'status',
-                    tabindex: disabled ? null : '-1',
-                    // Mainly for testing purposes, as we do not know
-                    // the exact format `Intl` will format the date string
-                    'data-selected': toString(selectedYMD),
-                    // We wait until after mount to enable `aria-live`
-                    // to prevent initial announcement on page render
-                    'aria-live': isLive ? 'polite' : 'off',
-                    'aria-atomic': isLive ? 'true' : null
-                },
-                on: {
-                    // Transfer focus/click to focus grid
-                    // and focus active date (or today if no selection)
-                    click: this.onHeaderClick,
-                    focus: this.onHeaderClick
-                }
+                class: ['form-control form-control-sm text-center', { 'text-muted': disabled, readonly: this.readonly || disabled }],
+                id: valueId,
+                for: gridId,
+                role: 'status',
+                tabindex: disabled ? null : '-1',
+                // Mainly for testing purposes, as we do not know
+                // the exact format `Intl` will format the date string
+                'data-selected': toString(selectedYMD),
+                // We wait until after mount to enable `aria-live`
+                // to prevent initial announcement on page render
+                'aria-live': isLive ? 'polite' : 'off',
+                'aria-atomic': isLive ? 'true' : null,
+                // Transfer focus/click to focus grid
+                // and focus active date (or today if no selection)
+                onClick: this.onHeaderClick,
+                onFocus: this.onHeaderClick
             },
             this.selectedDate ? [
                 // We use `bdi` elements here in case the label doesn't match the locale
                 // Although IE 11 does not deal with <BDI> at all (equivalent to a span)
-                h('bdi', { staticClass: 'sr-only' }, ` (${toString(this.labelSelected)}) `),
+                h('bdi', { class: ['sr-only'] }, ` (${toString(this.labelSelected)}) `),
                 h('bdi', this.formatDateString(this.selectedDate))
             ] :
             this.labelNoDateSelected || '\u00a0' // '&nbsp;'
         )
         $header = h(
             this.headerTag, {
-                staticClass: 'b-calendar-header',
-                class: { 'sr-only': this.hideHeader },
-                attrs: { title: this.selectedDate ? this.labelSelected || null : null }
+                class: ['b-calendar-header', { 'sr-only': this.hideHeader }],
+                title: this.selectedDate ? this.labelSelected || null : null
             }, [$header]
         )
 
@@ -820,61 +814,56 @@ export const BCalendar = defineComponent({
         const navNextProps = {...navProps, flipH: !isRTL }
         const $prevDecadeIcon =
             this.normalizeSlot(SLOT_NAME_NAV_PEV_DECADE, navScope) ||
-            h(BIconChevronBarLeft, { props: navPrevProps })
+            h(BIconChevronBarLeft, { ...navPrevProps })
         const $prevYearIcon =
             this.normalizeSlot(SLOT_NAME_NAV_PEV_YEAR, navScope) ||
-            h(BIconChevronDoubleLeft, { props: navPrevProps })
+            h(BIconChevronDoubleLeft, { ...navPrevProps })
         const $prevMonthIcon =
             this.normalizeSlot(SLOT_NAME_NAV_PEV_MONTH, navScope) ||
-            h(BIconChevronLeft, { props: navPrevProps })
+            h(BIconChevronLeft, { ...navPrevProps })
         const $thisMonthIcon =
             this.normalizeSlot(SLOT_NAME_NAV_THIS_MONTH, navScope) ||
-            h(BIconCircleFill, { props: navProps })
+            h(BIconCircleFill, { ...navProps })
         const $nextMonthIcon =
             this.normalizeSlot(SLOT_NAME_NAV_NEXT_MONTH, navScope) ||
-            h(BIconChevronLeft, { props: navNextProps })
+            h(BIconChevronLeft, { ...navNextProps })
         const $nextYearIcon =
             this.normalizeSlot(SLOT_NAME_NAV_NEXT_YEAR, navScope) ||
-            h(BIconChevronDoubleLeft, { props: navNextProps })
+            h(BIconChevronDoubleLeft, { ...navNextProps })
         const $nextDecadeIcon =
             this.normalizeSlot(SLOT_NAME_NAV_NEXT_DECADE, navScope) ||
-            h(BIconChevronBarLeft, { props: navNextProps })
+            h(BIconChevronBarLeft, { ...navNextProps })
 
         // Utility to create the date navigation buttons
         const makeNavBtn = (content, label, handler, btnDisabled, shortcut) => {
             return h(
                 'button', {
-                    staticClass: 'btn btn-sm border-0 flex-fill',
-                    class: [this.computedNavButtonVariant, { disabled: btnDisabled }],
-                    attrs: {
-                        title: label || null,
-                        type: 'button',
-                        tabindex: noKeyNav ? '-1' : null,
-                        'aria-label': label || null,
-                        'aria-disabled': btnDisabled ? 'true' : null,
-                        'aria-keyshortcuts': shortcut || null
-                    },
-                    on: btnDisabled ? {} : { click: handler }
-                }, [h('div', { attrs: { 'aria-hidden': 'true' } }, [content])]
+                    class: ['btn btn-sm border-0 flex-fill', this.computedNavButtonVariant, { disabled: btnDisabled }],
+                    title: label || null,
+                    type: 'button',
+                    tabindex: noKeyNav ? '-1' : null,
+                    'aria-label': label || null,
+                    'aria-disabled': btnDisabled ? 'true' : null,
+                    'aria-keyshortcuts': shortcut || null,
+                    onClick: btnDisabled ? null : handler
+                }, {
+                  default: () => [h('div', { 'aria-hidden': 'true' }, [content])]
+                }
             )
         }
 
         // Generate the date navigation buttons
         const $nav = h(
             'div', {
-                staticClass: 'b-calendar-nav d-flex',
-                attrs: {
-                    id: navId,
-                    role: 'group',
-                    tabindex: noKeyNav ? '-1' : null,
-                    'aria-hidden': disabled ? 'true' : null,
-                    'aria-label': this.labelNav || null,
-                    'aria-controls': gridId
-                }
+                class: ['b-calendar-nav d-flex'],
+                id: navId,
+                role: 'group',
+                tabindex: noKeyNav ? '-1' : null,
+                'aria-hidden': disabled ? 'true' : null,
+                'aria-label': this.labelNav || null,
+                'aria-controls': gridId
             }, [
-                hideDecadeNav ?
-                h() :
-                makeNavBtn(
+                hideDecadeNav ? null : makeNavBtn(
                     $prevDecadeIcon,
                     this.labelPrevDecade,
                     this.gotoPrevDecade,
@@ -916,9 +905,7 @@ export const BCalendar = defineComponent({
                     this.nextYearDisabled,
                     'Alt+PageUp'
                 ),
-                hideDecadeNav ?
-                h() :
-                makeNavBtn(
+                hideDecadeNav ? null : makeNavBtn(
                     $nextDecadeIcon,
                     this.labelNextDecade,
                     this.gotoNextDecade,
@@ -931,13 +918,10 @@ export const BCalendar = defineComponent({
         // Caption for calendar grid
         const $gridCaption = h(
             'div', {
-                staticClass: 'b-calendar-grid-caption text-center font-weight-bold',
-                class: { 'text-muted': disabled },
-                attrs: {
-                    id: gridCaptionId,
-                    'aria-live': isLive ? 'polite' : null,
-                    'aria-atomic': isLive ? 'true' : null
-                },
+                class: ['b-calendar-grid-caption text-center font-weight-bold', { 'text-muted': disabled }],
+                id: gridCaptionId,
+                'aria-live': isLive ? 'polite' : null,
+                'aria-atomic': isLive ? 'true' : null,
                 key: 'grid-caption'
             },
             this.formatYearMonth(this.calendarFirstDay)
@@ -946,18 +930,15 @@ export const BCalendar = defineComponent({
         // Calendar weekday headings
         const $gridWeekDays = h(
             'div', {
-                staticClass: 'b-calendar-grid-weekdays row no-gutters border-bottom',
-                attrs: { 'aria-hidden': 'true' }
+                class: ['b-calendar-grid-weekdays row no-gutters border-bottom'],
+                'aria-hidden': 'true'
             },
             this.calendarHeadings.map((d, idx) => {
                 return h(
                     'small', {
-                        staticClass: 'col text-truncate',
-                        class: { 'text-muted': disabled },
-                        attrs: {
-                            title: d.label === d.text ? null : d.label,
-                            'aria-label': d.label
-                        },
+                        class: ['col text-truncate', { 'text-muted': disabled }],
+                        title: d.label === d.text ? null : d.label,
+                        'aria-label': d.label,
                         key: idx
                     },
                     d.text
@@ -975,9 +956,8 @@ export const BCalendar = defineComponent({
                         // "fake" button
                     const $btn = h(
                         'span', {
-                            staticClass: 'btn border-0 rounded-circle text-nowrap',
                             // Should we add some classes to signify if today/selected/etc?
-                            class: {
+                            class: ['btn border-0 rounded-circle text-nowrap', {
                                 // Give the fake button a focus ring
                                 focus: isActive && this.gridHasFocus,
                                     // Styling
@@ -996,36 +976,41 @@ export const BCalendar = defineComponent({
                                     'text-dark':
                                     !(isToday && highlightToday) && !isSelected && !isActive && day.isThisMonth,
                                     'font-weight-bold': (isSelected || day.isThisMonth) && !day.isDisabled
-                            },
-                            on: { click: () => this.onClickDay(day) }
+                            }],
+                            onClick: () => this.onClickDay(day)
                         },
                         day.day
                     )
+
+                    let cellClasses = '';
+                    if (day.isDisabled) {
+                      cellClasses = 'bg-light';
+                    } else  {
+                      cellClasses = day.info.classes || '';
+                    }
+
                     return h(
                         'div', // Cell with button
                         {
-                            staticClass: 'col p-0',
-                            class: day.isDisabled ? 'bg-light' : day.info.class || '',
-                            attrs: {
-                                id: idCell,
-                                role: 'button',
-                                'data-date': day.ymd, // Primarily for testing purposes
-                                // Only days in the month are presented as buttons to screen readers
-                                'aria-hidden': day.isThisMonth ? null : 'true',
-                                'aria-disabled': day.isDisabled || disabled ? 'true' : null,
-                                'aria-label': [
-                                        day.label,
-                                        isSelected ? `(${this.labelSelected})` : null,
-                                        isToday ? `(${this.labelToday})` : null
-                                    ]
-                                    .filter(identity)
-                                    .join(' '),
-                                // NVDA doesn't convey `aria-selected`, but does `aria-current`,
-                                // ChromeVox doesn't convey `aria-current`, but does `aria-selected`,
-                                // so we set both attributes for robustness
-                                'aria-selected': isSelected ? 'true' : null,
-                                'aria-current': isSelected ? 'date' : null
-                            },
+                            class: ['col p-0', cellClasses],
+                            id: idCell,
+                            role: 'button',
+                            'data-date': day.ymd, // Primarily for testing purposes
+                            // Only days in the month are presented as buttons to screen readers
+                            'aria-hidden': day.isThisMonth ? null : 'true',
+                            'aria-disabled': day.isDisabled || disabled ? 'true' : null,
+                            'aria-label': [
+                                    day.label,
+                                    isSelected ? `(${this.labelSelected})` : null,
+                                    isToday ? `(${this.labelToday})` : null
+                                ]
+                                .filter(identity)
+                                .join(' '),
+                            // NVDA doesn't convey `aria-selected`, but does `aria-current`,
+                            // ChromeVox doesn't convey `aria-current`, but does `aria-selected`,
+                            // so we set both attributes for robustness
+                            'aria-selected': isSelected ? 'true' : null,
+                            'aria-current': isSelected ? 'date' : null,
                             key: dIndex
                         }, [$btn]
                     )
@@ -1035,7 +1020,7 @@ export const BCalendar = defineComponent({
                 // key for efficient DOM patching / element re-use
             return h(
                 'div', {
-                    staticClass: 'row no-gutters',
+                    class: ['row no-gutters'],
                     key: week[0].ymd
                 },
                 $cells
@@ -1044,7 +1029,7 @@ export const BCalendar = defineComponent({
         $gridBody = h(
             'div', {
                 // A key is only required on the body if we add in transition support
-                staticClass: 'b-calendar-grid-body',
+                class: ['b-calendar-grid-body'],
                 style: disabled ? { pointerEvents: 'none' } : {}
                     // key: this.activeYMD.slice(0, -3)
             },
@@ -1053,74 +1038,65 @@ export const BCalendar = defineComponent({
 
         const $gridHelp = h(
             'div', {
-                staticClass: 'b-calendar-grid-help border-top small text-muted text-center bg-light',
-                attrs: {
-                    id: gridHelpId
-                }
-            }, [h('div', { staticClass: 'small' }, this.labelHelp)]
+                class: ['b-calendar-grid-help border-top small text-muted text-center bg-light'],
+                id: gridHelpId
+                
+            }, [h('div', { class: ['small'] }, this.labelHelp)]
         )
 
         const $grid = h(
             'div', {
-                staticClass: 'b-calendar-grid form-control h-auto text-center',
-                attrs: {
-                    id: gridId,
-                    role: 'application',
-                    tabindex: noKeyNav ? '-1' : disabled ? null : '0',
-                    'data-month': activeYMD.slice(0, -3), // `YYYY-MM`, mainly for testing
-                    'aria-roledescription': this.labelCalendar || null,
-                    'aria-labelledby': gridCaptionId,
-                    'aria-describedby': gridHelpId,
-                    // `aria-readonly` is not considered valid on `role="application"`
-                    // https://www.w3.org/TR/wai-aria-1.1/#aria-readonly
-                    // 'aria-readonly': this.readonly && !disabled ? 'true' : null,
-                    'aria-disabled': disabled ? 'true' : null,
-                    'aria-activedescendant': activeId
-                },
-                on: {
-                    keydown: this.onKeydownGrid,
-                    focus: this.setGridFocusFlag,
-                    blur: this.setGridFocusFlag
-                },
+                class: ['b-calendar-grid form-control h-auto text-center'],
+                id: gridId,
+                role: 'application',
+                tabindex: noKeyNav ? '-1' : disabled ? null : '0',
+                'data-month': activeYMD.slice(0, -3), // `YYYY-MM`, mainly for testing
+                'aria-roledescription': this.labelCalendar || null,
+                'aria-labelledby': gridCaptionId,
+                'aria-describedby': gridHelpId,
+                // `aria-readonly` is not considered valid on `role="application"`
+                // https://www.w3.org/TR/wai-aria-1.1/#aria-readonly
+                // 'aria-readonly': this.readonly && !disabled ? 'true' : null,
+                'aria-disabled': disabled ? 'true' : null,
+                'aria-activedescendant': activeId,
+                onKeydown: this.onKeydownGrid,
+                onFocus: this.setGridFocusFlag,
+                onBlur: this.setGridFocusFlag,
                 ref: 'grid'
             }, [$gridCaption, $gridWeekDays, $gridBody, $gridHelp]
         )
 
         // Optional bottom slot
         let $slot = this.normalizeSlot()
-        $slot = $slot ? h('footer', { staticClass: 'b-calendar-footer' }, $slot) : h()
+        $slot = $slot ? h('footer', { staticClass: 'b-calendar-footer' }, $slot) : null
 
         const $widget = h(
             'div', {
-                staticClass: 'b-calendar-inner',
+                class: ['b-calendar-inner'],
                 style: this.block ? {} : { width: this.width },
-                attrs: {
-                    id: widgetId,
-                    dir: isRTL ? 'rtl' : 'ltr',
-                    lang: this.computedLocale || null,
-                    role: 'group',
-                    'aria-disabled': disabled ? 'true' : null,
-                    // If datepicker controls an input, this will specify the ID of the input
-                    'aria-controls': this.ariaControls || null,
-                    // This should be a prop (so it can be changed to Date picker, etc, localized
-                    'aria-roledescription': this.roleDescription || null,
-                    'aria-describedby': [
-                            // Should the attr (if present) go last?
-                            // Or should this attr be a prop?
-                            this.bvAttrs['aria-describedby'],
-                            valueId,
-                            gridHelpId
-                        ]
-                        .filter(identity)
-                        .join(' ')
-                },
-                on: {
-                    keydown: this.onKeydownWrapper
-                }
+                id: widgetId,
+                dir: isRTL ? 'rtl' : 'ltr',
+                lang: this.computedLocale || null,
+                role: 'group',
+                'aria-disabled': disabled ? 'true' : null,
+                // If datepicker controls an input, this will specify the ID of the input
+                'aria-controls': this.ariaControls || null,
+                // This should be a prop (so it can be changed to Date picker, etc, localized
+                'aria-roledescription': this.roleDescription || null,
+                'aria-describedby': [
+                        // Should the attr (if present) go last?
+                        // Or should this attr be a prop?
+                        this.bvAttrs['aria-describedby'],
+                        valueId,
+                        gridHelpId
+                    ]
+                    .filter(identity)
+                    .join(' '),
+                onKeydown: this.onKeydownWrapper
             }, [$header, $nav, $grid, $slot]
         )
 
         // Wrap in an outer div that can be styled
-        return h('div', { staticClass: 'b-calendar', class: { 'd-block': this.block } }, [$widget])
+        return h('div', { class: ['b-calendar', { 'd-block': this.block }] }, [$widget])
     }
 })

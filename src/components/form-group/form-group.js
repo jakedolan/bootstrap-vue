@@ -1,3 +1,4 @@
+import { h } from 'vue'
 import { NAME_FORM_GROUP } from '../../constants/components'
 import { IS_BROWSER } from '../../constants/env'
 import {
@@ -232,7 +233,7 @@ export const BFormGroup = {
       }
     }
   },
-  render(h) {
+  render() {
     const {
       computedState: state,
       feedbackAriaLive,
@@ -245,7 +246,7 @@ export const BFormGroup = {
     const id = safeId()
     const isFieldset = !labelFor
 
-    let $label = h()
+    let $label = null
     const labelContent = normalizeSlot(SLOT_NAME_LABEL) || this.label
     const labelId = labelContent ? safeId('_BV_label_') : null
     if (labelContent || isHorizontal) {
@@ -257,27 +258,29 @@ export const BFormGroup = {
             labelTag,
             {
               class: 'sr-only',
-              attrs: { id: labelId, for: labelFor || null }
+              id: labelId, 
+              for: labelFor || null 
             },
             [labelContent]
           )
         }
-        $label = h(isHorizontal ? BCol : 'div', { props: isHorizontal ? labelColProps : {} }, [
+        const labelPropsContent = isHorizontal ? labelColProps : {}
+        $label = h(isHorizontal ? BCol : 'div', { ...labelPropsContent }, [
           $label
         ])
       } else {
+        const labelOnContent = isFieldset ? { click: this.onLegendClick } : {}
+        const labelPropsContent = isHorizontal ? { ...labelColProps, tag: labelTag } : {},
         $label = h(
           isHorizontal ? BCol : labelTag,
           {
-            on: isFieldset ? { click: this.onLegendClick } : {},
-            props: isHorizontal ? { ...labelColProps, tag: labelTag } : {},
-            attrs: {
-              id: labelId,
-              for: labelFor || null,
-              // We add a `tabindex` to legend so that screen readers
-              // will properly read the `aria-labelledby` in IE
-              tabindex: isFieldset ? '-1' : null
-            },
+            ...labelOnContent,
+            ...labelPropsContent,
+            id: labelId,
+            for: labelFor || null,
+            // We add a `tabindex` to legend so that screen readers
+            // will properly read the `aria-labelledby` in IE
+            tabindex: isFieldset ? '-1' : null,
             class: [
               // Hide the focus ring on the legend
               isFieldset ? 'bv-no-focus-ring' : '',
@@ -301,57 +304,51 @@ export const BFormGroup = {
       }
     }
 
-    let $invalidFeedback = h()
+    let $invalidFeedback = null
     const invalidFeedbackContent = normalizeSlot(SLOT_NAME_INVALID_FEEDBACK) || this.invalidFeedback
     const invalidFeedbackId = invalidFeedbackContent ? safeId('_BV_feedback_invalid_') : null
     if (invalidFeedbackContent) {
       $invalidFeedback = h(
         BFormInvalidFeedback,
         {
-          props: {
-            ariaLive: feedbackAriaLive,
-            id: invalidFeedbackId,
-            // If state is explicitly `false`, always show the feedback
-            state,
-            tooltip
-          },
-          attrs: { tabindex: invalidFeedbackContent ? '-1' : null }
+          ariaLive: feedbackAriaLive,
+          id: invalidFeedbackId,
+          // If state is explicitly `false`, always show the feedback
+          state,
+          tooltip,
+          tabindex: invalidFeedbackContent ? '-1' : null
         },
         [invalidFeedbackContent]
       )
     }
 
-    let $validFeedback = h()
+    let $validFeedback = null
     const validFeedbackContent = normalizeSlot(SLOT_NAME_VALID_FEEDBACK) || this.validFeedback
     const validFeedbackId = validFeedbackContent ? safeId('_BV_feedback_valid_') : null
     if (validFeedbackContent) {
       $validFeedback = h(
         BFormValidFeedback,
         {
-          props: {
-            ariaLive: feedbackAriaLive,
-            id: validFeedbackId,
-            // If state is explicitly `true`, always show the feedback
-            state,
-            tooltip
-          },
-          attrs: { tabindex: validFeedbackContent ? '-1' : null }
+          ariaLive: feedbackAriaLive,
+          id: validFeedbackId,
+          // If state is explicitly `true`, always show the feedback
+          state,
+          tooltip,
+          tabindex: validFeedbackContent ? '-1' : null
         },
         [validFeedbackContent]
       )
     }
 
-    let $description = h()
+    let $description = null
     const descriptionContent = normalizeSlot(SLOT_NAME_DESCRIPTION) || this.description
     const descriptionId = descriptionContent ? safeId('_BV_description_') : null
     if (descriptionContent) {
       $description = h(
         BFormText,
         {
-          attrs: {
-            id: descriptionId,
-            tabindex: '-1'
-          }
+          id: descriptionId,
+          tabindex: '-1'
         },
         [descriptionContent]
       )
@@ -370,14 +367,15 @@ export const BFormGroup = {
         .filter(identity)
         .join(' ') || null)
 
+    const contentPropsContent = isHorizontal ? this.contentColProps : {}
     const $content = h(
       isHorizontal ? BCol : 'div',
       {
-        props: isHorizontal ? this.contentColProps : {},
+        ...contentPropsContent,
         ref: 'content'
       },
       [
-        normalizeSlot(SLOT_NAME_DEFAULT, { ariaDescribedby, descriptionId, id, labelId }) || h(),
+        normalizeSlot(SLOT_NAME_DEFAULT, { ariaDescribedby, descriptionId, id, labelId }) || null,
         $invalidFeedback,
         $validFeedback,
         $description
@@ -391,17 +389,14 @@ export const BFormGroup = {
     return h(
       isFieldset ? 'fieldset' : isHorizontal ? BFormRow : 'div',
       {
-        staticClass: 'form-group',
-        class: [{ 'was-validated': this.validated }, this.stateClass],
-        attrs: {
-          id,
-          disabled: isFieldset ? this.disabled : null,
-          role: isFieldset ? null : 'group',
-          'aria-invalid': this.computedAriaInvalid,
-          // Only apply `aria-labelledby` if we are a horizontal fieldset
-          // as the legend is no longer a direct child of fieldset
-          'aria-labelledby': isFieldset && isHorizontal ? labelId : null
-        }
+        class: ['form-group', { 'was-validated': this.validated }, this.stateClass],
+        id,
+        disabled: isFieldset ? this.disabled : null,
+        role: isFieldset ? null : 'group',
+        'aria-invalid': this.computedAriaInvalid,
+        // Only apply `aria-labelledby` if we are a horizontal fieldset
+        // as the legend is no longer a direct child of fieldset
+        'aria-labelledby': isFieldset && isHorizontal ? labelId : null
       },
       isHorizontal && isFieldset ? [h(BFormRow, [$label, $content])] : [$label, $content]
     )

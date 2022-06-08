@@ -1,4 +1,4 @@
-import { defineComponent } from '../../vue'
+import { defineComponent } from 'vue'
 import { NAME_TABLE_LITE } from '../../constants/components'
 import { sortKeys } from '../../utils/object'
 import { makePropsConfigurable } from '../../utils/props'
@@ -18,46 +18,46 @@ import { theadMixin, props as theadProps } from './helpers/mixin-thead'
 // --- Props ---
 
 export const props = makePropsConfigurable(
-  sortKeys({
-    ...idProps,
-    ...captionProps,
-    ...colgroupProps,
-    ...itemsProps,
-    ...stackedProps,
-    ...tableRendererProps,
-    ...tbodyProps,
-    ...tfootProps,
-    ...theadProps
-  }),
-  NAME_TABLE_LITE
+    sortKeys({
+        ...idProps,
+        ...captionProps,
+        ...colgroupProps,
+        ...itemsProps,
+        ...stackedProps,
+        ...tableRendererProps,
+        ...tbodyProps,
+        ...tfootProps,
+        ...theadProps
+    }),
+    NAME_TABLE_LITE
 )
 
 // --- Main component ---
 
 // @vue/component
 export const BTableLite = /*#__PURE__*/ defineComponent({
-  name: NAME_TABLE_LITE,
-  // Order of mixins is important!
-  // They are merged from first to last, followed by this component
-  mixins: [
-    // General mixins
-    attrsMixin,
-    hasListenerMixin,
-    idMixin,
-    normalizeSlotMixin,
-    // Required table mixins
-    itemsMixin,
-    tableRendererMixin,
-    stackedMixin,
-    theadMixin,
-    tfootMixin,
-    tbodyMixin,
-    // Table features mixins
-    // These are pretty lightweight, and are useful for lightweight tables
-    captionMixin,
-    colgroupMixin
-  ],
-  props
+    name: NAME_TABLE_LITE,
+    // Order of mixins is important!
+    // They are merged from first to last, followed by this component
+    mixins: [
+        // General mixins
+        attrsMixin,
+        hasListenerMixin,
+        idMixin,
+        normalizeSlotMixin,
+        // Required table mixins
+        itemsMixin,
+        tableRendererMixin,
+        stackedMixin,
+        theadMixin,
+        tfootMixin,
+        tbodyMixin,
+        // Table features mixins
+        // These are pretty lightweight, and are useful for lightweight tables
+        captionMixin,
+        colgroupMixin
+    ],
+    props
 
-  // Render function is provided by `tableRendererMixin`
+    // Render function is provided by `tableRendererMixin`
 })

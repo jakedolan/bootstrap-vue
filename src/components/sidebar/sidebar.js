@@ -1,5 +1,5 @@
-import { defineComponent } from '../../vue'
-import { NAME_COLLAPSE, NAME_SIDEBAR } from '../../constants/components'
+import { defineComponent, h, Transition, withDirectives, vShow } from 'vue'
+import { COMPONENT_UID_KEY, NAME_COLLAPSE, NAME_SIDEBAR } from '../../constants/components'
 import { IS_BROWSER } from '../../constants/env'
 import { EVENT_NAME_CHANGE, EVENT_NAME_HIDDEN, EVENT_NAME_SHOWN } from '../../constants/events'
 import { CODE_ESC } from '../../constants/key-codes'
@@ -18,6 +18,7 @@ import {
     SLOT_NAME_HEADER_CLOSE,
     SLOT_NAME_TITLE
 } from '../../constants/slots'
+import { cloneDeep } from '../../utils/clone-deep'
 import { attemptFocus, contains, getActiveElement, getTabables } from '../../utils/dom'
 import { getRootActionEventName, getRootEventName } from '../../utils/events'
 import { makeModelMixin } from '../../utils/model'
@@ -66,7 +67,7 @@ export const props = makePropsConfigurable(
         bgVariant: makeProp(PROP_TYPE_STRING, 'light'),
         bodyClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
         // `aria-label` for close button
-        closeLabel: makeProp(PROP_TYPE_STRING),
+        closeLabel: makeProp(PROP_TYPE_STRING, null),
         emitter: makeProp(PROP_TYPE_OBJECT, null),
         footerClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
         footerTag: makeProp(PROP_TYPE_STRING, 'footer'),
@@ -94,105 +95,108 @@ export const props = makePropsConfigurable(
 
 // --- Render methods ---
 
-const renderHeaderTitle = (h, ctx) => {
+const renderHeaderTitle = (ctx) => {
     // Render a empty `<span>` when to title was provided
     const title = ctx.normalizeSlot(SLOT_NAME_TITLE, ctx.slotScope) || ctx.title
     if (!title) {
         return h('span')
     }
 
-    return h('strong', { attrs: { id: ctx.safeId('__title__') } }, [title])
+    return h('strong', { id: ctx.safeId('__title__') }, { 
+      default: () => [title] })
 }
 
-const renderHeaderClose = (h, ctx) => {
+const renderHeaderClose = (ctx) => {
     if (ctx.noHeaderClose) {
-        return h()
+        return null
     }
 
     const { closeLabel, textVariant, hide } = ctx
 
     return h(
         BButtonClose, {
-            props: { ariaLabel: closeLabel, textVariant },
-            on: { click: hide },
+            ariaLabel: closeLabel, 
+            textVariant,
+            onClick: hide,
             ref: 'close-button'
-        }, [ctx.normalizeSlot(SLOT_NAME_HEADER_CLOSE) || h(BIconX)]
+        }, { 
+          default: () => [ctx.normalizeSlot(SLOT_NAME_HEADER_CLOSE) || h(BIconX)]
+        }
     )
 }
 
-const renderHeader = (h, ctx) => {
+const renderHeader = (ctx) => {
     if (ctx.noHeader) {
-        return h()
+        return null
     }
 
     let $content = ctx.normalizeSlot(SLOT_NAME_HEADER, ctx.slotScope)
     if (!$content) {
-        const $title = renderHeaderTitle(h, ctx)
-        const $close = renderHeaderClose(h, ctx)
+        const $title = renderHeaderTitle(ctx)
+        const $close = renderHeaderClose(ctx)
         $content = ctx.right ? [$close, $title] : [$title, $close]
     }
 
     return h(
         ctx.headerTag, {
-            staticClass: `${CLASS_NAME}-header`,
-            class: ctx.headerClass,
+            class: [ `${CLASS_NAME}-header`, ctx.headerClass ],
             key: 'header'
         },
         $content
     )
 }
 
-const renderBody = (h, ctx) => {
+const renderBody = (ctx) => {
     return h(
         'div', {
-            staticClass: `${CLASS_NAME}-body`,
-            class: ctx.bodyClass,
+            class: [`${CLASS_NAME}-body`, ctx.bodyClass],
             key: 'body'
-        }, [ctx.normalizeSlot(SLOT_NAME_DEFAULT, ctx.slotScope)]
+        }, { 
+          default: () => [ctx.normalizeSlot(SLOT_NAME_DEFAULT, ctx.slotScope)] 
+        }
     )
 }
 
-const renderFooter = (h, ctx) => {
+const renderFooter = (ctx) => {
     const $footer = ctx.normalizeSlot(SLOT_NAME_FOOTER, ctx.slotScope)
     if (!$footer) {
-        return h()
+        return null
     }
 
     return h(
         ctx.footerTag, {
-            staticClass: `${CLASS_NAME}-footer`,
-            class: ctx.footerClass,
+            class: [`${CLASS_NAME}-footer`, ctx.footerClass],
             key: 'footer'
-        }, [$footer]
+        }, { 
+          default: () => [$footer] 
+        }
     )
 }
 
-const renderContent = (h, ctx) => {
+const renderContent = (ctx) => {
     // We render the header even if `lazy` is enabled as it
     // acts as the accessible label for the sidebar
-    const $header = renderHeader(h, ctx)
+    const $header = renderHeader(ctx)
     if (ctx.lazy && !ctx.isOpen) {
         return $header
     }
 
-    return [$header, renderBody(h, ctx), renderFooter(h, ctx)]
+    return [$header, renderBody(ctx), renderFooter(ctx)]
 }
 
-const renderBackdrop = (h, ctx) => {
+const renderBackdrop = (ctx) => {
     if (!ctx.backdrop) {
-        return h()
+        return null
     }
 
     const { backdropVariant } = ctx
 
-    return h('div', {
-        directives: [{ name: 'show', value: ctx.localShow }],
-        staticClass: 'b-sidebar-backdrop',
-        class: {
+    return withDirectives(h('div', {
+        class: [ 'b-sidebar-backdrop', {
             [`bg-${backdropVariant}`]: backdropVariant
-        },
-        on: { click: ctx.onBackdropClick }
-    })
+        }],
+        onClick: ctx.onBackdropClick 
+    }), [[vShow, ctx.localShow ]])
 }
 
 // --- Main component ---
@@ -208,6 +212,7 @@ export const BSidebar = /*#__PURE__*/ defineComponent({
     mixins: [attrsMixin, idMixin, modelMixin, listenOnRootMixin, normalizeSlotMixin],
     inheritAttrs: false,
     props,
+    emits: [EVENT_NAME_HIDDEN, EVENT_NAME_SHOWN, MODEL_EVENT_NAME],
     data() {
         const visible = !!this[MODEL_PROP_NAME]
         return {
@@ -223,10 +228,10 @@ export const BSidebar = /*#__PURE__*/ defineComponent({
                 /* istanbul ignore next */
                 { css: true } : {
                     css: true,
-                    enterClass: '',
+                    enterFromClass: '',
                     enterActiveClass: 'slide',
                     enterToClass: 'show',
-                    leaveClass: 'show',
+                    leaveFromClass: 'show',
                     leaveActiveClass: 'slide',
                     leaveToClass: ''
                 }
@@ -236,10 +241,10 @@ export const BSidebar = /*#__PURE__*/ defineComponent({
             return { hide, right, visible }
         },
         hasTitle() {
-            const { $scopedSlots, $slots } = this
+            const { $slots } = this
             return (!this.noHeader &&
                 !this.hasNormalizedSlot(SLOT_NAME_HEADER) &&
-                !!(this.normalizeSlot(SLOT_NAME_TITLE, this.slotScope, $scopedSlots, $slots) || this.title)
+                !!(this.normalizeSlot(SLOT_NAME_TITLE, this.slotScope, $slots) || this.title)
             )
         },
         titleId() {
@@ -283,6 +288,8 @@ export const BSidebar = /*#__PURE__*/ defineComponent({
     },
     mounted() {
         // Add `$root` listeners
+        console.log("$$ ROOT_ACTION_EVENT_NAME_TOGGLE", ROOT_ACTION_EVENT_NAME_TOGGLE)
+        console.log("$$ ROOT_ACTION_EVENT_NAME_REQUEST_STATE", ROOT_ACTION_EVENT_NAME_REQUEST_STATE);
         this.listenOnRoot(ROOT_ACTION_EVENT_NAME_TOGGLE, this.handleToggle)
         this.listenOnRoot(ROOT_ACTION_EVENT_NAME_REQUEST_STATE, this.handleSync)
             // Send out a gratuitous state event to ensure toggle button is synced
@@ -300,21 +307,27 @@ export const BSidebar = /*#__PURE__*/ defineComponent({
     },
     methods: {
         hide() {
+            console.log("hide", this.localShow)
             this.localShow = false
         },
-        emitState(state = this.localShow) {
+        emitState(state = this.localShow) {   
+          console.log("$$ ROOT_EVENT_NAME_STATE", ROOT_EVENT_NAME_STATE)
             this.emitOnRoot(ROOT_EVENT_NAME_STATE, this.safeId(), state)
         },
         emitSync(state = this.localShow) {
+          
+          console.log("$$ ROOT_EVENT_NAME_SYNC_STATE", ROOT_EVENT_NAME_SYNC_STATE)
             this.emitOnRoot(ROOT_EVENT_NAME_SYNC_STATE, this.safeId(), state)
         },
         handleToggle(id) {
+            console.log("$$ handleToggle id / safeId", { id, safeId: this.safeId(), [COMPONENT_UID_KEY]: this[COMPONENT_UID_KEY]})
             // Note `safeId()` can be null until after mount
             if (id && id === this.safeId()) {
                 this.localShow = !this.localShow
             }
         },
         handleSync(id) {
+          console.log("$$ handleSync id / safeId", { id, safeId: this.safeId(), [COMPONENT_UID_KEY]: this[COMPONENT_UID_KEY]})
             // Note `safeId()` can be null until after mount
             if (id && id === this.safeId()) {
                 this.$nextTick(() => {
@@ -369,64 +382,64 @@ export const BSidebar = /*#__PURE__*/ defineComponent({
             }
         }
     },
-    render(h) {
+    render() {
         const { bgVariant, width, textVariant, localShow } = this
         const shadow = this.shadow === '' ? true : this.shadow
 
-        let $sidebar = h(
-            this.tag, {
-                staticClass: CLASS_NAME,
-                class: [{
-                        shadow: shadow === true,
-                        [`shadow-${shadow}`]: shadow && shadow !== true,
-                        [`${CLASS_NAME}-right`]: this.right,
-                        [`bg-${bgVariant}`]: bgVariant,
-                        [`text-${textVariant}`]: textVariant
-                    },
-                    this.sidebarClass
-                ],
-                style: { width },
-                attrs: this.computedAttrs,
-                directives: [{ name: 'show', value: localShow }],
-                ref: 'content'
-            }, [renderContent(h, this)]
+
+        const $sidebar = h(Transition, {
+                ...this.transitionProps,
+                onBeforeEnter: this.onBeforeEnter,
+                onAfterEnter: this.onAfterEnter,
+                onAfterLeave: this.onAfterLeave,
+            }, {
+              default: () => withDirectives(h(
+                    this.tag, {
+                        class: [CLASS_NAME, {
+                                shadow: shadow === true,
+                                [`shadow-${shadow}`]: shadow && shadow !== true,
+                                [`${CLASS_NAME}-right`]: this.right,
+                                [`bg-${bgVariant}`]: bgVariant,
+                                [`text-${textVariant}`]: textVariant
+                            },
+                            this.sidebarClass
+                        ],
+                        style: { width },
+                        ...this.computedAttrs,
+                        ref: 'content'
+                    }, { 
+                      default: () => [renderContent(this)] 
+                    }
+                ), [[vShow, localShow]])
+            }
         )
 
-        $sidebar = h(
-            'transition', {
-                props: this.transitionProps,
-                on: {
-                    beforeEnter: this.onBeforeEnter,
-                    afterEnter: this.onAfterEnter,
-                    afterLeave: this.onAfterLeave
-                }
-            }, [$sidebar]
-        )
+        const $backdrop = h(BVTransition, { noFade: this.noSlide }, { 
+          default: () => [renderBackdrop(this)]
+        })
 
-        const $backdrop = h(BVTransition, { props: { noFade: this.noSlide } }, [
-            renderBackdrop(h, this)
-        ])
-
-        let $tabTrapTop = h()
-        let $tabTrapBottom = h()
+        let $tabTrapTop = null
+        let $tabTrapBottom = null
         if (this.backdrop && localShow) {
             $tabTrapTop = h('div', {
-                attrs: { tabindex: '0' },
-                on: { focus: this.onTopTrapFocus }
+                tabindex: '0',
+                onFocus: this.onTopTrapFocus
             })
             $tabTrapBottom = h('div', {
-                attrs: { tabindex: '0' },
-                on: { focus: this.onBottomTrapFocus }
+                tabindex: '0',
+                onFocus: this.onBottomTrapFocus
             })
         }
 
         return h(
             'div', {
-                staticClass: 'b-sidebar-outer',
+                class: 'b-sidebar-outer',
                 style: { zIndex: this.zIndex },
-                attrs: { tabindex: '-1' },
-                on: { keydown: this.onKeydown }
-            }, [$tabTrapTop, $sidebar, $tabTrapBottom, $backdrop]
+                tabindex: '-1',
+                onKeydown: this.onKeydown,
+            }, { 
+              default: () => [$tabTrapTop, $sidebar, $tabTrapBottom, $backdrop]
+            }
         )
     }
 })

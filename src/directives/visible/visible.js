@@ -36,7 +36,7 @@ import { requestAF } from '../../utils/dom'
 import { isFunction } from '../../utils/inspect'
 import { looseEqual } from '../../utils/loose-equal'
 import { clone, keys } from '../../utils/object'
-import { nextTick } from '../../vue'
+import { nextTick } from 'vue'
 
 const OBSERVER_PROP_NAME = '__bv__visibility_observer'
 

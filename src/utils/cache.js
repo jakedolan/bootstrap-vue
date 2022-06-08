@@ -1,4 +1,4 @@
-import { defineComponent, isVue3 } from '../vue'
+import { defineComponent } from 'vue'
 import { cloneDeep } from './clone-deep'
 import { looseEqual } from './loose-equal'
 import { hasOwnProperty, keys } from './object'
@@ -16,19 +16,11 @@ export const makePropWatcher = propName => ({
     }
     for (const key in oldValue) {
       if (!hasOwnProperty(newValue, key)) {
-        if (isVue3) {
           delete this.$data[propName][key]
-        } else {
-          this.$delete(this.$data[propName], key)
-        }
       }
     }
     for (const key in newValue) {
-      if (isVue3) {
-        this.$data[propName][key] = newValue[key]
-      } else {
-        this.$set(this.$data[propName], key, newValue[key])
-      }
+      this.$data[propName][key] = newValue[key]
     }
   }
 })

@@ -1,4 +1,4 @@
-import { defineComponent } from '../../vue'
+import { defineComponent, h } from 'vue'
 import { NAME_FORM_TIMEPICKER } from '../../constants/components'
 import { EVENT_NAME_CONTEXT, EVENT_NAME_SHOWN, EVENT_NAME_HIDDEN } from '../../constants/events'
 import { PROP_TYPE_BOOLEAN, PROP_TYPE_DATE_STRING, PROP_TYPE_OBJECT, PROP_TYPE_STRING } from '../../constants/props'
@@ -172,8 +172,8 @@ export const BFormTimepicker = /*#__PURE__*/ defineComponent({
             })
         }
     },
-    render(h) {
-        const { localHMS, disabled, readonly, $props } = this
+    render() {
+        const { localHMS, disabled, readonly, $props, $slots } = this
         const placeholder = isUndefinedOrNull(this.placeholder) ?
             this.labelNoTimeSelected :
             this.placeholder
@@ -299,11 +299,11 @@ export const BFormTimepicker = /*#__PURE__*/ defineComponent({
                     shown: this.onShown,
                     hidden: this.onHidden
                 },
-                scopedSlots: {
-                    [SLOT_NAME_BUTTON_CONTENT]: this.$scopedSlots[SLOT_NAME_BUTTON_CONTENT] || this.defaultButtonFn
-                },
                 ref: 'control'
-            }, [$time]
+            }, {
+              default: () => [$time],
+              [SLOT_NAME_BUTTON_CONTENT]: () => $slots[SLOT_NAME_BUTTON_CONTENT] || this.defaultButtonFn
+            }
         )
     }
 })

@@ -1,4 +1,4 @@
-import { defineComponent } from '../../vue'
+import { defineComponent, h } from 'vue'
 import { NAME_DROPDOWN_ITEM } from '../../constants/components'
 import { EVENT_NAME_CLICK } from '../../constants/events'
 import { PROP_TYPE_ARRAY_OBJECT_STRING, PROP_TYPE_STRING } from '../../constants/props'
@@ -14,74 +14,71 @@ import { BLink, props as BLinkProps } from '../link/link'
 const linkProps = omit(BLinkProps, ['event', 'routerTag'])
 
 export const props = makePropsConfigurable(
-  sortKeys({
-    ...linkProps,
-    linkClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
-    variant: makeProp(PROP_TYPE_STRING)
-  }),
-  NAME_DROPDOWN_ITEM
+    sortKeys({
+        ...linkProps,
+        linkClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
+        variant: makeProp(PROP_TYPE_STRING)
+    }),
+    NAME_DROPDOWN_ITEM
 )
 
 // --- Main component ---
 
 // @vue/component
 export const BDropdownItem = /*#__PURE__*/ defineComponent({
-  name: NAME_DROPDOWN_ITEM,
-  mixins: [attrsMixin, normalizeSlotMixin],
-  inject: {
-    getBvDropdown: { default: () => () => null }
-  },
-  inheritAttrs: false,
-  props,
-  computed: {
-    bvDropdown() {
-      return this.getBvDropdown()
+    name: NAME_DROPDOWN_ITEM,
+    mixins: [attrsMixin, normalizeSlotMixin],
+    inject: {
+        getBvDropdown: { default: () => () => null }
     },
-    computedAttrs() {
-      return {
-        ...this.bvAttrs,
-        role: 'menuitem'
-      }
-    }
-  },
-  methods: {
-    closeDropdown() {
-      // Close on next animation frame to allow <b-link> time to process
-      requestAF(() => {
-        if (this.bvDropdown) {
-          this.bvDropdown.hide(true)
+    inheritAttrs: false,
+    props,
+    computed: {
+        bvDropdown() {
+            return this.getBvDropdown()
+        },
+        computedAttrs() {
+            return {
+                ...this.bvAttrs,
+                role: 'menuitem'
+            }
         }
-      })
     },
-    onClick(event) {
-      this.$emit(EVENT_NAME_CLICK, event)
-      this.closeDropdown()
-    }
-  },
-  render(h) {
-    const { linkClass, variant, active, disabled, onClick, bvAttrs } = this
+    methods: {
+        closeDropdown() {
+            // Close on next animation frame to allow <b-link> time to process
+            requestAF(() => {
+                if (this.bvDropdown) {
+                    this.bvDropdown.hide(true)
+                }
+            })
+        },
+        onClick(event) {
+            this.$emit(EVENT_NAME_CLICK, event)
+            this.closeDropdown()
+        }
+    },
+    render() {
+        const { linkClass, variant, active, disabled, onClick, bvAttrs } = this
 
-    return h(
-      'li',
-      {
-        class: bvAttrs.class,
-        style: bvAttrs.style,
-        attrs: { role: 'presentation' }
-      },
-      [
-        h(
-          BLink,
-          {
-            staticClass: 'dropdown-item',
-            class: [linkClass, { [`text-${variant}`]: variant && !(active || disabled) }],
-            props: pluckProps(linkProps, this.$props),
-            attrs: this.computedAttrs,
-            on: { click: onClick },
-            ref: 'item'
-          },
-          this.normalizeSlot()
+        return h(
+            'li', {
+                class: bvAttrs.class,
+                role: 'presentation',
+                style: bvAttrs.style
+            }, [
+                h(
+                    BLink, {
+                        class: ['dropdown-item', linkClass, {
+                            [`text-${variant}`]: variant && !(active || disabled) }],
+                        ...pluckProps(linkProps, this.$props),
+                        ...this.computedAttrs,
+                        onClick: onClick,
+                        ref: 'item'
+                    },
+                    this.normalizeSlot()
+                )
+            ]
         )
-      ]
-    )
-  }
+    }
 })

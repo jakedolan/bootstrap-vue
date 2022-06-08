@@ -1,4 +1,4 @@
-import { defineComponent, mergeData } from '../../vue'
+import { defineComponent, h } from 'vue'
 import { NAME_BUTTON_CLOSE } from '../../constants/components'
 import { PROP_TYPE_BOOLEAN, PROP_TYPE_STRING } from '../../constants/props'
 import { SLOT_NAME_DEFAULT } from '../../constants/slots'
@@ -9,61 +9,56 @@ import { hasNormalizedSlot, normalizeSlot } from '../../utils/normalize-slot'
 
 // --- Props ---
 
-export const props = makePropsConfigurable(
-  {
-    ariaLabel: makeProp(PROP_TYPE_STRING, 'Close'),
-    content: makeProp(PROP_TYPE_STRING, '&times;'),
-    disabled: makeProp(PROP_TYPE_BOOLEAN, false),
-    textVariant: makeProp(PROP_TYPE_STRING)
-  },
-  NAME_BUTTON_CLOSE
+export const props = makePropsConfigurable({
+        ariaLabel: makeProp(PROP_TYPE_STRING, 'Close'),
+        content: makeProp(PROP_TYPE_STRING, '&times;'),
+        disabled: makeProp(PROP_TYPE_BOOLEAN, false),
+        textVariant: makeProp(PROP_TYPE_STRING)
+    },
+    NAME_BUTTON_CLOSE
 )
 
 // --- Main component ---
 
 // @vue/component
 export const BButtonClose = /*#__PURE__*/ defineComponent({
-  name: NAME_BUTTON_CLOSE,
-  compatConfig: {
-    MODE: 3,
-    INSTANCE_SCOPED_SLOTS: 'suppress-warning'
-  },
-  functional: true,
-  props,
-  render(h, { props, data, slots, scopedSlots }) {
-    const $slots = slots()
-    const $scopedSlots = scopedSlots || {}
+    name: NAME_BUTTON_CLOSE,
+    compatConfig: {
+        MODE: 3,
+        INSTANCE_SCOPED_SLOTS: 'suppress-warning'
+    },
+    functional: true,
+    props,
+    render() {
+      const { $props, $slots } = this
 
-    const componentData = {
-      staticClass: 'close',
-      class: {
-        [`text-${props.textVariant}`]: props.textVariant
-      },
-      attrs: {
-        type: 'button',
-        disabled: props.disabled,
-        'aria-label': props.ariaLabel ? String(props.ariaLabel) : null
-      },
-      on: {
-        click(event) {
-          // Ensure click on button HTML content is also disabled
-          /* istanbul ignore if: bug in JSDOM still emits click on inner element */
-          if (props.disabled && isEvent(event)) {
-            stopEvent(event)
-          }
+        const componentData = {
+            class: ['close', {
+                [`text-${$props.textVariant}`]: $props.textVariant
+            }],
+            type: 'button',
+            disabled: $props.disabled,
+            'aria-label': $props.ariaLabel ? String($props.ariaLabel) : null,
+            onClick: (event) => {
+                    // Ensure click on button HTML content is also disabled
+                    /* istanbul ignore if: bug in JSDOM still emits click on inner element */
+                    if ($props.disabled && isEvent(event)) {
+                        stopEvent(event)
+                    }
+                }
         }
-      }
-    }
 
-    // Careful not to override the default slot with innerHTML
-    if (!hasNormalizedSlot(SLOT_NAME_DEFAULT, $scopedSlots, $slots)) {
-      componentData.domProps = { innerHTML: props.content }
-    }
+        // Careful not to override the default slot with innerHTML
+        if (!hasNormalizedSlot(SLOT_NAME_DEFAULT, $slots)) {
+            componentData.innerHTML = $props.content;
+        }
 
-    return h(
-      'button',
-      mergeData(data, componentData),
-      normalizeSlot(SLOT_NAME_DEFAULT, {}, $scopedSlots, $slots)
-    )
-  }
+        return h(
+            'button',
+            componentData,
+            {
+              default: () => normalizeSlot(SLOT_NAME_DEFAULT, {}, $slots)
+            }
+        )
+    }
 })

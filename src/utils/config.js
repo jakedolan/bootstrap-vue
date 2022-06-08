@@ -1,26 +1,17 @@
-import { Vue } from '../vue'
 import { DEFAULT_BREAKPOINT, PROP_NAME } from '../constants/config'
 import { cloneDeep } from './clone-deep'
 import { memoize } from './memoize'
 
-// --- Constants ---
-
-const VueProto = Vue.prototype
 
 // --- Getter methods ---
 // All methods return a deep clone (immutable) copy of the config value,
 // to prevent mutation of the user config object
 
-// Get the current config
-export const getConfig = () => {
-  const bvConfig = VueProto[PROP_NAME]
-  return bvConfig ? bvConfig.getConfig() : {}
-}
-
 // Method to grab a config value based on a dotted/array notation key
 export const getConfigValue = (key, defaultValue = undefined) => {
-  const bvConfig = VueProto[PROP_NAME]
-  return bvConfig ? bvConfig.getConfigValue(key, defaultValue) : cloneDeep(defaultValue)
+  // const bvConfig = VueProto[PROP_NAME]
+  // return bvConfig ? bvConfig.getConfigValue(key, defaultValue) : cloneDeep(defaultValue)
+  return cloneDeep(defaultValue)
 }
 
 // Method to grab a config value for a particular component

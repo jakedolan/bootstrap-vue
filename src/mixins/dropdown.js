@@ -1,6 +1,6 @@
 import Popper from 'popper.js'
-import { defineComponent } from '../vue'
-import { NAME_DROPDOWN } from '../constants/components'
+import { defineComponent } from 'vue'
+import { COMPONENT_UID_KEY, NAME_DROPDOWN } from '../constants/components'
 import { HAS_TOUCH_SUPPORT } from '../constants/env'
 import {
     EVENT_NAME_CLICK,
@@ -37,9 +37,6 @@ import { clickOutMixin } from './click-out'
 import { focusInMixin } from './focus-in'
 import { idMixin, props as idProps } from './id'
 import { listenOnRootMixin } from './listen-on-root'
-
-
-const uuidv1 = require('uuid/v1')
 
 // --- Constants ---
 
@@ -101,7 +98,6 @@ export const dropdownMixin = defineComponent({
     props,
     data() {
         return {
-            uuid: uuidv1(),
             visible: false,
             visibleChangePrevented: false
         }
@@ -160,7 +156,7 @@ export const dropdownMixin = defineComponent({
                     this.visible = oldValue
                         // Just in case a child element triggered `this.hide(true)`
                     if (this.emitter) {
-                        this.emitter.off(`${EVENT_NAME_HIDDEN}:${this.uuid}`, this.focusToggler)
+                        this.emitter.off(`${EVENT_NAME_HIDDEN}:${this[COMPONENT_UID_KEY]}`, this.focusToggler)
                     } else {
                         this.$off(EVENT_NAME_HIDDEN, this.focusToggler)
                     }
@@ -205,7 +201,7 @@ export const dropdownMixin = defineComponent({
             const { type } = bvEvent
             this.emitOnRoot(getRootEventName(NAME_DROPDOWN, type), bvEvent)
             if (this.emitter) {
-                this.emitter.emit(`${type}:${this.uuid}`, bvEvent);
+                this.emitter.emit(`${type}:${this[COMPONENT_UID_KEY]}`, bvEvent);
             }
             this.$emit(type, bvEvent)
         },
@@ -248,7 +244,7 @@ export const dropdownMixin = defineComponent({
             this.whileOpenListen(false)
             this.emitOnRoot(ROOT_EVENT_NAME_HIDDEN, this)
             if (this.emitter) {
-                this.emitter.emit(`EVENT_NAME_HIDDEN:${this.uuid}`);
+                this.emitter.emit(`EVENT_NAME_HIDDEN:${this[COMPONENT_UID_KEY]}`);
             }
             this.$emit(EVENT_NAME_HIDDEN)
             this.destroyPopper()
@@ -335,7 +331,7 @@ export const dropdownMixin = defineComponent({
 
                 // REPLACING: this.$once(EVENT_NAME_HIDDEN, this.focusToggler)
                 if (this.emitter) {
-                    this.emitter.once(`${EVENT_NAME_HIDDEN}:${this.uuid}`, this.focusToggler)
+                    this.emitter.once(`${EVENT_NAME_HIDDEN}:${this[COMPONENT_UID_KEY]}`, this.focusToggler)
                 } else {
                     this.$once(EVENT_NAME_HIDDEN, this.focusToggler)
                 }
@@ -402,7 +398,7 @@ export const dropdownMixin = defineComponent({
                     // Return focus to original trigger button
                     // REPLACING: this.$once(EVENT_NAME_HIDDEN, this.focusToggler)
                 if (this.emitter) {
-                    this.emitter.once(`${EVENT_NAME_HIDDEN}:${this.uuid}`, this.focusToggler)
+                    this.emitter.once(`${EVENT_NAME_HIDDEN}:${this[COMPONENT_UID_KEY]}`, this.focusToggler)
                 } else {
                     this.$once(EVENT_NAME_HIDDEN, this.focusToggler)
                 }

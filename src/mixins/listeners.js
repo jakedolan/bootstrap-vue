@@ -1,9 +1,6 @@
-import { makePropCacheMixin } from '../utils/cache'
-import { defineComponent, isVue3 } from '../vue'
+import { defineComponent } from 'vue'
 
-const listenersMixinVue2 = makePropCacheMixin('$listeners', 'bvListeners')
-
-const listenersMixinVue3 = defineComponent({
+export const listenersMixin = defineComponent({
   compatConfig: {
     MODE: 3,
     INSTANCE_LISTENERS: 'suppress-warning'
@@ -24,5 +21,3 @@ const listenersMixinVue3 = defineComponent({
     }
   }
 })
-
-export const listenersMixin = isVue3 ? listenersMixinVue3 : listenersMixinVue2

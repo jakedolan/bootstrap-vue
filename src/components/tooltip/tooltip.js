@@ -1,4 +1,4 @@
-import { defineComponent } from '../../vue'
+import { defineComponent, h } from 'vue'
 import { NAME_TOOLTIP } from '../../constants/components'
 import {
     EVENT_NAME_CLOSE,
@@ -309,7 +309,7 @@ export const BTooltip = /*#__PURE__*/ defineComponent({
             this.$_toolpop && this.$_toolpop.enable()
         }
     },
-    render(h) {
+    render() {
         // Always renders a comment node
         // TODO:
         //   Future: Possibly render a target slot (single root element)

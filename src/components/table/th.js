@@ -1,4 +1,4 @@
-import { defineComponent } from '../../vue'
+import { defineComponent } from 'vue'
 import { NAME_TH } from '../../constants/components'
 import { makePropsConfigurable } from '../../utils/props'
 import { BTd, props as BTdProps } from './td'
@@ -14,12 +14,12 @@ export const props = makePropsConfigurable(BTdProps, NAME_TH)
 //   to the child elements, so this can be converted to a functional component
 // @vue/component
 export const BTh = /*#__PURE__*/ defineComponent({
-  name: NAME_TH,
-  extends: BTd,
-  props,
-  computed: {
-    tag() {
-      return 'th'
+    name: NAME_TH,
+    extends: BTd,
+    props,
+    computed: {
+        tag() {
+            return 'th'
+        }
     }
-  }
 })

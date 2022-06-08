@@ -1,4 +1,4 @@
-import { defineComponent } from '../../vue'
+import { defineComponent, h, withDirectives } from 'vue'
 import { NAME_COLLAPSE, NAME_NAVBAR_TOGGLE } from '../../constants/components'
 import { EVENT_NAME_CLICK } from '../../constants/events'
 import { PROP_TYPE_ARRAY_STRING, PROP_TYPE_BOOLEAN, PROP_TYPE_STRING } from '../../constants/props'
@@ -18,71 +18,66 @@ const ROOT_EVENT_NAME_SYNC_STATE = getRootEventName(NAME_COLLAPSE, 'sync-state')
 
 // --- Props ---
 
-export const props = makePropsConfigurable(
-  {
-    disabled: makeProp(PROP_TYPE_BOOLEAN, false),
-    label: makeProp(PROP_TYPE_STRING, 'Toggle navigation'),
-    target: makeProp(PROP_TYPE_ARRAY_STRING, undefined, true) // Required
-  },
-  NAME_NAVBAR_TOGGLE
+export const props = makePropsConfigurable({
+        disabled: makeProp(PROP_TYPE_BOOLEAN, false),
+        label: makeProp(PROP_TYPE_STRING, 'Toggle navigation'),
+        target: makeProp(PROP_TYPE_ARRAY_STRING, undefined, true) // Required
+    },
+    NAME_NAVBAR_TOGGLE
 )
 
 // --- Main component ---
 
 // @vue/component
 export const BNavbarToggle = /*#__PURE__*/ defineComponent({
-  name: NAME_NAVBAR_TOGGLE,
-  compatConfig: {
-    MODE: 3,
-    CUSTOM_DIR: 'suppress-warning'
-  },
-  directives: { VBToggle },
-  mixins: [listenOnRootMixin, normalizeSlotMixin],
-  props,
-  data() {
-    return {
-      toggleState: false
-    }
-  },
-  created() {
-    this.listenOnRoot(ROOT_EVENT_NAME_STATE, this.handleStateEvent)
-    this.listenOnRoot(ROOT_EVENT_NAME_SYNC_STATE, this.handleStateEvent)
-  },
-  methods: {
-    onClick(event) {
-      if (!this.disabled) {
-        // Emit courtesy `click` event
-        this.$emit(EVENT_NAME_CLICK, event)
-      }
+    name: NAME_NAVBAR_TOGGLE,
+    compatConfig: {
+        MODE: 3,
+        CUSTOM_DIR: 'suppress-warning'
     },
-    handleStateEvent(id, state) {
-      // We listen for state events so that we can pass the
-      // boolean expanded state to the default scoped slot
-      if (id === this.target) {
-        this.toggleState = state
-      }
-    }
-  },
-  render(h) {
-    const { disabled } = this
-
-    return h(
-      'button',
-      {
-        staticClass: CLASS_NAME,
-        class: { disabled },
-        directives: [{ name: 'VBToggle', value: this.target }],
-        attrs: {
-          type: 'button',
-          disabled,
-          'aria-label': this.label
+    directives: { VBToggle },
+    mixins: [listenOnRootMixin, normalizeSlotMixin],
+    props,
+    data() {
+        return {
+            toggleState: false
+        }
+    },
+    created() {
+        this.listenOnRoot(ROOT_EVENT_NAME_STATE, this.handleStateEvent)
+        this.listenOnRoot(ROOT_EVENT_NAME_SYNC_STATE, this.handleStateEvent)
+    },
+    methods: {
+        onClick(event) {
+            if (!this.disabled) {
+                // Emit courtesy `click` event
+                this.$emit(EVENT_NAME_CLICK, event)
+            }
         },
-        on: { click: this.onClick }
-      },
-      [
-        this.normalizeSlot(SLOT_NAME_DEFAULT, { expanded: this.toggleState }) ||
-          h('span', { staticClass: `${CLASS_NAME}-icon` })
-      ]
-    )
-  }
+        handleStateEvent(id, state) {
+            // We listen for state events so that we can pass the
+            // boolean expanded state to the default scoped slot
+            if (id === this.target) {
+                this.toggleState = state
+            }
+        }
+    },
+    render() {
+        const { disabled } = this
+
+        return withDirectives(
+            h(
+                'button', {
+                    class: [CLASS_NAME, { disabled }],                   
+                    type: 'button',
+                    disabled,
+                    'aria-label': this.label,
+                    onClick: this.onClick
+                }, [
+                    this.normalizeSlot(SLOT_NAME_DEFAULT, { expanded: this.toggleState }) ||
+                    h('span', { class: `${CLASS_NAME}-icon` })
+                ]
+            ), 
+            [['VBToggle', this.target]])
+    }
 })

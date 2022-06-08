@@ -1,7 +1,7 @@
 //
 // VBHover
 //
-import Vue, { DirectiveOptions } from 'vue'
+import { DirectiveOptions } from 'vue'
 import { BvPlugin } from '../../'
 
 // Plugin

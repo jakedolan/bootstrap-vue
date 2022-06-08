@@ -1,6 +1,6 @@
 // Tagged input form control
 // Based loosely on https://adamwathan.me/renderless-components-in-vuejs/
-import { defineComponent } from '../../vue'
+import { defineComponent, h } from 'vue'
 import { NAME_FORM_TAGS } from '../../constants/components'
 import {
     EVENT_NAME_BLUR,
@@ -193,12 +193,12 @@ export const BFormTags = /*#__PURE__*/ defineComponent({
         computedInputHandlers() {
             return {
                 ...omit(this.bvListeners, [EVENT_NAME_FOCUSIN, EVENT_NAME_FOCUSOUT]),
-                blur: this.onInputBlur,
-                change: this.onInputChange,
-                focus: this.onInputFocus,
-                input: this.onInputInput,
-                keydown: this.onInputKeydown,
-                reset: this.reset
+                onBlur: this.onInputBlur,
+                onChange: this.onInputChange,
+                onFocus: this.onInputFocus,
+                onInput: this.onInputInput,
+                onKeydown: this.onInputKeydown,
+                onReset: this.reset
             }
         },
         computedSeparator() {
@@ -566,16 +566,14 @@ export const BFormTags = /*#__PURE__*/ defineComponent({
                         class: tagClass,
                         // `BFormTag` will auto generate an ID
                         // so we do not need to set the ID prop
-                        props: {
-                            disabled,
-                            noRemove: noTagRemove,
-                            pill: tagPills,
-                            removeLabel: tagRemoveLabel,
-                            tag: 'li',
-                            title: tag,
-                            variant: tagVariant
-                        },
-                        on: { remove: () => removeTag(tag) },
+                        disabled,
+                        noRemove: noTagRemove,
+                        pill: tagPills,
+                        removeLabel: tagRemoveLabel,
+                        tag: 'li',
+                        title: tag,
+                        variant: tagVariant,
+                        onRemove: () => removeTag(tag),
                         key: `tags_${tag}`
                     },
                     tag
@@ -600,41 +598,38 @@ export const BFormTags = /*#__PURE__*/ defineComponent({
                 .filter(identity)
                 .join(' ')
 
+            // Handle different types of inputClass
+            const inputClassContent = inputClass && Array.isArray(inputClass) ? { ...inputClass } : inputClass
+
             // Input
+            // Directive needed to get `event.target.composing` set (if needed)
             const $input = h('input', {
-                staticClass: 'b-form-tags-input w-100 flex-grow-1 p-0 m-0 bg-transparent border-0',
-                class: inputClass,
-                style: { outline: 0, minWidth: '5rem' },
-                attrs: {
+                    class: ['b-form-tags-input w-100 flex-grow-1 p-0 m-0 bg-transparent border-0', inputClassContent],
+                    style: { outline: 0, minWidth: '5rem' },
                     ...inputAttrs,
                     'aria-describedby': ariaDescribedby || null,
                     type: inputType,
-                    placeholder: placeholder || null
-                },
-                domProps: { value: inputAttrs.value },
-                on: inputHandlers,
-                // Directive needed to get `event.target.composing` set (if needed)
-                directives: [{ name: 'model', value: inputAttrs.value }],
-                ref: 'input'
-            })
+                    placeholder: placeholder || null,
+                    value: inputAttrs.modelValue,
+                    ...inputHandlers,
+                    ref: 'input'
+                })
+                    
 
             // Add button
             const $button = h(
                 BButton, {
-                    staticClass: 'b-form-tags-button py-0',
-                    class: {
+                    class: ['b-form-tags-button py-0', {
                         // Only show the button if the tag can be added
                         // We use the `invisible` class instead of not rendering
                         // the button, so that we maintain layout to prevent
                         // the user input from jumping around
                         invisible: disableAddButton
-                    },
+                    }],
                     style: { fontSize: '90%' },
-                    props: {
-                        disabled: disableAddButton || isLimitReached,
-                        variant: addButtonVariant
-                    },
-                    on: { click: () => addTag() },
+                    disabled: disableAddButton || isLimitReached,
+                    variant: addButtonVariant,
+                    onClick: () => addTag(),
                     ref: 'button'
                 }, [this.normalizeSlot(SLOT_NAME_ADD_BUTTON_TEXT) || addButtonText]
             )
@@ -648,18 +643,16 @@ export const BFormTags = /*#__PURE__*/ defineComponent({
 
             const $field = h(
                 'li', {
-                    staticClass: 'b-form-tags-field flex-grow-1',
-                    attrs: {
-                        role: 'none',
-                        'aria-live': 'off',
-                        'aria-controls': tagListId
-                    },
+                    class: 'b-form-tags-field flex-grow-1',
+                    role: 'none',
+                    'aria-live': 'off',
+                    'aria-controls': tagListId,
                     key: 'tags_field'
                 }, [
                     h(
                         'div', {
-                            staticClass: 'd-flex',
-                            attrs: { role: 'group' }
+                            class: 'd-flex',
+                            role: 'group'
                         }, [$input, $button]
                     )
                 ]
@@ -668,8 +661,8 @@ export const BFormTags = /*#__PURE__*/ defineComponent({
             // Wrap in an unordered list element (we use a list for accessibility)
             const $ul = h(
                 'ul', {
-                    staticClass: 'b-form-tags-list list-unstyled mb-0 d-flex flex-wrap align-items-center',
-                    attrs: { id: tagListId },
+                    class: 'b-form-tags-list list-unstyled mb-0 d-flex flex-wrap align-items-center',
+                    id: tagListId,
                     key: 'tags_list'
                 }, [$tags, $field]
             )
@@ -686,11 +679,9 @@ export const BFormTags = /*#__PURE__*/ defineComponent({
                 if (invalidFeedbackId) {
                     $invalid = h(
                         BFormInvalidFeedback, {
-                            props: {
-                                id: invalidFeedbackId,
-                                ariaLive,
-                                forceShow: true
-                            },
+                            id: invalidFeedbackId,
+                            ariaLive,
+                            forceShow: true,
                             key: 'tags_invalid_feedback'
                         }, [this.invalidTagText, ': ', this.invalidTags.join(joiner)]
                     )
@@ -701,10 +692,8 @@ export const BFormTags = /*#__PURE__*/ defineComponent({
                 if (duplicateFeedbackId) {
                     $duplicate = h(
                         BFormText, {
-                            props: {
-                                id: duplicateFeedbackId,
-                                ariaLive
-                            },
+                            id: duplicateFeedbackId,
+                            ariaLive,
                             key: 'tags_duplicate_feedback'
                         }, [this.duplicateTagText, ': ', this.duplicateTags.join(joiner)]
                     )
@@ -715,10 +704,8 @@ export const BFormTags = /*#__PURE__*/ defineComponent({
                 if (limitFeedbackId) {
                     $limit = h(
                         BFormText, {
-                            props: {
-                                id: limitFeedbackId,
-                                ariaLive
-                            },
+                            id: limitFeedbackId,
+                            ariaLive,
                             key: 'tags_limit_feedback'
                         }, [limitTagsText]
                     )
@@ -726,10 +713,8 @@ export const BFormTags = /*#__PURE__*/ defineComponent({
 
                 $feedback = h(
                     'div', {
-                        attrs: {
-                            'aria-live': 'polite',
-                            'aria-atomic': 'true'
-                        },
+                        'aria-live': 'polite',
+                        'aria-atomic': 'true',
                         key: 'tags_feedback'
                     }, [$invalid, $duplicate, $limit]
                 )
@@ -739,7 +724,7 @@ export const BFormTags = /*#__PURE__*/ defineComponent({
             return [$ul, $feedback]
         }
     },
-    render(h) {
+    render() {
         const { name, disabled, required, form, tags, computedInputId, hasFocus, noOuterFocus } = this
 
         // Scoped slot properties
@@ -796,15 +781,13 @@ export const BFormTags = /*#__PURE__*/ defineComponent({
         // Generate the `aria-live` region for the current value(s)
         const $output = h(
             'output', {
-                staticClass: 'sr-only',
-                attrs: {
-                    id: this.safeId('__selected_tags__'),
-                    role: 'status',
-                    for: computedInputId,
-                    'aria-live': hasFocus ? 'polite' : 'off',
-                    'aria-atomic': 'true',
-                    'aria-relevant': 'additions text'
-                }
+                class: 'sr-only',
+                id: this.safeId('__selected_tags__'),
+                role: 'status',
+                for: computedInputId,
+                'aria-live': hasFocus ? 'polite' : 'off',
+                'aria-atomic': 'true',
+                'aria-relevant': 'additions text'
             },
             this.tags.join(', ')
         )
@@ -812,13 +795,11 @@ export const BFormTags = /*#__PURE__*/ defineComponent({
         // Removed tag live region
         const $removed = h(
             'div', {
-                staticClass: 'sr-only',
-                attrs: {
-                    id: this.safeId('__removed_tags__'),
-                    role: 'status',
-                    'aria-live': hasFocus ? 'assertive' : 'off',
-                    'aria-atomic': 'true'
-                }
+                class: 'sr-only',
+                id: this.safeId('__removed_tags__'),
+                role: 'status',
+                'aria-live': hasFocus ? 'assertive' : 'off',
+                'aria-atomic': 'true'
             },
             this.removedTags.length > 0 ? `(${this.tagRemovedLabel}) ${this.removedTags.join(', ')}` : ''
         )
@@ -833,13 +814,11 @@ export const BFormTags = /*#__PURE__*/ defineComponent({
             $hidden = (hasTags ? tags : ['']).map(tag => {
                 return h('input', {
                     class: { 'sr-only': !hasTags },
-                    attrs: {
-                        type: hasTags ? 'hidden' : 'text',
-                        value: tag,
-                        required,
-                        name,
-                        form
-                    },
+                    type: hasTags ? 'hidden' : 'text',
+                    value: tag,
+                    required,
+                    name,
+                    form,
                     key: `tag_input_${tag}`
                 })
             })
@@ -848,25 +827,20 @@ export const BFormTags = /*#__PURE__*/ defineComponent({
         // Return the rendered output
         return h(
             'div', {
-                staticClass: 'b-form-tags form-control h-auto',
-                class: [{
+                class: ['b-form-tags form-control h-auto', {
                         focus: hasFocus && !noOuterFocus && !disabled,
                         disabled
                     },
                     this.sizeFormClass,
                     this.stateClass
                 ],
-                attrs: {
-                    id: this.safeId(),
-                    role: 'group',
-                    tabindex: disabled || noOuterFocus ? null : '-1',
-                    'aria-describedby': this.safeId('__selected_tags__')
-                },
-                on: {
-                    click: this.onClick,
-                    focusin: this.onFocusin,
-                    focusout: this.onFocusout
-                }
+                id: this.safeId(),
+                role: 'group',
+                tabindex: disabled || noOuterFocus ? null : '-1',
+                'aria-describedby': this.safeId('__selected_tags__'),
+                onClick: this.onClick,
+                onFocusin: this.onFocusin,
+                onFocusout: this.onFocusout
             }, [$output, $removed, $content, $hidden]
         )
     }

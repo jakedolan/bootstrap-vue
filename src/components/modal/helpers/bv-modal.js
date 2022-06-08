@@ -26,7 +26,7 @@ import { warn, warnNotClient, warnNoPromiseSupport } from '../../../utils/warn'
 import { createNewChildComponent } from '../../../utils/create-new-child-component'
 import { getEventRoot } from '../../../utils/get-event-root'
 import { BModal, props as modalProps } from '../modal'
-import { defineComponent } from '../../../vue'
+import { defineComponent } from 'vue'
 
 // --- Constants ---
 

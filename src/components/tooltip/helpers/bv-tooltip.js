@@ -2,9 +2,8 @@
 //
 // Handles trigger events, etc.
 // Instantiates template on demand
-
-import { COMPONENT_UID_KEY, defineComponent } from '../../../vue'
-import { NAME_MODAL, NAME_TOOLTIP_HELPER } from '../../../constants/components'
+import { defineComponent } from 'vue'
+import { COMPONENT_UID_KEY, NAME_MODAL, NAME_TOOLTIP_HELPER } from '../../../constants/components'
 import {
     EVENT_NAME_DISABLE,
     EVENT_NAME_DISABLED,
@@ -68,6 +67,9 @@ import { BvEvent } from '../../../utils/bv-event.class'
 import { createNewChildComponent } from '../../../utils/create-new-child-component'
 import { listenOnRootMixin } from '../../../mixins/listen-on-root'
 import { BVTooltipTemplate } from './bv-tooltip-template'
+
+
+const uuidv1 = require('uuid/v1');
 
 // --- Constants ---
 
@@ -161,7 +163,8 @@ export const BVTooltip = /*#__PURE__*/ defineComponent({
                 click: false,
                 focus: false
             },
-            localShow: false
+            localShow: false,
+            [COMPONENT_UID_KEY]: uuidv1()
         }
     },
     computed: {

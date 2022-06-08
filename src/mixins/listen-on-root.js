@@ -1,4 +1,4 @@
-import { defineComponent } from '../vue'
+import { defineComponent } from 'vue'
 import { arrayIncludes } from '../utils/array'
 import { keys } from '../utils/object'
 import { getEventRoot } from '../utils/get-event-root'
@@ -71,6 +71,7 @@ export const listenOnRootMixin = defineComponent({
         listenOnRoot(event, callback) {
             // console.log('## BV_EVENT_ROOT', this.bvEventRoot);
             if (this.bvEventRoot) {
+                console.log("## bvEventRoot $on", { event, callback })
                 this.bvEventRoot.$on(event, callback)
                 this.registerRootListener(event, callback)
             }
@@ -128,9 +129,8 @@ export const listenOnRootMixin = defineComponent({
          * @param {*} args
          */
         emitOnRoot(event, ...args) {
-
-            // console.log('## BV_EVENT_ROOT', this.bvEventRoot);
             if (this.bvEventRoot) {
+                console.log('## emitOnRoot', { event, args });
                 this.bvEventRoot.$emit(event, ...args)
             }
         }

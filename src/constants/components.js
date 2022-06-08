@@ -1,3 +1,6 @@
+// Constants
+export const COMPONENT_UID_KEY = 'localUuid_'
+
 // Component names
 export const NAME_ALERT = 'BAlert'
 export const NAME_ASPECT = 'BAspect'
@@ -112,8 +115,6 @@ export const NAME_TFOOT = 'BTfoot'
 export const NAME_TH = 'BTh'
 export const NAME_THEAD = 'BThead'
 export const NAME_TIME = 'BTime'
-export const NAME_TOAST = 'BToast'
-export const NAME_TOASTER = 'BToaster'
 export const NAME_TOOLTIP = 'BTooltip'
 export const NAME_TR = 'BTr'
 
@@ -125,7 +126,6 @@ export const NAME_POPOVER_HELPER = 'BVPopover'
 export const NAME_POPOVER_TEMPLATE = 'BVPopoverTemplate'
 export const NAME_POPPER = 'BVPopper'
 export const NAME_TAB_BUTTON_HELPER = 'BVTabButton'
-export const NAME_TOAST_POP = 'BVToastPop'
 export const NAME_TOOLTIP_HELPER = 'BVTooltip'
 export const NAME_TOOLTIP_TEMPLATE = 'BVTooltipTemplate'
 export const NAME_TRANSITION = 'BVTransition'

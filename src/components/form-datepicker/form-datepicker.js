@@ -1,4 +1,4 @@
-import { defineComponent } from '../../vue'
+import { defineComponent, h } from 'vue'
 import { NAME_FORM_DATEPICKER } from '../../constants/components'
 import { EVENT_NAME_CONTEXT, EVENT_NAME_HIDDEN, EVENT_NAME_SHOWN } from '../../constants/events'
 import { PROP_TYPE_BOOLEAN, PROP_TYPE_DATE_STRING, PROP_TYPE_OBJECT, PROP_TYPE_STRING } from '../../constants/props'
@@ -25,7 +25,7 @@ const {
     props: modelProps,
     prop: MODEL_PROP_NAME,
     event: MODEL_EVENT_NAME
-} = makeModelMixin('value', { type: PROP_TYPE_DATE_STRING })
+} = makeModelMixin('modelValue', { type: PROP_TYPE_DATE_STRING })
 
 // --- Props ---
 
@@ -205,8 +205,8 @@ export const BFormDatepicker = /*#__PURE__*/ defineComponent({
             })
         }
     },
-    render(h) {
-        const { localYMD, disabled, readonly, dark, $props, $scopedSlots } = this
+    render() {
+        const { localYMD, disabled, readonly, dark, $props, $slots } = this
         const placeholder = isUndefinedOrNull(this.placeholder) ?
             this.labelNoDateSelected :
             this.placeholder
@@ -219,13 +219,11 @@ export const BFormDatepicker = /*#__PURE__*/ defineComponent({
             $footer.push(
                 h(
                     BButton, {
-                        props: {
-                            disabled: disabled || readonly,
-                            size: 'sm',
-                            variant: this.todayButtonVariant
-                        },
-                        attrs: { 'aria-label': label || null },
-                        on: { click: this.onTodayButton }
+                        disabled: disabled || readonly,
+                        size: 'sm',
+                        variant: this.todayButtonVariant,
+                        'aria-label': label || null,
+                        onClick: this.onTodayButton
                     },
                     label
                 )
@@ -237,13 +235,11 @@ export const BFormDatepicker = /*#__PURE__*/ defineComponent({
             $footer.push(
                 h(
                     BButton, {
-                        props: {
-                            disabled: disabled || readonly,
-                            size: 'sm',
-                            variant: this.resetButtonVariant
-                        },
-                        attrs: { 'aria-label': label || null },
-                        on: { click: this.onResetButton }
+                        disabled: disabled || readonly,
+                        size: 'sm',
+                        variant: this.resetButtonVariant,
+                        'aria-label': label || null,
+                        onClick: this.onResetButton
                     },
                     label
                 )
@@ -254,14 +250,12 @@ export const BFormDatepicker = /*#__PURE__*/ defineComponent({
             const label = this.labelCloseButton
             $footer.push(
                 h(
-                    BButton, {
-                        props: {
-                            disabled,
-                            size: 'sm',
-                            variant: this.closeButtonVariant
-                        },
-                        attrs: { 'aria-label': label || null },
-                        on: { click: this.onCloseButton }
+                    BButton, {                       
+                        disabled,
+                        size: 'sm',
+                        variant: this.closeButtonVariant,
+                        'aria-label': label || null,
+                        onClick: this.onCloseButton
                     },
                     label
                 )
@@ -272,11 +266,11 @@ export const BFormDatepicker = /*#__PURE__*/ defineComponent({
             $footer = [
                 h(
                     'div', {
-                        staticClass: 'b-form-date-controls d-flex flex-wrap',
-                        class: {
+                        class: ['b-form-date-controls d-flex flex-wrap', 
+                          {
                             'justify-content-between': $footer.length > 1,
-                                'justify-content-end': $footer.length < 2
-                        }
+                            'justify-content-end': $footer.length < 2
+                          }]
                     },
                     $footer
                 )
@@ -285,32 +279,30 @@ export const BFormDatepicker = /*#__PURE__*/ defineComponent({
 
         const $calendar = h(
             BCalendar, {
-                staticClass: 'b-form-date-calendar w-100',
-                props: {
-                    ...pluckProps(calendarProps, $props),
-                    hidden: !this.isVisible,
-                    value: localYMD,
-                    valueAsDate: false,
-                    width: this.calendarWidth
-                },
-                on: {
-                    selected: this.onSelected,
-                    input: this.onInput,
-                    context: this.onContext
-                },
-                scopedSlots: pick($scopedSlots, [
-                    'nav-prev-decade',
-                    'nav-prev-year',
-                    'nav-prev-month',
-                    'nav-this-month',
-                    'nav-next-month',
-                    'nav-next-year',
-                    'nav-next-decade'
-                ]),
+                class: ['b-form-date-calendar w-100'],
+                ...pluckProps(calendarProps, $props),
+                hidden: !this.isVisible,
+                value: localYMD,
+                valueAsDate: false,
+                width: this.calendarWidth,
+                onSelected: this.onSelected,
+                onInput: this.onInput,
+                onContext: this.onContext,
                 key: 'calendar',
                 ref: 'calendar'
             },
-            $footer
+            {
+              default: () => $footer,
+              ...pick($slots, [
+                'nav-prev-decade',
+                'nav-prev-year',
+                'nav-prev-month',
+                'nav-this-month',
+                'nav-next-month',
+                'nav-next-year',
+                'nav-next-decade'
+              ])
+            }
         )
 
         return h(
@@ -333,11 +325,12 @@ export const BFormDatepicker = /*#__PURE__*/ defineComponent({
                     shown: this.onShown,
                     hidden: this.onHidden
                 },
-                scopedSlots: {
-                    [SLOT_NAME_BUTTON_CONTENT]: $scopedSlots[SLOT_NAME_BUTTON_CONTENT] || this.defaultButtonFn
-                },
                 ref: 'control'
-            }, [$calendar]
+            }, 
+            {
+              default: () => [$calendar],
+              [SLOT_NAME_BUTTON_CONTENT]: () => $slots[SLOT_NAME_BUTTON_CONTENT] || this.defaultButtonFn
+            }
         )
     }
 })

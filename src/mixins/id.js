@@ -1,9 +1,12 @@
 // SSR safe client-side ID attribute generation
 // ID's can only be generated client-side, after mount
 // `this._uid` is not synched between server and client
-import { COMPONENT_UID_KEY, defineComponent } from '../vue'
+import { COMPONENT_UID_KEY } from '../constants/components'
+import { defineComponent } from 'vue'
 import { PROP_TYPE_STRING } from '../constants/props'
 import { makeProp } from '../utils/props'
+
+const uuidv1 = require('uuid/v1');
 
 // --- Props ---
 
@@ -18,7 +21,8 @@ export const idMixin = defineComponent({
   props,
   data() {
     return {
-      localId_: null
+      localId_: null,
+      [COMPONENT_UID_KEY]: uuidv1()
     }
   },
   computed: {

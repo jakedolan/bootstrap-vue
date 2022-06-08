@@ -2,7 +2,7 @@ import { NAME_TOOLTIP } from '../../constants/components'
 import { IS_BROWSER } from '../../constants/env'
 import { EVENT_NAME_SHOW } from '../../constants/events'
 import { concat } from '../../utils/array'
-import { isVue3, nextTick } from '../../vue'
+import { nextTick } from 'vue'
 import { getComponentConfig } from '../../utils/config'
 import { getScopeId } from '../../utils/get-scope-id'
 import { identity } from '../../utils/identity'
@@ -86,7 +86,7 @@ const parseBindings = (bindings, vnode) => /* istanbul ignore next: not easy to 
   // If title is not provided, try title attribute
   if (isUndefined(config.title)) {
     // Try attribute
-    const attrs = isVue3 ? vnode.props : (vnode.data || {}).attrs
+    const attrs = vnode.props
     config.title = attrs && !isUndefinedOrNull(attrs.title) ? attrs.title : undefined
   }
 

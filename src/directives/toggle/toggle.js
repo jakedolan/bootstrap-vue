@@ -140,9 +140,11 @@ const removeRootListeners = (el, instance) => {
 }
 
 const addRootListeners = (el, instance) => {
+  console.log('>> addRootListerners', { el, instance});
   removeRootListeners(el, instance)
   if (instance) {
     const handler = (id, state) => {
+      console.log(`>> handler ${id} ${state}`)
       // `state` will be `true` if target is expanded
       if (arrayIncludes(el[BV_TOGGLE_TARGETS] || [], id)) {
         // Set/Clear 'collapsed' visibility class state
@@ -158,6 +160,7 @@ const addRootListeners = (el, instance) => {
 }
 
 const setToggleState = (el, state) => {
+  console.log(`>> setToggleState ${state}`, { el, state })
   // State refers to the visibility of the collapse/sidebar
   if (state) {
     removeClass(el, CLASS_BV_TOGGLE_COLLAPSED)

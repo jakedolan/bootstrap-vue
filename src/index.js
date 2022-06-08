@@ -43,7 +43,6 @@ export {
 //   We should probably move injections into their own
 //   parent directory (i.e. `/src/injections`)
 export { BVModalPlugin } from './components/modal/helpers/bv-modal'
-export { BVToastPlugin } from './components/toast/helpers/bv-toast'
 
 // Webpack 4 has optimization difficulties with re-export of re-exports,
 // so we import the components individually here for better tree shaking
@@ -315,11 +314,6 @@ export { BTab } from './components/tabs/tab'
 // export * from './components/time'
 export { TimePlugin } from './components/time'
 export { BTime } from './components/time/time'
-
-// export * from './components/toast'
-export { ToastPlugin } from './components/toast'
-export { BToast } from './components/toast/toast'
-export { BToaster } from './components/toast/toaster'
 
 // export * from './components/tooltip'
 export { TooltipPlugin } from './components/tooltip'
