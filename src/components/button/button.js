@@ -127,7 +127,6 @@ export const BButton = /*#__PURE__*/ defineComponent({
   props,
   render() {
     const { $props, $data, $attrs, $slots } = this
-    console.log("## $attrs", $attrs);
     const toggle = isToggle($props)
     const link = isLink($props)
     const nonStandardTag = isNonStandardTag($props)
@@ -176,12 +175,9 @@ export const BButton = /*#__PURE__*/ defineComponent({
       ...computeAttrs($props, $data),
       ...on
     }
-
-    console.log("## componentData", componentData);
-
+    
     const merged = mergeData($data, componentData);
-    console.log('## merged', merged);
-
+    
     return h(link ? BLink : $props.tag, 
       componentData, 
       {

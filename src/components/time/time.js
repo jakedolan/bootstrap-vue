@@ -119,6 +119,7 @@ export const BTime = /*#__PURE__*/ defineComponent({
     name: NAME_TIME,
     mixins: [idMixin, modelMixin, normalizeSlotMixin],
     props,
+    emits: [EVENT_NAME_CONTEXT, MODEL_EVENT_NAME],
     data() {
         const parsed = parseHMS(this[MODEL_PROP_NAME] || '')
         return {
@@ -243,17 +244,18 @@ export const BTime = /*#__PURE__*/ defineComponent({
             return this.labelNoTimeSelected || ' '
         },
         spinScopedSlots() {
-            const h = this.$createElement
             return {
                 increment: ({ hasFocus }) =>
                     h(BIconChevronUp, {
-                        props: { scale: hasFocus ? 1.5 : 1.25 },
-                        attrs: { 'aria-hidden': 'true' }
+                      'aria-hidden': 'true',  
+                      scale: hasFocus ? 1.5 : 1.25,
                     }),
                 decrement: ({ hasFocus }) =>
                     h(BIconChevronUp, {
-                        props: { flipV: true, scale: hasFocus ? 1.5 : 1.25 },
-                        attrs: { 'aria-hidden': 'true' }
+                      'aria-hidden': 'true',
+                      flipV: true, 
+                      scale: hasFocus ? 1.5 : 1.25
+                        
                     })
             }
         }
@@ -467,10 +469,10 @@ export const BTime = /*#__PURE__*/ defineComponent({
                 'div', {
                     class: ['d-flex flex-column', { 'text-muted': disabled || readonly }],
                     'aria-hidden': 'true'
-                }, [
+                }, { default: () => [
                     h(BIconCircleFill, { shiftV: 4, scale: 0.5  }),
                     h(BIconCircleFill, { shiftV: -4, scale: 0.5  })
-                ]
+                ] }
             )
         }
 
@@ -549,7 +551,7 @@ export const BTime = /*#__PURE__*/ defineComponent({
                     }
                 }
             },
-            $spinners
+            { default: () => $spinners }
         )
 
         // Selected type display
@@ -567,19 +569,19 @@ export const BTime = /*#__PURE__*/ defineComponent({
                 // Transfer focus/click to focus hours spinner
                 onClick: focusHandler,
                 onFocus: focusHandler
-            }, [
-                h('bdi', this.formattedTimeString),
-                this.computedHMS ? h('span', { class: 'sr-only' }, ` (${this.labelSelected}) `) : ''
-            ]
+            }, { default: () => [
+                  h('bdi', this.formattedTimeString), this.computedHMS ? h('span', { class: 'sr-only' }, ` (${this.labelSelected}) `) : ''
+                  ] 
+            }
         )
         const $header = h(
             this.headerTag, {
                 class: ['b-time-header', { 'sr-only': this.hideHeader }]
-            }, [$value]
+            }, { default: () => [$value] }
         )
 
         const $content = this.normalizeSlot()
-        const $footer = $content ? h(this.footerTag, { class: 'b-time-footer' }, $content) : null
+        const $footer = $content ? h(this.footerTag, { class: 'b-time-footer' }, { default: () => $content }) : null
 
         return h(
             'div', {
@@ -589,7 +591,7 @@ export const BTime = /*#__PURE__*/ defineComponent({
                 'aria-labelledby': ariaLabelledby || null,
                 'aria-disabled': disabled ? 'true' : null,
                 'aria-readonly': readonly && !disabled ? 'true' : null
-            }, [$header, $spinners, $footer]
+            }, { default: () => [$header, $spinners, $footer] }
         )
     }
 })

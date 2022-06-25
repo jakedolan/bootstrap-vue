@@ -47,6 +47,8 @@ export const BFormCheckbox = /*#__PURE__*/ defineComponent({
         }
     },
     props,
+    emits: [MODEL_EVENT_NAME, EVENT_NAME_CHANGE, MODEL_EVENT_NAME_INDETERMINATE, ],
+    expose: ['focus'],
     computed: {
         bvGroup() {
             return this.getBvGroup()

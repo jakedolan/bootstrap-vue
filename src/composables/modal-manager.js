@@ -2,7 +2,7 @@
  * Private ModalManager helper
  * Handles controlling modal stacking zIndexes and body adjustments/classes
  */
- import { computed, isReactive, nextTick, reactive, isRef, ref, watch } from 'vue';
+import { computed, isReactive, nextTick, reactive, isRef, ref, watch } from 'vue';
 import { IS_BROWSER } from '../constants/env'
 import {
     addClass,
@@ -34,8 +34,8 @@ const SELECTOR_NAVBAR_TOGGLER = '.navbar-toggler'
 // --- Main component ---
 
 // @vue/component
-export function useModalManager(){
-    
+export function useModalManager() {
+
     const modals = ref([])
     const baseZIndex = ref(null)
     const scrollbarWidth = ref(null)
@@ -45,6 +45,7 @@ export function useModalManager(){
     const modalsAreOpen = computed(() => modalCount > 0)
 
     watch(modalCount, (newCount, oldCount) => {
+
         if (IS_BROWSER) {
             getScrollbarWidth()
             if (newCount > 0 && oldCount === 0) {
@@ -67,10 +68,10 @@ export function useModalManager(){
             updateModals(newValue || [])
         })
     })
-    
+
     // Public methods
     function registerModal(modal) {
-        // Register the modal if not already registered
+            // Register the modal if not already registered
         if (modal && modals.value.indexOf(modal) === -1) {
             modals.value.push(modal)
         }
@@ -87,7 +88,7 @@ export function useModalManager(){
             }
         }
     }
-    
+
     function getBaseZIndex() {
         if (IS_BROWSER && isNull(baseZIndex.value)) {
             // Create a temporary `div.modal-backdrop` to get computed z-index
@@ -126,6 +127,7 @@ export function useModalManager(){
             modal.isBodyOverflowing = isBodyOverflowing.value
         })
     }
+
     function resetModal(modal) {
         if (modal) {
             modal.zIndex = getBaseZIndex()
@@ -212,10 +214,10 @@ export function useModalManager(){
     }
 
     return {
-      getBaseZIndex,
-      getScrollbarWidth,
-      modalsAreOpen,
-      registerModal,
-      unregisterModal
+        getBaseZIndex,
+        getScrollbarWidth,
+        modalsAreOpen,
+        registerModal,
+        unregisterModal
     }
 }

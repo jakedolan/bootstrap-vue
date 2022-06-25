@@ -147,7 +147,7 @@ export const BDropdown = /*#__PURE__*/ defineComponent({
 
         const $toggle = h(
             BButton, {
-                class: ['dropdown-toggle', ...this.toggleClasses],
+                class: ['dropdown-toggle', this.toggleClasses],
                 // Merge in user supplied attributes
                 ...this.toggleAttrs,
                 // Must have attributes
@@ -170,7 +170,7 @@ export const BDropdown = /*#__PURE__*/ defineComponent({
 
         const $menu = h(
             'ul', {
-                class: ['dropdown-menu', ...this.menuClasses],
+                class: ['dropdown-menu', this.menuClasses],
                 role,
                 tabindex: '-1',
                 'aria-labelledby': this.safeId(split ? '_BV_button_' : '_BV_toggle_'),
@@ -184,7 +184,7 @@ export const BDropdown = /*#__PURE__*/ defineComponent({
 
         return h(
             'div', {
-                class: ['dropdown b-dropdown', ...this.dropdownClasses],
+                class: ['dropdown b-dropdown', this.dropdownClasses],
                 id: this.safeId()
             }, {
               default: () => [$split, $toggle, $menu]

@@ -5,7 +5,7 @@ import { attemptBlur, attemptFocus } from '../utils/dom'
 import { isBoolean } from '../utils/inspect'
 import { looseEqual } from '../utils/loose-equal'
 import { makeModelMixin } from '../utils/model'
-import { sortKeys } from '../utils/object'
+import { omit, pick, sortKeys } from '../utils/object'
 import { makeProp, makePropsConfigurable } from '../utils/props'
 import { attrsMixin } from './attrs'
 import { formControlMixin, props as formControlProps } from './form-control'
@@ -22,7 +22,7 @@ const {
     props: modelProps,
     prop: MODEL_PROP_NAME,
     event: MODEL_EVENT_NAME
-} = makeModelMixin('checked', { defaultValue: null, event: `update:modelValue` })
+} = makeModelMixin('checked', { defaultValue: null, event: `update:checked` })
 
 export { MODEL_PROP_NAME, MODEL_EVENT_NAME }
 
@@ -166,9 +166,8 @@ export const formRadioCheckMixin = defineComponent({
         },
         computedAttrs() {
             const { isDisabled: disabled, isRequired: required } = this
-
             return {
-                ...this.bvAttrs,
+                ...omit(this.bvAttrs, ['class', 'style']),
                 id: this.safeId(),
                 type: this.isRadio ? 'radio' : 'checkbox',
                 name: this.computedName,
@@ -255,48 +254,50 @@ export const formRadioCheckMixin = defineComponent({
         } = this
         const $content = this.normalizeSlot()
 
+        const wrapperClass = Array.isArray()
+
         const componentClass = [{
-          'form-check-input': isPlain,
-          'custom-control-input': isCustom,
-          // https://github.com/bootstrap-vue/bootstrap-vue/issues/2911
-          'position-static': isPlain && !$content
+            'form-check-input': isPlain,
+            'custom-control-input': isCustom,
+            // https://github.com/bootstrap-vue/bootstrap-vue/issues/2911
+            'position-static': isPlain && !$content
         }];
         if (isBtnMode) {
-          componentClass.push(this.stateClass);
+            componentClass.push(this.stateClass);
         }
 
         const componentListeners = {
-          onBlur : isBtnMode ? this.handleFocus : null,
-          onChange: this.handleChange,
-          onFocus: isBtnMode ? this.handleFocus : null,
+            onBlur: isBtnMode ? this.handleFocus : null,
+            onChange: this.handleChange,
+            onFocus: isBtnMode ? this.handleFocus : null,
         }
 
         const $input = h('input', {
-                class: componentClass,
-                ...this.computedAttrs,
-                value: this.value,
-                checked: this.isChecked,
-                ...componentListeners,
-                key: 'input',
-                ref: 'input'
-            })
+            class: componentClass,
+            ...this.computedAttrs,
+            value: this.value,
+            checked: this.isChecked,
+            ...componentListeners,
+            key: 'input',
+            ref: 'input'
+        })
 
         if (isBtnMode) {
             let $button = h('label', { class: this.buttonClasses }, [$input, $content])
             if (!this.isGroup) {
                 // Standalone button mode, so wrap in 'btn-group-toggle'
                 // and flag it as inline-block to mimic regular buttons
-                $button = h('div', { class: ['btn-group-toggle', 'd-inline-block'] }, [$button])
+                $button = h('div', { class: ['btn-group-toggle', 'd-inline-block', bvAttrs.class], style: bvAttrs.style }, [$button])
             }
 
             return $button
         }
 
         const returnContent = [$input];
-        
+
         // If no label content in plain mode we dont render the label
         // See: https://github.com/bootstrap-vue/bootstrap-vue/issues/2911
-        let $label = null; 
+        let $label = null;
         if (!(isPlain && !$content)) {
             $label = h(
                 'label', {
@@ -310,7 +311,6 @@ export const formRadioCheckMixin = defineComponent({
             )
             returnContent.push($label)
         }
-        
 
         return h(
             'div', {

@@ -180,10 +180,6 @@ export const props = makePropsConfigurable(
 // @vue/component
 export const BModal = /*#__PURE__*/ defineComponent({
     name: NAME_MODAL,
-    compatConfig: {
-        MODE: 3,
-
-    },
     mixins: [
         attrsMixin,
         idMixin,
@@ -197,6 +193,7 @@ export const BModal = /*#__PURE__*/ defineComponent({
     inheritAttrs: false,
     props,
     setup: () => ({ modalManager: useModalManager() }),
+    expose: ['hide', 'show', 'toggle'],
     data() {
         return {
             isHidden: true, // If modal should not be in document
@@ -800,7 +797,7 @@ export const BModal = /*#__PURE__*/ defineComponent({
                                 ref: 'close-button'
                             },
                             // TODO: Rename slot to `header-close` and deprecate `modal-header-close`
-                            [this.normalizeSlot(SLOT_NAME_MODAL_HEADER_CLOSE)]
+                            { default: () => [this.normalizeSlot(SLOT_NAME_MODAL_HEADER_CLOSE)] }
                         )
                     }
 
@@ -809,26 +806,28 @@ export const BModal = /*#__PURE__*/ defineComponent({
                     $modalHeader = [
                         h(
                             this.titleTag, {
-                                class: ['modal-title', ...this.titleClasses],
+                                class: ['modal-title', this.titleClasses],
                                 id: this.modalTitleId,
                                 // TODO: Rename slot to `title` and deprecate `modal-title`
                                 ...domPropsContent
                             },
                             // TODO: Rename slot to `title` and deprecate `modal-title`
-                            this.normalizeSlot(SLOT_NAME_MODAL_TITLE, this.slotScope)
+                            { default: () => this.normalizeSlot(SLOT_NAME_MODAL_TITLE, this.slotScope) }
                         ),
                         $closeButton
                     ]
                 }
 
+
                 $header = h(
                     this.headerTag, {
-                        class: ['modal-header', ...this.headerClasses],
+                        class: ['modal-header', this.headerClasses],
                         id: this.modalHeaderId,
                         ref: 'header'
-                    }, [$modalHeader]
+                    }, { default: () => [$modalHeader] }
                 )
             }
+
 
             // Modal body
             const $body = h(
@@ -836,14 +835,12 @@ export const BModal = /*#__PURE__*/ defineComponent({
                     class: ['modal-body', this.bodyClasses],
                     id: this.modalBodyId,
                     ref: 'body'
-                },
-                this.normalizeSlot(SLOT_NAME_DEFAULT, this.slotScope)
+                }, { default: () => this.normalizeSlot(SLOT_NAME_DEFAULT, this.slotScope) }
             )
 
             // Modal footer
             let $footer = null
 
-            
             if (!this.hideFooter) {
                 // TODO: Rename slot to `footer` and deprecate `modal-footer`
                 let $modalFooter = this.normalizeSlot(SLOT_NAME_MODAL_FOOTER, this.slotScope)
@@ -864,7 +861,7 @@ export const BModal = /*#__PURE__*/ defineComponent({
                                 ref: 'cancel-button'
                             },
                             // TODO: Rename slot to `cancel-button` and deprecate `modal-cancel`
-                            this.normalizeSlot(SLOT_NAME_MODAL_CANCEL)
+                            { default: () => this.normalizeSlot(SLOT_NAME_MODAL_CANCEL) }
                         )
                     }
 
@@ -881,7 +878,7 @@ export const BModal = /*#__PURE__*/ defineComponent({
                             ref: 'ok-button'
                         },
                         // TODO: Rename slot to `ok-button` and deprecate `modal-ok`
-                        this.normalizeSlot(SLOT_NAME_MODAL_OK)
+                        { default: () => this.normalizeSlot(SLOT_NAME_MODAL_OK) }
                     )
 
                     $modalFooter = [$cancelButton, $okButton]
@@ -892,18 +889,18 @@ export const BModal = /*#__PURE__*/ defineComponent({
                         class: ['modal-footer', this.footerClasses],
                         id: this.modalFooterId,
                         ref: 'footer'
-                    }, [$modalFooter]
+                    }, { default: () => [$modalFooter] }
                 )
             }
 
             // Assemble modal content
             const $modalContent = h(
                 'div', {
-                    class: ['modal-content', ...this.contentClass],
+                    class: ['modal-content', this.contentClass],
                     id: this.modalContentId,
                     tabindex: '-1',
                     ref: 'content'
-                }, [$header, $body, $footer]
+                }, { default: () => [$header, $body, $footer] }
             )
 
             // Tab traps to prevent page from scrolling to next element in
@@ -921,46 +918,48 @@ export const BModal = /*#__PURE__*/ defineComponent({
                 })
             }
 
+
             // Modal dialog wrapper
             const $modalDialog = h(
                 'div', {
-                    class: ['modal-dialog', ...this.dialogClasses],
+                    class: ['modal-dialog', this.dialogClasses],
                     onMousedown: this.onDialogMousedown,
                     ref: 'dialog'
-                }, [$tabTrapTop, $modalContent, $tabTrapBottom]
+                }, { default: () => [$tabTrapTop, $modalContent, $tabTrapBottom] }
             )
 
             // Modal
-            let $modal = withDirectives(h(
-                    'div', {
-                        class: ['modal', ...this.modalClasses],
-                        style: this.modalStyles,
-                        ...this.computedModalAttrs,                    
-                        onClick: this.onClickOut,
-                        onKeydown: this.onEsc, 
-                        ref: 'modal'
-                    }, [$modalDialog]
-                ), [[vShow, this.isVisible]])
+            const $modal = withDirectives(h(
+                'div', {
+                    class: ['modal', this.modalClasses],
+                    style: this.modalStyles,
+                    ...this.computedModalAttrs,
+                    onClick: this.onClickOut,
+                    onKeydown: this.onEsc,
+                    ref: 'modal'
+                }, { default: () => [$modalDialog] }
+            ), [
+                [vShow, this.isVisible]
+            ])
 
             // Wrap modal in transition
             // Sadly, we can't use `BVTransition` here due to the differences in
             // transition durations for `.modal` and `.modal-dialog`
             // At least until https://github.com/vuejs/vue/issues/9986 is resolved
-            $modal = h(Transition, {
-                    enterFromClass: '',
-                    enterToClass: '',
-                    enterActiveClass: '',
-                    leaveFromClass: '',
-                    leaveActiveClass: '',
-                    leaveToClass: '',
-                    onBeforeEnter: this.onBeforeEnter,
-                    onEnter: this.onEnter,
-                    onAfterEnter: this.onAfterEnter,
-                    onBeforeLeave: this.onBeforeLeave,
-                    onLeave: this.onLeave,
-                    onAfterLeave: this.onAfterLeave
-                }, [$modal]
-            )
+            const $wrappedModal = h(Transition, {
+                enterFromClass: '',
+                enterToClass: '',
+                enterActiveClass: '',
+                leaveFromClass: '',
+                leaveActiveClass: '',
+                leaveToClass: '',
+                onBeforeEnter: this.onBeforeEnter,
+                onEnter: this.onEnter,
+                onAfterEnter: this.onAfterEnter,
+                onBeforeLeave: this.onBeforeLeave,
+                onLeave: this.onLeave,
+                onAfterLeave: this.onAfterLeave
+            }, { default: () => [$modal] })
 
             // Modal backdrop
             let $backdrop = null
@@ -971,10 +970,10 @@ export const BModal = /*#__PURE__*/ defineComponent({
                         id: this.modalBackdropId
                     },
                     // TODO: Rename slot to `backdrop` and deprecate `modal-backdrop`
-                    this.normalizeSlot(SLOT_NAME_MODAL_BACKDROP)
+                    { default: () => this.normalizeSlot(SLOT_NAME_MODAL_BACKDROP) }
                 )
             }
-            $backdrop = h(BVTransition, { props: { noFade: this.noFade } }, [$backdrop])
+            const $wrappedBackdrop = h(BVTransition, { noFade: this.noFade }, { default: () => [$backdrop] })
 
             // Assemble modal and backdrop in an outer <div>
             return h(
@@ -982,15 +981,15 @@ export const BModal = /*#__PURE__*/ defineComponent({
                     style: this.modalOuterStyle,
                     ...this.computedAttrs,
                     key: `modal-outer-${this[COMPONENT_UID_KEY]}`
-                }, [$modal, $backdrop]
+                }, { default: () => [$wrappedModal, $wrappedBackdrop] }
             )
         }
     },
     render() {
         if (this.static) {
-            return this.lazy && this.isHidden ? null : this.makeModal(h)
+            return this.lazy && this.isHidden ? null : this.makeModal()
         } else {
-            return this.isHidden ? null : h(BVTransporter, [this.makeModal(h)])
+            return this.isHidden ? null : h(BVTransporter, {}, { default: () => [this.makeModal()] })
         }
     }
 })

@@ -90,9 +90,7 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
     },
     watch: {
         [MODEL_PROP_NAME](newValue) {
-            console.log(`[${MODEL_PROP_NAME}] ${newValue} ${this.show}`)
             if (newValue !== this.show) {
-                console.log("set show", newValue);
                 this.show = newValue
             }
         },
@@ -121,7 +119,6 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
             })
             // Listen for "Sync state" requests from `v-b-toggle`
         this.listenOnRoot(ROOT_ACTION_EVENT_NAME_REQUEST_STATE, id => {
-            console.log("## setting listenOnRoot", { ROOT_ACTION_EVENT_NAME_REQUEST_STATE, id, safeId: this.safeId() })
             if (id === this.safeId()) {
                 this.$nextTick(this.emitSync)
             }
@@ -183,7 +180,6 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
             const { show, accordion } = this
             const id = this.safeId()
 
-            console.log(`emitting ${MODEL_EVENT_NAME} ${show} ${id}`)
             this.$emit(MODEL_EVENT_NAME, show)
 
             // Let `v-b-toggle` know the state of this collapse
@@ -194,7 +190,6 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
             }
         },
         emitSync() {
-            console.log('## emitSync', { show: this.show, safeId: this.safeId(), ROOT_EVENT_NAME_SYNC_STATE })
                 // Emit a private event every time this component updates to ensure
                 // the toggle button is in sync with the collapse's state
                 // It is emitted regardless if the visible state changes

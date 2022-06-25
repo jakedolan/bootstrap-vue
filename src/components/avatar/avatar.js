@@ -166,8 +166,9 @@ export const BAvatar = /*#__PURE__*/ defineComponent({
         } else if (src) {
             $content = h('img', {
                 style: variant ? {} : { width: '100%', height: '100%' },
-                attrs: { src, alt },
-                on: { error: this.onImgError }
+                src, 
+                alt,
+                onError: this.onImgError
             })
             $content = h('span', { class: 'b-avatar-img' }, [$content])
         } else if (icon) {

@@ -71,7 +71,7 @@ export const BDropdownItemButton = /*#__PURE__*/ defineComponent({
                     'button', {
                         class: [
                           'dropdown-item',
-                            this.buttonClass,
+                          this.buttonClass,
                             {
                                 [this.activeClass]: active,
                                 [`text-${variant}`]: variant && !(active || this.disabled)

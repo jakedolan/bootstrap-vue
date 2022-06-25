@@ -109,7 +109,7 @@ export const BCarouselSlide = /*#__PURE__*/ defineComponent({
         if ($contentChildren.some(identity)) {
             $content = h(
                 this.contentTag, {
-                    class: ['carousel-caption', ...this.contentClasses]
+                    class: ['carousel-caption', this.contentClasses]
                 },
                 $contentChildren.map($child => $child || h())
             )

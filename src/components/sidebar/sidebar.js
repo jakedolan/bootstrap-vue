@@ -288,8 +288,6 @@ export const BSidebar = /*#__PURE__*/ defineComponent({
     },
     mounted() {
         // Add `$root` listeners
-        console.log("$$ ROOT_ACTION_EVENT_NAME_TOGGLE", ROOT_ACTION_EVENT_NAME_TOGGLE)
-        console.log("$$ ROOT_ACTION_EVENT_NAME_REQUEST_STATE", ROOT_ACTION_EVENT_NAME_REQUEST_STATE);
         this.listenOnRoot(ROOT_ACTION_EVENT_NAME_TOGGLE, this.handleToggle)
         this.listenOnRoot(ROOT_ACTION_EVENT_NAME_REQUEST_STATE, this.handleSync)
             // Send out a gratuitous state event to ensure toggle button is synced
@@ -307,27 +305,22 @@ export const BSidebar = /*#__PURE__*/ defineComponent({
     },
     methods: {
         hide() {
-            console.log("hide", this.localShow)
             this.localShow = false
         },
         emitState(state = this.localShow) {   
-          console.log("$$ ROOT_EVENT_NAME_STATE", ROOT_EVENT_NAME_STATE)
             this.emitOnRoot(ROOT_EVENT_NAME_STATE, this.safeId(), state)
         },
         emitSync(state = this.localShow) {
           
-          console.log("$$ ROOT_EVENT_NAME_SYNC_STATE", ROOT_EVENT_NAME_SYNC_STATE)
             this.emitOnRoot(ROOT_EVENT_NAME_SYNC_STATE, this.safeId(), state)
         },
         handleToggle(id) {
-            console.log("$$ handleToggle id / safeId", { id, safeId: this.safeId(), [COMPONENT_UID_KEY]: this[COMPONENT_UID_KEY]})
             // Note `safeId()` can be null until after mount
             if (id && id === this.safeId()) {
                 this.localShow = !this.localShow
             }
         },
         handleSync(id) {
-          console.log("$$ handleSync id / safeId", { id, safeId: this.safeId(), [COMPONENT_UID_KEY]: this[COMPONENT_UID_KEY]})
             // Note `safeId()` can be null until after mount
             if (id && id === this.safeId()) {
                 this.$nextTick(() => {

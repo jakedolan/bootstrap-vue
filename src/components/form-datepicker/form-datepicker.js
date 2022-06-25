@@ -98,6 +98,7 @@ export const BFormDatepicker = /*#__PURE__*/ defineComponent({
             activeYMD: ''
         }
     },
+    emits: [EVENT_NAME_CONTEXT, EVENT_NAME_HIDDEN, EVENT_NAME_SHOWN, MODEL_EVENT_NAME],
     computed: {
         calendarYM() {
             // Returns the calendar year/month
@@ -200,8 +201,8 @@ export const BFormDatepicker = /*#__PURE__*/ defineComponent({
         },
         // Render helpers
         defaultButtonFn({ isHovered, hasFocus }) {
-            return this.$createElement(isHovered || hasFocus ? BIconCalendarFill : BIconCalendar, {
-                attrs: { 'aria-hidden': 'true' }
+            return h(isHovered || hasFocus ? BIconCalendarFill : BIconCalendar, {
+                'aria-hidden': 'true'
             })
         }
     },
@@ -225,7 +226,7 @@ export const BFormDatepicker = /*#__PURE__*/ defineComponent({
                         'aria-label': label || null,
                         onClick: this.onTodayButton
                     },
-                    label
+                    { default: () => [label] }
                 )
             )
         }
@@ -241,7 +242,7 @@ export const BFormDatepicker = /*#__PURE__*/ defineComponent({
                         'aria-label': label || null,
                         onClick: this.onResetButton
                     },
-                    label
+                    { default: () => [label] }
                 )
             )
         }
@@ -257,7 +258,7 @@ export const BFormDatepicker = /*#__PURE__*/ defineComponent({
                         'aria-label': label || null,
                         onClick: this.onCloseButton
                     },
-                    label
+                    { default: () => [label] }
                 )
             )
         }
@@ -272,7 +273,7 @@ export const BFormDatepicker = /*#__PURE__*/ defineComponent({
                             'justify-content-end': $footer.length < 2
                           }]
                     },
-                    $footer
+                    { default: () => [$footer] }
                 )
             ]
         }
@@ -305,31 +306,34 @@ export const BFormDatepicker = /*#__PURE__*/ defineComponent({
             }
         )
 
+
+
+        // console.log("slots", { $slots, defaultButtonFn: this.defaultButtonFn});
         return h(
             BVFormBtnLabelControl, {
-                staticClass: 'b-form-datepicker',
-                props: {
-                    ...pluckProps(formBtnLabelControlProps, $props),
-                    formattedValue: localYMD ? this.formattedValue : '',
+                class: 'b-form-datepicker',
+                ...pluckProps(formBtnLabelControlProps, $props),
+                formattedValue: localYMD ? this.formattedValue : '',
 
-                    emitter: this.emitter,
-                    id: this.safeId(),
-                    lang: this.computedLang,
-                    menuClass: [{ 'bg-dark': dark, 'text-light': dark }, this.menuClass],
-                    placeholder,
-                    rtl: this.isRTL,
-                    value: localYMD
-                },
-                on: {
-                    show: this.onShow,
-                    shown: this.onShown,
-                    hidden: this.onHidden
-                },
+                emitter: this.emitter,
+                id: this.safeId(),
+                lang: this.computedLang,
+                menuClass: [{ 'bg-dark': dark, 'text-light': dark }, this.menuClass],
+                placeholder,
+                rtl: this.isRTL,
+                value: localYMD,
+                
+                onShow: this.onShow,
+                onShown: this.onShown,
+                onHidden: this.onHidden,
+                
                 ref: 'control'
             }, 
             {
               default: () => [$calendar],
-              [SLOT_NAME_BUTTON_CONTENT]: () => $slots[SLOT_NAME_BUTTON_CONTENT] || this.defaultButtonFn
+              [SLOT_NAME_BUTTON_CONTENT]: ({ isHovered, hasFocus }) => [$slots[SLOT_NAME_BUTTON_CONTENT] || h(BIconCalendar, {
+                'aria-hidden': 'true'
+                })]
             }
         )
     }

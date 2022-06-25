@@ -157,15 +157,19 @@ export const BVFormBtnLabelControl = /*#__PURE__*/ defineComponent({
                   // Handle ENTER, SPACE and DOWN
                   onKeydown: this.toggle, 
                   // We use capture phase (`!` prefix) since focus and blur do not bubble
-                  '!onFocus': this.setFocus,
-                  '!onBlur': this.setFocus,
+                  // '!onFocus': this.setFocus,
+                  // '!onBlur': this.setFocus,
+                  onBlur: this.setFocus,
+                  onFocus: this.setFocus,
                   ref: 'toggle'
-              }, [
+              }, {
+                default: () => [
                   this.hasNormalizedSlot(SLOT_NAME_BUTTON_CONTENT) ?
                   this.normalizeSlot(SLOT_NAME_BUTTON_CONTENT, btnScope) :
                   /* istanbul ignore next */
                   h(BIconChevronDown, { scale: 1.25 })
-              ]
+                 ]
+              }
             ), 
             [['b-hover', this.handleHover]])
 
@@ -198,7 +202,9 @@ export const BVFormBtnLabelControl = /*#__PURE__*/ defineComponent({
                  // Handle ESC
                 onKeydown: this.onKeydown,
                 ref: 'menu'
-            }, [this.normalizeSlot(SLOT_NAME_DEFAULT, { opened: visible })]
+            }, {
+              default: () => [this.normalizeSlot(SLOT_NAME_DEFAULT, { opened: visible })]
+            }
         )
 
         // Value label
@@ -224,11 +230,13 @@ export const BVFormBtnLabelControl = /*#__PURE__*/ defineComponent({
                     onClick: /* istanbul ignore next */ event => {
                         stopEvent(event, { preventDefault: false })
                     }
-                }, [
+                }, {
+                  default: () => [
                     value ? this.formattedValue || value : this.placeholder || '',
                     // Add the selected label for screen readers when a value is provided
                     value && labelSelected ? h('bdi', { class: 'sr-only' }, labelSelected) : ''
-                ]
+                  ]
+                }
             ), 
             [['b-hover', this.handleHover]])
 
@@ -236,8 +244,8 @@ export const BVFormBtnLabelControl = /*#__PURE__*/ defineComponent({
         return h(
             'div', {
                 class: ['b-form-btn-label-control dropdown',
-                    this.directionClass,
-                    this.boundaryClass, [{
+                            this.directionClass,
+                            this.boundaryClass, {
                             'btn-group': buttonOnly,
                             'form-control': !buttonOnly,
                             focus: hasFocus && !buttonOnly,
@@ -246,7 +254,6 @@ export const BVFormBtnLabelControl = /*#__PURE__*/ defineComponent({
                             'is-invalid': state === false
                         },
                         buttonOnly ? null : this.sizeFormClass
-                    ]
                 ],
                 id: idWrapper,
                 role: buttonOnly ? null : 'group',
@@ -257,7 +264,9 @@ export const BVFormBtnLabelControl = /*#__PURE__*/ defineComponent({
                 'aria-labelledby': idLabel,
                 'aria-invalid': state === false || (required && !value) ? 'true' : null,
                 'aria-required': required ? 'true' : null
-            }, [$button, $hidden, $menu, $label]
+            }, {
+              default: () => [$button, $hidden, $menu, $label]
+            }
         )
     }
 })

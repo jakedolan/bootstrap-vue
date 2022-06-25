@@ -25,6 +25,7 @@ export const BFormRadio = /*#__PURE__*/ defineComponent({
         }
     },
     props,
+    expose: ['focus'],
     computed: {
         bvGroup() {
             return this.getBvGroup()

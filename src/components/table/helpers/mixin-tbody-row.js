@@ -252,22 +252,20 @@ export const tbodyRowMixin = defineComponent({
                     BTr, {
                         class: [userTrClasses, selectableClasses, rowShowDetails ? 'b-table-has-details' : ''],
                         props: { variant: item[FIELD_KEY_ROW_VARIANT] || null },
-                        attrs: {
-                            id: rowId,
-                            ...userTrAttrs,
-                            // Users cannot override the following attributes
-                            tabindex: hasRowClickHandler ? '0' : null,
-                            'data-pk': primaryKeyValue || null,
-                            'aria-details': detailsId,
-                            'aria-owns': detailsId,
-                            'aria-rowindex': ariaRowIndex,
-                            ...selectableAttrs
-                        },
-                        on: {
-                            // Note: These events are not A11Y friendly!
-                            mouseenter: this.rowHovered,
-                            mouseleave: this.rowUnhovered
-                        },
+                        
+                        id: rowId,
+                        ...userTrAttrs,
+                        // Users cannot override the following attributes
+                        tabindex: hasRowClickHandler ? '0' : null,
+                        'data-pk': primaryKeyValue || null,
+                        'aria-details': detailsId,
+                        'aria-owns': detailsId,
+                        'aria-rowindex': ariaRowIndex,
+                        ...selectableAttrs,
+                        // Note: These events are not A11Y friendly!
+                        onMouseenter: this.rowHovered,
+                        onMouseleave: this.rowUnhovered,
+                        
                         key: `__b-table-row-${rowKey}__`,
                         ref: 'item-rows',
                         refInFor: true

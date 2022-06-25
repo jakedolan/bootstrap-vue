@@ -75,6 +75,7 @@ export const BFormTimepicker = /*#__PURE__*/ defineComponent({
     },
     mixins: [idMixin, modelMixin],
     props,
+    emits: [EVENT_NAME_CONTEXT, EVENT_NAME_HIDDEN, EVENT_NAME_SHOWN, MODEL_EVENT_NAME],
     data() {
         return {
             // We always use `HH:mm:ss` value internally
@@ -167,8 +168,8 @@ export const BFormTimepicker = /*#__PURE__*/ defineComponent({
         },
         // Render function helpers
         defaultButtonFn({ isHovered, hasFocus }) {
-            return this.$createElement(isHovered || hasFocus ? BIconClockFill : BIconClock, {
-                attrs: { 'aria-hidden': 'true' }
+            return h(isHovered || hasFocus ? BIconClockFill : BIconClock, {
+                'aria-hidden': 'true'
             })
         }
     },
@@ -186,16 +187,14 @@ export const BFormTimepicker = /*#__PURE__*/ defineComponent({
             $footer.push(
                 h(
                     BButton, {
-                        props: {
-                            size: 'sm',
-                            disabled: disabled || readonly,
-                            variant: this.nowButtonVariant
-                        },
-                        attrs: { 'aria-label': label || null },
-                        on: { click: this.onNowButton },
+                        size: 'sm',
+                        disabled: disabled || readonly,
+                        variant: this.nowButtonVariant,
+                        'aria-label': label || null,
+                        onClick: this.onNowButton,
                         key: 'now-btn'
                     },
-                    label
+                    { default: () => [label] }
                 )
             )
         }
@@ -209,16 +208,14 @@ export const BFormTimepicker = /*#__PURE__*/ defineComponent({
             $footer.push(
                 h(
                     BButton, {
-                        props: {
-                            size: 'sm',
-                            disabled: disabled || readonly,
-                            variant: this.resetButtonVariant
-                        },
-                        attrs: { 'aria-label': label || null },
-                        on: { click: this.onResetButton },
+                        size: 'sm',
+                        disabled: disabled || readonly,
+                        variant: this.resetButtonVariant,
+                        'aria-label': label || null,
+                        onClick: this.onResetButton,
                         key: 'reset-btn'
                     },
-                    label
+                    { default: () => [label] }
                 )
             )
         }
@@ -234,16 +231,14 @@ export const BFormTimepicker = /*#__PURE__*/ defineComponent({
             $footer.push(
                 h(
                     BButton, {
-                        props: {
-                            size: 'sm',
-                            disabled,
-                            variant: this.closeButtonVariant
-                        },
-                        attrs: { 'aria-label': label || null },
-                        on: { click: this.onCloseButton },
+                        size: 'sm',
+                        disabled,
+                        variant: this.closeButtonVariant,
+                        'aria-label': label || null,
+                        onClick: this.onCloseButton,
                         key: 'close-btn'
                     },
-                    label
+                    { default: () => label }
                 )
             )
         }
@@ -252,57 +247,51 @@ export const BFormTimepicker = /*#__PURE__*/ defineComponent({
             $footer = [
                 h(
                     'div', {
-                        staticClass: 'b-form-date-controls d-flex flex-wrap',
-                        class: {
+                        class: ['b-form-date-controls d-flex flex-wrap', {
                             'justify-content-between': $footer.length > 1,
                                 'justify-content-end': $footer.length < 2
-                        }
+                        }]
                     },
-                    $footer
+                    { default: () => [$footer] }
                 )
             ]
         }
 
         const $time = h(
             BTime, {
-                staticClass: 'b-form-time-control',
-                props: {
-                    ...pluckProps(timeProps, $props),
-                    value: localHMS,
-                    hidden: !this.isVisible,
-                    emitter: this.emitter
-                },
-                on: {
-                    input: this.onInput,
-                    context: this.onContext
-                },
+                class: ['b-form-time-control'],
+                ...pluckProps(timeProps, $props),
+                value: localHMS,
+                hidden: !this.isVisible,
+                emitter: this.emitter,
+            
+                onInput: this.onInput,
+                onContext: this.onContext,
                 ref: 'time'
             },
-            $footer
+            { default: () => $footer }
         )
 
         return h(
             BVFormBtnLabelControl, {
-                staticClass: 'b-form-timepicker',
-                props: {
-                    ...pluckProps(formBtnLabelControlProps, $props),
-                    id: this.safeId(),
-                    value: localHMS,
-                    emitter: this.emitter,
-                    formattedValue: localHMS ? this.formattedValue : '',
-                    placeholder,
-                    rtl: this.isRTL,
-                    lang: this.computedLang
-                },
-                on: {
-                    show: this.onShow,
-                    shown: this.onShown,
-                    hidden: this.onHidden
-                },
+                class: ['b-form-timepicker'],
+                ...pluckProps(formBtnLabelControlProps, $props),
+                id: this.safeId(),
+                value: localHMS,
+                emitter: this.emitter,
+                formattedValue: localHMS ? this.formattedValue : '',
+                placeholder,
+                rtl: this.isRTL,
+                lang: this.computedLang,
+                onShow: this.onShow,
+                onShown: this.onShown,
+                onHidden: this.onHidden,
                 ref: 'control'
             }, {
               default: () => [$time],
-              [SLOT_NAME_BUTTON_CONTENT]: () => $slots[SLOT_NAME_BUTTON_CONTENT] || this.defaultButtonFn
+              [SLOT_NAME_BUTTON_CONTENT]: () => $slots[SLOT_NAME_BUTTON_CONTENT] || h(BIconClock, {
+                'aria-hidden': 'true'
+                })
             }
         )
     }

@@ -26,7 +26,7 @@ const {
     props: modelProps,
     prop: MODEL_PROP_NAME,
     event: MODEL_EVENT_NAME
-} = makeModelMixin('checked')
+} = makeModelMixin('checked', { defaultValue: null, event: `update:checked` })
 
 export { MODEL_PROP_NAME, MODEL_EVENT_NAME }
 
@@ -83,7 +83,7 @@ export const formRadioCheckGroupMixin = defineComponent({
             return this.name || this.safeId()
         },
         groupClasses() {
-            const { inline, size, validated } = this
+            const { $attrs, inline, size, validated } = this
 
             let classes = { 'was-validated': validated }
             if (this.buttons) {
@@ -94,7 +94,8 @@ export const formRadioCheckGroupMixin = defineComponent({
                         'btn-group': inline,
                         'btn-group-vertical': !inline,
                         [`btn-group-${size}`]: size
-                    }
+                    },
+                    $attrs.class
                 ]
             }
 
@@ -126,26 +127,29 @@ export const formRadioCheckGroupMixin = defineComponent({
                     // Individual radios or checks can be disabled in a group
                     disabled: option.disabled || false,
                     id: this.safeId(key),
-                    value: option.value,
-                        // We don't need to include these, since the input's will know they are inside here
-                        // form: this.form || null,
-                        // name: this.groupName,
-                        // required: Boolean(this.name && this.required),
-                        // state: this.state
+                    modelValue: option.value,
+                    // We don't need to include these, since the input's will know they are inside here
+                    // form: this.form || null,
+                    // name: this.groupName,
+                    // required: Boolean(this.name && this.required),
+                    // state: this.state
                     ...attrs,
                     key
-                }, [h('span', { ...htmlOrText(option.html, option.text) })]
+                }, {
+                    default: () => [h('span', {...htmlOrText(option.html, option.text) })]
+                }
             )
         })
 
         return h(
             'div', {
                 class: [this.groupClasses, 'bv-no-focus-ring'],
-                ...omit(this.$attrs, PASS_DOWN_ATTRS),
+                ...omit(this.$attrs, [...PASS_DOWN_ATTRS, 'class', 'style']),
                 'aria-invalid': this.computedAriaInvalid,
                 'aria-required': this.required ? 'true' : null,
                 id: this.safeId(),
                 role: isRadioGroup ? 'radiogroup' : 'group',
+                style: this.$attrs.style,
                 // Add `tabindex="-1"` to allow group to be focused if needed by screen readers
                 tabindex: '-1'
             }, [this.normalizeSlot(SLOT_NAME_FIRST), $inputs, this.normalizeSlot()]

@@ -45,13 +45,10 @@ export const BIcon = /*#__PURE__*/ defineComponent({
     const icon = pascalCase(trim($props.icon || '')).replace(RX_ICON_PREFIX, '')
 
 
-    console.log("## iconProps", iconProps);
-    console.log("## $props", $props);
     const componentData = {
       ...pluckProps(iconProps, $props)      
     }
 
-    console.log('## componentData', componentData)
     // If parent context exists, we check to see if the icon has been registered
     // either locally in the parent component, or globally at the `$root` level
     // If not registered, we render a blank icon

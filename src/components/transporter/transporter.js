@@ -39,7 +39,7 @@ export const BVTransporter = /*#__PURE__*/ defineComponent({
         return h(Teleport, {
                 to: this.container
             },
-            this.normalizeSlot()
+            { default: () => this.normalizeSlot() }
         )
     }
 })

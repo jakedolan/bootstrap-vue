@@ -71,7 +71,7 @@ export const listenOnRootMixin = defineComponent({
         listenOnRoot(event, callback) {
             // console.log('## BV_EVENT_ROOT', this.bvEventRoot);
             if (this.bvEventRoot) {
-                console.log("## bvEventRoot $on", { event, callback })
+                // console.log("## bvEventRoot $on", { event, callback })
                 this.bvEventRoot.$on(event, callback)
                 this.registerRootListener(event, callback)
             }
@@ -130,7 +130,7 @@ export const listenOnRootMixin = defineComponent({
          */
         emitOnRoot(event, ...args) {
             if (this.bvEventRoot) {
-                console.log('## emitOnRoot', { event, args });
+                // console.log('## emitOnRoot', { event, args });
                 this.bvEventRoot.$emit(event, ...args)
             }
         }

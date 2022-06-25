@@ -189,6 +189,7 @@ export const BCalendar = defineComponent({
     // Mixin order is important!
     mixins: [attrsMixin, idMixin, modelMixin, normalizeSlotMixin],
     props,
+    emits: [EVENT_NAME_CONTEXT, EVENT_NAME_SELECTED, MODEL_EVENT_NAME],
     data() {
         const selected = formatYMD(this[MODEL_PROP_NAME]) || ''
         return {
@@ -792,13 +793,15 @@ export const BCalendar = defineComponent({
                 onClick: this.onHeaderClick,
                 onFocus: this.onHeaderClick
             },
-            this.selectedDate ? [
-                // We use `bdi` elements here in case the label doesn't match the locale
-                // Although IE 11 does not deal with <BDI> at all (equivalent to a span)
-                h('bdi', { class: ['sr-only'] }, ` (${toString(this.labelSelected)}) `),
-                h('bdi', this.formatDateString(this.selectedDate))
-            ] :
-            this.labelNoDateSelected || '\u00a0' // '&nbsp;'
+            { default: () => 
+              this.selectedDate ? [
+                  // We use `bdi` elements here in case the label doesn't match the locale
+                  // Although IE 11 does not deal with <BDI> at all (equivalent to a span)
+                  h('bdi', { class: ['sr-only'] }, ` (${toString(this.labelSelected)}) `),
+                  h('bdi', this.formatDateString(this.selectedDate))
+              ] :
+              this.labelNoDateSelected || '\u00a0' // '&nbsp;'
+            }
         )
         $header = h(
             this.headerTag, {
@@ -862,7 +865,7 @@ export const BCalendar = defineComponent({
                 'aria-hidden': disabled ? 'true' : null,
                 'aria-label': this.labelNav || null,
                 'aria-controls': gridId
-            }, [
+            }, { default: () => [
                 hideDecadeNav ? null : makeNavBtn(
                     $prevDecadeIcon,
                     this.labelPrevDecade,
@@ -912,7 +915,8 @@ export const BCalendar = defineComponent({
                     this.nextDecadeDisabled,
                     'Ctrl+Alt+PageUp'
                 )
-            ]
+            ] 
+          }
         )
 
         // Caption for calendar grid
@@ -924,7 +928,7 @@ export const BCalendar = defineComponent({
                 'aria-atomic': isLive ? 'true' : null,
                 key: 'grid-caption'
             },
-            this.formatYearMonth(this.calendarFirstDay)
+            { default: () => this.formatYearMonth(this.calendarFirstDay) }
         )
 
         // Calendar weekday headings
@@ -1012,7 +1016,7 @@ export const BCalendar = defineComponent({
                             'aria-selected': isSelected ? 'true' : null,
                             'aria-current': isSelected ? 'date' : null,
                             key: dIndex
-                        }, [$btn]
+                        }, { default: () => [$btn] }
                     )
                 })
                 // Return the week "row"
@@ -1023,7 +1027,7 @@ export const BCalendar = defineComponent({
                     class: ['row no-gutters'],
                     key: week[0].ymd
                 },
-                $cells
+                { default: () => $cells }
             )
         })
         $gridBody = h(
@@ -1041,7 +1045,7 @@ export const BCalendar = defineComponent({
                 class: ['b-calendar-grid-help border-top small text-muted text-center bg-light'],
                 id: gridHelpId
                 
-            }, [h('div', { class: ['small'] }, this.labelHelp)]
+            }, { default: () => [h('div', { class: ['small'] }, this.labelHelp)] }
         )
 
         const $grid = h(

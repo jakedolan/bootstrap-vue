@@ -110,6 +110,7 @@ export const BFormSpinbutton = /*#__PURE__*/ defineComponent({
     mixins: [attrsMixin, idMixin, modelMixin, formSizeMixin, formStateMixin, normalizeSlotMixin],
     inheritAttrs: false,
     props,
+    emits: [MODEL_EVENT_NAME, EVENT_NAME_CHANGE],
     data() {
         return {
             localValue: toFloat(this[MODEL_PROP_NAME], null),
@@ -199,7 +200,7 @@ export const BFormSpinbutton = /*#__PURE__*/ defineComponent({
         },
         computedAttrs() {
             return {
-                ...this.bvAttrs,
+                ...omit(this.bvAttrs, ['class']),
                 role: 'group',
                 lang: this.computedLocale,
                 tabindex: this.disabled ? null : '-1',
@@ -219,7 +220,7 @@ export const BFormSpinbutton = /*#__PURE__*/ defineComponent({
 
             return {
                 dir: this.computedRTL ? 'rtl' : 'ltr',
-                ...this.bvAttrs,
+                ...omit(this.bvAttrs, ['class']),
                 id: spinId,
                 role: 'spinbutton',
                 tabindex: disabled ? null : '0',
@@ -467,7 +468,7 @@ export const BFormSpinbutton = /*#__PURE__*/ defineComponent({
                 }
                 return h(
                     'button', {
-                        
+
                         class: ['btn btn-sm border-0 rounded-0', { 'py-0': !vertical }],
                         tabindex: '-1',
                         type: 'button',
@@ -480,7 +481,7 @@ export const BFormSpinbutton = /*#__PURE__*/ defineComponent({
                         onTouchstart: handler,
                         key: keyRef || null,
                         ref: keyRef
-                    }, [this.normalizeSlot(slotName, scope) || $icon]
+                    }, { default: () => [this.normalizeSlot(slotName, scope) || $icon] }
                 )
             }
             // TODO: Add button disabled state when `wrap` is `false` and at value max/min
@@ -519,23 +520,25 @@ export const BFormSpinbutton = /*#__PURE__*/ defineComponent({
             // We use 'output' element to make this accept a `<label for="id">` (Except IE)
             'output', {
                 class: ['flex-grow-1', {
-                  'd-flex': vertical,
-                  'align-self-center': !vertical,
-                  'align-items-center': vertical,
-                  'border-top': vertical,
-                  'border-bottom': vertical,
-                  'border-left': !vertical,
-                  'border-right': !vertical
+                    'd-flex': vertical,
+                    'align-self-center': !vertical,
+                    'align-items-center': vertical,
+                    'border-top': vertical,
+                    'border-bottom': vertical,
+                    'border-left': !vertical,
+                    'border-right': !vertical
                 }],
                 ...this.computedSpinAttrs,
                 key: 'output',
                 ref: 'spinner'
-            }, [h('bdi', hasValue ? computedFormatter(value) : this.placeholder || '')]
+            }, { default: () => [h('bdi', hasValue ? computedFormatter(value) : this.placeholder || '')] }
         )
 
         return h(
             'div', {
-                class: ['b-form-spinbutton form-control', {
+                class: [
+                    this.bvAttrs.class,
+                    'b-form-spinbutton form-control', {
                         disabled,
                         readonly,
                         focus: this.hasFocus,
@@ -545,16 +548,20 @@ export const BFormSpinbutton = /*#__PURE__*/ defineComponent({
                         'flex-column': vertical
                     },
                     this.sizeFormClass,
-                    this.stateClass
+                    this.stateClass,
+
+
                 ],
                 ...this.computedAttrs,
                 onKeydown: this.onKeydown,
                 onKeyup: this.onKeyup,
                 // We use capture phase (`!` prefix) since focus and blur do not bubble
-                '!onFocus': this.onFocusBlur,
-                '!onBlur': this.onFocusBlur
-            },
-            vertical ? [$increment, $hidden, $spin, $decrement] : [$decrement, $hidden, $spin, $increment]
+                // '!onFocus': this.onFocusBlur,
+                // '!onBlur': this.onFocusBlur
+                onFocus: this.onFocusBlur,
+                onBlur: this.onFocusBlur
+            }, { default: () => vertical ? [$increment, $hidden, $spin, $decrement] : [$decrement, $hidden, $spin, $increment] }
+
         )
     }
 })
