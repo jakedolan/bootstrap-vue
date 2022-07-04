@@ -71,7 +71,7 @@ export const listenOnRootMixin = defineComponent({
         listenOnRoot(event, callback) {
             // console.log('## BV_EVENT_ROOT', this.bvEventRoot);
             if (this.bvEventRoot) {
-                // console.log("## bvEventRoot $on", { event, callback })
+                // console.log("## bvEventRoot $on", { event, safeId: this.safeId?.() })
                 this.bvEventRoot.$on(event, callback)
                 this.registerRootListener(event, callback)
             }
@@ -92,8 +92,9 @@ export const listenOnRootMixin = defineComponent({
          */
         listenOnRootOnce(event, callback) {
 
-            // console.log('## BV_EVENT_ROOT', this.bvEventRoot);
+            
             if (this.bvEventRoot) {
+                // console.log('## BV_EVENT_ROOT $once', { event, safeId: this.safeId?.()});
                 const _callback = (...args) => {
                     this.unregisterRootListener(_callback)
                         // eslint-disable-next-line node/no-callback-literal
@@ -116,8 +117,9 @@ export const listenOnRootMixin = defineComponent({
         listenOffRoot(event, callback) {
             this.unregisterRootListener(event, callback)
 
-            // console.log('## BV_EVENT_ROOT', this.bvEventRoot);
+            
             if (this.bvEventRoot) {
+                // console.log('## BV_EVENT_ROOT $off', { safeId: this.safeId?.() });
                 this.bvEventRoot.$off(event, callback)
             }
         },
@@ -130,7 +132,7 @@ export const listenOnRootMixin = defineComponent({
          */
         emitOnRoot(event, ...args) {
             if (this.bvEventRoot) {
-                // console.log('## emitOnRoot', { event, args });
+                // console.log('## bv emitOnRoot $emit', { event, args, safeId: this.safeId?.() });
                 this.bvEventRoot.$emit(event, ...args)
             }
         }

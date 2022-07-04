@@ -33,10 +33,11 @@ const SELECTOR_NAVBAR_TOGGLER = '.navbar-toggler'
 
 // --- Main component ---
 
+const modals = ref([])
+
 // @vue/component
 export function useModalManager() {
 
-    const modals = ref([])
     const baseZIndex = ref(null)
     const scrollbarWidth = ref(null)
     const isBodyOverflowing = ref(false)
@@ -67,7 +68,7 @@ export function useModalManager() {
         requestAF(() => {
             updateModals(newValue || [])
         })
-    })
+    }, { deep: true })
 
     // Public methods
     function registerModal(modal) {
@@ -116,15 +117,16 @@ export function useModalManager() {
     }
 
     // Private methods
-    function updateModals(modals) {
+    function updateModals(localModals) {
         const localBaseZIndex = getBaseZIndex()
         const localScrollbarWidth = getScrollbarWidth()
-        modals.forEach((modal, index) => {
+        localModals.forEach((modal, index) => {
             // We update data values on each modal
             modal.zIndex = localBaseZIndex + index
             modal.scrollbarWidth = localScrollbarWidth
-            modal.isTop = index === modals.value.length - 1
+            modal.isTop = index === localModals.length - 1
             modal.isBodyOverflowing = isBodyOverflowing.value
+            
         })
     }
 
@@ -132,7 +134,7 @@ export function useModalManager() {
         if (modal) {
             modal.zIndex = getBaseZIndex()
             modal.isTop = true
-            modal.isBodyOverflowing = false
+            modal.isBodyOverflowing = false          
         }
     }
 

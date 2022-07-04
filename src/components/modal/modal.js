@@ -649,7 +649,6 @@ export const BModal = /*#__PURE__*/ defineComponent({
         },
         // Document focusin listener
         focusHandler(event) {
-            // console.log("## focusHandler", event);
             // If focus leaves modal content, bring it back
             const content = this.$refs.content
             const { target } = event
@@ -671,7 +670,6 @@ export const BModal = /*#__PURE__*/ defineComponent({
             if (bottomTrap && target === bottomTrap) {
                 // If user pressed TAB out of modal into our bottom trab trap element
                 // Find the first tabable element in the modal content and focus it
-                // console.log("## attemptFocus (bottomTrap)", tabables[0]);
                 if (attemptFocus(tabables[0])) {
                     // Focus was successful
                     return
@@ -679,14 +677,12 @@ export const BModal = /*#__PURE__*/ defineComponent({
             } else if (topTrap && target === topTrap) {
                 // If user pressed CTRL-TAB out of modal and into our top tab trap element
                 // Find the last tabable element in the modal content and focus it
-                // console.log("## attemptFocus (topTrap)", tabables[tabables.length - 1]);
                 if (attemptFocus(tabables[tabables.length - 1])) {
                     // Focus was successful
                     return
                 }
             }
             // Otherwise focus the modal content container
-            // console.log("## attemptFocus (other)", content);
             attemptFocus(content, { preventScroll: true })
         },
         // Turn on/off focusin listener
@@ -974,6 +970,8 @@ export const BModal = /*#__PURE__*/ defineComponent({
                 )
             }
             const $wrappedBackdrop = h(BVTransition, { noFade: this.noFade }, { default: () => [$backdrop] })
+
+
 
             // Assemble modal and backdrop in an outer <div>
             return h(

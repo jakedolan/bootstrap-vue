@@ -305,7 +305,7 @@ export const formRadioCheckMixin = defineComponent({
                         'form-check-label': isPlain,
                         'custom-control-label': isCustom
                     },
-                    // for: this.safeId() 
+                    for: this.safeId()
                 },
                 $content
             )

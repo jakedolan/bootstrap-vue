@@ -90,12 +90,15 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
     },
     watch: {
         [MODEL_PROP_NAME](newValue) {
+            // console.log(`## bvCollapse [${MODEL_PROP_NAME}](${newValue}) watcher`, { safeId: this.safeId() })
             if (newValue !== this.show) {
                 this.show = newValue
             }
         },
         show(newValue, oldValue) {
+
             if (newValue !== oldValue) {
+                // console.log("## bvCollapse emitState from show watcher", { safeId: this.safeId() })
                 this.emitState()
             }
         }
@@ -104,6 +107,7 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
         this.show = this[MODEL_PROP_NAME]
     },
     mounted() {
+
         this.show = this[MODEL_PROP_NAME]
             // Listen for toggle events to open/close us
         this.listenOnRoot(ROOT_ACTION_EVENT_NAME_TOGGLE, this.handleToggleEvent)
@@ -115,10 +119,14 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
             this.handleResize()
         }
         this.$nextTick(() => {
-                this.emitState()
-            })
+            // console.log("## bvCollapse emitState from mounted", { safeId: this.safeId() })
+            this.emitState()
+        })
+
+        // console.log("## bvCollapse mounted", { safeId: this.safeId() })
             // Listen for "Sync state" requests from `v-b-toggle`
         this.listenOnRoot(ROOT_ACTION_EVENT_NAME_REQUEST_STATE, id => {
+            // console.log('## bvCollapse id/safeId', { id, safeId: this.safeId() });
             if (id === this.safeId()) {
                 this.$nextTick(this.emitSync)
             }
@@ -156,6 +164,7 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
             eventOnOff(on, window, 'orientationchange', this.handleResize, EVENT_OPTIONS_NO_CAPTURE)
         },
         toggle() {
+            // console.log("## bv toggle()", { safeId: this.safeId() })
             this.show = !this.show
         },
         onEnter() {
@@ -177,6 +186,7 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
             this.$emit(EVENT_NAME_HIDDEN)
         },
         emitState() {
+          // console.log("## bv emitState()", { safeId: this.safeId() })
             const { show, accordion } = this
             const id = this.safeId()
 
@@ -190,9 +200,10 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
             }
         },
         emitSync() {
-                // Emit a private event every time this component updates to ensure
-                // the toggle button is in sync with the collapse's state
-                // It is emitted regardless if the visible state changes
+            // console.log("## bvCollapse emitSync", { safeId: this.safeId() });
+            // Emit a private event every time this component updates to ensure
+            // the toggle button is in sync with the collapse's state
+            // It is emitted regardless if the visible state changes
             this.emitOnRoot(ROOT_EVENT_NAME_SYNC_STATE, this.safeId(), this.show)
         },
         checkDisplayBlock() {
@@ -209,6 +220,7 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
             return isBlock
         },
         clickHandler(event) {
+          // console.log("## bv clickHandler()", { safeId: this.safeId() })
             const { target: el } = event
             // If we are in a nav/navbar, close the collapse when non-disabled link clicked
             /* istanbul ignore next: can't test `getComputedStyle()` in JSDOM */
@@ -229,6 +241,8 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
             }
         },
         handleAccordionEvent(openedId, openAccordion) {
+          
+          // console.log("## bv handleAccordionEvent()", { safeId: this.safeId() })
             const { accordion, show } = this
             if (!accordion || accordion !== openAccordion) {
                 return
@@ -241,6 +255,7 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
             }
         },
         handleResize() {
+          // console.log("## bv handleResize()", { safeId: this.safeId() })
             // Handler for orientation/resize to set collapsed state in nav/navbar
             this.show = getCS(this.$el).display === 'block'
         }
@@ -259,18 +274,18 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
             [vShow, this.show]
         ])
 
-        const test = h('span', `#${visible}#`);
-
-        return h('div', [test, h(
-            BVCollapse, {
-                appear,
-                onEnter: this.onEnter,
-                onAfterEnter: this.onAfterEnter,
-                onLeave: this.onLeave,
-                onAfterLeave: this.onAfterLeave
-            }, {
-                default: () => [$content]
-            }
-        )])
+        return h('div', {}, {
+            default: () => [h(
+                BVCollapse, {
+                    appear,
+                    onEnter: this.onEnter,
+                    onAfterEnter: this.onAfterEnter,
+                    onLeave: this.onLeave,
+                    onAfterLeave: this.onAfterLeave
+                }, {
+                    default: () => [$content]
+                }
+            )]
+        })
     }
 })
