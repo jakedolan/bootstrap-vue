@@ -120,7 +120,8 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
         }
         this.$nextTick(() => {
             // console.log("## bvCollapse emitState from mounted", { safeId: this.safeId() })
-            this.emitState()
+            // turning off component $emit from onmounted as that creates an odd racecondition when using v-model.
+            this.emitState(false)
         })
 
         // console.log("## bvCollapse mounted", { safeId: this.safeId() })
@@ -185,12 +186,14 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
             this.transitioning = false
             this.$emit(EVENT_NAME_HIDDEN)
         },
-        emitState() {
+        emitState(localEmit = true) {
           // console.log("## bv emitState()", { safeId: this.safeId() })
             const { show, accordion } = this
             const id = this.safeId()
 
-            this.$emit(MODEL_EVENT_NAME, show)
+            if (localEmit) {
+              this.$emit(MODEL_EVENT_NAME, show)
+            }
 
             // Let `v-b-toggle` know the state of this collapse
             this.emitOnRoot(ROOT_EVENT_NAME_STATE, id, show)
