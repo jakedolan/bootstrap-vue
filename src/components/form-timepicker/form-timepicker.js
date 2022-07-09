@@ -24,7 +24,7 @@ const {
     props: modelProps,
     prop: MODEL_PROP_NAME,
     event: MODEL_EVENT_NAME
-} = makeModelMixin('value', {
+} = makeModelMixin('modelValue', {
     type: PROP_TYPE_STRING,
     defaultValue: ''
 })
