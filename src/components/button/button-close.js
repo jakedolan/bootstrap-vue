@@ -30,7 +30,7 @@ export const BButtonClose = /*#__PURE__*/ defineComponent({
     functional: true,
     props,
     render() {
-      const { $props, $slots } = this
+        const { $props, $slots } = this
 
         const componentData = {
             class: ['close', {
@@ -40,24 +40,20 @@ export const BButtonClose = /*#__PURE__*/ defineComponent({
             disabled: $props.disabled,
             'aria-label': $props.ariaLabel ? String($props.ariaLabel) : null,
             onClick: (event) => {
-                    // Ensure click on button HTML content is also disabled
-                    /* istanbul ignore if: bug in JSDOM still emits click on inner element */
-                    if ($props.disabled && isEvent(event)) {
-                        stopEvent(event)
-                    }
+                // Ensure click on button HTML content is also disabled
+                /* istanbul ignore if: bug in JSDOM still emits click on inner element */
+                if ($props.disabled && isEvent(event)) {
+                    stopEvent(event)
                 }
+            }
         }
 
-        // Careful not to override the default slot with innerHTML
-        if (!hasNormalizedSlot(SLOT_NAME_DEFAULT, $slots)) {
-            componentData.innerHTML = $props.content;
-        }
+        componentData.innerHTML = $props.content;
 
         return h(
             'button',
-            componentData,
-            {
-              default: () => normalizeSlot(SLOT_NAME_DEFAULT, {}, $slots)
+            componentData, {
+                default: () => [$props.content]
             }
         )
     }
