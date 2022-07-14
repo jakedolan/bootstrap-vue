@@ -30,14 +30,13 @@ export const BNavItem = /*#__PURE__*/ defineComponent({
         return h(
             'li',
             mergeData(omit(data, ['on']), {
-                staticClass: 'nav-item'
+                class: 'nav-item'
             }), [
                 h(
                     BLink, {
-                        staticClass: 'nav-link',
-                        class: props.linkClasses,
-                        attrs: props.linkAttrs,
-                        props: pluckProps(linkProps, props),
+                        class: ['nav-link', props.linkClasses],
+                        ...(props.linkAttrs || {}),
+                        ...pluckProps(linkProps, props),
                         on: listeners
                     },
                     children

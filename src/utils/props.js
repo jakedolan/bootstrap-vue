@@ -97,19 +97,3 @@ const configurablePropDefaultFnName = makePropConfigurable({}, '', '').default.n
 export const hasPropFunction = fn =>
     isFunction(fn) && fn.name && fn.name !== configurablePropDefaultFnName
 
-    
-// This helper class assists in merging the props (of String | Array | Object) into the newly merged staticClass and class properties of the vue render function
-// returns either string or object that can be resolved a class prop array.
-export const mergeClassProp = (prop) => {
-  if (isUndefinedOrNullOrEmpty(prop)) {
-      return '';
-  } else if (isString(prop)) {
-      return prop;
-  } else if (isArray(prop)) {
-      return prop.join(' ');
-  } else if (isObject(prop)) {
-      return prop;
-  } else {
-      return prop;
-  }
-}

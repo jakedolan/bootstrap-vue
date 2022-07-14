@@ -39,13 +39,13 @@ export const BCardBody = /*#__PURE__*/ defineComponent({
 
         let $title = h()
         if (props.title) {
-            $title = h(BCardTitle, { props: pluckProps(titleProps, props) })
+            $title = h(BCardTitle, { ...pluckProps(titleProps, props) })
         }
 
         let $subTitle = h()
         if (props.subTitle) {
             $subTitle = h(BCardSubTitle, {
-                props: pluckProps(subTitleProps, props),
+                ...pluckProps(subTitleProps, props),
                 class: ['mb-2']
             })
         }
@@ -53,8 +53,9 @@ export const BCardBody = /*#__PURE__*/ defineComponent({
         return h(
             props.bodyTag,
             mergeData(data, {
-                staticClass: 'card-body',
-                class: [{
+                class: [
+                  'card-body',
+                  {
                         'card-img-overlay': props.overlay,
                         [`bg-${bodyBgVariant}`]: bodyBgVariant,
                         [`border-${bodyBorderVariant}`]: bodyBorderVariant,

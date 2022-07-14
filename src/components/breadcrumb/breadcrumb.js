@@ -43,10 +43,10 @@ export const BBreadcrumb = /*#__PURE__*/ defineComponent({
                     active = idx + 1 === items.length
                 }
 
-                return h(BBreadcrumbItem, { props: {...item, active } })
+                return h(BBreadcrumbItem, { ...(item || {}), active })
             })
         }
 
-        return h('ol', mergeData(data, { staticClass: 'breadcrumb' }), childNodes)
+        return h('ol', mergeData(data, { class: 'breadcrumb' }), childNodes)
     }
 })

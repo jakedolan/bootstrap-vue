@@ -30,11 +30,10 @@ export const BListGroup = /*#__PURE__*/ defineComponent({
         let horizontal = props.horizontal === '' ? true : props.horizontal
         horizontal = props.flush ? false : horizontal
         const componentData = {
-            staticClass: 'list-group',
-            class: {
+            class: ['list-group', {
                 'list-group-flush': props.flush,
                     'list-group-horizontal': horizontal === true, [`list-group-horizontal-${horizontal}`]: isString(horizontal)
-            }
+            }]
         }
         return h(props.tag, mergeData(data, componentData), children)
     }

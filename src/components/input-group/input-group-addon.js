@@ -33,9 +33,7 @@ export const BInputGroupAddon = /*#__PURE__*/ defineComponent({
                     'input-group-append': append,
                     'input-group-prepend': !append
                 },
-                attrs: {
-                    id: props.id
-                }
+                id: props.id
             }),
             props.isText ? [h(BInputGroupText, children)] : children
         )

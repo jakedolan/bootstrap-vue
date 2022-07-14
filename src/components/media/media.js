@@ -46,11 +46,11 @@ export const BMedia = /*#__PURE__*/ defineComponent({
             const $aside = normalizeSlot(SLOT_NAME_ASIDE, slotScope, $scopedSlots, $slots)
             if ($aside) {
                 $children[rightAlign ? 'push' : 'unshift'](
-                    h(BMediaAside, { props: { right: rightAlign, verticalAlign } }, $aside)
+                    h(BMediaAside, { right: rightAlign, verticalAlign }, $aside)
                 )
             }
         }
 
-        return h(props.tag, mergeData(data, { staticClass: 'media' }), $children)
+        return h(props.tag, mergeData(data, { class: 'media' }), $children)
     }
 })

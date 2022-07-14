@@ -102,8 +102,7 @@ export const BRow = {
         return h(
             props.tag,
             mergeData(data, {
-                staticClass: 'row',
-                class: classList
+                class: ['row', classList]
             }),
             children
         )

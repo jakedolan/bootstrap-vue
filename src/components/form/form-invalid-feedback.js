@@ -38,12 +38,11 @@ export const BFormInvalidFeedback = /*#__PURE__*/ defineComponent({
                     'invalid-feedback': !tooltip,
                     'invalid-tooltip': tooltip
                 },
-                attrs: {
-                    id: props.id || null,
-                    role: props.role || null,
-                    'aria-live': ariaLive || null,
-                    'aria-atomic': ariaLive ? 'true' : null
-                }
+                id: props.id || null,
+                role: props.role || null,
+                'aria-live': ariaLive || null,
+                'aria-atomic': ariaLive ? 'true' : null
+                
             }),
             children
         )

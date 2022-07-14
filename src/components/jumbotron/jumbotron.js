@@ -59,7 +59,7 @@ export const BJumbotron = /*#__PURE__*/ defineComponent({
                 props.headerTag, {
                     class: {
                         [`display-${headerLevel}`]: headerLevel },
-                    domProps: hasHeaderSlot ? {} : htmlOrText(headerHtml, header)
+                    ...(hasHeaderSlot ? {} : htmlOrText(headerHtml, header))
                 },
                 normalizeSlot(SLOT_NAME_HEADER, slotScope, $scopedSlots, $slots)
             )
@@ -70,8 +70,8 @@ export const BJumbotron = /*#__PURE__*/ defineComponent({
         if (hasLeadSlot || lead || leadHtml) {
             $lead = h(
                 props.leadTag, {
-                    staticClass: 'lead',
-                    domProps: hasLeadSlot ? {} : htmlOrText(leadHtml, lead)
+                    class: 'lead',
+                    ...(hasLeadSlot ? {} : htmlOrText(leadHtml, lead))
                 },
                 normalizeSlot(SLOT_NAME_LEAD, slotScope, $scopedSlots, $slots)
             )
@@ -85,17 +85,20 @@ export const BJumbotron = /*#__PURE__*/ defineComponent({
 
         // If fluid, wrap content in a container
         if (props.fluid) {
-            $children = [h(BContainer, { props: { fluid: props.containerFluid } }, $children)]
+            $children = [h(BContainer, { fluid: props.containerFluid }, $children)]
         }
 
         return h(
             props.tag,
             mergeData(data, {
-                staticClass: 'jumbotron',
-                class: {
-                    'jumbotron-fluid': props.fluid, [`text-${textVariant}`]: textVariant, [`bg-${bgVariant}`]: bgVariant, [`border-${borderVariant}`]: borderVariant,
-                        border: borderVariant
-                }
+                class: ['jumbotron', 
+                        { 
+                          'jumbotron-fluid': props.fluid, 
+                          [`text-${textVariant}`]: textVariant, 
+                          [`bg-${bgVariant}`]: bgVariant, 
+                          [`border-${borderVariant}`]: borderVariant,
+                          border: borderVariant
+                        }]
             }),
             $children
         )

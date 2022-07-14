@@ -34,12 +34,10 @@ export const BSkeletonWrapper = /*#__PURE__*/ defineComponent({
             return h(
                 'div',
                 mergeData(data, {
-                    attrs: {
-                        role: 'alert',
-                        'aria-live': 'polite',
-                        'aria-busy': true
-                    },
-                    staticClass: 'b-skeleton-wrapper',
+                    role: 'alert',
+                    'aria-live': 'polite',
+                    'aria-busy': true,
+                    class: 'b-skeleton-wrapper',
                     key: 'loading'
                 }),
                 normalizeSlot(SLOT_NAME_LOADING, slotScope, $scopedSlots, $slots)

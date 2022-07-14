@@ -25,14 +25,13 @@ export const BDropdownText = /*#__PURE__*/ defineComponent({
     render(h, { props, data, children }) {
         const { tag, textClass, variant } = props
 
-        return h('li', mergeData(omit(data, ['attrs']), { attrs: { role: 'presentation' } }), [
+        return h('li', mergeData(omit(data, ['attrs']), { role: 'presentation' }), [
             h(
                 tag, {
-                    staticClass: 'b-dropdown-text',
-                    class: [textClass, {
+                    class: ['b-dropdown-text', textClass, {
                         [`text-${variant}`]: variant }],
-                    props,
-                    attrs: data.attrs || {},
+                    ...(props || {}),
+                    ...(data.attrs || {}),
                     ref: 'text'
                 },
                 children

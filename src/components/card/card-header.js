@@ -32,8 +32,7 @@ export const BCardHeader = /*#__PURE__*/ defineComponent({
         return h(
             props.headerTag,
             mergeData(data, {
-                staticClass: 'card-header',
-                class: [
+                class: ['card-header',
                     props.headerClass,
                     {
                         [`bg-${headerBgVariant}`]: headerBgVariant,
@@ -41,7 +40,7 @@ export const BCardHeader = /*#__PURE__*/ defineComponent({
                         [`text-${headerTextVariant}`]: headerTextVariant
                     }
                 ],
-                domProps: children ? {} : htmlOrText(props.headerHtml, props.header)
+                ...(children ? {} : htmlOrText(props.headerHtml, props.header))
             }),
             children
         )

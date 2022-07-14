@@ -19,8 +19,7 @@ export const BBreadcrumbItem = /*#__PURE__*/ defineComponent({
         return h(
             'li',
             mergeData(data, {
-                staticClass: 'breadcrumb-item',
-                class: { active: props.active }
+                class: ['breadcrumb-item', { active: props.active }]
             }), [h(BBreadcrumbLink, { props }, children)]
         )
     }

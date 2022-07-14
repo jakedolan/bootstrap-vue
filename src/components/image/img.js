@@ -120,14 +120,12 @@ export const BImg = /*#__PURE__*/ defineComponent({
         return h(
             'img',
             mergeData(data, {
-                attrs: {
                     src,
                     alt,
                     width: width ? toString(width) : null,
                     height: height ? toString(height) : null,
                     srcset: srcset || null,
-                    sizes: sizes || null
-                },
+                    sizes: sizes || null,
                 class: {
                     'img-thumbnail': props.thumbnail,
                         'img-fluid': props.fluid || fluidGrow,

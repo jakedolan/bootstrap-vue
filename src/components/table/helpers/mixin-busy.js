@@ -60,18 +60,17 @@ export const busyMixin = defineComponent({
             if (this.computedBusy && this.hasNormalizedSlot(SLOT_NAME_TABLE_BUSY)) {
                 return h(
                     BTr, {
-                        staticClass: 'b-table-busy-slot',
-                        class: [
+                        class: ['b-table-busy-slot',
                             isFunction(tbodyTrClass) ?
                             /* istanbul ignore next */ tbodyTrClass(null, SLOT_NAME_TABLE_BUSY) :
                             tbodyTrClass
                         ],
-                        attrs: isFunction(tbodyTrAttr) ?
-                            /* istanbul ignore next */ tbodyTrAttr(null, SLOT_NAME_TABLE_BUSY) :
-                            tbodyTrAttr,
+                        ...(isFunction(tbodyTrAttr) ?
+                            /* istanbul ignore next */ tbodyTrAttr(null, SLOT_NAME_TABLE_BUSY) || {} :
+                            tbodyTrAttr || {}),
                         key: 'table-busy-slot'
                     }, [
-                        h(BTd, { props: { colspan: this.computedFields.length || null } }, [
+                        h(BTd, { colspan: this.computedFields.length || null }, [
                             this.normalizeSlot(SLOT_NAME_TABLE_BUSY)
                         ])
                     ]

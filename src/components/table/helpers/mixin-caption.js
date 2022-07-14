@@ -33,8 +33,8 @@ export const captionMixin = defineComponent({
             if (hasCaptionSlot || caption || captionHtml) {
                 $caption = h(
                     'caption', {
-                        attrs: { id: this.captionId },
-                        domProps: hasCaptionSlot ? {} : htmlOrText(captionHtml, caption),
+                        id: this.captionId,
+                        ...(hasCaptionSlot ? {} : htmlOrText(captionHtml, caption)),
                         key: 'caption',
                         ref: 'caption'
                     },

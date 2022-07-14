@@ -33,7 +33,7 @@ export const tfootMixin = defineComponent({
                 return h(
                     BTfoot, {
                         class: this.tfootClass || null,
-                        props: { footVariant: this.footVariant || this.headVariant || null },
+                        footVariant: this.footVariant || this.headVariant || null,
                         key: 'bv-tfoot-custom'
                     },
                     this.normalizeSlot(SLOT_NAME_CUSTOM_FOOT, {

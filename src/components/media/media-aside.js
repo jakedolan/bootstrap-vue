@@ -33,10 +33,10 @@ export const BMediaAside = /*#__PURE__*/ defineComponent({
         return h(
             props.tag,
             mergeData(data, {
-                staticClass: 'media-aside',
-                class: {
-                    'media-aside-right': props.right, [`align-self-${align}`]: align
-                }
+                class: ['media-aside', {
+                        'media-aside-right': props.right, 
+                        [`align-self-${align}`]: align
+                }]
             }),
             children
         )

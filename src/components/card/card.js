@@ -73,7 +73,7 @@ export const BCard = /*#__PURE__*/ defineComponent({
         let $imgLast = h()
         if (imgSrc) {
             const $img = h(BCardImg, {
-                props: pluckProps(cardImgProps, $props, unprefixPropName.bind(null, 'img'))
+                ...pluckProps(cardImgProps, $props, unprefixPropName.bind(null, 'img'))
             })
 
             if (imgBottom) {
@@ -88,8 +88,8 @@ export const BCard = /*#__PURE__*/ defineComponent({
         if (hasHeaderSlot || header || headerHtml) {
             $header = h(
                 BCardHeader, {
-                    props: pluckProps(BCardHeaderProps, $props),
-                    domProps: hasHeaderSlot ? {} : htmlOrText(headerHtml, header)
+                    ...pluckProps(BCardHeaderProps, $props),
+                    ...(hasHeaderSlot ? {} : htmlOrText(headerHtml, header))
                 },
                 normalizeSlot(SLOT_NAME_HEADER, slotScope, $slots)
             )
@@ -99,12 +99,12 @@ export const BCard = /*#__PURE__*/ defineComponent({
 
         // Wrap content in `<card-body>` when `noBody` prop set
         if (!$props.noBody) {
-            $content = h(BCardBody, { props: pluckProps(BCardBodyProps, $props) }, $content)
+            $content = h(BCardBody, { ...pluckProps(BCardBodyProps, $props) }, $content)
 
             // When the `overlap` prop is set we need to wrap the `<b-card-img>` and `<b-card-body>`
             // into a relative positioned wrapper to don't distract a potential header or footer
             if ($props.overlay && imgSrc) {
-                $content = h('div', { staticClass: 'position-relative' }, [$imgFirst, $content, $imgLast])
+                $content = h('div', { class: 'position-relative' }, [$imgFirst, $content, $imgLast])
                     // Reset image variables since they are already in the wrapper
                 $imgFirst = h()
                 $imgLast = h()
@@ -116,8 +116,8 @@ export const BCard = /*#__PURE__*/ defineComponent({
         if (hasFooterSlot || footer || footerHtml) {
             $footer = h(
                 BCardFooter, {
-                    props: pluckProps(BCardFooterProps, $props),
-                    domProps: hasHeaderSlot ? {} : htmlOrText(footerHtml, footer)
+                    ...pluckProps(BCardFooterProps, $props),
+                    ...(hasHeaderSlot ? {} : htmlOrText(footerHtml, footer))
                 },
                 normalizeSlot(SLOT_NAME_FOOTER, slotScope, $slots)
             )
@@ -126,11 +126,10 @@ export const BCard = /*#__PURE__*/ defineComponent({
         return h(
             $props.tag,
             mergeData(data, {
-                staticClass: 'card',
-                class: {
+                class: ['card', {
                     'flex-row': imgLeft || imgStart,
                         'flex-row-reverse': (imgRight || imgEnd) && !(imgLeft || imgStart), [`text-${align}`]: align, [`bg-${bgVariant}`]: bgVariant, [`border-${borderVariant}`]: borderVariant, [`text-${textVariant}`]: textVariant
-                }
+                }]
             }), [$imgFirst, $header, $content, $footer, $imgLast]
         )
     }

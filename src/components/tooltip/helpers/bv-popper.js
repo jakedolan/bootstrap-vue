@@ -226,7 +226,7 @@ export const BVPopper = /*#__PURE__*/ defineComponent({
             this.attachment = this.getAttachment(data.placement)
         },
         /* istanbul ignore next */
-        renderTemplate(h) {
+        renderTemplate() {
             // Will be overridden by templates
             return h('div')
         }
@@ -241,11 +241,11 @@ export const BVPopper = /*#__PURE__*/ defineComponent({
                 appear: true, 
                 noFade,
                 // Events used by parent component/instance
-                beforeEnter: el => this.$emit(EVENT_NAME_SHOW, el),
-                afterEnter: el => this.$emit(EVENT_NAME_SHOWN, el),
-                beforeLeave: el => this.$emit(EVENT_NAME_HIDE, el),
-                afterLeave: el => this.$emit(EVENT_NAME_HIDDEN, el)
-            }, [this.localShow ? this.renderTemplate(h) : h()]
+                onBeforeEnter: el => this.$emit(EVENT_NAME_SHOW, el),
+                onAfterEnter: el => this.$emit(EVENT_NAME_SHOWN, el),
+                onBeforeLeave: el => this.$emit(EVENT_NAME_HIDE, el),
+                onAfterLeave: el => this.$emit(EVENT_NAME_HIDDEN, el)
+            }, [this.localShow ? this.renderTemplate() : h()]
         )
     }
 })

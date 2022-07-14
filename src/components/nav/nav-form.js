@@ -29,11 +29,9 @@ export const BNavForm = /*#__PURE__*/ defineComponent({
         const $form = h(
             BForm, {
                 class: props.formClass,
-                props: {
-                    ...pluckProps(formProps, props),
-                    inline: true
-                },
-                attrs: data.attrs,
+                ...pluckProps(formProps, props),
+                inline: true,
+                ...(data.attrs ||{}),
                 on: listeners
             },
             children
@@ -42,7 +40,7 @@ export const BNavForm = /*#__PURE__*/ defineComponent({
         return h(
             'li',
             mergeData(omit(data, ['attrs', 'on']), {
-                staticClass: 'form-inline'
+                class: 'form-inline'
             }), [$form]
         )
     }

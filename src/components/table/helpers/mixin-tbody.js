@@ -228,30 +228,30 @@ export const tbodyMixin = defineComponent({
 
             // Note: these events will only emit if a listener is registered
             const handlers = {
-                    auxclick: this.onTbodyRowMiddleMouseRowClicked,
+                    onAuxclick: this.onTbodyRowMiddleMouseRowClicked,
                     // TODO:
                     //   Perhaps we do want to automatically prevent the
                     //   default context menu from showing if there is a
                     //   `row-contextmenu` listener registered
-                    contextmenu: this.onTbodyRowContextmenu,
+                    onContextmenu: this.onTbodyRowContextmenu,
                     // The following event(s) is not considered A11Y friendly
-                    dblclick: this.onTbodyRowDblClicked
+                    onDblclick: this.onTbodyRowDblClicked
                         // Hover events (`mouseenter`/`mouseleave`) are handled by `tbody-row` mixin
                 }
                 // Add in click/keydown listeners if needed
             if (hasRowClickHandler) {
-                handlers.click = this.onTBodyRowClicked
-                handlers.keydown = this.onTbodyRowKeydown
+                handlers.onClick = this.onTBodyRowClicked
+                handlers.onKeydown = this.onTbodyRowKeydown
             }
 
             // Assemble rows into the tbody
             const $tbody = h(
                 BTbody, {
                     class: this.tbodyClass || null,
-                    props: pluckProps(BTbodyProps, this.$props),
+                    ...pluckProps(BTbodyProps, this.$props),
                     // BTbody transfers all native event listeners to the root element
                     // TODO: Only set the handlers if the table is not busy
-                    on: handlers,
+                    ...handlers,
                     ref: 'tbody'
                 },
                 $rows

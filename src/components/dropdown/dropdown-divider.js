@@ -21,14 +21,12 @@ export const BDropdownDivider = /*#__PURE__*/ defineComponent({
     functional: true,
     props,
     render(h, { props, data }) {
-        return h('li', mergeData(omit(data, ['attrs']), { attrs: { role: 'presentation' } }), [
+        return h('li', mergeData(omit(data, ['attrs']), { role: 'presentation' }), [
             h(props.tag, {
-                staticClass: 'dropdown-divider',
-                attrs: {
-                    ...(data.attrs || {}),
-                    role: 'separator',
-                    'aria-orientation': 'horizontal'
-                },
+                class: 'dropdown-divider',
+                ...(data.attrs || {}),
+                role: 'separator',
+                'aria-orientation': 'horizontal',
                 ref: 'divider'
             })
         ])

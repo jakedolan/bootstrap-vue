@@ -26,19 +26,17 @@ export const BSkeletonIcon = /*#__PURE__*/ defineComponent({
         const { icon, animation } = props
 
         const $icon = h(BIcon, {
-            staticClass: 'b-skeleton-icon',
-            props: {
-                ...props.iconProps,
-                icon
-            }
+            class: 'b-skeleton-icon',
+            ...props.iconProps,
+            icon
         })
 
         return h(
             'div',
             mergeData(data, {
-                staticClass: 'b-skeleton-icon-wrapper position-relative d-inline-block overflow-hidden',
-                class: {
-                    [`b-skeleton-animate-${animation}`]: animation }
+                class: ['b-skeleton-icon-wrapper position-relative d-inline-block overflow-hidden', {
+                        [`b-skeleton-animate-${animation}`]: animation }
+                ]
             }), [$icon]
         )
     }

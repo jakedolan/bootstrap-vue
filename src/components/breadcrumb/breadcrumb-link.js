@@ -31,12 +31,9 @@ export const BBreadcrumbLink = /*#__PURE__*/ defineComponent({
         const tag = active ? 'span' : BLink
 
         const componentData = {
-            attrs: { 'aria-current': active ? suppliedProps.ariaCurrent : null },
-            props: pluckProps(props, suppliedProps)
-        }
-
-        if (!children) {
-            componentData.domProps = htmlOrText(suppliedProps.html, suppliedProps.text)
+            'aria-current': active ? suppliedProps.ariaCurrent : null,
+            ...pluckProps(props, suppliedProps),
+            ...(!children ? htmlOrText(suppliedProps.html, suppliedProps.text) : {})
         }
 
         return h(tag, mergeData(data, componentData), children)

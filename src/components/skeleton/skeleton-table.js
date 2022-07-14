@@ -39,17 +39,17 @@ export const BSkeletonTable = /*#__PURE__*/ defineComponent({
     render(h, { data, props }) {
         const { animation, columns } = props
 
-        const $th = h('th', [h(BSkeleton, { props: { animation } })])
+        const $th = h('th', [h(BSkeleton, { animation })])
         const $thTr = h('tr', createArray(columns, $th))
 
-        const $td = h('td', [h(BSkeleton, { props: { width: '75%', animation } })])
+        const $td = h('td', [h(BSkeleton, { width: '75%', animation })])
         const $tdTr = h('tr', createArray(columns, $td))
         const $tbody = h('tbody', createArray(props.rows, $tdTr))
 
         const $thead = !props.hideHeader ? h('thead', [$thTr]) : h()
         const $tfoot = props.showFooter ? h('tfoot', [$thTr]) : h()
 
-        return h(BTableSimple, mergeData(data, { props: {...props.tableProps } }), [
+        return h(BTableSimple, mergeData(data, { ...(props.tableProps || {}) }), [
             $thead,
             $tbody,
             $tfoot

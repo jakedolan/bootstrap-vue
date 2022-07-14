@@ -26,8 +26,8 @@ export const BFormSelectOption = /*#__PURE__*/ defineComponent({
         return h(
             'option',
             mergeData(data, {
-                attrs: { disabled },
-                domProps: { value }
+                disabled,
+                value
             }),
             children
         )

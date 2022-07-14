@@ -43,32 +43,28 @@ export const BDropdownGroup = /*#__PURE__*/ defineComponent({
         if (hasNormalizedSlot(SLOT_NAME_HEADER, $slots) || header) {
             $header = h(
                 headerTag, {
-                    staticClass: 'dropdown-header',
-                    class: [$props.headerClasses, {
+                    class: ['dropdown-header',$props.headerClasses, {
                         [`text-${variant}`]: variant }],
-                    attrs: {
-                        id: headerId,
-                        role: isTag(headerTag, 'header') ? null : 'heading'
-                    }
+                    id: headerId,
+                    role: isTag(headerTag, 'header') ? null : 'heading'
                 },
                 normalizeSlot(SLOT_NAME_HEADER, slotScope, $slots) || header
             )
         }
 
-        return h('li', mergeData(omit($data, ['attrs']), { attrs: { role: 'presentation' } }), [
+        return h('li', mergeData(omit($data, ['attrs']), { role: 'presentation' }), [
             $header,
             h(
                 'ul', {
-                    staticClass: 'list-unstyled',
-                    attrs: {
-                        ...($data.attrs || {}),
-                        id,
-                        role: 'group',
-                        'aria-describedby': [headerId, $props.ariaDescribedBy]
-                            .filter(identity)
-                            .join(' ')
-                            .trim() || null
-                    }
+                    class: 'list-unstyled',
+                    ...($data.attrs || {}),
+                    id,
+                    role: 'group',
+                    'aria-describedby': [headerId, $props.ariaDescribedBy]
+                        .filter(identity)
+                        .join(' ')
+                        .trim() || null
+                    
                 },
                 normalizeSlot(SLOT_NAME_DEFAULT, slotScope, $slots)
             )

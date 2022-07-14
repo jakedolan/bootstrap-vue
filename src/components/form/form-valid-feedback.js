@@ -38,12 +38,10 @@ export const BFormValidFeedback = /*#__PURE__*/ defineComponent({
                     'valid-feedback': !tooltip,
                     'valid-tooltip': tooltip
                 },
-                attrs: {
-                    id: props.id || null,
-                    role: props.role || null,
-                    'aria-live': ariaLive || null,
-                    'aria-atomic': ariaLive ? 'true' : null
-                }
+                id: props.id || null,
+                role: props.role || null,
+                'aria-live': ariaLive || null,
+                'aria-atomic': ariaLive ? 'true' : null
             }),
             children
         )

@@ -25,15 +25,14 @@ export const bottomRowMixin = defineComponent({
 
             return h(
                 BTr, {
-                    staticClass: 'b-table-bottom-row',
-                    class: [
+                    class: ['b-table-bottom-row',
                         isFunction(tbodyTrClass) ?
                         /* istanbul ignore next */ tbodyTrClass(null, 'row-bottom') :
                         tbodyTrClass
                     ],
-                    attrs: isFunction(tbodyTrAttr) ?
-                        /* istanbul ignore next */ tbodyTrAttr(null, 'row-bottom') :
-                        tbodyTrAttr,
+                    ...(isFunction(tbodyTrAttr) ?
+                        /* istanbul ignore next */ tbodyTrAttr(null, 'row-bottom') || {} :
+                        tbodyTrAttr || {}),
                     key: 'b-bottom-row'
                 },
                 this.normalizeSlot(SLOT_NAME_BOTTOM_ROW, { columns: fields.length, fields })

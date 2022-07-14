@@ -35,16 +35,14 @@ export const BSpinner = /*#__PURE__*/ defineComponent({
         
         let $label = normalizeSlot(SLOT_NAME_LABEL, {}, $slots) || $props.label
         if ($label) {
-            $label = h('span', { staticClass: 'sr-only' }, $label)
+            $label = h('span', { class: 'sr-only' }, $label)
         }
 
         return h(
             $props.tag,
             mergeData($data, {
-                attrs: {
-                    role: $label ? $props.role || 'status' : null,
-                    'aria-hidden': $label ? null : 'true'
-                },
+                role: $label ? $props.role || 'status' : null,
+                'aria-hidden': $label ? null : 'true',
                 class: {
                     [`spinner-${$props.type}`]: $props.type,
                     [`spinner-${$props.type}-sm`]: $props.small,

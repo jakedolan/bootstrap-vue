@@ -260,10 +260,8 @@ export const BFormRating = /*#__PURE__*/ defineComponent({
         // --- Render methods ---
         renderIcon(icon) {
             return this.$createElement(BIcon, {
-                props: {
-                    icon,
-                    variant: this.disabled || this.color ? null : this.variant || null
-                }
+                icon,
+                variant: this.disabled || this.color ? null : this.variant || null
             })
         },
         iconEmptyFn() {
@@ -276,7 +274,7 @@ export const BFormRating = /*#__PURE__*/ defineComponent({
             return this.renderIcon(this.iconFull)
         },
         iconClearFn() {
-            return this.$createElement(BIcon, { props: { icon: this.iconClear } })
+            return this.$createElement(BIcon, { icon: this.iconClear })
         }
     },
     render() {

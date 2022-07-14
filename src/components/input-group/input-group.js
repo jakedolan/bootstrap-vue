@@ -47,7 +47,7 @@ export const BInputGroup = /*#__PURE__*/ defineComponent({
             $prepend = h(BInputGroupPrepend, [
                 hasPrependSlot ?
                 normalizeSlot(SLOT_NAME_PREPEND, slotScope, $scopedSlots, $slots) :
-                h(BInputGroupText, { domProps: htmlOrText(prependHtml, prepend) })
+                h(BInputGroupText, { ...htmlOrText(prependHtml, prepend) })
             ])
         }
 
@@ -57,20 +57,16 @@ export const BInputGroup = /*#__PURE__*/ defineComponent({
             $append = h(BInputGroupAppend, [
                 hasAppendSlot ?
                 normalizeSlot(SLOT_NAME_APPEND, slotScope, $scopedSlots, $slots) :
-                h(BInputGroupText, { domProps: htmlOrText(appendHtml, append) })
+                h(BInputGroupText, { ...htmlOrText(appendHtml, append) })
             ])
         }
 
         return h(
             props.tag,
             mergeData(data, {
-                staticClass: 'input-group',
-                class: {
-                    [`input-group-${size}`]: size },
-                attrs: {
-                    id: props.id || null,
-                    role: 'group'
-                }
+                class: ['input-group', { [`input-group-${size}`]: size }],
+                id: props.id || null,
+                role: 'group'
             }), [$prepend, normalizeSlot(SLOT_NAME_DEFAULT, slotScope, $scopedSlots, $slots), $append]
         )
     }

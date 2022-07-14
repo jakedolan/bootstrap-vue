@@ -32,8 +32,7 @@ export const BCardFooter = /*#__PURE__*/ defineComponent({
         return h(
             props.footerTag,
             mergeData(data, {
-                staticClass: 'card-footer',
-                class: [
+                class: ['card-footer',
                     props.footerClass,
                     {
                         [`bg-${footerBgVariant}`]: footerBgVariant,
@@ -41,7 +40,7 @@ export const BCardFooter = /*#__PURE__*/ defineComponent({
                         [`text-${footerTextVariant}`]: footerTextVariant
                     }
                 ],
-                domProps: children ? {} : htmlOrText(props.footerHtml, props.footer)
+                ...(children ? {} : htmlOrText(props.footerHtml, props.footer))
             }),
             children
         )

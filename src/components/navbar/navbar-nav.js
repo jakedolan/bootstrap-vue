@@ -32,12 +32,11 @@ export const BNavbarNav = /*#__PURE__*/ defineComponent({
         return h(
             props.tag,
             mergeData(data, {
-                staticClass: 'navbar-nav',
-                class: {
+                class: ['navbar-nav', {
                     'nav-fill': props.fill,
                         'nav-justified': props.justified, [computeJustifyContent(align)]: align,
                         small: props.small
-                }
+                }]
             }),
             children
         )

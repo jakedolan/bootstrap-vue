@@ -34,8 +34,8 @@ export const BNavbarBrand = /*#__PURE__*/ defineComponent({
         return h(
             tag,
             mergeData(data, {
-                staticClass: 'navbar-brand',
-                props: isLink ? pluckProps(linkProps, props) : {}
+                class: 'navbar-brand',
+                ...(isLink ? pluckProps(linkProps, props) : {})
             }),
             children
         )

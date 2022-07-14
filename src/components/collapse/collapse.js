@@ -90,7 +90,6 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
     },
     watch: {
         [MODEL_PROP_NAME](newValue) {
-            // console.log(`## bvCollapse [${MODEL_PROP_NAME}](${newValue}) watcher`, { safeId: this.safeId() })
             if (newValue !== this.show) {
                 this.show = newValue
             }
@@ -98,7 +97,6 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
         show(newValue, oldValue) {
 
             if (newValue !== oldValue) {
-                // console.log("## bvCollapse emitState from show watcher", { safeId: this.safeId() })
                 this.emitState()
             }
         }
@@ -119,15 +117,12 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
             this.handleResize()
         }
         this.$nextTick(() => {
-            // console.log("## bvCollapse emitState from mounted", { safeId: this.safeId() })
             // turning off component $emit from onmounted as that creates an odd racecondition when using v-model.
             this.emitState(false)
         })
 
-        // console.log("## bvCollapse mounted", { safeId: this.safeId() })
             // Listen for "Sync state" requests from `v-b-toggle`
         this.listenOnRoot(ROOT_ACTION_EVENT_NAME_REQUEST_STATE, id => {
-            // console.log('## bvCollapse id/safeId', { id, safeId: this.safeId() });
             if (id === this.safeId()) {
                 this.$nextTick(this.emitSync)
             }
@@ -165,7 +160,6 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
             eventOnOff(on, window, 'orientationchange', this.handleResize, EVENT_OPTIONS_NO_CAPTURE)
         },
         toggle() {
-            // console.log("## bv toggle()", { safeId: this.safeId() })
             this.show = !this.show
         },
         onEnter() {
@@ -187,7 +181,6 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
             this.$emit(EVENT_NAME_HIDDEN)
         },
         emitState(localEmit = true) {
-          // console.log("## bv emitState()", { safeId: this.safeId() })
             const { show, accordion } = this
             const id = this.safeId()
 
@@ -203,7 +196,6 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
             }
         },
         emitSync() {
-            // console.log("## bvCollapse emitSync", { safeId: this.safeId() });
             // Emit a private event every time this component updates to ensure
             // the toggle button is in sync with the collapse's state
             // It is emitted regardless if the visible state changes
@@ -223,7 +215,6 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
             return isBlock
         },
         clickHandler(event) {
-          // console.log("## bv clickHandler()", { safeId: this.safeId() })
             const { target: el } = event
             // If we are in a nav/navbar, close the collapse when non-disabled link clicked
             /* istanbul ignore next: can't test `getComputedStyle()` in JSDOM */
@@ -245,7 +236,6 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
         },
         handleAccordionEvent(openedId, openAccordion) {
           
-          // console.log("## bv handleAccordionEvent()", { safeId: this.safeId() })
             const { accordion, show } = this
             if (!accordion || accordion !== openAccordion) {
                 return
@@ -258,7 +248,6 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
             }
         },
         handleResize() {
-          // console.log("## bv handleResize()", { safeId: this.safeId() })
             // Handler for orientation/resize to set collapsed state in nav/navbar
             this.show = getCS(this.$el).display === 'block'
         }

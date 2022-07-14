@@ -75,11 +75,9 @@ export const BOverlay = /*#__PURE__*/ defineComponent({
     methods: {
         defaultOverlayFn({ spinnerType, spinnerVariant, spinnerSmall }) {
             return this.$createElement(BSpinner, {
-                props: {
-                    type: spinnerType,
-                    variant: spinnerVariant,
-                    small: spinnerSmall
-                }
+                type: spinnerType,
+                variant: spinnerVariant,
+                small: spinnerSmall
             })
         }
     },

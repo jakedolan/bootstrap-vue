@@ -33,18 +33,16 @@ export const BSkeletonImg = /*#__PURE__*/ defineComponent({
         const $img = h(
             BSkeleton,
             mergeData(data, {
-                props: {
-                    type: 'img',
-                    width,
-                    height,
-                    animation,
-                    variant
-                },
+                type: 'img',
+                width,
+                height,
+                animation,
+                variant,
                 class: {
                     [`card-img-${cardImg}`]: cardImg }
             })
         )
 
-        return props.noAspect ? $img : h(BAspect, { props: { aspect } }, [$img])
+        return props.noAspect ? $img : h(BAspect, { aspect }, [$img])
     }
 })

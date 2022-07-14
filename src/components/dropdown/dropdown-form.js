@@ -25,18 +25,15 @@ export const BDropdownForm = /*#__PURE__*/ defineComponent({
     functional: true,
     props,
     render(h, { props, data, listeners, children }) {
-        return h('li', mergeData(omit(data, ['attrs', 'on']), { attrs: { role: 'presentation' } }), [
+        return h('li', mergeData(omit(data, ['attrs', 'on']), { role: 'presentation' }), [
             h(
                 BForm, {
-                    staticClass: 'b-dropdown-form',
-                    class: [props.formClass, { disabled: props.disabled }],
+                    class: ['b-dropdown-form', props.formClass, { disabled: props.disabled }],
                     props,
-                    attrs: {
-                        ...(data.attrs || {}),
-                        disabled: props.disabled,
-                        // Tab index of -1 for keyboard navigation
-                        tabindex: props.disabled ? null : '-1'
-                    },
+                    ...(data.attrs || {}),
+                    disabled: props.disabled,
+                    // Tab index of -1 for keyboard navigation
+                    tabindex: props.disabled ? null : '-1',
                     on: listeners,
                     ref: 'form'
                 },

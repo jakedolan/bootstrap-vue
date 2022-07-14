@@ -23,7 +23,7 @@ export const BFormRow = /*#__PURE__*/ defineComponent({
         return h(
             props.tag,
             mergeData(data, {
-                staticClass: 'form-row'
+                class: 'form-row'
             }),
             children
         )

@@ -34,14 +34,12 @@ export const BEmbed = /*#__PURE__*/ defineComponent({
 
         return h(
             props.tag, {
-                staticClass: 'embed-responsive',
-                class: {
-                    [`embed-responsive-${aspect}`]: aspect },
+                class: ['embed-responsive', { [`embed-responsive-${aspect}`]: aspect }],
                 ref: data.ref
             }, [
                 h(
                     props.type,
-                    mergeData(omit(data, ['ref']), { staticClass: 'embed-responsive-item' }),
+                    mergeData(omit(data, ['ref']), { class: 'embed-responsive-item' }),
                     children
                 )
             ]

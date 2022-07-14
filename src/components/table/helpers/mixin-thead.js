@@ -122,19 +122,17 @@ export const theadMixin = defineComponent({
                         this.fieldClasses(field),
                         sortClass
                     ],
-                    props: { variant, stickyColumn },
+                    variant, stickyColumn,
                     style: field.thStyle || {},
-                    attrs: {
-                        // We only add a `tabindex` of `0` if there is a head-clicked listener
-                        // and the current field is sortable
-                        tabindex: hasHeadClickListener && field.sortable ? '0' : null,
-                        abbr: field.headerAbbr || null,
-                        title: field.headerTitle || null,
-                        'aria-colindex': colIndex + 1,
-                        'aria-label': ariaLabel,
-                        ...this.getThValues(null, key, field.thAttr, isFoot ? 'foot' : 'head', {}),
-                        ...sortAttrs
-                    },
+                    // We only add a `tabindex` of `0` if there is a head-clicked listener
+                    // and the current field is sortable
+                    tabindex: hasHeadClickListener && field.sortable ? '0' : null,
+                    abbr: field.headerAbbr || null,
+                    title: field.headerTitle || null,
+                    'aria-colindex': colIndex + 1,
+                    'aria-label': ariaLabel,
+                    ...this.getThValues(null, key, field.thAttr, isFoot ? 'foot' : 'head', {}),
+                    ...sortAttrs,
                     on,
                     key
                 }
@@ -171,9 +169,9 @@ export const theadMixin = defineComponent({
 
                 const $content =
                     this.normalizeSlot(slotNames, scope) ||
-                    h('div', { domProps: htmlOrText(labelHtml, label) })
+                    h('div', { ...htmlOrText(labelHtml, label) })
 
-                const $srLabel = sortLabel ? h('span', { staticClass: 'sr-only' }, ` (${sortLabel})`) : null
+                const $srLabel = sortLabel ? h('span', { class: 'sr-only' }, ` (${sortLabel})`) : null
 
                 // Return the header cell
                 return h(BTh, data, [$content, $srLabel].filter(identity))
@@ -189,11 +187,10 @@ export const theadMixin = defineComponent({
                     h(
                         BTr, {
                             class: this.tfootTrClass,
-                            props: {
-                                variant: isUndefinedOrNull(footRowVariant) ?
+                            variant: isUndefinedOrNull(footRowVariant) ?
                                     headRowVariant :
                                     /* istanbul ignore next */ footRowVariant
-                            }
+                            
                         },
                         $cells
                     )
@@ -212,7 +209,7 @@ export const theadMixin = defineComponent({
                     h(
                         BTr, {
                             class: this.theadTrClass,
-                            props: { variant: headRowVariant }
+                            variant: headRowVariant
                         },
                         $cells
                     )
@@ -222,9 +219,9 @@ export const theadMixin = defineComponent({
             return h(
                 isFoot ? BTfoot : BThead, {
                     class: (isFoot ? this.tfootClass : this.theadClass) || null,
-                    props: isFoot ?
+                    ...(isFoot ?
                         { footVariant: footVariant || headVariant || null } :
-                        { headVariant: headVariant || null },
+                        { headVariant: headVariant || null }),
                     key: isFoot ? 'bv-tfoot' : 'bv-thead'
                 },
                 $trs

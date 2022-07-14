@@ -26,17 +26,13 @@ export const BDropdownHeader = /*#__PURE__*/ defineComponent({
     render(h, { props, data, children }) {
         const { tag, variant } = props
 
-        return h('li', mergeData(omit(data, ['attrs']), { attrs: { role: 'presentation' } }), [
+        return h('li', mergeData(omit(data, ['attrs']), { role: 'presentation' }), [
             h(
                 tag, {
-                    staticClass: 'dropdown-header',
-                    class: {
-                        [`text-${variant}`]: variant },
-                    attrs: {
-                        ...(data.attrs || {}),
-                        id: props.id || null,
-                        role: isTag(tag, 'header') ? null : 'heading'
-                    },
+                    class: ['dropdown-header', { [`text-${variant}`]: variant } ],
+                    ...(data.attrs || {}),
+                    id: props.id || null,
+                    role: isTag(tag, 'header') ? null : 'heading',
                     ref: 'header'
                 },
                 children

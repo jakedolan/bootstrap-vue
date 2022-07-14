@@ -30,10 +30,8 @@ export const BForm = /*#__PURE__*/ defineComponent({
                     'form-inline': props.inline,
                         'was-validated': props.validated
                 },
-                attrs: {
-                    id: props.id,
-                    novalidate: props.novalidate
-                }
+                id: props.id,
+                novalidate: props.novalidate
             }),
             children
         )

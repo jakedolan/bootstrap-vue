@@ -168,18 +168,18 @@ export interface BvTableTbodyTransitionProps {
 }
 
 export interface BvTableTbodyTransitionHandlers {
-  beforeEnter?: (el: any) => void
-  beforeLeave?: (el: any) => void
-  beforeAppear?: (el: any) => void
-  enter?: (el: any, done: () => void) => void
-  leave?: (el: any, done: () => void) => void
-  appear?: (el: any, done: () => void) => void
-  afterEnter?: (el: any) => void
-  afterLeave?: (el: any) => void
-  afterAppear?: (el: any) => void
-  enterCancelled?: (el: any) => void
-  leaveCancelled?: (el: any) => void
-  appearCancelled?: (el: any) => void
+  onBeforeEnter?: (el: any) => void
+  onBeforeLeave?: (el: any) => void
+  onBeforeAppear?: (el: any) => void
+  onEnter?: (el: any, done: () => void) => void
+  onLeave?: (el: any, done: () => void) => void
+  onAppear?: (el: any, done: () => void) => void
+  onAfterEnter?: (el: any) => void
+  onAfterLeave?: (el: any) => void
+  onAfterAppear?: (el: any) => void
+  onEnterCancelled?: (el: any) => void
+  onLeaveCancelled?: (el: any) => void
+  onAppearCancelled?: (el: any) => void
 }
 
 export interface BvTableLocaleCompareOptions {

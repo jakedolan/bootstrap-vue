@@ -25,7 +25,7 @@ export const BCardTitle = /*#__PURE__*/ defineComponent({
         return h(
             props.titleTag,
             mergeData(data, {
-                staticClass: 'card-title'
+                class: 'card-title'
             }),
             children || toString(props.title)
         )

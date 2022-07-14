@@ -23,8 +23,8 @@ export const BIconstack = /*#__PURE__*/ defineComponent({
     return h(
       BVIconBase,
       mergeData(data, {
-        staticClass: 'b-iconstack',
-        props
+        class: 'b-iconstack',
+        ...(props || {})
       }),
       children
     )

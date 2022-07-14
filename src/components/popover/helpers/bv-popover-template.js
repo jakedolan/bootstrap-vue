@@ -26,21 +26,20 @@ export const BVPopoverTemplate = /*#__PURE__*/ defineComponent({
 
             return h(
                 'div', {
-                    staticClass: 'popover b-popover',
-                    class: this.templateClasses,
-                    attrs: this.templateAttributes,
+                    class: ['popover b-popover', this.templateClasses],
+                    ...(this.templateAttributes || {}),
                     on: this.templateListeners
                 }, [
                     h('div', {
-                        staticClass: 'arrow',
+                        class: 'arrow',
                         ref: 'arrow'
                     }),
                     isUndefinedOrNull($title) || $title === '' ?
                     /* istanbul ignore next */ h() :
-                    h('h3', { staticClass: 'popover-header', domProps: titleDomProps }, [$title]),
+                    h('h3', { class: 'popover-header', ...(titleDomProps || {}) }, [$title]),
                     isUndefinedOrNull($content) || $content === '' ?
                     /* istanbul ignore next */ h() :
-                    h('div', { staticClass: 'popover-body', domProps: contentDomProps }, [$content])
+                    h('div', { class: 'popover-body', ...(contentDomProps || {}) }, [$content])
                 ]
             )
         }

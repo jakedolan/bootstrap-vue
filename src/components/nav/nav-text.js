@@ -14,6 +14,6 @@ export const BNavText = /*#__PURE__*/ defineComponent({
     functional: true,
     props,
     render(h, { data, children }) {
-        return h('li', mergeData(data, { staticClass: 'navbar-text' }), children)
+        return h('li', mergeData(data, { class: 'navbar-text' }), children)
     }
 })

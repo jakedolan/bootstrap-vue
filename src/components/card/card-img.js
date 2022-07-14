@@ -44,7 +44,10 @@ export const BCardImg = /*#__PURE__*/ defineComponent({
             'img',
             mergeData(data, {
                 class: baseClass,
-                attrs: { src, alt, width, height }
+                src, 
+                alt, 
+                width, 
+                height
             })
         )
     }

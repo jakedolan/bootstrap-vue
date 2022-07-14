@@ -103,19 +103,18 @@ export const BVTooltipTemplate = /*#__PURE__*/ defineComponent({
 
             return h(
                 'div', {
-                    staticClass: 'tooltip b-tooltip',
-                    class: this.templateClasses,
-                    attrs: this.templateAttributes,
+                    class: ['tooltip b-tooltip', this.templateClasses],
+                    ...(this.templateAttributes || {}),
                     on: this.templateListeners
                 }, [
                     h('div', {
-                        staticClass: 'arrow',
+                        class: 'arrow',
                         ref: 'arrow'
                     }),
                     h(
                         'div', {
-                            staticClass: 'tooltip-inner',
-                            domProps
+                            class: 'tooltip-inner',
+                            ...(domProps || {})
                         }, [$title]
                     )
                 ]

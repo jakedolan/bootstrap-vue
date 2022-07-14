@@ -29,9 +29,7 @@ export const BFormText = /*#__PURE__*/ defineComponent({
                 class: {
                     'form-text': !props.inline, [`text-${props.textVariant}`]: props.textVariant
                 },
-                attrs: {
-                    id: props.id
-                }
+                id: props.id
             }),
             children
         )

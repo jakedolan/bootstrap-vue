@@ -24,7 +24,8 @@ export const BInputGroupPrepend = /*#__PURE__*/ defineComponent({
         return h(
             BInputGroupAddon,
             mergeData(data, {
-                props: {...props, append: false }
+                ...props, 
+                append: false
             }),
             children
         )

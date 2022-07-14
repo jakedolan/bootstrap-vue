@@ -122,13 +122,10 @@ export const tbodyRowMixin = defineComponent({
                 // TODO: Although we do prevent duplicate field keys...
                 //   So we could change this to: `row-${rowIndex}-cell-${key}`
                 class: [field.class ? field.class : '', this.getTdValues(item, key, field.tdClass, '')],
-                props: {},
-                attrs: {
-                    'aria-colindex': String(colIndex + 1),
-                    ...(isRowHeader ?
-                        this.getThValues(item, key, field.thAttr, 'row', {}) :
-                        this.getTdValues(item, key, field.tdAttr, {}))
-                },
+                'aria-colindex': String(colIndex + 1),
+                ...(isRowHeader ?
+                    this.getThValues(item, key, field.thAttr, 'row', {}) :
+                    this.getTdValues(item, key, field.tdAttr, {})),
                 key: `row-${rowIndex}-cell-${colIndex}-${key}`
             }
             if (stickyColumn) {
@@ -251,7 +248,7 @@ export const tbodyRowMixin = defineComponent({
                 h(
                     BTr, {
                         class: [userTrClasses, selectableClasses, rowShowDetails ? 'b-table-has-details' : ''],
-                        props: { variant: item[FIELD_KEY_ROW_VARIANT] || null },
+                        variant: item[FIELD_KEY_ROW_VARIANT] || null,
                         
                         id: rowId,
                         ...userTrAttrs,
@@ -293,7 +290,7 @@ export const tbodyRowMixin = defineComponent({
                 // Render the details slot in a TD
                 const $details = h(
                     BTd, {
-                        props: { colspan: fields.length },
+                        colspan: fields.length,
                         class: this.detailsTdClass
                     }, [this.normalizeSlot(SLOT_NAME_ROW_DETAILS, detailsScope)]
                 )
@@ -304,11 +301,9 @@ export const tbodyRowMixin = defineComponent({
                     $rows.push(
                         // We don't use `BTr` here as we don't need the extra functionality
                         h('tr', {
-                            staticClass: 'd-none',
-                            attrs: {
-                                'aria-hidden': 'true',
-                                role: 'presentation'
-                            },
+                            class: 'd-none',
+                            'aria-hidden': 'true',
+                            role: 'presentation',
                             key: `__b-table-details-stripe__${rowKey}`
                         })
                     )
@@ -324,15 +319,12 @@ export const tbodyRowMixin = defineComponent({
                 $rows.push(
                     h(
                         BTr, {
-                            staticClass: 'b-table-details',
-                            class: [userDetailsTrClasses],
-                            props: { variant: item[FIELD_KEY_ROW_VARIANT] || null },
-                            attrs: {
-                                ...userDetailsTrAttrs,
-                                // Users cannot override the following attributes
-                                id: detailsId,
-                                tabindex: '-1'
-                            },
+                            class: ['b-table-details', userDetailsTrClasses],
+                            variant: item[FIELD_KEY_ROW_VARIANT] || null,
+                            ...(userDetailsTrAttrs || {}),
+                            // Users cannot override the following attributes
+                            id: detailsId,
+                            tabindex: '-1',
                             key: `__b-table-details__${rowKey}`
                         }, [$details]
                     )

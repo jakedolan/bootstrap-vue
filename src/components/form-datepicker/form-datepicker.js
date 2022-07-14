@@ -308,7 +308,6 @@ export const BFormDatepicker = /*#__PURE__*/ defineComponent({
 
 
 
-        // console.log("slots", { $slots, defaultButtonFn: this.defaultButtonFn});
         return h(
             BVFormBtnLabelControl, {
                 class: 'b-form-datepicker',

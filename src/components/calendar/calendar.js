@@ -1072,7 +1072,7 @@ export const BCalendar = defineComponent({
 
         // Optional bottom slot
         let $slot = this.normalizeSlot()
-        $slot = $slot ? h('footer', { staticClass: 'b-calendar-footer' }, $slot) : null
+        $slot = $slot ? h('footer', { class: 'b-calendar-footer' }, $slot) : null
 
         const $widget = h(
             'div', {

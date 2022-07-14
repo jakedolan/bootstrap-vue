@@ -39,8 +39,8 @@ export const BBadge = /*#__PURE__*/ defineComponent({
         return h(
             tag,
             mergeData(data, {
-                staticClass: 'badge',
                 class: [
+                    'badge',
                     `badge-${variant}`,
                     {
                         'badge-pill': props.pill,
@@ -48,7 +48,7 @@ export const BBadge = /*#__PURE__*/ defineComponent({
                         disabled
                     }
                 ],
-                props: link ? pluckProps(linkProps, props) : {}
+                ...(link ? pluckProps(linkProps, props) : {})
             }),
             children
         )

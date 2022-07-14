@@ -30,16 +30,16 @@ export const BSkeleton = /*#__PURE__*/ defineComponent({
         return h(
             'div',
             mergeData(data, {
-                staticClass: 'b-skeleton',
+                
                 style: {
                     width: size || props.width,
                     height: size || props.height
                 },
-                class: {
+                class: ['b-skeleton', {
                     [`b-skeleton-${props.type}`]: true,
                     [`b-skeleton-animate-${animation}`]: animation,
                     [`bg-${variant}`]: variant
-                }
+                }]
             })
         )
     }

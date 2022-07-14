@@ -26,8 +26,7 @@ export const BCardSubTitle = /*#__PURE__*/ defineComponent({
         return h(
             props.subTitleTag,
             mergeData(data, {
-                staticClass: 'card-subtitle',
-                class: [props.subTitleTextVariant ? `text-${props.subTitleTextVariant}` : null]
+                class: ['card-subtitle', props.subTitleTextVariant ? `text-${props.subTitleTextVariant}` : null]
             }),
             children || toString(props.subTitle)
         )

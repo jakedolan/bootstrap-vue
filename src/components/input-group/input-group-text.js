@@ -23,7 +23,7 @@ export const BInputGroupText = /*#__PURE__*/ defineComponent({
         return h(
             props.tag,
             mergeData(data, {
-                staticClass: 'input-group-text'
+                class: 'input-group-text'
             }),
             children
         )

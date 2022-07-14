@@ -24,9 +24,8 @@ export const topRowMixin = defineComponent({
 
             return h(
                 BTr, {
-                    staticClass: 'b-table-top-row',
-                    class: [isFunction(tbodyTrClass) ? tbodyTrClass(null, 'row-top') : tbodyTrClass],
-                    attrs: isFunction(tbodyTrAttr) ? tbodyTrAttr(null, 'row-top') : tbodyTrAttr,
+                    class: ['b-table-top-row', isFunction(tbodyTrClass) ? tbodyTrClass(null, 'row-top') : tbodyTrClass],
+                    ...(isFunction(tbodyTrAttr) ? tbodyTrAttr(null, 'row-top') || {} : tbodyTrAttr || {}),
                     key: 'b-top-row'
                 }, [this.normalizeSlot(SLOT_NAME_TOP_ROW, { columns: fields.length, fields })]
             )

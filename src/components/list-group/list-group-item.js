@@ -61,15 +61,14 @@ export const BListGroupItem = /*#__PURE__*/ defineComponent({
         return h(
             tag,
             mergeData(data, {
-                attrs,
-                props: itemProps,
-                staticClass: 'list-group-item',
-                class: {
+                ...(attrs || {}),
+                ...(itemProps || {}),
+                class: ['list-group-item', {
                     [`list-group-item-${variant}`]: variant,
                     'list-group-item-action': action,
                     active,
                     disabled
-                }
+                }]
             }),
             children
         )

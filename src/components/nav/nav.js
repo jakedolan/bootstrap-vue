@@ -41,8 +41,7 @@ export const BNav = /*#__PURE__*/ defineComponent({
         return h(
             props.tag,
             mergeData(data, {
-                staticClass: 'nav',
-                class: {
+                class: ['nav', {
                     'nav-tabs': tabs,
                     'nav-pills': pills && !tabs,
                         'card-header-tabs': !vertical && cardHeader && tabs,
@@ -51,7 +50,7 @@ export const BNav = /*#__PURE__*/ defineComponent({
                         'nav-fill': !vertical && props.fill,
                         'nav-justified': !vertical && props.justified, [computeJustifyContent(align)]: !vertical && align,
                         small: props.small
-                }
+                }]
             }),
             children
         )
