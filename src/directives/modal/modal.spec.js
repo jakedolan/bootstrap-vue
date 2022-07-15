@@ -36,7 +36,7 @@ describe('v-b-modal directive', () => {
         expect(spy).toHaveBeenCalledTimes(1)
         expect(spy).toBeCalledWith('test', $button.element)
 
-        wrapper.destroy()
+        wrapper.unmount()
     })
 
     it('works on links', async() => {
@@ -79,7 +79,7 @@ describe('v-b-modal directive', () => {
         expect(wrapper.find('a').attributes('role')).toBe('button')
         expect(wrapper.find('a').attributes('tabindex')).toBeUndefined()
 
-        wrapper.destroy()
+        wrapper.unmount()
     })
 
     it('works on non-buttons', async() => {
@@ -129,7 +129,7 @@ describe('v-b-modal directive', () => {
         expect(wrapper.find('span').text()).toBe('foobar')
         expect(wrapper.find('span').attributes('role')).toBe('button')
 
-        wrapper.destroy()
+        wrapper.unmount()
     })
 
     it('works on non-buttons using keydown space', async() => {
@@ -172,7 +172,7 @@ describe('v-b-modal directive', () => {
         expect(spy).toBeCalledWith('test', $span.element)
         expect(wrapper.find('span').attributes('role')).toBe('button')
 
-        wrapper.destroy()
+        wrapper.unmount()
     })
 
     it('works on non-buttons using keydown enter', async() => {
@@ -214,6 +214,6 @@ describe('v-b-modal directive', () => {
         expect(spy).toBeCalledWith('test', $span.element)
         expect(wrapper.find('span').attributes('role')).toBe('button')
 
-        wrapper.destroy()
+        wrapper.unmount()
     })
 })

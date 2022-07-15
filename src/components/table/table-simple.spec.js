@@ -2,205 +2,205 @@ import { mount } from '@vue/test-utils'
 import { BTableSimple } from './table-simple'
 
 describe('table-simple', () => {
-  it('has expected default classes', async () => {
-    const wrapper = mount(BTableSimple)
+    it('has expected default classes', async() => {
+        const wrapper = mount(BTableSimple)
 
-    expect(wrapper).toBeDefined()
-    expect(wrapper.element.tagName).toBe('TABLE')
-    expect(wrapper.classes()).toContain('table')
-    expect(wrapper.classes()).toContain('b-table')
-    expect(wrapper.classes().length).toBe(2)
-    expect(wrapper.text()).toBe('')
+        expect(wrapper).toBeDefined()
+        expect(wrapper.element.tagName).toBe('TABLE')
+        expect(wrapper.classes()).toContain('table')
+        expect(wrapper.classes()).toContain('b-table')
+        expect(wrapper.classes().length).toBe(2)
+        expect(wrapper.text()).toBe('')
 
-    wrapper.destroy()
-  })
-
-  it('renders content from default slot', async () => {
-    const wrapper = mount(BTableSimple, {
-      slots: {
-        default: 'foobar'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    expect(wrapper.element.tagName).toBe('TABLE')
-    expect(wrapper.classes()).toContain('table')
-    expect(wrapper.classes()).toContain('b-table')
-    expect(wrapper.classes().length).toBe(2)
-    expect(wrapper.text()).toContain('foobar')
+    it('renders content from default slot', async() => {
+        const wrapper = mount(BTableSimple, {
+            slots: {
+                default: 'foobar'
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper).toBeDefined()
+        expect(wrapper.element.tagName).toBe('TABLE')
+        expect(wrapper.classes()).toContain('table')
+        expect(wrapper.classes()).toContain('b-table')
+        expect(wrapper.classes().length).toBe(2)
+        expect(wrapper.text()).toContain('foobar')
 
-  it('has class "table-striped" when striped=true', async () => {
-    const wrapper = mount(BTableSimple, {
-      propsData: {
-        striped: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    expect(wrapper.element.tagName).toBe('TABLE')
-    expect(wrapper.classes()).toContain('table-striped')
-    expect(wrapper.classes()).toContain('table')
-    expect(wrapper.classes()).toContain('b-table')
-    expect(wrapper.classes().length).toBe(3)
+    it('has class "table-striped" when striped=true', async() => {
+        const wrapper = mount(BTableSimple, {
+            props: {
+                striped: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper).toBeDefined()
+        expect(wrapper.element.tagName).toBe('TABLE')
+        expect(wrapper.classes()).toContain('table-striped')
+        expect(wrapper.classes()).toContain('table')
+        expect(wrapper.classes()).toContain('b-table')
+        expect(wrapper.classes().length).toBe(3)
 
-  it('has class "table-bordered" when bordered=true', async () => {
-    const wrapper = mount(BTableSimple, {
-      propsData: {
-        bordered: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    expect(wrapper.element.tagName).toBe('TABLE')
-    expect(wrapper.classes()).toContain('table-bordered')
-    expect(wrapper.classes()).toContain('table')
-    expect(wrapper.classes()).toContain('b-table')
-    expect(wrapper.classes().length).toBe(3)
+    it('has class "table-bordered" when bordered=true', async() => {
+        const wrapper = mount(BTableSimple, {
+            props: {
+                bordered: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper).toBeDefined()
+        expect(wrapper.element.tagName).toBe('TABLE')
+        expect(wrapper.classes()).toContain('table-bordered')
+        expect(wrapper.classes()).toContain('table')
+        expect(wrapper.classes()).toContain('b-table')
+        expect(wrapper.classes().length).toBe(3)
 
-  it('has class "table-borderless" when borderless=true', async () => {
-    const wrapper = mount(BTableSimple, {
-      propsData: {
-        borderless: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    expect(wrapper.element.tagName).toBe('TABLE')
-    expect(wrapper.classes()).toContain('table-borderless')
-    expect(wrapper.classes()).toContain('table')
-    expect(wrapper.classes()).toContain('b-table')
-    expect(wrapper.classes().length).toBe(3)
+    it('has class "table-borderless" when borderless=true', async() => {
+        const wrapper = mount(BTableSimple, {
+            props: {
+                borderless: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper).toBeDefined()
+        expect(wrapper.element.tagName).toBe('TABLE')
+        expect(wrapper.classes()).toContain('table-borderless')
+        expect(wrapper.classes()).toContain('table')
+        expect(wrapper.classes()).toContain('b-table')
+        expect(wrapper.classes().length).toBe(3)
 
-  it('has class "table-hover" when hover=true', async () => {
-    const wrapper = mount(BTableSimple, {
-      propsData: {
-        hover: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    expect(wrapper.element.tagName).toBe('TABLE')
-    expect(wrapper.classes()).toContain('table-hover')
-    expect(wrapper.classes()).toContain('table')
-    expect(wrapper.classes()).toContain('b-table')
-    expect(wrapper.classes().length).toBe(3)
+    it('has class "table-hover" when hover=true', async() => {
+        const wrapper = mount(BTableSimple, {
+            props: {
+                hover: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper).toBeDefined()
+        expect(wrapper.element.tagName).toBe('TABLE')
+        expect(wrapper.classes()).toContain('table-hover')
+        expect(wrapper.classes()).toContain('table')
+        expect(wrapper.classes()).toContain('b-table')
+        expect(wrapper.classes().length).toBe(3)
 
-  it('has class "table-sm" when small=true', async () => {
-    const wrapper = mount(BTableSimple, {
-      propsData: {
-        small: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    expect(wrapper.element.tagName).toBe('TABLE')
-    expect(wrapper.classes()).toContain('table-sm')
-    expect(wrapper.classes()).toContain('table')
-    expect(wrapper.classes()).toContain('b-table')
-    expect(wrapper.classes().length).toBe(3)
+    it('has class "table-sm" when small=true', async() => {
+        const wrapper = mount(BTableSimple, {
+            props: {
+                small: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper).toBeDefined()
+        expect(wrapper.element.tagName).toBe('TABLE')
+        expect(wrapper.classes()).toContain('table-sm')
+        expect(wrapper.classes()).toContain('table')
+        expect(wrapper.classes()).toContain('b-table')
+        expect(wrapper.classes().length).toBe(3)
 
-  it('has class "table-dark" when dark=true', async () => {
-    const wrapper = mount(BTableSimple, {
-      propsData: {
-        dark: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    expect(wrapper.element.tagName).toBe('TABLE')
-    expect(wrapper.classes()).toContain('table-dark')
-    expect(wrapper.classes()).toContain('table')
-    expect(wrapper.classes()).toContain('b-table')
-    expect(wrapper.classes().length).toBe(3)
+    it('has class "table-dark" when dark=true', async() => {
+        const wrapper = mount(BTableSimple, {
+            props: {
+                dark: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper).toBeDefined()
+        expect(wrapper.element.tagName).toBe('TABLE')
+        expect(wrapper.classes()).toContain('table-dark')
+        expect(wrapper.classes()).toContain('table')
+        expect(wrapper.classes()).toContain('b-table')
+        expect(wrapper.classes().length).toBe(3)
 
-  it('has class "border" when outlined=true', async () => {
-    const wrapper = mount(BTableSimple, {
-      propsData: {
-        outlined: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    expect(wrapper.element.tagName).toBe('TABLE')
-    expect(wrapper.classes()).toContain('border')
-    expect(wrapper.classes()).toContain('table')
-    expect(wrapper.classes()).toContain('b-table')
-    expect(wrapper.classes().length).toBe(3)
+    it('has class "border" when outlined=true', async() => {
+        const wrapper = mount(BTableSimple, {
+            props: {
+                outlined: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper).toBeDefined()
+        expect(wrapper.element.tagName).toBe('TABLE')
+        expect(wrapper.classes()).toContain('border')
+        expect(wrapper.classes()).toContain('table')
+        expect(wrapper.classes()).toContain('b-table')
+        expect(wrapper.classes().length).toBe(3)
 
-  it('has class "b-table-fixed" when fixed=true', async () => {
-    const wrapper = mount(BTableSimple, {
-      propsData: {
-        fixed: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    expect(wrapper.element.tagName).toBe('TABLE')
-    expect(wrapper.classes()).toContain('b-table-fixed')
-    expect(wrapper.classes()).toContain('table')
-    expect(wrapper.classes()).toContain('b-table')
-    expect(wrapper.classes().length).toBe(3)
+    it('has class "b-table-fixed" when fixed=true', async() => {
+        const wrapper = mount(BTableSimple, {
+            props: {
+                fixed: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper).toBeDefined()
+        expect(wrapper.element.tagName).toBe('TABLE')
+        expect(wrapper.classes()).toContain('b-table-fixed')
+        expect(wrapper.classes()).toContain('table')
+        expect(wrapper.classes()).toContain('b-table')
+        expect(wrapper.classes().length).toBe(3)
 
-  it('has class "table-responsive" when responsive=true', async () => {
-    const wrapper = mount(BTableSimple, {
-      propsData: {
-        responsive: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.classes()).toContain('table-responsive')
-    expect(wrapper.classes().length).toBe(1)
-    expect(wrapper.find('table').classes()).toContain('table')
-    expect(wrapper.find('table').classes()).toContain('b-table')
-    expect(wrapper.find('table').classes().length).toBe(2)
+    it('has class "table-responsive" when responsive=true', async() => {
+        const wrapper = mount(BTableSimple, {
+            props: {
+                responsive: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper).toBeDefined()
+        expect(wrapper.element.tagName).toBe('DIV')
+        expect(wrapper.classes()).toContain('table-responsive')
+        expect(wrapper.classes().length).toBe(1)
+        expect(wrapper.find('table').classes()).toContain('table')
+        expect(wrapper.find('table').classes()).toContain('b-table')
+        expect(wrapper.find('table').classes().length).toBe(2)
 
-  it('has class "table-responsive-md" when responsive=md', async () => {
-    const wrapper = mount(BTableSimple, {
-      propsData: {
-        responsive: 'md'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.classes()).toContain('table-responsive-md')
-    expect(wrapper.classes().length).toBe(1)
-    expect(wrapper.find('table').classes()).toContain('table')
-    expect(wrapper.find('table').classes()).toContain('b-table')
-    expect(wrapper.find('table').classes().length).toBe(2)
+    it('has class "table-responsive-md" when responsive=md', async() => {
+        const wrapper = mount(BTableSimple, {
+            props: {
+                responsive: 'md'
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper).toBeDefined()
+        expect(wrapper.element.tagName).toBe('DIV')
+        expect(wrapper.classes()).toContain('table-responsive-md')
+        expect(wrapper.classes().length).toBe(1)
+        expect(wrapper.find('table').classes()).toContain('table')
+        expect(wrapper.find('table').classes()).toContain('b-table')
+        expect(wrapper.find('table').classes().length).toBe(2)
+
+        wrapper.unmount()
+    })
 })

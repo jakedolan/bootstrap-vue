@@ -60,7 +60,7 @@ describe('mixins/listen-on-window', () => {
 
         const wrapper = mount(App, {
             attachTo: document.body,
-            propsData: {
+            props: {
                 destroy: false
             }
         })
@@ -116,6 +116,6 @@ describe('mixins/listen-on-window', () => {
         expect(spyResize2).toHaveBeenCalledTimes(2)
         expect(spyScroll).toHaveBeenCalledTimes(2)
 
-        wrapper.destroy()
+        wrapper.unmount()
     })
 })

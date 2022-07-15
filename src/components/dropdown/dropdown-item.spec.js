@@ -7,146 +7,146 @@ import { BDropdownItem } from './dropdown-item'
 Vue.use(VueRouter)
 
 describe('dropdown-item', () => {
-  it('renders with tag "a" and href="#" by default', async () => {
-    const wrapper = mount(BDropdownItem)
-    expect(wrapper.element.tagName).toBe('LI')
+    it('renders with tag "a" and href="#" by default', async() => {
+        const wrapper = mount(BDropdownItem)
+        expect(wrapper.element.tagName).toBe('LI')
 
-    const item = wrapper.find('a')
-    expect(item.element.tagName).toBe('A')
-    expect(item.attributes('href')).toBe('#')
+        const item = wrapper.find('a')
+        expect(item.element.tagName).toBe('A')
+        expect(item.attributes('href')).toBe('#')
 
-    wrapper.destroy()
-  })
+        wrapper.unmount()
+    })
 
-  it('has class "dropdown-item"', async () => {
-    const wrapper = mount(BDropdownItem)
-    expect(wrapper.element.tagName).toBe('LI')
+    it('has class "dropdown-item"', async() => {
+        const wrapper = mount(BDropdownItem)
+        expect(wrapper.element.tagName).toBe('LI')
 
-    const item = wrapper.find('a')
-    expect(item.classes()).toContain('dropdown-item')
-    expect(item.attributes('href')).toBe('#')
+        const item = wrapper.find('a')
+        expect(item.classes()).toContain('dropdown-item')
+        expect(item.attributes('href')).toBe('#')
 
-    wrapper.destroy()
-  })
+        wrapper.unmount()
+    })
 
-  it('calls dropdown hide(true) method when clicked', async () => {
-    let called = false
-    let refocus = null
-    const wrapper = mount(BDropdownItem, {
-      provide: {
-        getBvDropdown: () => ({
-          hide(arg) {
-            called = true
-            refocus = arg
-          }
+    it('calls dropdown hide(true) method when clicked', async() => {
+        let called = false
+        let refocus = null
+        const wrapper = mount(BDropdownItem, {
+            provide: {
+                getBvDropdown: () => ({
+                    hide(arg) {
+                        called = true
+                        refocus = arg
+                    }
+                })
+            }
         })
-      }
+        expect(wrapper.element.tagName).toBe('LI')
+
+        const item = wrapper.find('a')
+        expect(item).toBeDefined()
+        await item.trigger('click')
+        await waitRAF()
+        expect(called).toBe(true)
+        expect(refocus).toBe(true)
+
+        wrapper.unmount()
     })
-    expect(wrapper.element.tagName).toBe('LI')
 
-    const item = wrapper.find('a')
-    expect(item).toBeDefined()
-    await item.trigger('click')
-    await waitRAF()
-    expect(called).toBe(true)
-    expect(refocus).toBe(true)
-
-    wrapper.destroy()
-  })
-
-  it('does not call dropdown hide(true) method when clicked and disabled', async () => {
-    let called = false
-    let refocus = null
-    const wrapper = mount(BDropdownItem, {
-      propsData: { disabled: true },
-      provide: {
-        getBvDropdown: () => ({
-          hide(arg) {
-            called = true
-            refocus = arg
-          }
+    it('does not call dropdown hide(true) method when clicked and disabled', async() => {
+        let called = false
+        let refocus = null
+        const wrapper = mount(BDropdownItem, {
+            props: { disabled: true },
+            provide: {
+                getBvDropdown: () => ({
+                    hide(arg) {
+                        called = true
+                        refocus = arg
+                    }
+                })
+            }
         })
-      }
+        expect(wrapper.element.tagName).toBe('LI')
+
+        const item = wrapper.find('a')
+        expect(item).toBeDefined()
+        await item.trigger('click')
+        await waitRAF()
+        expect(called).toBe(false)
+        expect(refocus).toBe(null)
+
+        wrapper.unmount()
     })
-    expect(wrapper.element.tagName).toBe('LI')
 
-    const item = wrapper.find('a')
-    expect(item).toBeDefined()
-    await item.trigger('click')
-    await waitRAF()
-    expect(called).toBe(false)
-    expect(refocus).toBe(null)
+    it('has linkClass when prop is passed a value', () => {
+        const wrapper = mount(BDropdownItem, {
+            props: {
+                linkClass: 'link-class'
+            }
+        })
+        expect(wrapper.element.tagName).toBe('LI')
 
-    wrapper.destroy()
-  })
+        const item = wrapper.find('a')
+        expect(item.classes()).toContain('link-class')
+        expect(item.classes()).toContain('dropdown-item')
 
-  it('has linkClass when prop is passed a value', () => {
-    const wrapper = mount(BDropdownItem, {
-      propsData: {
-        linkClass: 'link-class'
-      }
+        wrapper.unmount()
     })
-    expect(wrapper.element.tagName).toBe('LI')
 
-    const item = wrapper.find('a')
-    expect(item.classes()).toContain('link-class')
-    expect(item.classes()).toContain('dropdown-item')
+    describe('router-link support', () => {
+        it('works', async() => {
+            const router = new VueRouter({
+                mode: 'abstract',
+                routes: [
+                    { path: '/', component: { name: 'R', template: '<div class="r">ROOT</div>' } },
+                    { path: '/a', component: { name: 'A', template: '<div class="a">A</div>' } },
+                    { path: '/b', component: { name: 'B', template: '<div class="a">B</div>' } }
+                ]
+            })
 
-    wrapper.destroy()
-  })
+            const App = {
+                compatConfig: {
+                    MODE: 3,
+                    RENDER_FUNCTION: 'suppress-warning',
+                    COMPONENT_FUNCTIONAL: 'suppress-warning'
+                },
+                router,
+                render(h) {
+                    return h('ul', [
+                        // <router-link>
+                        h(BDropdownItem, { props: { to: '/a' } }, ['to-a']),
+                        // Regular link
+                        h(BDropdownItem, { props: { href: '/a' } }, ['href-a']),
+                        // <router-link>
+                        h(BDropdownItem, { props: { to: { path: '/b' } } }, ['to-path-b']),
+                        h('router-view')
+                    ])
+                }
+            }
 
-  describe('router-link support', () => {
-    it('works', async () => {
-      const router = new VueRouter({
-        mode: 'abstract',
-        routes: [
-          { path: '/', component: { name: 'R', template: '<div class="r">ROOT</div>' } },
-          { path: '/a', component: { name: 'A', template: '<div class="a">A</div>' } },
-          { path: '/b', component: { name: 'B', template: '<div class="a">B</div>' } }
-        ]
-      })
+            const wrapper = mount(App, {
+                attachTo: document.body
+            })
 
-      const App = {
-        compatConfig: {
-          MODE: 3,
-          RENDER_FUNCTION: 'suppress-warning',
-          COMPONENT_FUNCTIONAL: 'suppress-warning'
-        },
-        router,
-        render(h) {
-          return h('ul', [
-            // <router-link>
-            h(BDropdownItem, { props: { to: '/a' } }, ['to-a']),
-            // Regular link
-            h(BDropdownItem, { props: { href: '/a' } }, ['href-a']),
-            // <router-link>
-            h(BDropdownItem, { props: { to: { path: '/b' } } }, ['to-path-b']),
-            h('router-view')
-          ])
-        }
-      }
+            expect(wrapper.vm).toBeDefined()
+            expect(wrapper.element.tagName).toBe('UL')
 
-      const wrapper = mount(App, {
-        attachTo: document.body
-      })
+            expect(wrapper.findAll('li').length).toBe(3)
+            expect(wrapper.findAll('a').length).toBe(3)
 
-      expect(wrapper.vm).toBeDefined()
-      expect(wrapper.element.tagName).toBe('UL')
+            const $links = wrapper.findAllComponents('a')
 
-      expect(wrapper.findAll('li').length).toBe(3)
-      expect(wrapper.findAll('a').length).toBe(3)
+            $links.wrappers.forEach($link => {
+                expect($link.vm).toBeDefined()
+                expect($links.at(0).vm.$options.name).toBe('BLink')
+            })
+            expect(
+                $links.wrappers.map($link => $link.findComponent({ name: 'RouterLink' }).exists())
+            ).toStrictEqual([true, false, true])
 
-      const $links = wrapper.findAllComponents('a')
-
-      $links.wrappers.forEach($link => {
-        expect($link.vm).toBeDefined()
-        expect($links.at(0).vm.$options.name).toBe('BLink')
-      })
-      expect(
-        $links.wrappers.map($link => $link.findComponent({ name: 'RouterLink' }).exists())
-      ).toStrictEqual([true, false, true])
-
-      wrapper.destroy()
+            wrapper.unmount()
+        })
     })
-  })
 })

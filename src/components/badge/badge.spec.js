@@ -2,140 +2,140 @@ import { mount } from '@vue/test-utils'
 import { BBadge } from './badge'
 
 describe('badge', () => {
-  it('should have base classes', async () => {
-    const wrapper = mount(BBadge)
+    it('should have base classes', async() => {
+        const wrapper = mount(BBadge)
 
-    expect(wrapper.element.tagName).toBe('SPAN')
-    expect(wrapper.classes()).toContain('badge')
-    expect(wrapper.classes()).toContain('badge-secondary')
-    expect(wrapper.classes()).not.toContain('badge-pill')
-    expect(wrapper.classes()).not.toContain('active')
-    expect(wrapper.classes()).not.toContain('disabled')
-    expect(wrapper.attributes('href')).toBeUndefined()
+        expect(wrapper.element.tagName).toBe('SPAN')
+        expect(wrapper.classes()).toContain('badge')
+        expect(wrapper.classes()).toContain('badge-secondary')
+        expect(wrapper.classes()).not.toContain('badge-pill')
+        expect(wrapper.classes()).not.toContain('active')
+        expect(wrapper.classes()).not.toContain('disabled')
+        expect(wrapper.attributes('href')).toBeUndefined()
 
-    wrapper.destroy()
-  })
-
-  it('should have default slot content', async () => {
-    const wrapper = mount(BBadge, {
-      slots: {
-        default: 'foobar'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('SPAN')
-    expect(wrapper.text()).toBe('foobar')
-    expect(wrapper.classes()).toContain('badge')
-    expect(wrapper.classes()).toContain('badge-secondary')
-    expect(wrapper.classes()).not.toContain('badge-pill')
-    expect(wrapper.classes()).not.toContain('active')
-    expect(wrapper.classes()).not.toContain('disabled')
-    expect(wrapper.attributes('href')).toBeUndefined()
+    it('should have default slot content', async() => {
+        const wrapper = mount(BBadge, {
+            slots: {
+                default: 'foobar'
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('SPAN')
+        expect(wrapper.text()).toBe('foobar')
+        expect(wrapper.classes()).toContain('badge')
+        expect(wrapper.classes()).toContain('badge-secondary')
+        expect(wrapper.classes()).not.toContain('badge-pill')
+        expect(wrapper.classes()).not.toContain('active')
+        expect(wrapper.classes()).not.toContain('disabled')
+        expect(wrapper.attributes('href')).toBeUndefined()
 
-  it('should apply variant class', async () => {
-    const wrapper = mount(BBadge, {
-      propsData: {
-        variant: 'danger'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('SPAN')
-    expect(wrapper.classes()).toContain('badge-danger')
-    expect(wrapper.classes()).toContain('badge')
-    expect(wrapper.classes()).not.toContain('badge-pill')
-    expect(wrapper.classes()).not.toContain('active')
-    expect(wrapper.classes()).not.toContain('disabled')
+    it('should apply variant class', async() => {
+        const wrapper = mount(BBadge, {
+            props: {
+                variant: 'danger'
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('SPAN')
+        expect(wrapper.classes()).toContain('badge-danger')
+        expect(wrapper.classes()).toContain('badge')
+        expect(wrapper.classes()).not.toContain('badge-pill')
+        expect(wrapper.classes()).not.toContain('active')
+        expect(wrapper.classes()).not.toContain('disabled')
 
-  it('should apply pill class', async () => {
-    const wrapper = mount(BBadge, {
-      propsData: {
-        pill: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('SPAN')
-    expect(wrapper.classes()).toContain('badge-pill')
-    expect(wrapper.classes()).toContain('badge')
-    expect(wrapper.classes()).toContain('badge-secondary')
-    expect(wrapper.classes()).not.toContain('active')
-    expect(wrapper.classes()).not.toContain('disabled')
+    it('should apply pill class', async() => {
+        const wrapper = mount(BBadge, {
+            props: {
+                pill: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('SPAN')
+        expect(wrapper.classes()).toContain('badge-pill')
+        expect(wrapper.classes()).toContain('badge')
+        expect(wrapper.classes()).toContain('badge-secondary')
+        expect(wrapper.classes()).not.toContain('active')
+        expect(wrapper.classes()).not.toContain('disabled')
 
-  it('should have active class when prop active set', async () => {
-    const wrapper = mount(BBadge, {
-      propsData: {
-        active: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('SPAN')
-    expect(wrapper.classes()).toContain('active')
-    expect(wrapper.classes()).toContain('badge-secondary')
-    expect(wrapper.classes()).toContain('badge')
-    expect(wrapper.classes()).not.toContain('badge-pill')
-    expect(wrapper.classes()).not.toContain('disabled')
+    it('should have active class when prop active set', async() => {
+        const wrapper = mount(BBadge, {
+            props: {
+                active: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('SPAN')
+        expect(wrapper.classes()).toContain('active')
+        expect(wrapper.classes()).toContain('badge-secondary')
+        expect(wrapper.classes()).toContain('badge')
+        expect(wrapper.classes()).not.toContain('badge-pill')
+        expect(wrapper.classes()).not.toContain('disabled')
 
-  it('should have disabled class when prop disabled set', async () => {
-    const wrapper = mount(BBadge, {
-      propsData: {
-        disabled: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('SPAN')
-    expect(wrapper.classes()).toContain('disabled')
-    expect(wrapper.classes()).toContain('badge-secondary')
-    expect(wrapper.classes()).toContain('badge')
-    expect(wrapper.classes()).not.toContain('badge-pill')
-    expect(wrapper.classes()).not.toContain('active')
+    it('should have disabled class when prop disabled set', async() => {
+        const wrapper = mount(BBadge, {
+            props: {
+                disabled: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('SPAN')
+        expect(wrapper.classes()).toContain('disabled')
+        expect(wrapper.classes()).toContain('badge-secondary')
+        expect(wrapper.classes()).toContain('badge')
+        expect(wrapper.classes()).not.toContain('badge-pill')
+        expect(wrapper.classes()).not.toContain('active')
 
-  it('renders custom root element', async () => {
-    const wrapper = mount(BBadge, {
-      propsData: {
-        tag: 'small'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('SMALL')
-    expect(wrapper.classes()).toContain('badge')
-    expect(wrapper.classes()).toContain('badge-secondary')
-    expect(wrapper.classes()).not.toContain('badge-pill')
-    expect(wrapper.classes()).not.toContain('active')
-    expect(wrapper.classes()).not.toContain('disabled')
+    it('renders custom root element', async() => {
+        const wrapper = mount(BBadge, {
+            props: {
+                tag: 'small'
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('SMALL')
+        expect(wrapper.classes()).toContain('badge')
+        expect(wrapper.classes()).toContain('badge-secondary')
+        expect(wrapper.classes()).not.toContain('badge-pill')
+        expect(wrapper.classes()).not.toContain('active')
+        expect(wrapper.classes()).not.toContain('disabled')
 
-  it('renders link when href provided', async () => {
-    const wrapper = mount(BBadge, {
-      propsData: {
-        href: '/foo/bar'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('A')
-    expect(wrapper.attributes('href')).toBeDefined()
-    expect(wrapper.attributes('href')).toBe('/foo/bar')
-    expect(wrapper.classes()).toContain('badge')
-    expect(wrapper.classes()).toContain('badge-secondary')
-    expect(wrapper.classes()).not.toContain('badge-pill')
-    expect(wrapper.classes()).not.toContain('active')
-    expect(wrapper.classes()).not.toContain('disabled')
+    it('renders link when href provided', async() => {
+        const wrapper = mount(BBadge, {
+            props: {
+                href: '/foo/bar'
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('A')
+        expect(wrapper.attributes('href')).toBeDefined()
+        expect(wrapper.attributes('href')).toBe('/foo/bar')
+        expect(wrapper.classes()).toContain('badge')
+        expect(wrapper.classes()).toContain('badge-secondary')
+        expect(wrapper.classes()).not.toContain('badge-pill')
+        expect(wrapper.classes()).not.toContain('active')
+        expect(wrapper.classes()).not.toContain('disabled')
+
+        wrapper.unmount()
+    })
 })

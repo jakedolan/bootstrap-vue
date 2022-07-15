@@ -37,7 +37,7 @@ describe('mixins/listen-on-root', () => {
         }
 
         const wrapper = mount(App, {
-            propsData: {
+            props: {
                 destroy: false
             }
         })
@@ -78,6 +78,6 @@ describe('mixins/listen-on-root', () => {
         expect(spyOn).toHaveBeenCalledTimes(2)
         expect(spyOnce).toHaveBeenCalledTimes(1)
 
-        wrapper.destroy()
+        wrapper.unmount()
     })
 })

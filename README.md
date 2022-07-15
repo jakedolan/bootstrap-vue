@@ -40,3 +40,5 @@
  <li>attrs, dromprops, props are flattened</li>
  <li>on is flattend and listeners renamed from 'eventName' to 'onEventName'</li>
 </ul>
+
+<p><b>Starting to work through tests.</b></p>

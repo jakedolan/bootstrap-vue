@@ -61,7 +61,7 @@ describe('v-b-toggle directive', () => {
         expect($button.classes()).toContain('collapsed')
         expect($button.classes()).not.toContain('not-collapsed')
 
-        wrapper.destroy()
+        wrapper.unmount()
     })
 
     it('works on passing ID as directive value', async() => {
@@ -111,7 +111,7 @@ describe('v-b-toggle directive', () => {
         expect($button.classes()).toContain('collapsed')
         expect($button.classes()).not.toContain('not-collapsed')
 
-        wrapper.destroy()
+        wrapper.unmount()
     })
 
     it('works on passing ID as directive argument', async() => {
@@ -161,7 +161,7 @@ describe('v-b-toggle directive', () => {
         expect($button.classes()).toContain('collapsed')
         expect($button.classes()).not.toContain('not-collapsed')
 
-        wrapper.destroy()
+        wrapper.unmount()
     })
 
     it('works on passing ID as href value on links', async() => {
@@ -213,7 +213,7 @@ describe('v-b-toggle directive', () => {
         expect($link.classes()).toContain('collapsed')
         expect($link.classes()).not.toContain('not-collapsed')
 
-        wrapper.destroy()
+        wrapper.unmount()
     })
 
     it('works with multiple targets, and updates when targets change', async() => {
@@ -244,7 +244,7 @@ describe('v-b-toggle directive', () => {
         }
 
         const wrapper = mount(App, {
-            propsData: {
+            props: {
                 target: 'test1'
             }
         })
@@ -299,7 +299,7 @@ describe('v-b-toggle directive', () => {
         expect($button.classes()).toContain('collapsed')
         expect($button.classes()).not.toContain('not-collapsed')
 
-        wrapper.destroy()
+        wrapper.unmount()
     })
 
     it('works on non-buttons', async() => {
@@ -400,7 +400,7 @@ describe('v-b-toggle directive', () => {
         expect($span.classes()).toContain('collapsed')
         expect($span.classes()).not.toContain('not-collapsed')
 
-        wrapper.destroy()
+        wrapper.unmount()
     })
 
     it('responds to state update events', async() => {
@@ -451,7 +451,7 @@ describe('v-b-toggle directive', () => {
         expect($button.classes()).not.toContain('collapsed')
         expect($button.classes()).toContain('not-collapsed')
 
-        wrapper.destroy()
+        wrapper.unmount()
     })
 
     it('responds to private sync state update events', async() => {
@@ -495,6 +495,6 @@ describe('v-b-toggle directive', () => {
         expect($button.classes()).toContain('collapsed')
         expect($button.classes()).not.toContain('not-collapsed')
 
-        wrapper.destroy()
+        wrapper.unmount()
     })
 })

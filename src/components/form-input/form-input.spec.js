@@ -4,983 +4,983 @@ import { waitNT, waitRAF } from '../../../tests/utils'
 import { BFormInput } from './form-input'
 
 describe('form-input', () => {
-  it('has class form-control', async () => {
-    const wrapper = mount(BFormInput)
+    it('has class form-control', async() => {
+        const wrapper = mount(BFormInput)
 
-    const $input = wrapper.find('input')
-    expect($input.classes()).toContain('form-control')
+        const $input = wrapper.find('input')
+        expect($input.classes()).toContain('form-control')
 
-    wrapper.destroy()
-  })
-
-  it('has class form-control-lg when size=lg and plane=false', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        size: 'lg'
-      }
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    expect($input.classes()).toContain('form-control-lg')
+    it('has class form-control-lg when size=lg and plane=false', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                size: 'lg'
+            }
+        })
 
-    wrapper.destroy()
-  })
+        const $input = wrapper.find('input')
+        expect($input.classes()).toContain('form-control-lg')
 
-  it('has class form-control-sm when size=lg and plain=false', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        size: 'sm'
-      }
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    expect($input.classes()).toContain('form-control-sm')
+    it('has class form-control-sm when size=lg and plain=false', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                size: 'sm'
+            }
+        })
 
-    wrapper.destroy()
-  })
+        const $input = wrapper.find('input')
+        expect($input.classes()).toContain('form-control-sm')
 
-  it('does not have class form-control-plaintext when plaintext not set', async () => {
-    const wrapper = mount(BFormInput)
-
-    const $input = wrapper.find('input')
-    expect($input.classes()).not.toContain('form-control-plaintext')
-    expect($input.attributes('readonly')).toBeUndefined()
-
-    wrapper.destroy()
-  })
-
-  it('has class form-control-plaintext when plaintext=true', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        plaintext: true
-      }
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    expect($input.classes()).toContain('form-control-plaintext')
+    it('does not have class form-control-plaintext when plaintext not set', async() => {
+        const wrapper = mount(BFormInput)
 
-    wrapper.destroy()
-  })
+        const $input = wrapper.find('input')
+        expect($input.classes()).not.toContain('form-control-plaintext')
+        expect($input.attributes('readonly')).toBeUndefined()
 
-  it('has attribute read-only when plaintext=true', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        plaintext: true
-      }
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    expect($input.classes()).toContain('form-control-plaintext')
-    expect($input.attributes('readonly')).toBeDefined()
+    it('has class form-control-plaintext when plaintext=true', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                plaintext: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        const $input = wrapper.find('input')
+        expect($input.classes()).toContain('form-control-plaintext')
 
-  it('has class custom-range instead of form-control when type=range', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        type: 'range'
-      }
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    expect($input.classes()).toContain('custom-range')
-    expect($input.classes()).not.toContain('form-control')
+    it('has attribute read-only when plaintext=true', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                plaintext: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        const $input = wrapper.find('input')
+        expect($input.classes()).toContain('form-control-plaintext')
+        expect($input.attributes('readonly')).toBeDefined()
 
-  it('does not have class form-control-plaintext when type=range and plaintext=true', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        type: 'range',
-        plaintext: true
-      }
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    expect($input.classes()).toContain('custom-range')
-    expect($input.classes()).not.toContain('form-control')
-    expect($input.classes()).not.toContain('form-control-plaintext')
+    it('has class custom-range instead of form-control when type=range', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                type: 'range'
+            }
+        })
 
-    wrapper.destroy()
-  })
+        const $input = wrapper.find('input')
+        expect($input.classes()).toContain('custom-range')
+        expect($input.classes()).not.toContain('form-control')
 
-  it('does not have class form-control-plaintext when type=color and plaintext=true', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        type: 'color',
-        plaintext: true
-      }
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    expect($input.classes()).not.toContain('custom-range')
-    expect($input.classes()).not.toContain('form-control-plaintext')
-    expect($input.classes()).toContain('form-control')
+    it('does not have class form-control-plaintext when type=range and plaintext=true', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                type: 'range',
+                plaintext: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        const $input = wrapper.find('input')
+        expect($input.classes()).toContain('custom-range')
+        expect($input.classes()).not.toContain('form-control')
+        expect($input.classes()).not.toContain('form-control-plaintext')
 
-  it('has user supplied id', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        id: 'foobar'
-      }
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    expect($input.attributes('id')).toBe('foobar')
+    it('does not have class form-control-plaintext when type=color and plaintext=true', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                type: 'color',
+                plaintext: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        const $input = wrapper.find('input')
+        expect($input.classes()).not.toContain('custom-range')
+        expect($input.classes()).not.toContain('form-control-plaintext')
+        expect($input.classes()).toContain('form-control')
 
-  it('has safeId after mount when no id provided', async () => {
-    const wrapper = mount(BFormInput, {
-      attachTo: document.body
+        wrapper.unmount()
     })
 
-    // We need to wait a tick for `safeId` to be generated
-    await waitNT(wrapper.vm)
+    it('has user supplied id', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                id: 'foobar'
+            }
+        })
 
-    const $input = wrapper.find('input')
-    expect($input.attributes('id')).toBeDefined()
+        const $input = wrapper.find('input')
+        expect($input.attributes('id')).toBe('foobar')
 
-    wrapper.destroy()
-  })
-
-  it('has form attribute when form prop set', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        form: 'foobar'
-      }
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    expect($input.attributes('form')).toBe('foobar')
+    it('has safeId after mount when no id provided', async() => {
+        const wrapper = mount(BFormInput, {
+            attachTo: document.body
+        })
 
-    wrapper.destroy()
-  })
+        // We need to wait a tick for `safeId` to be generated
+        await waitNT(wrapper.vm)
 
-  it('does not have list attribute when list prop not set', async () => {
-    const wrapper = mount(BFormInput)
+        const $input = wrapper.find('input')
+        expect($input.attributes('id')).toBeDefined()
 
-    const $input = wrapper.find('input')
-    expect($input.attributes('list')).toBeUndefined()
-
-    wrapper.destroy()
-  })
-
-  it('has list attribute when list prop set', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        list: 'foobar'
-      }
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    expect($input.attributes('list')).toBe('foobar')
+    it('has form attribute when form prop set', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                form: 'foobar'
+            }
+        })
 
-    wrapper.destroy()
-  })
+        const $input = wrapper.find('input')
+        expect($input.attributes('form')).toBe('foobar')
 
-  it('does not have list attribute when list prop set and type=password', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        list: 'foobar',
-        type: 'password'
-      }
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    expect($input.attributes('list')).toBeUndefined()
+    it('does not have list attribute when list prop not set', async() => {
+        const wrapper = mount(BFormInput)
 
-    wrapper.destroy()
-  })
+        const $input = wrapper.find('input')
+        expect($input.attributes('list')).toBeUndefined()
 
-  it('renders text input by default', async () => {
-    const wrapper = mount(BFormInput)
-
-    const $input = wrapper.find('input')
-    expect($input.attributes('type')).toBe('text')
-
-    wrapper.destroy()
-  })
-
-  it('renders number input when type set to number', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        type: 'number'
-      }
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    expect($input.attributes('type')).toBe('number')
+    it('has list attribute when list prop set', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                list: 'foobar'
+            }
+        })
 
-    wrapper.destroy()
-  })
+        const $input = wrapper.find('input')
+        expect($input.attributes('list')).toBe('foobar')
 
-  it('renders text input when type not supported', async () => {
-    const { warnHandler } = Vue.config
-    Vue.config.warnHandler = jest.fn()
-
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        type: 'foobar'
-      }
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    expect($input.attributes('type')).toBe('text')
+    it('does not have list attribute when list prop set and type=password', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                list: 'foobar',
+                type: 'password'
+            }
+        })
 
-    expect(Vue.config.warnHandler).toHaveBeenCalled()
-    Vue.config.warnHandler = warnHandler
+        const $input = wrapper.find('input')
+        expect($input.attributes('list')).toBeUndefined()
 
-    wrapper.destroy()
-  })
-
-  it('does not have is-valid or is-invalid classes when state is default', async () => {
-    const wrapper = mount(BFormInput)
-
-    const $input = wrapper.find('input')
-    expect($input.classes()).not.toContain('is-valid')
-    expect($input.classes()).not.toContain('is-invalid')
-
-    wrapper.destroy()
-  })
-
-  it('has class is-valid when state=true', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        state: true
-      }
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    expect($input.classes()).toContain('is-valid')
-    expect($input.classes()).not.toContain('is-invalid')
+    it('renders text input by default', async() => {
+        const wrapper = mount(BFormInput)
 
-    wrapper.destroy()
-  })
+        const $input = wrapper.find('input')
+        expect($input.attributes('type')).toBe('text')
 
-  it('has class is-invalid when state=false', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        state: false
-      }
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    expect($input.classes()).toContain('is-invalid')
-    expect($input.classes()).not.toContain('is-valid')
+    it('renders number input when type set to number', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                type: 'number'
+            }
+        })
 
-    wrapper.destroy()
-  })
+        const $input = wrapper.find('input')
+        expect($input.attributes('type')).toBe('number')
 
-  it('does not have aria-invalid attribute by default', async () => {
-    const wrapper = mount(BFormInput)
-
-    expect(wrapper.attributes('aria-invalid')).toBeUndefined()
-
-    wrapper.destroy()
-  })
-
-  it('does not have aria-invalid attribute when state is true', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        state: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.attributes('aria-invalid')).toBeUndefined()
+    it('renders text input when type not supported', async() => {
+        const { warnHandler } = Vue.config
+        Vue.config.warnHandler = jest.fn()
 
-    wrapper.destroy()
-  })
+        const wrapper = mount(BFormInput, {
+            props: {
+                type: 'foobar'
+            }
+        })
 
-  it('has aria-invalid attribute when state=false', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        state: false
-      }
+        const $input = wrapper.find('input')
+        expect($input.attributes('type')).toBe('text')
+
+        expect(Vue.config.warnHandler).toHaveBeenCalled()
+        Vue.config.warnHandler = warnHandler
+
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    expect($input.attributes('aria-invalid')).toBe('true')
+    it('does not have is-valid or is-invalid classes when state is default', async() => {
+        const wrapper = mount(BFormInput)
 
-    wrapper.destroy()
-  })
+        const $input = wrapper.find('input')
+        expect($input.classes()).not.toContain('is-valid')
+        expect($input.classes()).not.toContain('is-invalid')
 
-  it('has aria-invalid attribute when aria-invalid="true"', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        ariaInvalid: 'true'
-      }
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    expect($input.attributes('aria-invalid')).toBe('true')
+    it('has class is-valid when state=true', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                state: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        const $input = wrapper.find('input')
+        expect($input.classes()).toContain('is-valid')
+        expect($input.classes()).not.toContain('is-invalid')
 
-  it('has aria-invalid attribute when aria-invalid=true', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        ariaInvalid: true
-      }
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    expect($input.attributes('aria-invalid')).toBe('true')
+    it('has class is-invalid when state=false', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                state: false
+            }
+        })
 
-    wrapper.destroy()
-  })
+        const $input = wrapper.find('input')
+        expect($input.classes()).toContain('is-invalid')
+        expect($input.classes()).not.toContain('is-valid')
 
-  it('has aria-invalid attribute when aria-invalid="spelling"', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        ariaInvalid: 'spelling'
-      }
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    expect($input.attributes('aria-invalid')).toBe('spelling')
+    it('does not have aria-invalid attribute by default', async() => {
+        const wrapper = mount(BFormInput)
 
-    wrapper.destroy()
-  })
+        expect(wrapper.attributes('aria-invalid')).toBeUndefined()
 
-  it('is disabled when disabled=true', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        disabled: true
-      }
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    expect(!!$input.attributes('disabled')).toBe(true)
-    expect($input.element.disabled).toBe(true)
+    it('does not have aria-invalid attribute when state is true', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                state: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.attributes('aria-invalid')).toBeUndefined()
 
-  it('is not disabled when disabled=false', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        disabled: false
-      }
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    expect(!!$input.attributes('disabled')).toBe(false)
-    expect($input.element.disabled).toBe(false)
+    it('has aria-invalid attribute when state=false', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                state: false
+            }
+        })
 
-    wrapper.destroy()
-  })
+        const $input = wrapper.find('input')
+        expect($input.attributes('aria-invalid')).toBe('true')
 
-  it('emits an input event', async () => {
-    const wrapper = mount(BFormInput)
-
-    const $input = wrapper.find('input')
-    $input.element.value = 'test'
-    await $input.trigger('input')
-
-    expect(wrapper.emitted('input')).toBeDefined()
-    expect(wrapper.emitted().input[0].length).toEqual(1)
-    expect(wrapper.emitted().input[0][0]).toEqual('test')
-
-    wrapper.destroy()
-  })
-
-  it('emits a native focus event', async () => {
-    const spy = jest.fn()
-    const wrapper = mount(BFormInput, {
-      attachTo: document.body,
-      listeners: {
-        focus: spy
-      }
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
+    it('has aria-invalid attribute when aria-invalid="true"', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                ariaInvalid: 'true'
+            }
+        })
 
-    await $input.trigger('focus')
-    expect(wrapper.emitted()).toMatchObject({})
-    expect(spy).toHaveBeenCalled()
+        const $input = wrapper.find('input')
+        expect($input.attributes('aria-invalid')).toBe('true')
 
-    wrapper.destroy()
-  })
-
-  it('emits a blur event with native event as only arg', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        value: 'TEST'
-      }
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    await $input.trigger('blur')
+    it('has aria-invalid attribute when aria-invalid=true', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                ariaInvalid: true
+            }
+        })
 
-    expect(wrapper.emitted('blur')).toBeDefined()
-    expect(wrapper.emitted('blur')[0].length).toEqual(1)
-    expect(wrapper.emitted('blur')[0][0] instanceof Event).toBe(true)
-    expect(wrapper.emitted('blur')[0][0].type).toEqual('blur')
+        const $input = wrapper.find('input')
+        expect($input.attributes('aria-invalid')).toBe('true')
 
-    wrapper.destroy()
-  })
-
-  it('applies formatter on input when not lazy', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        formatter(value) {
-          return value.toLowerCase()
-        }
-      },
-      attachTo: document.body
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    $input.element.value = 'TEST'
-    await $input.trigger('input')
+    it('has aria-invalid attribute when aria-invalid="spelling"', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                ariaInvalid: 'spelling'
+            }
+        })
 
-    expect(wrapper.emitted('update')).toBeDefined()
-    expect(wrapper.emitted('update').length).toEqual(1)
-    expect(wrapper.emitted('update')[0][0]).toEqual('test')
+        const $input = wrapper.find('input')
+        expect($input.attributes('aria-invalid')).toBe('spelling')
 
-    expect(wrapper.emitted('input')).toBeDefined()
-    expect(wrapper.emitted('input').length).toEqual(1)
-    expect(wrapper.emitted('input')[0][0]).toEqual('test')
-
-    wrapper.destroy()
-  })
-
-  it('does not apply formatter on input when lazy', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        formatter(value) {
-          return value.toLowerCase()
-        },
-        lazyFormatter: true
-      },
-      attachTo: document.body
+        wrapper.unmount()
     })
 
-    const $input = wrapper.findComponent('input')
-    $input.element.value = 'TEST'
-    await $input.trigger('input')
+    it('is disabled when disabled=true', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                disabled: true
+            }
+        })
 
-    expect(wrapper.emitted('update')).toBeDefined()
-    expect(wrapper.emitted('update').length).toEqual(1)
-    expect(wrapper.emitted('update')[0][0]).toEqual('TEST')
-    expect(wrapper.emitted('input')).toBeDefined()
-    expect(wrapper.emitted('input').length).toEqual(1)
-    expect(wrapper.emitted('input')[0][0]).toEqual('TEST')
-    expect(wrapper.emitted('change')).toBeUndefined()
-    expect($input.vm.localValue).toEqual('TEST')
+        const $input = wrapper.find('input')
+        expect(!!$input.attributes('disabled')).toBe(true)
+        expect($input.element.disabled).toBe(true)
 
-    wrapper.destroy()
-  })
-
-  it('applies formatter on blur when lazy', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        value: '',
-        formatter(value) {
-          return value.toLowerCase()
-        },
-        lazyFormatter: true
-      },
-      attachTo: document.body
+        wrapper.unmount()
     })
 
-    const $input = wrapper.findComponent('input')
+    it('is not disabled when disabled=false', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                disabled: false
+            }
+        })
 
-    // Input event needed to set initial value
-    $input.element.value = 'TEST'
-    await $input.trigger('input')
+        const $input = wrapper.find('input')
+        expect(!!$input.attributes('disabled')).toBe(false)
+        expect($input.element.disabled).toBe(false)
 
-    expect($input.vm.localValue).toEqual('TEST')
-    expect(wrapper.emitted('update')).toBeDefined()
-    expect(wrapper.emitted('update').length).toEqual(1)
-    expect(wrapper.emitted('update')[0][0]).toEqual('TEST')
-
-    await $input.trigger('blur')
-
-    expect(wrapper.emitted('update')).toBeDefined()
-    expect(wrapper.emitted('update').length).toEqual(2)
-    expect(wrapper.emitted('update')[1][0]).toEqual('test')
-    expect(wrapper.emitted('input')).toBeDefined()
-    expect(wrapper.emitted('change')).toBeUndefined()
-    expect(wrapper.emitted('blur')).toBeDefined()
-    expect(wrapper.emitted('blur').length).toEqual(1)
-    expect($input.vm.localValue).toEqual('test')
-
-    wrapper.destroy()
-  })
-
-  it('does not apply formatter when value supplied on mount and not lazy', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        value: 'TEST',
-        formatter(value) {
-          return String(value).toLowerCase()
-        }
-      },
-      attachTo: document.body
+        wrapper.unmount()
     })
 
-    const $input = wrapper.findComponent('input')
-    expect($input.vm.localValue).toEqual('TEST')
-    expect(wrapper.emitted('update')).toBeUndefined()
-    expect(wrapper.emitted('input')).toBeUndefined()
-    expect(wrapper.emitted('change')).toBeUndefined()
-    expect(wrapper.emitted('blur')).toBeUndefined()
+    it('emits an input event', async() => {
+        const wrapper = mount(BFormInput)
 
-    wrapper.destroy()
-  })
+        const $input = wrapper.find('input')
+        $input.element.value = 'test'
+        await $input.trigger('input')
 
-  it('does not apply formatter when value prop updated and not lazy', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        value: '',
-        formatter(value) {
-          return value.toLowerCase()
-        }
-      },
-      attachTo: document.body
+        expect(wrapper.emitted('input')).toBeDefined()
+        expect(wrapper.emitted().input[0].length).toEqual(1)
+        expect(wrapper.emitted().input[0][0]).toEqual('test')
+
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    await wrapper.setProps({ value: 'TEST' })
+    it('emits a native focus event', async() => {
+        const spy = jest.fn()
+        const wrapper = mount(BFormInput, {
+            attachTo: document.body,
+            attrs: {
+                onFocus: spy
+            }
+        })
 
-    expect($input.element.value).toEqual('TEST')
-    expect(wrapper.emitted('update')).toBeUndefined() // Note emitted as value hasn't changed
-    expect(wrapper.emitted('input')).toBeUndefined()
-    expect(wrapper.emitted('change')).toBeUndefined()
-    expect(wrapper.emitted('blur')).toBeUndefined()
+        const $input = wrapper.find('input')
 
-    wrapper.destroy()
-  })
+        await $input.trigger('focus')
+        expect(wrapper.emitted()).toMatchObject({})
+        expect(spy).toHaveBeenCalled()
 
-  it('does not apply formatter when value prop updated and lazy', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        value: '',
-        formatter(value) {
-          return value.toLowerCase()
-        },
-        lazyFormatter: true
-      },
-      attachTo: document.body
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    await wrapper.setProps({ value: 'TEST' })
+    it('emits a blur event with native event as only arg', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                value: 'TEST'
+            }
+        })
 
-    expect($input.element.value).toEqual('TEST')
-    expect(wrapper.emitted('update')).toBeUndefined() // Not emitted when value doesnt change
-    expect(wrapper.emitted('input')).toBeUndefined()
-    expect(wrapper.emitted('change')).toBeUndefined()
-    expect(wrapper.emitted('blur')).toBeUndefined()
+        const $input = wrapper.find('input')
+        await $input.trigger('blur')
 
-    wrapper.destroy()
-  })
+        expect(wrapper.emitted('blur')).toBeDefined()
+        expect(wrapper.emitted('blur')[0].length).toEqual(1)
+        expect(wrapper.emitted('blur')[0][0] instanceof Event).toBe(true)
+        expect(wrapper.emitted('blur')[0][0].type).toEqual('blur')
 
-  it('does not update value when non-lazy formatter returns false', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        value: 'abc',
-        formatter() {
-          return false
-        }
-      },
-      attachTo: document.body
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    expect($input.exists()).toBe(true)
+    it('applies formatter on input when not lazy', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                formatter(value) {
+                    return value.toLowerCase()
+                }
+            },
+            attachTo: document.body
+        })
 
-    await $input.trigger('focus')
-    await $input.setValue('TEST')
+        const $input = wrapper.find('input')
+        $input.element.value = 'TEST'
+        await $input.trigger('input')
 
-    expect(wrapper.emitted('input')).toBeUndefined()
-    expect(wrapper.emitted('update')).toBeUndefined()
-    // v-model should not change
-    expect(wrapper.vm.localValue).toBe('abc')
-    // Value in input should remain the same as entered
-    expect($input.element.value).toEqual('TEST')
+        expect(wrapper.emitted('update')).toBeDefined()
+        expect(wrapper.emitted('update').length).toEqual(1)
+        expect(wrapper.emitted('update')[0][0]).toEqual('test')
 
-    wrapper.destroy()
-  })
+        expect(wrapper.emitted('input')).toBeDefined()
+        expect(wrapper.emitted('input').length).toEqual(1)
+        expect(wrapper.emitted('input')[0][0]).toEqual('test')
 
-  it('focused number input with no-wheel set to true works', async () => {
-    const spy = jest.fn()
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        noWheel: true,
-        type: 'number',
-        value: '123'
-      },
-      listeners: {
-        blur: spy
-      },
-      attachTo: document.body
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.type).toBe('number')
-    expect(wrapper.props().noWheel).toBe(true)
+    it('does not apply formatter on input when lazy', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                formatter(value) {
+                    return value.toLowerCase()
+                },
+                lazyFormatter: true
+            },
+            attachTo: document.body
+        })
 
-    wrapper.element.focus()
-    await wrapper.trigger('focus')
-    await wrapper.trigger('wheel', { deltaY: 33.33, deltaX: 0, deltaZ: 0, deltaMode: 0 })
+        const $input = wrapper.findComponent('input')
+        $input.element.value = 'TEST'
+        await $input.trigger('input')
 
-    // `:no-wheel="true"` will fire a blur event on the input when wheel fired
-    expect(spy).toHaveBeenCalled()
+        expect(wrapper.emitted('update')).toBeDefined()
+        expect(wrapper.emitted('update').length).toEqual(1)
+        expect(wrapper.emitted('update')[0][0]).toEqual('TEST')
+        expect(wrapper.emitted('input')).toBeDefined()
+        expect(wrapper.emitted('input').length).toEqual(1)
+        expect(wrapper.emitted('input')[0][0]).toEqual('TEST')
+        expect(wrapper.emitted('change')).toBeUndefined()
+        expect($input.vm.localValue).toEqual('TEST')
 
-    wrapper.destroy()
-  })
-
-  it('focused number input with no-wheel set to false works', async () => {
-    const spy = jest.fn(() => {})
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        noWheel: false,
-        type: 'number',
-        value: '123'
-      },
-      listeners: {
-        blur: spy
-      },
-      attachTo: document.body
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.type).toBe('number')
-    expect(wrapper.props().noWheel).toBe(false)
-    expect(document.activeElement).not.toBe(wrapper.element)
+    it('applies formatter on blur when lazy', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                value: '',
+                formatter(value) {
+                    return value.toLowerCase()
+                },
+                lazyFormatter: true
+            },
+            attachTo: document.body
+        })
 
-    wrapper.element.focus()
-    await wrapper.trigger('focus')
-    expect(document.activeElement).toBe(wrapper.element)
-    await wrapper.trigger('wheel', { deltaY: 33.33, deltaX: 0, deltaZ: 0, deltaMode: 0 })
+        const $input = wrapper.findComponent('input')
 
-    // `:no-wheel="false"` will not fire a blur event on the input when wheel fired
-    expect(spy).not.toHaveBeenCalled()
+        // Input event needed to set initial value
+        $input.element.value = 'TEST'
+        await $input.trigger('input')
 
-    wrapper.destroy()
-  })
+        expect($input.vm.localValue).toEqual('TEST')
+        expect(wrapper.emitted('update')).toBeDefined()
+        expect(wrapper.emitted('update').length).toEqual(1)
+        expect(wrapper.emitted('update')[0][0]).toEqual('TEST')
 
-  it('changing no-wheel after mount works', async () => {
-    const spy = jest.fn(() => {})
-    const wrapper = mount(BFormInput, {
-      attachTo: document.body,
-      propsData: {
-        noWheel: false,
-        type: 'number',
-        value: '123'
-      },
-      listeners: {
-        blur: spy
-      }
+        await $input.trigger('blur')
+
+        expect(wrapper.emitted('update')).toBeDefined()
+        expect(wrapper.emitted('update').length).toEqual(2)
+        expect(wrapper.emitted('update')[1][0]).toEqual('test')
+        expect(wrapper.emitted('input')).toBeDefined()
+        expect(wrapper.emitted('change')).toBeUndefined()
+        expect(wrapper.emitted('blur')).toBeDefined()
+        expect(wrapper.emitted('blur').length).toEqual(1)
+        expect($input.vm.localValue).toEqual('test')
+
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.type).toBe('number')
-    expect(wrapper.props().noWheel).toBe(false)
-    expect(document.activeElement).not.toBe(wrapper.element)
+    it('does not apply formatter when value supplied on mount and not lazy', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                value: 'TEST',
+                formatter(value) {
+                    return String(value).toLowerCase()
+                }
+            },
+            attachTo: document.body
+        })
 
-    wrapper.element.focus()
-    await wrapper.trigger('focus')
-    expect(document.activeElement).toBe(wrapper.element)
-    await wrapper.trigger('wheel', { deltaY: 33.33, deltaX: 0, deltaZ: 0, deltaMode: 0 })
+        const $input = wrapper.findComponent('input')
+        expect($input.vm.localValue).toEqual('TEST')
+        expect(wrapper.emitted('update')).toBeUndefined()
+        expect(wrapper.emitted('input')).toBeUndefined()
+        expect(wrapper.emitted('change')).toBeUndefined()
+        expect(wrapper.emitted('blur')).toBeUndefined()
 
-    // no-wheel=false will not fire a blur event on the input when wheel fired
-    expect(spy).not.toHaveBeenCalled()
-
-    await wrapper.setProps({ noWheel: true })
-    expect(wrapper.props().noWheel).toBe(true)
-
-    wrapper.element.focus()
-    await wrapper.trigger('focus')
-    expect(document.activeElement).toBe(wrapper.element)
-
-    // `no-wheel="true"` will fire a blur event on the input when wheel fired
-    wrapper.element.blur()
-    await wrapper.trigger('wheel', { deltaY: 33.33, deltaX: 0, deltaZ: 0, deltaMode: 0 })
-    expect(document.activeElement).not.toBe(wrapper.element)
-    expect(spy).toHaveBeenCalled()
-
-    wrapper.destroy()
-  })
-
-  it('"number" modifier prop works', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        type: 'text',
-        number: true
-      }
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    $input.element.value = '123.450'
-    await $input.trigger('input')
+    it('does not apply formatter when value prop updated and not lazy', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                value: '',
+                formatter(value) {
+                    return value.toLowerCase()
+                }
+            },
+            attachTo: document.body
+        })
 
-    expect($input.element.value).toBe('123.450')
-    // `v-model` update event (should emit a numerical value)
-    expect(wrapper.emitted('update')).toBeDefined()
-    expect(wrapper.emitted('update').length).toBe(1)
-    expect(wrapper.emitted('update')[0].length).toEqual(1)
-    expect(wrapper.emitted('update')[0][0]).toBeCloseTo(123.45)
-    // Pre converted value as string (raw input value)
-    expect(wrapper.emitted('input')).toBeDefined()
-    expect(wrapper.emitted('input').length).toBe(1)
-    expect(wrapper.emitted('input')[0].length).toEqual(1)
-    expect(wrapper.emitted('input')[0][0]).toEqual('123.450')
+        const $input = wrapper.find('input')
+        await wrapper.setProps({ value: 'TEST' })
 
-    // Update the input to be different string-wise, but same numerically
-    $input.element.value = '123.4500'
-    await $input.trigger('input')
+        expect($input.element.value).toEqual('TEST')
+        expect(wrapper.emitted('update')).toBeUndefined() // Note emitted as value hasn't changed
+        expect(wrapper.emitted('input')).toBeUndefined()
+        expect(wrapper.emitted('change')).toBeUndefined()
+        expect(wrapper.emitted('blur')).toBeUndefined()
 
-    expect($input.element.value).toBe('123.4500')
-    // Should emit a new input event
-    expect(wrapper.emitted('input').length).toEqual(2)
-    expect(wrapper.emitted('input')[1][0]).toEqual('123.4500')
-    // `v-model` value stays the same and update event shouldn't be emitted again
-    expect(wrapper.emitted('update').length).toBe(1)
-    expect(wrapper.emitted('update')[0][0]).toBeCloseTo(123.45)
-
-    // Updating the `v-model` to new numeric value
-    await wrapper.setProps({ value: 45.6 })
-    expect($input.element.value).toBe('45.6')
-
-    wrapper.destroy()
-  })
-
-  it('"lazy" modifier prop works', async () => {
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        type: 'text',
-        lazy: true
-      }
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    $input.element.value = 'a'
-    await $input.trigger('input')
-    expect($input.element.value).toBe('a')
-    // `v-model` update event should not have emitted
-    expect(wrapper.emitted('update')).toBeUndefined()
+    it('does not apply formatter when value prop updated and lazy', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                value: '',
+                formatter(value) {
+                    return value.toLowerCase()
+                },
+                lazyFormatter: true
+            },
+            attachTo: document.body
+        })
 
-    $input.element.value = 'ab'
-    await $input.trigger('input')
-    expect($input.element.value).toBe('ab')
-    // `v-model` update event should not have emitted
-    expect(wrapper.emitted('update')).toBeUndefined()
+        const $input = wrapper.find('input')
+        await wrapper.setProps({ value: 'TEST' })
 
-    // trigger a change event
-    await $input.trigger('change')
-    expect($input.element.value).toBe('ab')
-    // `v-model` update event should have emitted
-    expect(wrapper.emitted('update')).toBeDefined()
-    expect(wrapper.emitted('update').length).toEqual(1)
-    expect(wrapper.emitted('update')[0][0]).toBe('ab')
+        expect($input.element.value).toEqual('TEST')
+        expect(wrapper.emitted('update')).toBeUndefined() // Not emitted when value doesnt change
+        expect(wrapper.emitted('input')).toBeUndefined()
+        expect(wrapper.emitted('change')).toBeUndefined()
+        expect(wrapper.emitted('blur')).toBeUndefined()
 
-    $input.element.value = 'abc'
-    await $input.trigger('input')
-    expect($input.element.value).toBe('abc')
-    // `v-model` update event should not have emitted new event
-    expect(wrapper.emitted('update').length).toEqual(1)
-
-    $input.element.value = 'abcd'
-    await $input.trigger('input')
-    expect($input.element.value).toBe('abcd')
-    // `v-model` update event should not have emitted new event
-    expect(wrapper.emitted('update').length).toEqual(1)
-
-    // Trigger a blur event
-    await $input.trigger('blur')
-    expect($input.element.value).toBe('abcd')
-    // `v-model` update event should have emitted
-    expect(wrapper.emitted('update').length).toEqual(2)
-    expect(wrapper.emitted('update')[1][0]).toBe('abcd')
-
-    wrapper.destroy()
-  })
-
-  it('"debounce" prop works', async () => {
-    jest.useFakeTimers()
-    const wrapper = mount(BFormInput, {
-      propsData: {
-        type: 'text',
-        value: '',
-        debounce: 100
-      }
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
-    $input.element.value = 'a'
-    await $input.trigger('input')
-    expect($input.element.value).toBe('a')
-    // `v-model` update event should not have emitted
-    expect(wrapper.emitted('update')).toBeUndefined()
-    // `input` event should be emitted
-    expect(wrapper.emitted('input')).toBeDefined()
-    expect(wrapper.emitted('input').length).toBe(1)
-    expect(wrapper.emitted('input')[0][0]).toBe('a')
+    it('does not update value when non-lazy formatter returns false', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                value: 'abc',
+                formatter() {
+                    return false
+                }
+            },
+            attachTo: document.body
+        })
 
-    $input.element.value = 'ab'
-    await $input.trigger('input')
-    expect($input.element.value).toBe('ab')
-    // `v-model` update event should not have emitted
-    expect(wrapper.emitted('update')).toBeUndefined()
-    // `input` event should be emitted
-    expect(wrapper.emitted('input').length).toBe(2)
-    expect(wrapper.emitted('input')[1][0]).toBe('ab')
+        const $input = wrapper.find('input')
+        expect($input.exists()).toBe(true)
 
-    // Advance timer
-    jest.runOnlyPendingTimers()
-    // Should update the v-model
-    expect($input.element.value).toBe('ab')
-    // `v-model` update event should have emitted
-    expect(wrapper.emitted('update')).toBeDefined()
-    expect(wrapper.emitted('update').length).toBe(1)
-    expect(wrapper.emitted('update')[0][0]).toBe('ab')
-    // `input` event should not have emitted new event
-    expect(wrapper.emitted('input').length).toBe(2)
+        await $input.trigger('focus')
+        await $input.setValue('TEST')
 
-    // Update input
-    $input.element.value = 'abc'
-    await $input.trigger('input')
-    expect($input.element.value).toBe('abc')
-    // `v-model` update event should not have emitted new event
-    expect(wrapper.emitted('update').length).toBe(1)
-    // `input` event should be emitted
-    expect(wrapper.emitted('input').length).toBe(3)
-    expect(wrapper.emitted('input')[2][0]).toBe('abc')
+        expect(wrapper.emitted('input')).toBeUndefined()
+        expect(wrapper.emitted('update')).toBeUndefined()
+            // v-model should not change
+        expect(wrapper.vm.localValue).toBe('abc')
+            // Value in input should remain the same as entered
+        expect($input.element.value).toEqual('TEST')
 
-    // Update input
-    $input.element.value = 'abcd'
-    await $input.trigger('input')
-    expect($input.element.value).toBe('abcd')
-    // `v-model` update event should not have emitted new event
-    expect(wrapper.emitted('update').length).toEqual(1)
-    // `input` event should be emitted
-    expect(wrapper.emitted('input').length).toBe(4)
-    expect(wrapper.emitted('input')[3][0]).toBe('abcd')
-
-    // Trigger a `change` event
-    await $input.trigger('change')
-    expect($input.element.value).toBe('abcd')
-    // `v-model` update event should have emitted (change overrides debounce)
-    expect(wrapper.emitted('update').length).toEqual(2)
-    expect(wrapper.emitted('update')[1][0]).toBe('abcd')
-    // `input` event should not have emitted new event
-    expect(wrapper.emitted('input').length).toBe(4)
-
-    $input.element.value = 'abc'
-    await $input.trigger('input')
-    expect($input.element.value).toBe('abc')
-    // `v-model` update event should not have emitted new event
-    expect(wrapper.emitted('update').length).toBe(2)
-    // `input` event should be emitted
-    expect(wrapper.emitted('input').length).toBe(5)
-    expect(wrapper.emitted('input')[4][0]).toBe('abc')
-
-    $input.element.value = 'abcd'
-    await $input.trigger('input')
-    expect($input.element.value).toBe('abcd')
-    // `v-model` update event should not have emitted new event
-    expect(wrapper.emitted('update').length).toBe(2)
-    // `input` event should be emitted
-    expect(wrapper.emitted('input').length).toBe(6)
-    expect(wrapper.emitted('input')[5][0]).toBe('abcd')
-
-    // Advance timer
-    jest.runOnlyPendingTimers()
-    // Should update the v-model
-    expect($input.element.value).toBe('abcd')
-    // `v-model` update event should not have emitted new event
-    expect(wrapper.emitted('update').length).toBe(2)
-    // `input` event should not have emitted new event
-    expect(wrapper.emitted('input').length).toBe(6)
-
-    wrapper.destroy()
-  })
-
-  it('focus() and blur() methods work', async () => {
-    const wrapper = mount(BFormInput, {
-      attachTo: document.body
+        wrapper.unmount()
     })
 
-    const $input = wrapper.find('input')
+    it('focused number input with no-wheel set to true works', async() => {
+        const spy = jest.fn()
+        const wrapper = mount(BFormInput, {
+            props: {
+                noWheel: true,
+                type: 'number',
+                value: '123'
+            },
+            attrs: {
+                onBlur: spy
+            },
+            attachTo: document.body
+        })
 
-    expect(typeof wrapper.vm.focus).toBe('function')
-    expect(typeof wrapper.vm.blur).toBe('function')
+        expect(wrapper.element.type).toBe('number')
+        expect(wrapper.props().noWheel).toBe(true)
 
-    expect(document.activeElement).not.toBe($input.element)
-    wrapper.vm.focus()
-    expect(document.activeElement).toBe($input.element)
-    wrapper.vm.blur()
-    expect(document.activeElement).not.toBe($input.element)
+        wrapper.element.focus()
+        await wrapper.trigger('focus')
+        await wrapper.trigger('wheel', { deltaY: 33.33, deltaX: 0, deltaZ: 0, deltaMode: 0 })
 
-    wrapper.destroy()
-  })
+        // `:no-wheel="true"` will fire a blur event on the input when wheel fired
+        expect(spy).toHaveBeenCalled()
 
-  // These tests are wrapped in a new describe to limit the scope of the getBCR Mock
-  describe('prop `autofocus`', () => {
-    const origGetBCR = Element.prototype.getBoundingClientRect
-
-    beforeEach(() => {
-      // Mock `getBoundingClientRect()` so that the `isVisible(el)` test returns `true`
-      Element.prototype.getBoundingClientRect = jest.fn(() => ({
-        width: 24,
-        height: 24,
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0
-      }))
+        wrapper.unmount()
     })
 
-    afterEach(() => {
-      // Restore prototype
-      Element.prototype.getBoundingClientRect = origGetBCR
+    it('focused number input with no-wheel set to false works', async() => {
+        const spy = jest.fn(() => {})
+        const wrapper = mount(BFormInput, {
+            props: {
+                noWheel: false,
+                type: 'number',
+                value: '123'
+            },
+            attrs: {
+                onBlur: spy
+            },
+            attachTo: document.body
+        })
+
+        expect(wrapper.element.type).toBe('number')
+        expect(wrapper.props().noWheel).toBe(false)
+        expect(document.activeElement).not.toBe(wrapper.element)
+
+        wrapper.element.focus()
+        await wrapper.trigger('focus')
+        expect(document.activeElement).toBe(wrapper.element)
+        await wrapper.trigger('wheel', { deltaY: 33.33, deltaX: 0, deltaZ: 0, deltaMode: 0 })
+
+        // `:no-wheel="false"` will not fire a blur event on the input when wheel fired
+        expect(spy).not.toHaveBeenCalled()
+
+        wrapper.unmount()
     })
 
-    it('works when true', async () => {
-      const wrapper = mount(BFormInput, {
-        attachTo: document.body,
-        propsData: {
-          autofocus: true
-        }
-      })
+    it('changing no-wheel after mount works', async() => {
+        const spy = jest.fn(() => {})
+        const wrapper = mount(BFormInput, {
+            attachTo: document.body,
+            props: {
+                noWheel: false,
+                type: 'number',
+                value: '123'
+            },
+            attrs: {
+                onBlur: spy
+            }
+        })
 
-      expect(wrapper.vm).toBeDefined()
-      await waitNT(wrapper.vm)
-      await waitRAF()
+        expect(wrapper.element.type).toBe('number')
+        expect(wrapper.props().noWheel).toBe(false)
+        expect(document.activeElement).not.toBe(wrapper.element)
 
-      const $input = wrapper.find('input')
-      expect($input.exists()).toBe(true)
-      expect(document).toBeDefined()
-      expect(document.activeElement).toBe($input.element)
+        wrapper.element.focus()
+        await wrapper.trigger('focus')
+        expect(document.activeElement).toBe(wrapper.element)
+        await wrapper.trigger('wheel', { deltaY: 33.33, deltaX: 0, deltaZ: 0, deltaMode: 0 })
 
-      wrapper.destroy()
+        // no-wheel=false will not fire a blur event on the input when wheel fired
+        expect(spy).not.toHaveBeenCalled()
+
+        await wrapper.setProps({ noWheel: true })
+        expect(wrapper.props().noWheel).toBe(true)
+
+        wrapper.element.focus()
+        await wrapper.trigger('focus')
+        expect(document.activeElement).toBe(wrapper.element)
+
+        // `no-wheel="true"` will fire a blur event on the input when wheel fired
+        wrapper.element.blur()
+        await wrapper.trigger('wheel', { deltaY: 33.33, deltaX: 0, deltaZ: 0, deltaMode: 0 })
+        expect(document.activeElement).not.toBe(wrapper.element)
+        expect(spy).toHaveBeenCalled()
+
+        wrapper.unmount()
     })
 
-    it('does not autofocus when false', async () => {
-      const wrapper = mount(BFormInput, {
-        attachTo: document.body,
-        propsData: {
-          autofocus: false
-        }
-      })
+    it('"number" modifier prop works', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                type: 'text',
+                number: true
+            }
+        })
 
-      expect(wrapper.vm).toBeDefined()
-      await waitNT(wrapper.vm)
-      await waitRAF()
+        const $input = wrapper.find('input')
+        $input.element.value = '123.450'
+        await $input.trigger('input')
 
-      const $input = wrapper.find('input')
-      expect($input.exists()).toBe(true)
-      expect(document).toBeDefined()
-      expect(document.activeElement).not.toBe($input.element)
+        expect($input.element.value).toBe('123.450')
+            // `v-model` update event (should emit a numerical value)
+        expect(wrapper.emitted('update')).toBeDefined()
+        expect(wrapper.emitted('update').length).toBe(1)
+        expect(wrapper.emitted('update')[0].length).toEqual(1)
+        expect(wrapper.emitted('update')[0][0]).toBeCloseTo(123.45)
+            // Pre converted value as string (raw input value)
+        expect(wrapper.emitted('input')).toBeDefined()
+        expect(wrapper.emitted('input').length).toBe(1)
+        expect(wrapper.emitted('input')[0].length).toEqual(1)
+        expect(wrapper.emitted('input')[0][0]).toEqual('123.450')
 
-      wrapper.destroy()
+        // Update the input to be different string-wise, but same numerically
+        $input.element.value = '123.4500'
+        await $input.trigger('input')
+
+        expect($input.element.value).toBe('123.4500')
+            // Should emit a new input event
+        expect(wrapper.emitted('input').length).toEqual(2)
+        expect(wrapper.emitted('input')[1][0]).toEqual('123.4500')
+            // `v-model` value stays the same and update event shouldn't be emitted again
+        expect(wrapper.emitted('update').length).toBe(1)
+        expect(wrapper.emitted('update')[0][0]).toBeCloseTo(123.45)
+
+        // Updating the `v-model` to new numeric value
+        await wrapper.setProps({ value: 45.6 })
+        expect($input.element.value).toBe('45.6')
+
+        wrapper.unmount()
     })
-  })
+
+    it('"lazy" modifier prop works', async() => {
+        const wrapper = mount(BFormInput, {
+            props: {
+                type: 'text',
+                lazy: true
+            }
+        })
+
+        const $input = wrapper.find('input')
+        $input.element.value = 'a'
+        await $input.trigger('input')
+        expect($input.element.value).toBe('a')
+            // `v-model` update event should not have emitted
+        expect(wrapper.emitted('update')).toBeUndefined()
+
+        $input.element.value = 'ab'
+        await $input.trigger('input')
+        expect($input.element.value).toBe('ab')
+            // `v-model` update event should not have emitted
+        expect(wrapper.emitted('update')).toBeUndefined()
+
+        // trigger a change event
+        await $input.trigger('change')
+        expect($input.element.value).toBe('ab')
+            // `v-model` update event should have emitted
+        expect(wrapper.emitted('update')).toBeDefined()
+        expect(wrapper.emitted('update').length).toEqual(1)
+        expect(wrapper.emitted('update')[0][0]).toBe('ab')
+
+        $input.element.value = 'abc'
+        await $input.trigger('input')
+        expect($input.element.value).toBe('abc')
+            // `v-model` update event should not have emitted new event
+        expect(wrapper.emitted('update').length).toEqual(1)
+
+        $input.element.value = 'abcd'
+        await $input.trigger('input')
+        expect($input.element.value).toBe('abcd')
+            // `v-model` update event should not have emitted new event
+        expect(wrapper.emitted('update').length).toEqual(1)
+
+        // Trigger a blur event
+        await $input.trigger('blur')
+        expect($input.element.value).toBe('abcd')
+            // `v-model` update event should have emitted
+        expect(wrapper.emitted('update').length).toEqual(2)
+        expect(wrapper.emitted('update')[1][0]).toBe('abcd')
+
+        wrapper.unmount()
+    })
+
+    it('"debounce" prop works', async() => {
+        jest.useFakeTimers()
+        const wrapper = mount(BFormInput, {
+            props: {
+                type: 'text',
+                value: '',
+                debounce: 100
+            }
+        })
+
+        const $input = wrapper.find('input')
+        $input.element.value = 'a'
+        await $input.trigger('input')
+        expect($input.element.value).toBe('a')
+            // `v-model` update event should not have emitted
+        expect(wrapper.emitted('update')).toBeUndefined()
+            // `input` event should be emitted
+        expect(wrapper.emitted('input')).toBeDefined()
+        expect(wrapper.emitted('input').length).toBe(1)
+        expect(wrapper.emitted('input')[0][0]).toBe('a')
+
+        $input.element.value = 'ab'
+        await $input.trigger('input')
+        expect($input.element.value).toBe('ab')
+            // `v-model` update event should not have emitted
+        expect(wrapper.emitted('update')).toBeUndefined()
+            // `input` event should be emitted
+        expect(wrapper.emitted('input').length).toBe(2)
+        expect(wrapper.emitted('input')[1][0]).toBe('ab')
+
+        // Advance timer
+        jest.runOnlyPendingTimers()
+            // Should update the v-model
+        expect($input.element.value).toBe('ab')
+            // `v-model` update event should have emitted
+        expect(wrapper.emitted('update')).toBeDefined()
+        expect(wrapper.emitted('update').length).toBe(1)
+        expect(wrapper.emitted('update')[0][0]).toBe('ab')
+            // `input` event should not have emitted new event
+        expect(wrapper.emitted('input').length).toBe(2)
+
+        // Update input
+        $input.element.value = 'abc'
+        await $input.trigger('input')
+        expect($input.element.value).toBe('abc')
+            // `v-model` update event should not have emitted new event
+        expect(wrapper.emitted('update').length).toBe(1)
+            // `input` event should be emitted
+        expect(wrapper.emitted('input').length).toBe(3)
+        expect(wrapper.emitted('input')[2][0]).toBe('abc')
+
+        // Update input
+        $input.element.value = 'abcd'
+        await $input.trigger('input')
+        expect($input.element.value).toBe('abcd')
+            // `v-model` update event should not have emitted new event
+        expect(wrapper.emitted('update').length).toEqual(1)
+            // `input` event should be emitted
+        expect(wrapper.emitted('input').length).toBe(4)
+        expect(wrapper.emitted('input')[3][0]).toBe('abcd')
+
+        // Trigger a `change` event
+        await $input.trigger('change')
+        expect($input.element.value).toBe('abcd')
+            // `v-model` update event should have emitted (change overrides debounce)
+        expect(wrapper.emitted('update').length).toEqual(2)
+        expect(wrapper.emitted('update')[1][0]).toBe('abcd')
+            // `input` event should not have emitted new event
+        expect(wrapper.emitted('input').length).toBe(4)
+
+        $input.element.value = 'abc'
+        await $input.trigger('input')
+        expect($input.element.value).toBe('abc')
+            // `v-model` update event should not have emitted new event
+        expect(wrapper.emitted('update').length).toBe(2)
+            // `input` event should be emitted
+        expect(wrapper.emitted('input').length).toBe(5)
+        expect(wrapper.emitted('input')[4][0]).toBe('abc')
+
+        $input.element.value = 'abcd'
+        await $input.trigger('input')
+        expect($input.element.value).toBe('abcd')
+            // `v-model` update event should not have emitted new event
+        expect(wrapper.emitted('update').length).toBe(2)
+            // `input` event should be emitted
+        expect(wrapper.emitted('input').length).toBe(6)
+        expect(wrapper.emitted('input')[5][0]).toBe('abcd')
+
+        // Advance timer
+        jest.runOnlyPendingTimers()
+            // Should update the v-model
+        expect($input.element.value).toBe('abcd')
+            // `v-model` update event should not have emitted new event
+        expect(wrapper.emitted('update').length).toBe(2)
+            // `input` event should not have emitted new event
+        expect(wrapper.emitted('input').length).toBe(6)
+
+        wrapper.unmount()
+    })
+
+    it('focus() and blur() methods work', async() => {
+        const wrapper = mount(BFormInput, {
+            attachTo: document.body
+        })
+
+        const $input = wrapper.find('input')
+
+        expect(typeof wrapper.vm.focus).toBe('function')
+        expect(typeof wrapper.vm.blur).toBe('function')
+
+        expect(document.activeElement).not.toBe($input.element)
+        wrapper.vm.focus()
+        expect(document.activeElement).toBe($input.element)
+        wrapper.vm.blur()
+        expect(document.activeElement).not.toBe($input.element)
+
+        wrapper.unmount()
+    })
+
+    // These tests are wrapped in a new describe to limit the scope of the getBCR Mock
+    describe('prop `autofocus`', () => {
+        const origGetBCR = Element.prototype.getBoundingClientRect
+
+        beforeEach(() => {
+            // Mock `getBoundingClientRect()` so that the `isVisible(el)` test returns `true`
+            Element.prototype.getBoundingClientRect = jest.fn(() => ({
+                width: 24,
+                height: 24,
+                top: 0,
+                left: 0,
+                bottom: 0,
+                right: 0
+            }))
+        })
+
+        afterEach(() => {
+            // Restore prototype
+            Element.prototype.getBoundingClientRect = origGetBCR
+        })
+
+        it('works when true', async() => {
+            const wrapper = mount(BFormInput, {
+                attachTo: document.body,
+                props: {
+                    autofocus: true
+                }
+            })
+
+            expect(wrapper.vm).toBeDefined()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+
+            const $input = wrapper.find('input')
+            expect($input.exists()).toBe(true)
+            expect(document).toBeDefined()
+            expect(document.activeElement).toBe($input.element)
+
+            wrapper.unmount()
+        })
+
+        it('does not autofocus when false', async() => {
+            const wrapper = mount(BFormInput, {
+                attachTo: document.body,
+                props: {
+                    autofocus: false
+                }
+            })
+
+            expect(wrapper.vm).toBeDefined()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+
+            const $input = wrapper.find('input')
+            expect($input.exists()).toBe(true)
+            expect(document).toBeDefined()
+            expect(document.activeElement).not.toBe($input.element)
+
+            wrapper.unmount()
+        })
+    })
 })

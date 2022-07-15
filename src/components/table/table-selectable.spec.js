@@ -6,1177 +6,1177 @@ const testItems = [{ a: 1 }, { a: 2 }, { a: 3 }, { a: 4 }]
 const testFields = [{ key: 'a', sortable: true }]
 
 describe('table > row select', () => {
-  it('should not emit row-selected event default', async () => {
-    const wrapper = mount(BTable, {
-      propsData: {
-        fields: testFields,
-        items: testItems
-      }
+    it('should not emit row-selected event default', async() => {
+        const wrapper = mount(BTable, {
+            props: {
+                fields: testFields,
+                items: testItems
+            }
+        })
+
+        expect(wrapper).toBeDefined()
+        await waitNT(wrapper.vm)
+
+        expect(wrapper.emitted('row-selected')).toBeUndefined()
+
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    await waitNT(wrapper.vm)
+    it('should not have aria-selected/tabindex attribute when not selectable and no row-clicked listener', async() => {
+        const wrapper = mount(BTable, {
+            props: {
+                fields: testFields,
+                items: testItems
+            }
+        })
 
-    expect(wrapper.emitted('row-selected')).toBeUndefined()
+        expect(wrapper).toBeDefined()
+        await waitNT(wrapper.vm)
 
-    wrapper.destroy()
-  })
+        expect(wrapper.attributes('role')).toBe('table')
+        expect(wrapper.attributes('aria-multiselectable')).toBeUndefined()
+        expect(wrapper.classes()).not.toContain('b-table-selectable')
+        expect(wrapper.classes()).not.toContain('b-table-selectable-no-click')
+        expect(wrapper.classes()).not.toContain('b-table-selecting')
+        expect(wrapper.classes()).not.toContain('b-table-select-single')
+        expect(wrapper.classes()).not.toContain('b-table-select-multi')
+        expect(wrapper.classes()).not.toContain('b-table-select-range')
 
-  it('should not have aria-selected/tabindex attribute when not selectable and no row-clicked listener', async () => {
-    const wrapper = mount(BTable, {
-      propsData: {
-        fields: testFields,
-        items: testItems
-      }
+        const $rows = wrapper.findAll('tbody > tr')
+        expect($rows.length).toBe(4)
+            // Doesn't have aria-selected attribute on all TRs
+        expect($rows.wrappers.every(r => !r.find('tr[aria-selected]').exists())).toBe(true)
+            // Doesn't have tabindex attribute on all TRs
+        expect($rows.wrappers.every(r => !r.find('tr[tabindex]').exists())).toBe(true)
+
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    await waitNT(wrapper.vm)
+    it('should apply user role if provided, grid role if multiselectable or table role otherwise', async() => {
+        let wrapper = mount(BTable, {
+            props: {
+                fields: testFields,
+                items: testItems
+            }
+        })
 
-    expect(wrapper.attributes('role')).toBe('table')
-    expect(wrapper.attributes('aria-multiselectable')).toBeUndefined()
-    expect(wrapper.classes()).not.toContain('b-table-selectable')
-    expect(wrapper.classes()).not.toContain('b-table-selectable-no-click')
-    expect(wrapper.classes()).not.toContain('b-table-selecting')
-    expect(wrapper.classes()).not.toContain('b-table-select-single')
-    expect(wrapper.classes()).not.toContain('b-table-select-multi')
-    expect(wrapper.classes()).not.toContain('b-table-select-range')
+        expect(wrapper).toBeDefined()
+        await waitNT(wrapper.vm)
 
-    const $rows = wrapper.findAll('tbody > tr')
-    expect($rows.length).toBe(4)
-    // Doesn't have aria-selected attribute on all TRs
-    expect($rows.wrappers.every(r => !r.find('tr[aria-selected]').exists())).toBe(true)
-    // Doesn't have tabindex attribute on all TRs
-    expect($rows.wrappers.every(r => !r.find('tr[tabindex]').exists())).toBe(true)
+        expect(wrapper.attributes('role')).toBe('table')
+        wrapper.unmount()
 
-    wrapper.destroy()
-  })
+        wrapper = mount(BTable, {
+            props: {
+                fields: testFields,
+                items: testItems,
+                role: 'foobar'
+            }
+        })
 
-  it('should apply user role if provided, grid role if multiselectable or table role otherwise', async () => {
-    let wrapper = mount(BTable, {
-      propsData: {
-        fields: testFields,
-        items: testItems
-      }
+        await waitNT(wrapper.vm)
+
+        expect(wrapper.attributes('role')).toBe('foobar')
+        wrapper.unmount()
+
+        wrapper = mount(BTable, {
+            props: {
+                fields: testFields,
+                items: testItems,
+                selectable: true
+            }
+        })
+
+        await waitNT(wrapper.vm)
+
+        expect(wrapper.attributes('role')).toBe('grid')
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    await waitNT(wrapper.vm)
+    it('should have tabindex but not aria-selected when not selectable and has row-clicked listener', async() => {
+        const wrapper = mount(BTable, {
+            props: {
+                fields: testFields,
+                items: testItems
+            },
+            attrs: {
+                onRowClicked: () => {}
+            }
+        })
 
-    expect(wrapper.attributes('role')).toBe('table')
-    wrapper.destroy()
+        expect(wrapper).toBeDefined()
+        await waitNT(wrapper.vm)
 
-    wrapper = mount(BTable, {
-      propsData: {
-        fields: testFields,
-        items: testItems,
-        role: 'foobar'
-      }
+        expect(wrapper.attributes('role')).toBe('table')
+        expect(wrapper.attributes('aria-multiselectable')).toBeUndefined()
+        expect(wrapper.classes()).not.toContain('b-table-selectable')
+        expect(wrapper.classes()).not.toContain('b-table-selectable-no-click')
+        expect(wrapper.classes()).not.toContain('b-table-selecting')
+        expect(wrapper.classes()).not.toContain('b-table-select-single')
+        expect(wrapper.classes()).not.toContain('b-table-select-multi')
+        expect(wrapper.classes()).not.toContain('b-table-select-range')
+
+        const $rows = wrapper.findAll('tbody > tr')
+        expect($rows.length).toBe(4)
+            // Doesn't have aria-selected attribute on all TRs
+        expect($rows.wrappers.every(r => !r.find('tr[aria-selected]').exists())).toBe(true)
+            // Does have tabindex attribute on all TRs
+        expect($rows.wrappers.every(r => r.find('tr[tabindex]').exists())).toBe(true)
+
+        wrapper.unmount()
     })
 
-    await waitNT(wrapper.vm)
+    it('has class b-table-selectable-no-click when prop no-select-on-click set', async() => {
+        const wrapper = mount(BTable, {
+            props: {
+                fields: testFields,
+                items: testItems,
+                selectable: true,
+                selectMode: 'single',
+                noSelectOnClick: true
+            }
+        })
 
-    expect(wrapper.attributes('role')).toBe('foobar')
-    wrapper.destroy()
+        expect(wrapper).toBeDefined()
+        await waitNT(wrapper.vm)
 
-    wrapper = mount(BTable, {
-      propsData: {
-        fields: testFields,
-        items: testItems,
-        selectable: true
-      }
+        expect(wrapper.attributes('role')).toBe('grid')
+        expect(wrapper.attributes('aria-multiselectable')).toBe('false')
+        expect(wrapper.classes()).toContain('b-table-selectable')
+        expect(wrapper.classes()).toContain('b-table-select-single')
+        expect(wrapper.classes()).toContain('b-table-selectable-no-click')
+        expect(wrapper.classes()).not.toContain('b-table-selecting')
+        expect(wrapper.classes()).not.toContain('b-table-select-multi')
+        expect(wrapper.classes()).not.toContain('b-table-select-range')
+        expect(wrapper.emitted('row-selected')).toBeUndefined()
+
+        wrapper.unmount()
     })
 
-    await waitNT(wrapper.vm)
+    it('select mode single works', async() => {
+        const wrapper = mount(BTable, {
+            props: {
+                fields: testFields,
+                items: testItems,
+                selectable: true,
+                selectMode: 'single'
+            }
+        })
 
-    expect(wrapper.attributes('role')).toBe('grid')
-    wrapper.destroy()
-  })
+        expect(wrapper).toBeDefined()
+        await waitNT(wrapper.vm)
 
-  it('should have tabindex but not aria-selected when not selectable and has row-clicked listener', async () => {
-    const wrapper = mount(BTable, {
-      propsData: {
-        fields: testFields,
-        items: testItems
-      },
-      listeners: {
-        'row-clicked': () => {}
-      }
+        expect(wrapper.attributes('role')).toBe('grid')
+        expect(wrapper.attributes('aria-multiselectable')).toBe('false')
+        expect(wrapper.classes()).toContain('b-table-selectable')
+        expect(wrapper.classes()).toContain('b-table-select-single')
+        expect(wrapper.classes()).not.toContain('b-table-selectable-no-click')
+        expect(wrapper.classes()).not.toContain('b-table-selecting')
+        expect(wrapper.classes()).not.toContain('b-table-select-multi')
+        expect(wrapper.classes()).not.toContain('b-table-select-range')
+        expect(wrapper.emitted('row-selected')).toBeUndefined()
+
+        let $rows = wrapper.findAll('tbody > tr')
+        expect($rows.length).toBe(4)
+        expect($rows.wrappers.every(r => r.find('[aria-selected="false"]').exists())).toBe(true)
+        expect($rows.wrappers.every(r => r.find('[aria-selected="false"]').exists())).toBe(true)
+        expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+
+        // Click first row
+        await wrapper
+            .findAll('tbody > tr')
+            .at(0)
+            .trigger('click')
+
+        expect(wrapper.emitted('row-selected')).toBeDefined()
+        expect(wrapper.emitted('row-selected').length).toBe(1)
+        expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[0]])
+
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('true')
+        expect($rows.at(1).attributes('aria-selected')).toBe('false')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect(wrapper.classes()).toContain('b-table-selectable')
+        expect(wrapper.classes()).toContain('b-table-select-single')
+        expect(wrapper.classes()).toContain('b-table-selecting')
+        expect(wrapper.classes()).not.toContain('b-table-select-multi')
+        expect(wrapper.classes()).not.toContain('b-table-select-range')
+
+        // Click third row to select it
+        await wrapper
+            .findAll('tbody > tr')
+            .at(2)
+            .trigger('click')
+
+        expect(wrapper.emitted('row-selected').length).toBe(2)
+        expect(wrapper.emitted('row-selected')[1][0]).toEqual([testItems[2]])
+
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('false')
+        expect($rows.at(1).attributes('aria-selected')).toBe('false')
+        expect($rows.at(2).attributes('aria-selected')).toBe('true')
+        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect(wrapper.classes()).toContain('b-table-selectable')
+        expect(wrapper.classes()).toContain('b-table-select-single')
+        expect(wrapper.classes()).toContain('b-table-selecting')
+        expect(wrapper.classes()).not.toContain('b-table-select-multi')
+        expect(wrapper.classes()).not.toContain('b-table-select-range')
+
+        // Click third row again to clear selection
+        await wrapper
+            .findAll('tbody > tr')
+            .at(2)
+            .trigger('click')
+
+        expect(wrapper.emitted('row-selected').length).toBe(3)
+        expect(wrapper.emitted('row-selected')[2][0]).toEqual([])
+
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('false')
+        expect($rows.at(1).attributes('aria-selected')).toBe('false')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect(wrapper.classes()).toContain('b-table-selectable')
+        expect(wrapper.classes()).toContain('b-table-select-single')
+        expect(wrapper.classes()).not.toContain('b-table-selecting')
+        expect(wrapper.classes()).not.toContain('b-table-select-multi')
+        expect(wrapper.classes()).not.toContain('b-table-select-range')
+
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    await waitNT(wrapper.vm)
+    it('select mode multi works', async() => {
+        const wrapper = mount(BTable, {
+            props: {
+                fields: testFields,
+                items: testItems,
+                selectable: true,
+                selectMode: 'multi'
+            }
+        })
 
-    expect(wrapper.attributes('role')).toBe('table')
-    expect(wrapper.attributes('aria-multiselectable')).toBeUndefined()
-    expect(wrapper.classes()).not.toContain('b-table-selectable')
-    expect(wrapper.classes()).not.toContain('b-table-selectable-no-click')
-    expect(wrapper.classes()).not.toContain('b-table-selecting')
-    expect(wrapper.classes()).not.toContain('b-table-select-single')
-    expect(wrapper.classes()).not.toContain('b-table-select-multi')
-    expect(wrapper.classes()).not.toContain('b-table-select-range')
+        expect(wrapper).toBeDefined()
+        await waitNT(wrapper.vm)
 
-    const $rows = wrapper.findAll('tbody > tr')
-    expect($rows.length).toBe(4)
-    // Doesn't have aria-selected attribute on all TRs
-    expect($rows.wrappers.every(r => !r.find('tr[aria-selected]').exists())).toBe(true)
-    // Does have tabindex attribute on all TRs
-    expect($rows.wrappers.every(r => r.find('tr[tabindex]').exists())).toBe(true)
+        expect(wrapper.attributes('role')).toBe('grid')
+        expect(wrapper.attributes('aria-multiselectable')).toBe('true')
+        expect(wrapper.classes()).toContain('b-table-selectable')
+        expect(wrapper.classes()).toContain('b-table-select-multi')
+        expect(wrapper.classes()).not.toContain('b-table-select-single')
+        expect(wrapper.classes()).not.toContain('b-table-select-range')
+        expect(wrapper.classes()).not.toContain('b-table-selecting')
+        expect(wrapper.emitted('row-selected')).toBeUndefined()
 
-    wrapper.destroy()
-  })
+        // Click first row
+        await wrapper
+            .findAll('tbody > tr')
+            .at(0)
+            .trigger('click')
+        expect(wrapper.emitted('row-selected')).toBeDefined()
+        expect(wrapper.emitted('row-selected').length).toBe(1)
+        expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[0]])
 
-  it('has class b-table-selectable-no-click when prop no-select-on-click set', async () => {
-    const wrapper = mount(BTable, {
-      propsData: {
-        fields: testFields,
-        items: testItems,
-        selectable: true,
-        selectMode: 'single',
-        noSelectOnClick: true
-      }
+        let $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('true')
+        expect($rows.at(1).attributes('aria-selected')).toBe('false')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect(wrapper.classes()).toContain('b-table-selectable')
+        expect(wrapper.classes()).toContain('b-table-selecting')
+        expect(wrapper.classes()).toContain('b-table-select-multi')
+        expect(wrapper.classes()).not.toContain('b-table-select-single')
+        expect(wrapper.classes()).not.toContain('b-table-select-range')
+
+        // Click third row
+        await wrapper
+            .findAll('tbody > tr')
+            .at(2)
+            .trigger('click')
+
+        expect(wrapper.emitted('row-selected').length).toBe(2)
+        expect(wrapper.emitted('row-selected')[1][0]).toEqual([testItems[0], testItems[2]])
+
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('true')
+        expect($rows.at(1).attributes('aria-selected')).toBe('false')
+        expect($rows.at(2).attributes('aria-selected')).toBe('true')
+        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect(wrapper.classes()).toContain('b-table-selectable')
+        expect(wrapper.classes()).toContain('b-table-selecting')
+        expect(wrapper.classes()).toContain('b-table-select-multi')
+        expect(wrapper.classes()).not.toContain('b-table-select-single')
+        expect(wrapper.classes()).not.toContain('b-table-select-range')
+
+        // Click third row again
+        await wrapper
+            .findAll('tbody > tr')
+            .at(2)
+            .trigger('click')
+
+        expect(wrapper.emitted('row-selected').length).toBe(3)
+        expect(wrapper.emitted('row-selected')[2][0]).toEqual([testItems[0]])
+
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('true')
+        expect($rows.at(1).attributes('aria-selected')).toBe('false')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect(wrapper.classes()).toContain('b-table-selectable')
+        expect(wrapper.classes()).toContain('b-table-selecting')
+        expect(wrapper.classes()).toContain('b-table-select-multi')
+        expect(wrapper.classes()).not.toContain('b-table-select-single')
+        expect(wrapper.classes()).not.toContain('b-table-select-range')
+
+        // Click first row again
+        await wrapper
+            .findAll('tbody > tr')
+            .at(0)
+            .trigger('click')
+
+        expect(wrapper.emitted('row-selected').length).toBe(4)
+        expect(wrapper.emitted('row-selected')[3][0]).toEqual([])
+
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('false')
+        expect($rows.at(1).attributes('aria-selected')).toBe('false')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect(wrapper.classes()).toContain('b-table-selectable')
+        expect(wrapper.classes()).toContain('b-table-select-multi')
+        expect(wrapper.classes()).not.toContain('b-table-selecting')
+        expect(wrapper.classes()).not.toContain('b-table-select-single')
+        expect(wrapper.classes()).not.toContain('b-table-select-range')
+
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    await waitNT(wrapper.vm)
+    it('select mode range works', async() => {
+        const wrapper = mount(BTable, {
+            props: {
+                fields: testFields,
+                items: testItems,
+                selectable: true,
+                selectMode: 'range'
+            }
+        })
 
-    expect(wrapper.attributes('role')).toBe('grid')
-    expect(wrapper.attributes('aria-multiselectable')).toBe('false')
-    expect(wrapper.classes()).toContain('b-table-selectable')
-    expect(wrapper.classes()).toContain('b-table-select-single')
-    expect(wrapper.classes()).toContain('b-table-selectable-no-click')
-    expect(wrapper.classes()).not.toContain('b-table-selecting')
-    expect(wrapper.classes()).not.toContain('b-table-select-multi')
-    expect(wrapper.classes()).not.toContain('b-table-select-range')
-    expect(wrapper.emitted('row-selected')).toBeUndefined()
+        expect(wrapper).toBeDefined()
+        await waitNT(wrapper.vm)
 
-    wrapper.destroy()
-  })
+        expect(wrapper.attributes('role')).toBe('grid')
+        expect(wrapper.attributes('aria-multiselectable')).toBe('true')
+        expect(wrapper.classes()).toContain('b-table-selectable')
+        expect(wrapper.classes()).toContain('b-table-select-range')
+        expect(wrapper.classes()).not.toContain('b-table-selecting')
+        expect(wrapper.classes()).not.toContain('b-table-select-single')
+        expect(wrapper.classes()).not.toContain('b-table-select-multi')
+        expect(wrapper.emitted('row-selected')).toBeUndefined()
 
-  it('select mode single works', async () => {
-    const wrapper = mount(BTable, {
-      propsData: {
-        fields: testFields,
-        items: testItems,
-        selectable: true,
-        selectMode: 'single'
-      }
+        let $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+        expect($rows.wrappers.every(r => r.find('[aria-selected="false"]').exists())).toBe(true)
+
+        // Click first row
+        await wrapper
+            .findAll('tbody > tr')
+            .at(0)
+            .trigger('click')
+
+        expect(wrapper.emitted('row-selected')).toBeDefined()
+        expect(wrapper.emitted('row-selected').length).toBe(1)
+        expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[0]])
+
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('true')
+        expect($rows.at(1).attributes('aria-selected')).toBe('false')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect(wrapper.classes()).toContain('b-table-selectable')
+        expect(wrapper.classes()).toContain('b-table-select-range')
+        expect(wrapper.classes()).toContain('b-table-selecting')
+        expect(wrapper.classes()).not.toContain('b-table-select-single')
+        expect(wrapper.classes()).not.toContain('b-table-select-multi')
+
+        // Shift-Click third row
+        await wrapper
+            .findAll('tbody > tr')
+            .at(2)
+            .trigger('click', { shiftKey: true })
+
+        expect(wrapper.emitted('row-selected').length).toBe(2)
+        expect(wrapper.emitted('row-selected')[1][0]).toEqual([
+            testItems[0],
+            testItems[1],
+            testItems[2]
+        ])
+
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('true')
+        expect($rows.at(1).attributes('aria-selected')).toBe('true')
+        expect($rows.at(2).attributes('aria-selected')).toBe('true')
+        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect(wrapper.classes()).toContain('b-table-selectable')
+        expect(wrapper.classes()).toContain('b-table-select-range')
+        expect(wrapper.classes()).toContain('b-table-selecting')
+        expect(wrapper.classes()).not.toContain('b-table-select-single')
+        expect(wrapper.classes()).not.toContain('b-table-select-multi')
+
+        // Click third row again
+        await wrapper
+            .findAll('tbody > tr')
+            .at(2)
+            .trigger('click')
+
+        expect(wrapper.emitted('row-selected').length).toBe(3)
+        expect(wrapper.emitted('row-selected')[2][0]).toEqual([testItems[2]])
+
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('false')
+        expect($rows.at(1).attributes('aria-selected')).toBe('false')
+        expect($rows.at(2).attributes('aria-selected')).toBe('true')
+        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect(wrapper.classes()).toContain('b-table-selectable')
+        expect(wrapper.classes()).toContain('b-table-select-range')
+        expect(wrapper.classes()).toContain('b-table-selecting')
+        expect(wrapper.classes()).not.toContain('b-table-select-single')
+        expect(wrapper.classes()).not.toContain('b-table-select-multi')
+
+        // Click fourth row
+        await wrapper
+            .findAll('tbody > tr')
+            .at(3)
+            .trigger('click')
+
+        expect(wrapper.emitted('row-selected').length).toBe(4)
+        expect(wrapper.emitted('row-selected')[3][0]).toEqual([testItems[3]])
+
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('false')
+        expect($rows.at(1).attributes('aria-selected')).toBe('false')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows.at(3).attributes('aria-selected')).toBe('true')
+        expect(wrapper.classes()).toContain('b-table-selectable')
+        expect(wrapper.classes()).toContain('b-table-select-range')
+        expect(wrapper.classes()).toContain('b-table-selecting')
+        expect(wrapper.classes()).not.toContain('b-table-select-single')
+        expect(wrapper.classes()).not.toContain('b-table-select-multi')
+
+        // Click fourth row again
+        await wrapper
+            .findAll('tbody > tr')
+            .at(3)
+            .trigger('click')
+
+        // No change to selected rows
+        expect(wrapper.emitted('row-selected').length).toBe(4)
+
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('false')
+        expect($rows.at(1).attributes('aria-selected')).toBe('false')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows.at(3).attributes('aria-selected')).toBe('true')
+        expect(wrapper.classes()).toContain('b-table-selectable')
+        expect(wrapper.classes()).toContain('b-table-select-range')
+        expect(wrapper.classes()).toContain('b-table-selecting')
+        expect(wrapper.classes()).not.toContain('b-table-select-single')
+        expect(wrapper.classes()).not.toContain('b-table-select-multi')
+
+        // Ctrl-Click second row
+        await wrapper
+            .findAll('tbody > tr')
+            .at(1)
+            .trigger('click', { ctrlKey: true })
+
+        expect(wrapper.emitted('row-selected').length).toBe(5)
+        expect(wrapper.emitted('row-selected')[4][0]).toEqual([testItems[1], testItems[3]])
+
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(w => w.element.matches('[tabindex="0"]'))).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('false')
+        expect($rows.at(1).attributes('aria-selected')).toBe('true')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows.at(3).attributes('aria-selected')).toBe('true')
+        expect(wrapper.classes()).toContain('b-table-selectable')
+        expect(wrapper.classes()).toContain('b-table-select-range')
+        expect(wrapper.classes()).toContain('b-table-selecting')
+        expect(wrapper.classes()).not.toContain('b-table-select-single')
+        expect(wrapper.classes()).not.toContain('b-table-select-multi')
+
+        // Ctrl-Click second row
+        await wrapper
+            .findAll('tbody > tr')
+            .at(1)
+            .trigger('click', { ctrlKey: true })
+
+        expect(wrapper.emitted('row-selected').length).toBe(6)
+        expect(wrapper.emitted('row-selected')[5][0]).toEqual([testItems[3]])
+
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(w => w.element.matches('[tabindex="0"]'))).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('false')
+        expect($rows.at(1).attributes('aria-selected')).toBe('false')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows.at(3).attributes('aria-selected')).toBe('true')
+        expect(wrapper.classes()).toContain('b-table-selectable')
+        expect(wrapper.classes()).toContain('b-table-select-range')
+        expect(wrapper.classes()).toContain('b-table-selecting')
+        expect(wrapper.classes()).not.toContain('b-table-select-single')
+        expect(wrapper.classes()).not.toContain('b-table-select-multi')
+
+        // Ctrl-Click fourth row
+        await wrapper
+            .findAll('tbody > tr')
+            .at(3)
+            .trigger('click', { ctrlKey: true })
+
+        expect(wrapper.emitted('row-selected').length).toBe(7)
+        expect(wrapper.emitted('row-selected')[6][0]).toEqual([])
+
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(w => w.element.matches('[tabindex="0"]'))).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('false')
+        expect($rows.at(1).attributes('aria-selected')).toBe('false')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect(wrapper.classes()).toContain('b-table-selectable')
+        expect(wrapper.classes()).toContain('b-table-select-range')
+        expect(wrapper.classes()).not.toContain('b-table-selecting')
+        expect(wrapper.classes()).not.toContain('b-table-select-single')
+        expect(wrapper.classes()).not.toContain('b-table-select-multi')
+
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    await waitNT(wrapper.vm)
+    it('range selection works after deselection (issue #6397)', async() => {
+        const wrapper = mount(BTable, {
+            props: {
+                fields: testFields,
+                items: testItems,
+                selectable: true,
+                selectMode: 'range'
+            }
+        })
 
-    expect(wrapper.attributes('role')).toBe('grid')
-    expect(wrapper.attributes('aria-multiselectable')).toBe('false')
-    expect(wrapper.classes()).toContain('b-table-selectable')
-    expect(wrapper.classes()).toContain('b-table-select-single')
-    expect(wrapper.classes()).not.toContain('b-table-selectable-no-click')
-    expect(wrapper.classes()).not.toContain('b-table-selecting')
-    expect(wrapper.classes()).not.toContain('b-table-select-multi')
-    expect(wrapper.classes()).not.toContain('b-table-select-range')
-    expect(wrapper.emitted('row-selected')).toBeUndefined()
+        expect(wrapper).toBeDefined()
+        await waitNT(wrapper.vm)
 
-    let $rows = wrapper.findAll('tbody > tr')
-    expect($rows.length).toBe(4)
-    expect($rows.wrappers.every(r => r.find('[aria-selected="false"]').exists())).toBe(true)
-    expect($rows.wrappers.every(r => r.find('[aria-selected="false"]').exists())).toBe(true)
-    expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+        const $rows = wrapper.findAll('tbody > tr')
+            // Click second row
+        await $rows.at(1).trigger('click')
+            // Ctrl-click first row
+        await $rows.at(0).trigger('click', { ctrlKey: true })
+            // Ctrl-click second row
+        await $rows.at(1).trigger('click', { ctrlKey: true })
+            // Shift-click third row
+        await $rows.at(2).trigger('click', { shiftKey: true })
 
-    // Click first row
-    await wrapper
-      .findAll('tbody > tr')
-      .at(0)
-      .trigger('click')
-
-    expect(wrapper.emitted('row-selected')).toBeDefined()
-    expect(wrapper.emitted('row-selected').length).toBe(1)
-    expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[0]])
-
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('true')
-    expect($rows.at(1).attributes('aria-selected')).toBe('false')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-    expect($rows.at(3).attributes('aria-selected')).toBe('false')
-    expect(wrapper.classes()).toContain('b-table-selectable')
-    expect(wrapper.classes()).toContain('b-table-select-single')
-    expect(wrapper.classes()).toContain('b-table-selecting')
-    expect(wrapper.classes()).not.toContain('b-table-select-multi')
-    expect(wrapper.classes()).not.toContain('b-table-select-range')
-
-    // Click third row to select it
-    await wrapper
-      .findAll('tbody > tr')
-      .at(2)
-      .trigger('click')
-
-    expect(wrapper.emitted('row-selected').length).toBe(2)
-    expect(wrapper.emitted('row-selected')[1][0]).toEqual([testItems[2]])
-
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('false')
-    expect($rows.at(1).attributes('aria-selected')).toBe('false')
-    expect($rows.at(2).attributes('aria-selected')).toBe('true')
-    expect($rows.at(3).attributes('aria-selected')).toBe('false')
-    expect(wrapper.classes()).toContain('b-table-selectable')
-    expect(wrapper.classes()).toContain('b-table-select-single')
-    expect(wrapper.classes()).toContain('b-table-selecting')
-    expect(wrapper.classes()).not.toContain('b-table-select-multi')
-    expect(wrapper.classes()).not.toContain('b-table-select-range')
-
-    // Click third row again to clear selection
-    await wrapper
-      .findAll('tbody > tr')
-      .at(2)
-      .trigger('click')
-
-    expect(wrapper.emitted('row-selected').length).toBe(3)
-    expect(wrapper.emitted('row-selected')[2][0]).toEqual([])
-
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('false')
-    expect($rows.at(1).attributes('aria-selected')).toBe('false')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-    expect($rows.at(3).attributes('aria-selected')).toBe('false')
-    expect(wrapper.classes()).toContain('b-table-selectable')
-    expect(wrapper.classes()).toContain('b-table-select-single')
-    expect(wrapper.classes()).not.toContain('b-table-selecting')
-    expect(wrapper.classes()).not.toContain('b-table-select-multi')
-    expect(wrapper.classes()).not.toContain('b-table-select-range')
-
-    wrapper.destroy()
-  })
-
-  it('select mode multi works', async () => {
-    const wrapper = mount(BTable, {
-      propsData: {
-        fields: testFields,
-        items: testItems,
-        selectable: true,
-        selectMode: 'multi'
-      }
+        expect(wrapper.findAll('tbody .b-table-row-selected')).toHaveLength(3)
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    await waitNT(wrapper.vm)
+    it('sort change clears selection', async() => {
+        const wrapper = mount(BTable, {
+            props: {
+                fields: testFields,
+                items: testItems,
+                selectable: true,
+                selectMode: 'single'
+            }
+        })
 
-    expect(wrapper.attributes('role')).toBe('grid')
-    expect(wrapper.attributes('aria-multiselectable')).toBe('true')
-    expect(wrapper.classes()).toContain('b-table-selectable')
-    expect(wrapper.classes()).toContain('b-table-select-multi')
-    expect(wrapper.classes()).not.toContain('b-table-select-single')
-    expect(wrapper.classes()).not.toContain('b-table-select-range')
-    expect(wrapper.classes()).not.toContain('b-table-selecting')
-    expect(wrapper.emitted('row-selected')).toBeUndefined()
+        expect(wrapper).toBeDefined()
+        await waitNT(wrapper.vm)
 
-    // Click first row
-    await wrapper
-      .findAll('tbody > tr')
-      .at(0)
-      .trigger('click')
-    expect(wrapper.emitted('row-selected')).toBeDefined()
-    expect(wrapper.emitted('row-selected').length).toBe(1)
-    expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[0]])
+        expect(wrapper.emitted('row-selected')).toBeUndefined()
 
-    let $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('true')
-    expect($rows.at(1).attributes('aria-selected')).toBe('false')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-    expect($rows.at(3).attributes('aria-selected')).toBe('false')
-    expect(wrapper.classes()).toContain('b-table-selectable')
-    expect(wrapper.classes()).toContain('b-table-selecting')
-    expect(wrapper.classes()).toContain('b-table-select-multi')
-    expect(wrapper.classes()).not.toContain('b-table-select-single')
-    expect(wrapper.classes()).not.toContain('b-table-select-range')
+        // Click first row
+        await wrapper
+            .findAll('tbody > tr')
+            .at(0)
 
-    // Click third row
-    await wrapper
-      .findAll('tbody > tr')
-      .at(2)
-      .trigger('click')
+        .trigger('click')
+        expect(wrapper.emitted('row-selected')).toBeDefined()
+        expect(wrapper.emitted('row-selected').length).toBe(1)
+        expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[0]])
 
-    expect(wrapper.emitted('row-selected').length).toBe(2)
-    expect(wrapper.emitted('row-selected')[1][0]).toEqual([testItems[0], testItems[2]])
+        let $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(w => w.element.matches('[tabindex="0"]'))).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('true')
+        expect($rows.at(1).attributes('aria-selected')).toBe('false')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows.at(3).attributes('aria-selected')).toBe('false')
 
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('true')
-    expect($rows.at(1).attributes('aria-selected')).toBe('false')
-    expect($rows.at(2).attributes('aria-selected')).toBe('true')
-    expect($rows.at(3).attributes('aria-selected')).toBe('false')
-    expect(wrapper.classes()).toContain('b-table-selectable')
-    expect(wrapper.classes()).toContain('b-table-selecting')
-    expect(wrapper.classes()).toContain('b-table-select-multi')
-    expect(wrapper.classes()).not.toContain('b-table-select-single')
-    expect(wrapper.classes()).not.toContain('b-table-select-range')
+        // Click row header
+        await wrapper
+            .findAll('thead > tr > th')
+            .at(0)
+            .trigger('click')
 
-    // Click third row again
-    await wrapper
-      .findAll('tbody > tr')
-      .at(2)
-      .trigger('click')
+        expect(wrapper.emitted('sort-changed')).toBeDefined()
+        expect(wrapper.emitted('sort-changed').length).toBe(1)
+        expect(wrapper.emitted('row-selected').length).toBe(2)
+        expect(wrapper.emitted('row-selected')[1][0]).toEqual([])
 
-    expect(wrapper.emitted('row-selected').length).toBe(3)
-    expect(wrapper.emitted('row-selected')[2][0]).toEqual([testItems[0]])
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(w => w.element.matches('[tabindex="0"]'))).toBe(true)
+        expect($rows.wrappers.every(w => w.element.matches('[aria-selected="false"]'))).toBe(true)
 
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('true')
-    expect($rows.at(1).attributes('aria-selected')).toBe('false')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-    expect($rows.at(3).attributes('aria-selected')).toBe('false')
-    expect(wrapper.classes()).toContain('b-table-selectable')
-    expect(wrapper.classes()).toContain('b-table-selecting')
-    expect(wrapper.classes()).toContain('b-table-select-multi')
-    expect(wrapper.classes()).not.toContain('b-table-select-single')
-    expect(wrapper.classes()).not.toContain('b-table-select-range')
-
-    // Click first row again
-    await wrapper
-      .findAll('tbody > tr')
-      .at(0)
-      .trigger('click')
-
-    expect(wrapper.emitted('row-selected').length).toBe(4)
-    expect(wrapper.emitted('row-selected')[3][0]).toEqual([])
-
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('false')
-    expect($rows.at(1).attributes('aria-selected')).toBe('false')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-    expect($rows.at(3).attributes('aria-selected')).toBe('false')
-    expect(wrapper.classes()).toContain('b-table-selectable')
-    expect(wrapper.classes()).toContain('b-table-select-multi')
-    expect(wrapper.classes()).not.toContain('b-table-selecting')
-    expect(wrapper.classes()).not.toContain('b-table-select-single')
-    expect(wrapper.classes()).not.toContain('b-table-select-range')
-
-    wrapper.destroy()
-  })
-
-  it('select mode range works', async () => {
-    const wrapper = mount(BTable, {
-      propsData: {
-        fields: testFields,
-        items: testItems,
-        selectable: true,
-        selectMode: 'range'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    await waitNT(wrapper.vm)
+    it('filter change clears selection', async() => {
+        const wrapper = mount(BTable, {
+            props: {
+                fields: testFields,
+                items: testItems,
+                selectable: true,
+                selectMode: 'single'
+            }
+        })
 
-    expect(wrapper.attributes('role')).toBe('grid')
-    expect(wrapper.attributes('aria-multiselectable')).toBe('true')
-    expect(wrapper.classes()).toContain('b-table-selectable')
-    expect(wrapper.classes()).toContain('b-table-select-range')
-    expect(wrapper.classes()).not.toContain('b-table-selecting')
-    expect(wrapper.classes()).not.toContain('b-table-select-single')
-    expect(wrapper.classes()).not.toContain('b-table-select-multi')
-    expect(wrapper.emitted('row-selected')).toBeUndefined()
+        expect(wrapper).toBeDefined()
+        await waitNT(wrapper.vm)
 
-    let $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
-    expect($rows.wrappers.every(r => r.find('[aria-selected="false"]').exists())).toBe(true)
+        expect(wrapper.emitted('row-selected')).toBeUndefined()
 
-    // Click first row
-    await wrapper
-      .findAll('tbody > tr')
-      .at(0)
-      .trigger('click')
+        let $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(w => w.element.matches('[tabindex="0"]'))).toBe(true)
+        expect($rows.wrappers.every(w => w.element.matches('[aria-selected="false"]'))).toBe(true)
 
-    expect(wrapper.emitted('row-selected')).toBeDefined()
-    expect(wrapper.emitted('row-selected').length).toBe(1)
-    expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[0]])
+        // Click first row
+        await wrapper
+            .findAll('tbody > tr')
+            .at(0)
+            .trigger('click')
 
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('true')
-    expect($rows.at(1).attributes('aria-selected')).toBe('false')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-    expect($rows.at(3).attributes('aria-selected')).toBe('false')
-    expect(wrapper.classes()).toContain('b-table-selectable')
-    expect(wrapper.classes()).toContain('b-table-select-range')
-    expect(wrapper.classes()).toContain('b-table-selecting')
-    expect(wrapper.classes()).not.toContain('b-table-select-single')
-    expect(wrapper.classes()).not.toContain('b-table-select-multi')
+        expect(wrapper.emitted('row-selected')).toBeDefined()
+        expect(wrapper.emitted('row-selected').length).toBe(1)
+        expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[0]])
 
-    // Shift-Click third row
-    await wrapper
-      .findAll('tbody > tr')
-      .at(2)
-      .trigger('click', { shiftKey: true })
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('true')
+        expect($rows.at(1).attributes('aria-selected')).toBe('false')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows.at(3).attributes('aria-selected')).toBe('false')
 
-    expect(wrapper.emitted('row-selected').length).toBe(2)
-    expect(wrapper.emitted('row-selected')[1][0]).toEqual([
-      testItems[0],
-      testItems[1],
-      testItems[2]
-    ])
+        // Change filter
+        await wrapper.setProps({ filter: '2' })
 
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('true')
-    expect($rows.at(1).attributes('aria-selected')).toBe('true')
-    expect($rows.at(2).attributes('aria-selected')).toBe('true')
-    expect($rows.at(3).attributes('aria-selected')).toBe('false')
-    expect(wrapper.classes()).toContain('b-table-selectable')
-    expect(wrapper.classes()).toContain('b-table-select-range')
-    expect(wrapper.classes()).toContain('b-table-selecting')
-    expect(wrapper.classes()).not.toContain('b-table-select-single')
-    expect(wrapper.classes()).not.toContain('b-table-select-multi')
+        expect(wrapper.emitted('row-selected').length).toBe(2)
+        expect(wrapper.emitted('row-selected')[1][0]).toEqual([])
 
-    // Click third row again
-    await wrapper
-      .findAll('tbody > tr')
-      .at(2)
-      .trigger('click')
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.wrappers.every(w => w.attributes('aria-selected') === 'false')).toBe(true)
 
-    expect(wrapper.emitted('row-selected').length).toBe(3)
-    expect(wrapper.emitted('row-selected')[2][0]).toEqual([testItems[2]])
-
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('false')
-    expect($rows.at(1).attributes('aria-selected')).toBe('false')
-    expect($rows.at(2).attributes('aria-selected')).toBe('true')
-    expect($rows.at(3).attributes('aria-selected')).toBe('false')
-    expect(wrapper.classes()).toContain('b-table-selectable')
-    expect(wrapper.classes()).toContain('b-table-select-range')
-    expect(wrapper.classes()).toContain('b-table-selecting')
-    expect(wrapper.classes()).not.toContain('b-table-select-single')
-    expect(wrapper.classes()).not.toContain('b-table-select-multi')
-
-    // Click fourth row
-    await wrapper
-      .findAll('tbody > tr')
-      .at(3)
-      .trigger('click')
-
-    expect(wrapper.emitted('row-selected').length).toBe(4)
-    expect(wrapper.emitted('row-selected')[3][0]).toEqual([testItems[3]])
-
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('false')
-    expect($rows.at(1).attributes('aria-selected')).toBe('false')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-    expect($rows.at(3).attributes('aria-selected')).toBe('true')
-    expect(wrapper.classes()).toContain('b-table-selectable')
-    expect(wrapper.classes()).toContain('b-table-select-range')
-    expect(wrapper.classes()).toContain('b-table-selecting')
-    expect(wrapper.classes()).not.toContain('b-table-select-single')
-    expect(wrapper.classes()).not.toContain('b-table-select-multi')
-
-    // Click fourth row again
-    await wrapper
-      .findAll('tbody > tr')
-      .at(3)
-      .trigger('click')
-
-    // No change to selected rows
-    expect(wrapper.emitted('row-selected').length).toBe(4)
-
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('false')
-    expect($rows.at(1).attributes('aria-selected')).toBe('false')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-    expect($rows.at(3).attributes('aria-selected')).toBe('true')
-    expect(wrapper.classes()).toContain('b-table-selectable')
-    expect(wrapper.classes()).toContain('b-table-select-range')
-    expect(wrapper.classes()).toContain('b-table-selecting')
-    expect(wrapper.classes()).not.toContain('b-table-select-single')
-    expect(wrapper.classes()).not.toContain('b-table-select-multi')
-
-    // Ctrl-Click second row
-    await wrapper
-      .findAll('tbody > tr')
-      .at(1)
-      .trigger('click', { ctrlKey: true })
-
-    expect(wrapper.emitted('row-selected').length).toBe(5)
-    expect(wrapper.emitted('row-selected')[4][0]).toEqual([testItems[1], testItems[3]])
-
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(w => w.element.matches('[tabindex="0"]'))).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('false')
-    expect($rows.at(1).attributes('aria-selected')).toBe('true')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-    expect($rows.at(3).attributes('aria-selected')).toBe('true')
-    expect(wrapper.classes()).toContain('b-table-selectable')
-    expect(wrapper.classes()).toContain('b-table-select-range')
-    expect(wrapper.classes()).toContain('b-table-selecting')
-    expect(wrapper.classes()).not.toContain('b-table-select-single')
-    expect(wrapper.classes()).not.toContain('b-table-select-multi')
-
-    // Ctrl-Click second row
-    await wrapper
-      .findAll('tbody > tr')
-      .at(1)
-      .trigger('click', { ctrlKey: true })
-
-    expect(wrapper.emitted('row-selected').length).toBe(6)
-    expect(wrapper.emitted('row-selected')[5][0]).toEqual([testItems[3]])
-
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(w => w.element.matches('[tabindex="0"]'))).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('false')
-    expect($rows.at(1).attributes('aria-selected')).toBe('false')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-    expect($rows.at(3).attributes('aria-selected')).toBe('true')
-    expect(wrapper.classes()).toContain('b-table-selectable')
-    expect(wrapper.classes()).toContain('b-table-select-range')
-    expect(wrapper.classes()).toContain('b-table-selecting')
-    expect(wrapper.classes()).not.toContain('b-table-select-single')
-    expect(wrapper.classes()).not.toContain('b-table-select-multi')
-
-    // Ctrl-Click fourth row
-    await wrapper
-      .findAll('tbody > tr')
-      .at(3)
-      .trigger('click', { ctrlKey: true })
-
-    expect(wrapper.emitted('row-selected').length).toBe(7)
-    expect(wrapper.emitted('row-selected')[6][0]).toEqual([])
-
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(w => w.element.matches('[tabindex="0"]'))).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('false')
-    expect($rows.at(1).attributes('aria-selected')).toBe('false')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-    expect($rows.at(3).attributes('aria-selected')).toBe('false')
-    expect(wrapper.classes()).toContain('b-table-selectable')
-    expect(wrapper.classes()).toContain('b-table-select-range')
-    expect(wrapper.classes()).not.toContain('b-table-selecting')
-    expect(wrapper.classes()).not.toContain('b-table-select-single')
-    expect(wrapper.classes()).not.toContain('b-table-select-multi')
-
-    wrapper.destroy()
-  })
-
-  it('range selection works after deselection (issue #6397)', async () => {
-    const wrapper = mount(BTable, {
-      propsData: {
-        fields: testFields,
-        items: testItems,
-        selectable: true,
-        selectMode: 'range'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    await waitNT(wrapper.vm)
+    it('pagination change clears selection', async() => {
+        const wrapper = mount(BTable, {
+            props: {
+                fields: testFields,
+                items: testItems,
+                selectable: true,
+                selectMode: 'single',
+                perPage: 3,
+                currentPage: 1
+            }
+        })
 
-    const $rows = wrapper.findAll('tbody > tr')
-    // Click second row
-    await $rows.at(1).trigger('click')
-    // Ctrl-click first row
-    await $rows.at(0).trigger('click', { ctrlKey: true })
-    // Ctrl-click second row
-    await $rows.at(1).trigger('click', { ctrlKey: true })
-    // Shift-click third row
-    await $rows.at(2).trigger('click', { shiftKey: true })
+        expect(wrapper).toBeDefined()
+        await waitNT(wrapper.vm)
 
-    expect(wrapper.findAll('tbody .b-table-row-selected')).toHaveLength(3)
-    wrapper.destroy()
-  })
+        expect(wrapper.emitted('row-selected')).toBeUndefined()
 
-  it('sort change clears selection', async () => {
-    const wrapper = mount(BTable, {
-      propsData: {
-        fields: testFields,
-        items: testItems,
-        selectable: true,
-        selectMode: 'single'
-      }
+        let $rows = wrapper.findAll('tbody > tr')
+        expect($rows.length).toBe(3)
+        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.wrappers.every(w => w.attributes('aria-selected') === 'false')).toBe(true)
+
+        // Click first row
+        await wrapper
+            .findAll('tbody > tr')
+            .at(0)
+            .trigger('click')
+
+        expect(wrapper.emitted('row-selected')).toBeDefined()
+        expect(wrapper.emitted('row-selected').length).toBe(1)
+        expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[0]])
+
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.length).toBe(3)
+        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+            // We only have 3 rows max per page
+        expect($rows.at(0).attributes('aria-selected')).toBe('true')
+        expect($rows.at(1).attributes('aria-selected')).toBe('false')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+
+        // Change page
+        await wrapper.setProps({ currentPage: 2 })
+
+        expect(wrapper.emitted('row-selected').length).toBe(2)
+        expect(wrapper.emitted('row-selected')[1][0]).toEqual([])
+
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.length).toBe(1)
+        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.wrappers.every(w => w.attributes('aria-selected') === 'false')).toBe(true)
+
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    await waitNT(wrapper.vm)
+    it('change in select mode clears selection', async() => {
+        const wrapper = mount(BTable, {
+            props: {
+                fields: testFields,
+                items: testItems,
+                selectable: true,
+                selectMode: 'single'
+            }
+        })
 
-    expect(wrapper.emitted('row-selected')).toBeUndefined()
+        expect(wrapper).toBeDefined()
+        await waitNT(wrapper.vm)
 
-    // Click first row
-    await wrapper
-      .findAll('tbody > tr')
-      .at(0)
+        expect(wrapper.emitted('row-selected')).toBeUndefined()
 
-      .trigger('click')
-    expect(wrapper.emitted('row-selected')).toBeDefined()
-    expect(wrapper.emitted('row-selected').length).toBe(1)
-    expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[0]])
+        // Click first row
+        await wrapper
+            .findAll('tbody > tr')
+            .at(0)
 
-    let $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(w => w.element.matches('[tabindex="0"]'))).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('true')
-    expect($rows.at(1).attributes('aria-selected')).toBe('false')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-    expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        .trigger('click')
+        expect(wrapper.emitted('row-selected')).toBeDefined()
+        expect(wrapper.emitted('row-selected').length).toBe(1)
+        expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[0]])
 
-    // Click row header
-    await wrapper
-      .findAll('thead > tr > th')
-      .at(0)
-      .trigger('click')
+        let $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('true')
+        expect($rows.at(1).attributes('aria-selected')).toBe('false')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows.at(3).attributes('aria-selected')).toBe('false')
 
-    expect(wrapper.emitted('sort-changed')).toBeDefined()
-    expect(wrapper.emitted('sort-changed').length).toBe(1)
-    expect(wrapper.emitted('row-selected').length).toBe(2)
-    expect(wrapper.emitted('row-selected')[1][0]).toEqual([])
+        // Change mode
+        await wrapper.setProps({ selectMode: 'range' })
 
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(w => w.element.matches('[tabindex="0"]'))).toBe(true)
-    expect($rows.wrappers.every(w => w.element.matches('[aria-selected="false"]'))).toBe(true)
+        expect(wrapper.emitted('row-selected')).toBeDefined()
+        expect(wrapper.emitted('row-selected').length).toBe(2)
+        expect(wrapper.emitted('row-selected')[1][0]).toEqual([])
 
-    wrapper.destroy()
-  })
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.wrappers.every(w => w.attributes('aria-selected') === 'false')).toBe(true)
 
-  it('filter change clears selection', async () => {
-    const wrapper = mount(BTable, {
-      propsData: {
-        fields: testFields,
-        items: testItems,
-        selectable: true,
-        selectMode: 'single'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    await waitNT(wrapper.vm)
+    it('disabling selectable clears selection', async() => {
+        const wrapper = mount(BTable, {
+            props: {
+                fields: testFields,
+                items: testItems,
+                selectable: true,
+                selectMode: 'single'
+            }
+        })
 
-    expect(wrapper.emitted('row-selected')).toBeUndefined()
+        expect(wrapper).toBeDefined()
+        await waitNT(wrapper.vm)
 
-    let $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(w => w.element.matches('[tabindex="0"]'))).toBe(true)
-    expect($rows.wrappers.every(w => w.element.matches('[aria-selected="false"]'))).toBe(true)
+        expect(wrapper.emitted('row-selected')).toBeUndefined()
 
-    // Click first row
-    await wrapper
-      .findAll('tbody > tr')
-      .at(0)
-      .trigger('click')
+        // Click first row
+        await wrapper
+            .findAll('tbody > tr')
+            .at(0)
+            .trigger('click')
 
-    expect(wrapper.emitted('row-selected')).toBeDefined()
-    expect(wrapper.emitted('row-selected').length).toBe(1)
-    expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[0]])
+        expect(wrapper.emitted('row-selected')).toBeDefined()
+        expect(wrapper.emitted('row-selected').length).toBe(1)
+        expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[0]])
 
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('true')
-    expect($rows.at(1).attributes('aria-selected')).toBe('false')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-    expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        let $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('true')
+        expect($rows.at(1).attributes('aria-selected')).toBe('false')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect(wrapper.classes()).toContain('b-table-selectable')
+        expect(wrapper.classes()).not.toContain('b-table-selecting-range')
 
-    // Change filter
-    await wrapper.setProps({ filter: '2' })
+        // Disabled selectable
+        await wrapper.setProps({ selectable: false })
 
-    expect(wrapper.emitted('row-selected').length).toBe(2)
-    expect(wrapper.emitted('row-selected')[1][0]).toEqual([])
+        // Does not emit a row-selected event
+        expect(wrapper.emitted('row-selected').length).toBe(1)
 
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-    expect($rows.wrappers.every(w => w.attributes('aria-selected') === 'false')).toBe(true)
+        $rows = wrapper.findAll('tbody > tr')
+            // Should remove tabindex and aria-selected attributes
+        expect($rows.wrappers.every(w => w.attributes('tabindex') === undefined)).toBe(true)
+        expect($rows.wrappers.every(w => w.attributes('aria-selected') === undefined)).toBe(true)
+        expect(wrapper.classes()).not.toContain('b-table-selectable')
+        expect(wrapper.classes()).not.toContain('b-table-selecting-range')
 
-    wrapper.destroy()
-  })
-
-  it('pagination change clears selection', async () => {
-    const wrapper = mount(BTable, {
-      propsData: {
-        fields: testFields,
-        items: testItems,
-        selectable: true,
-        selectMode: 'single',
-        perPage: 3,
-        currentPage: 1
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    await waitNT(wrapper.vm)
+    it('method `selectAllRows()` in single mode selects only first row', async() => {
+        const wrapper = mount(BTable, {
+            props: {
+                fields: testFields,
+                items: testItems,
+                selectable: true,
+                selectMode: 'single'
+            }
+        })
 
-    expect(wrapper.emitted('row-selected')).toBeUndefined()
+        expect(wrapper).toBeDefined()
+        await waitNT(wrapper.vm)
+        expect(wrapper.emitted('row-selected')).toBeUndefined()
 
-    let $rows = wrapper.findAll('tbody > tr')
-    expect($rows.length).toBe(3)
-    expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-    expect($rows.wrappers.every(w => w.attributes('aria-selected') === 'false')).toBe(true)
+        // Execute `selectAllRows()` method
+        wrapper.vm.selectAllRows()
+        await waitNT(wrapper.vm)
 
-    // Click first row
-    await wrapper
-      .findAll('tbody > tr')
-      .at(0)
-      .trigger('click')
+        expect(wrapper.emitted('row-selected')).toBeDefined()
+        expect(wrapper.emitted('row-selected').length).toBe(1)
+        expect(wrapper.emitted('row-selected')[0][0].length).toBe(1)
+        expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[0]])
+        const $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('true')
+        expect($rows.at(1).attributes('aria-selected')).toBe('false')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows.at(3).attributes('aria-selected')).toBe('false')
 
-    expect(wrapper.emitted('row-selected')).toBeDefined()
-    expect(wrapper.emitted('row-selected').length).toBe(1)
-    expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[0]])
-
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.length).toBe(3)
-    expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-    // We only have 3 rows max per page
-    expect($rows.at(0).attributes('aria-selected')).toBe('true')
-    expect($rows.at(1).attributes('aria-selected')).toBe('false')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-
-    // Change page
-    await wrapper.setProps({ currentPage: 2 })
-
-    expect(wrapper.emitted('row-selected').length).toBe(2)
-    expect(wrapper.emitted('row-selected')[1][0]).toEqual([])
-
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.length).toBe(1)
-    expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-    expect($rows.wrappers.every(w => w.attributes('aria-selected') === 'false')).toBe(true)
-
-    wrapper.destroy()
-  })
-
-  it('change in select mode clears selection', async () => {
-    const wrapper = mount(BTable, {
-      propsData: {
-        fields: testFields,
-        items: testItems,
-        selectable: true,
-        selectMode: 'single'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    await waitNT(wrapper.vm)
+    it('method `selectAllRows()` in multi mode selects all rows', async() => {
+        const wrapper = mount(BTable, {
+            props: {
+                fields: testFields,
+                items: testItems,
+                selectable: true,
+                selectMode: 'multi'
+            }
+        })
 
-    expect(wrapper.emitted('row-selected')).toBeUndefined()
+        expect(wrapper).toBeDefined()
+        await waitNT(wrapper.vm)
+        expect(wrapper.emitted('row-selected')).toBeUndefined()
 
-    // Click first row
-    await wrapper
-      .findAll('tbody > tr')
-      .at(0)
+        // Execute `selectAllRows()` method
+        wrapper.vm.selectAllRows()
+        await waitNT(wrapper.vm)
 
-      .trigger('click')
-    expect(wrapper.emitted('row-selected')).toBeDefined()
-    expect(wrapper.emitted('row-selected').length).toBe(1)
-    expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[0]])
+        expect(wrapper.emitted('row-selected')).toBeDefined()
+        expect(wrapper.emitted('row-selected').length).toBe(1)
+        expect(wrapper.emitted('row-selected')[0][0].length).toBe(4)
+        expect(wrapper.emitted('row-selected')[0][0]).toEqual(testItems)
+        const $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('true')
+        expect($rows.at(1).attributes('aria-selected')).toBe('true')
+        expect($rows.at(2).attributes('aria-selected')).toBe('true')
+        expect($rows.at(3).attributes('aria-selected')).toBe('true')
 
-    let $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('true')
-    expect($rows.at(1).attributes('aria-selected')).toBe('false')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-    expect($rows.at(3).attributes('aria-selected')).toBe('false')
-
-    // Change mode
-    await wrapper.setProps({ selectMode: 'range' })
-
-    expect(wrapper.emitted('row-selected')).toBeDefined()
-    expect(wrapper.emitted('row-selected').length).toBe(2)
-    expect(wrapper.emitted('row-selected')[1][0]).toEqual([])
-
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-    expect($rows.wrappers.every(w => w.attributes('aria-selected') === 'false')).toBe(true)
-
-    wrapper.destroy()
-  })
-
-  it('disabling selectable clears selection', async () => {
-    const wrapper = mount(BTable, {
-      propsData: {
-        fields: testFields,
-        items: testItems,
-        selectable: true,
-        selectMode: 'single'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    await waitNT(wrapper.vm)
+    it('method `selectAllRows()` in range mode selects all rows', async() => {
+        const wrapper = mount(BTable, {
+            props: {
+                fields: testFields,
+                items: testItems,
+                selectable: true,
+                selectMode: 'range'
+            }
+        })
 
-    expect(wrapper.emitted('row-selected')).toBeUndefined()
+        expect(wrapper).toBeDefined()
+        await waitNT(wrapper.vm)
 
-    // Click first row
-    await wrapper
-      .findAll('tbody > tr')
-      .at(0)
-      .trigger('click')
+        expect(wrapper.emitted('row-selected')).toBeUndefined()
 
-    expect(wrapper.emitted('row-selected')).toBeDefined()
-    expect(wrapper.emitted('row-selected').length).toBe(1)
-    expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[0]])
+        // Execute `selectAllRows()` method
+        wrapper.vm.selectAllRows()
+        await waitNT(wrapper.vm)
 
-    let $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('true')
-    expect($rows.at(1).attributes('aria-selected')).toBe('false')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-    expect($rows.at(3).attributes('aria-selected')).toBe('false')
-    expect(wrapper.classes()).toContain('b-table-selectable')
-    expect(wrapper.classes()).not.toContain('b-table-selecting-range')
+        expect(wrapper.emitted('row-selected')).toBeDefined()
+        expect(wrapper.emitted('row-selected').length).toBe(1)
+        expect(wrapper.emitted('row-selected')[0][0].length).toBe(4)
+        expect(wrapper.emitted('row-selected')[0][0]).toEqual(testItems)
 
-    // Disabled selectable
-    await wrapper.setProps({ selectable: false })
+        const $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('true')
+        expect($rows.at(1).attributes('aria-selected')).toBe('true')
+        expect($rows.at(2).attributes('aria-selected')).toBe('true')
+        expect($rows.at(3).attributes('aria-selected')).toBe('true')
 
-    // Does not emit a row-selected event
-    expect(wrapper.emitted('row-selected').length).toBe(1)
-
-    $rows = wrapper.findAll('tbody > tr')
-    // Should remove tabindex and aria-selected attributes
-    expect($rows.wrappers.every(w => w.attributes('tabindex') === undefined)).toBe(true)
-    expect($rows.wrappers.every(w => w.attributes('aria-selected') === undefined)).toBe(true)
-    expect(wrapper.classes()).not.toContain('b-table-selectable')
-    expect(wrapper.classes()).not.toContain('b-table-selecting-range')
-
-    wrapper.destroy()
-  })
-
-  it('method `selectAllRows()` in single mode selects only first row', async () => {
-    const wrapper = mount(BTable, {
-      propsData: {
-        fields: testFields,
-        items: testItems,
-        selectable: true,
-        selectMode: 'single'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    await waitNT(wrapper.vm)
-    expect(wrapper.emitted('row-selected')).toBeUndefined()
+    it('method `selectRow()` and `unselectRow()` in single mode works', async() => {
+        const wrapper = mount(BTable, {
+            props: {
+                fields: testFields,
+                items: testItems,
+                selectable: true,
+                selectMode: 'single'
+            }
+        })
 
-    // Execute `selectAllRows()` method
-    wrapper.vm.selectAllRows()
-    await waitNT(wrapper.vm)
+        expect(wrapper).toBeDefined()
+        await waitNT(wrapper.vm)
 
-    expect(wrapper.emitted('row-selected')).toBeDefined()
-    expect(wrapper.emitted('row-selected').length).toBe(1)
-    expect(wrapper.emitted('row-selected')[0][0].length).toBe(1)
-    expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[0]])
-    const $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('true')
-    expect($rows.at(1).attributes('aria-selected')).toBe('false')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-    expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect(wrapper.emitted('row-selected')).toBeUndefined()
 
-    wrapper.destroy()
-  })
+        // Execute `selectRow()` method (second row)
+        wrapper.vm.selectRow(1)
+        await waitNT(wrapper.vm)
 
-  it('method `selectAllRows()` in multi mode selects all rows', async () => {
-    const wrapper = mount(BTable, {
-      propsData: {
-        fields: testFields,
-        items: testItems,
-        selectable: true,
-        selectMode: 'multi'
-      }
+        expect(wrapper.emitted('row-selected')).toBeDefined()
+        expect(wrapper.emitted('row-selected').length).toBe(1)
+        expect(wrapper.emitted('row-selected')[0][0].length).toBe(1)
+        expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[1]])
+
+        let $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('false')
+        expect($rows.at(1).attributes('aria-selected')).toBe('true')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+
+        // Execute `selectRow()` method (fourth row)
+        wrapper.vm.selectRow(3)
+        await waitNT(wrapper.vm)
+
+        expect(wrapper.emitted('row-selected')).toBeDefined()
+        expect(wrapper.emitted('row-selected').length).toBe(2)
+        expect(wrapper.emitted('row-selected')[1][0].length).toBe(1)
+        expect(wrapper.emitted('row-selected')[1][0]).toEqual([testItems[3]])
+
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('false')
+        expect($rows.at(1).attributes('aria-selected')).toBe('false')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows.at(3).attributes('aria-selected')).toBe('true')
+
+        // Execute `unselectRow()` method on non-selected row (should not change anything)
+        wrapper.vm.unselectRow(0)
+        await waitNT(wrapper.vm)
+
+        expect(wrapper.emitted('row-selected')).toBeDefined()
+        expect(wrapper.emitted('row-selected').length).toBe(2)
+        expect(wrapper.emitted('row-selected')[1][0].length).toBe(1)
+        expect(wrapper.emitted('row-selected')[1][0]).toEqual([testItems[3]])
+
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('false')
+        expect($rows.at(1).attributes('aria-selected')).toBe('false')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows.at(3).attributes('aria-selected')).toBe('true')
+
+        // Execute `unselectRow()` method on selected row
+        wrapper.vm.unselectRow(3)
+        await waitNT(wrapper.vm)
+
+        expect(wrapper.emitted('row-selected')).toBeDefined()
+        expect(wrapper.emitted('row-selected').length).toBe(3)
+        expect(wrapper.emitted('row-selected')[2][0].length).toBe(0)
+        expect(wrapper.emitted('row-selected')[2][0]).toEqual([])
+
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('false')
+        expect($rows.at(1).attributes('aria-selected')).toBe('false')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    await waitNT(wrapper.vm)
-    expect(wrapper.emitted('row-selected')).toBeUndefined()
+    it('method `selectRow()` and `unselectRow()` in multi mode works', async() => {
+        const wrapper = mount(BTable, {
+            props: {
+                fields: testFields,
+                items: testItems,
+                selectable: true,
+                selectMode: 'multi'
+            }
+        })
 
-    // Execute `selectAllRows()` method
-    wrapper.vm.selectAllRows()
-    await waitNT(wrapper.vm)
+        expect(wrapper).toBeDefined()
+        await waitNT(wrapper.vm)
 
-    expect(wrapper.emitted('row-selected')).toBeDefined()
-    expect(wrapper.emitted('row-selected').length).toBe(1)
-    expect(wrapper.emitted('row-selected')[0][0].length).toBe(4)
-    expect(wrapper.emitted('row-selected')[0][0]).toEqual(testItems)
-    const $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('true')
-    expect($rows.at(1).attributes('aria-selected')).toBe('true')
-    expect($rows.at(2).attributes('aria-selected')).toBe('true')
-    expect($rows.at(3).attributes('aria-selected')).toBe('true')
+        expect(wrapper.emitted('row-selected')).toBeUndefined()
 
-    wrapper.destroy()
-  })
+        // Execute `selectRow()` method (second row)
+        wrapper.vm.selectRow(1)
+        await waitNT(wrapper.vm)
 
-  it('method `selectAllRows()` in range mode selects all rows', async () => {
-    const wrapper = mount(BTable, {
-      propsData: {
-        fields: testFields,
-        items: testItems,
-        selectable: true,
-        selectMode: 'range'
-      }
+        expect(wrapper.emitted('row-selected')).toBeDefined()
+        expect(wrapper.emitted('row-selected').length).toBe(1)
+        expect(wrapper.emitted('row-selected')[0][0].length).toBe(1)
+        expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[1]])
+
+        let $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('false')
+        expect($rows.at(1).attributes('aria-selected')).toBe('true')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+
+        // Execute `selectRow()` method (fourth row)
+        wrapper.vm.selectRow(3)
+        await waitNT(wrapper.vm)
+
+        expect(wrapper.emitted('row-selected')).toBeDefined()
+        expect(wrapper.emitted('row-selected').length).toBe(2)
+        expect(wrapper.emitted('row-selected')[1][0].length).toBe(2)
+        expect(wrapper.emitted('row-selected')[1][0]).toEqual([testItems[1], testItems[3]])
+
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('false')
+        expect($rows.at(1).attributes('aria-selected')).toBe('true')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows.at(3).attributes('aria-selected')).toBe('true')
+
+        // Execute `unselectRow()` method on non-selected row (should not change anything)
+        wrapper.vm.unselectRow(0)
+        await waitNT(wrapper.vm)
+
+        expect(wrapper.emitted('row-selected')).toBeDefined()
+        expect(wrapper.emitted('row-selected').length).toBe(2)
+        expect(wrapper.emitted('row-selected')[1][0].length).toBe(2)
+        expect(wrapper.emitted('row-selected')[1][0]).toEqual([testItems[1], testItems[3]])
+
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('false')
+        expect($rows.at(1).attributes('aria-selected')).toBe('true')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows.at(3).attributes('aria-selected')).toBe('true')
+
+        // Execute `unselectRow()` method on selected row
+        wrapper.vm.unselectRow(3)
+        await waitNT(wrapper.vm)
+
+        expect(wrapper.emitted('row-selected')).toBeDefined()
+        expect(wrapper.emitted('row-selected').length).toBe(3)
+        expect(wrapper.emitted('row-selected')[2][0].length).toBe(1)
+        expect(wrapper.emitted('row-selected')[2][0]).toEqual([testItems[1]])
+
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('false')
+        expect($rows.at(1).attributes('aria-selected')).toBe('true')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    await waitNT(wrapper.vm)
+    it('method `selectRow()` and `unselectRow()` in range mode works', async() => {
+        const wrapper = mount(BTable, {
+            props: {
+                fields: testFields,
+                items: testItems,
+                selectable: true,
+                selectMode: 'range'
+            }
+        })
 
-    expect(wrapper.emitted('row-selected')).toBeUndefined()
+        expect(wrapper).toBeDefined()
+        await waitNT(wrapper.vm)
 
-    // Execute `selectAllRows()` method
-    wrapper.vm.selectAllRows()
-    await waitNT(wrapper.vm)
+        expect(wrapper.emitted('row-selected')).toBeUndefined()
 
-    expect(wrapper.emitted('row-selected')).toBeDefined()
-    expect(wrapper.emitted('row-selected').length).toBe(1)
-    expect(wrapper.emitted('row-selected')[0][0].length).toBe(4)
-    expect(wrapper.emitted('row-selected')[0][0]).toEqual(testItems)
+        // Execute `selectRow()` method (second row)
+        wrapper.vm.selectRow(1)
+        await waitNT(wrapper.vm)
 
-    const $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('true')
-    expect($rows.at(1).attributes('aria-selected')).toBe('true')
-    expect($rows.at(2).attributes('aria-selected')).toBe('true')
-    expect($rows.at(3).attributes('aria-selected')).toBe('true')
+        expect(wrapper.emitted('row-selected')).toBeDefined()
+        expect(wrapper.emitted('row-selected').length).toBe(1)
+        expect(wrapper.emitted('row-selected')[0][0].length).toBe(1)
+        expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[1]])
 
-    wrapper.destroy()
-  })
+        let $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('false')
+        expect($rows.at(1).attributes('aria-selected')).toBe('true')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows.at(3).attributes('aria-selected')).toBe('false')
 
-  it('method `selectRow()` and `unselectRow()` in single mode works', async () => {
-    const wrapper = mount(BTable, {
-      propsData: {
-        fields: testFields,
-        items: testItems,
-        selectable: true,
-        selectMode: 'single'
-      }
+        // Execute `selectRow()` method (fourth row)
+        wrapper.vm.selectRow(3)
+        await waitNT(wrapper.vm)
+
+        expect(wrapper.emitted('row-selected')).toBeDefined()
+        expect(wrapper.emitted('row-selected').length).toBe(2)
+        expect(wrapper.emitted('row-selected')[1][0].length).toBe(2)
+        expect(wrapper.emitted('row-selected')[1][0]).toEqual([testItems[1], testItems[3]])
+
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('false')
+        expect($rows.at(1).attributes('aria-selected')).toBe('true')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows.at(3).attributes('aria-selected')).toBe('true')
+
+        // Execute `unselectRow()` method on non-selected row (should not change anything)
+        wrapper.vm.unselectRow(0)
+        await waitNT(wrapper.vm)
+
+        expect(wrapper.emitted('row-selected')).toBeDefined()
+        expect(wrapper.emitted('row-selected').length).toBe(2)
+        expect(wrapper.emitted('row-selected')[1][0].length).toBe(2)
+        expect(wrapper.emitted('row-selected')[1][0]).toEqual([testItems[1], testItems[3]])
+
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('false')
+        expect($rows.at(1).attributes('aria-selected')).toBe('true')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows.at(3).attributes('aria-selected')).toBe('true')
+
+        // Execute `unselectRow()` method on selected row
+        wrapper.vm.unselectRow(3)
+        await waitNT(wrapper.vm)
+
+        expect(wrapper.emitted('row-selected')).toBeDefined()
+        expect(wrapper.emitted('row-selected').length).toBe(3)
+        expect(wrapper.emitted('row-selected')[2][0].length).toBe(1)
+        expect(wrapper.emitted('row-selected')[2][0]).toEqual([testItems[1]])
+
+        $rows = wrapper.findAll('tbody > tr')
+        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.at(0).attributes('aria-selected')).toBe('false')
+        expect($rows.at(1).attributes('aria-selected')).toBe('true')
+        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+
+        wrapper.unmount()
     })
-
-    expect(wrapper).toBeDefined()
-    await waitNT(wrapper.vm)
-
-    expect(wrapper.emitted('row-selected')).toBeUndefined()
-
-    // Execute `selectRow()` method (second row)
-    wrapper.vm.selectRow(1)
-    await waitNT(wrapper.vm)
-
-    expect(wrapper.emitted('row-selected')).toBeDefined()
-    expect(wrapper.emitted('row-selected').length).toBe(1)
-    expect(wrapper.emitted('row-selected')[0][0].length).toBe(1)
-    expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[1]])
-
-    let $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('false')
-    expect($rows.at(1).attributes('aria-selected')).toBe('true')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-    expect($rows.at(3).attributes('aria-selected')).toBe('false')
-
-    // Execute `selectRow()` method (fourth row)
-    wrapper.vm.selectRow(3)
-    await waitNT(wrapper.vm)
-
-    expect(wrapper.emitted('row-selected')).toBeDefined()
-    expect(wrapper.emitted('row-selected').length).toBe(2)
-    expect(wrapper.emitted('row-selected')[1][0].length).toBe(1)
-    expect(wrapper.emitted('row-selected')[1][0]).toEqual([testItems[3]])
-
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('false')
-    expect($rows.at(1).attributes('aria-selected')).toBe('false')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-    expect($rows.at(3).attributes('aria-selected')).toBe('true')
-
-    // Execute `unselectRow()` method on non-selected row (should not change anything)
-    wrapper.vm.unselectRow(0)
-    await waitNT(wrapper.vm)
-
-    expect(wrapper.emitted('row-selected')).toBeDefined()
-    expect(wrapper.emitted('row-selected').length).toBe(2)
-    expect(wrapper.emitted('row-selected')[1][0].length).toBe(1)
-    expect(wrapper.emitted('row-selected')[1][0]).toEqual([testItems[3]])
-
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('false')
-    expect($rows.at(1).attributes('aria-selected')).toBe('false')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-    expect($rows.at(3).attributes('aria-selected')).toBe('true')
-
-    // Execute `unselectRow()` method on selected row
-    wrapper.vm.unselectRow(3)
-    await waitNT(wrapper.vm)
-
-    expect(wrapper.emitted('row-selected')).toBeDefined()
-    expect(wrapper.emitted('row-selected').length).toBe(3)
-    expect(wrapper.emitted('row-selected')[2][0].length).toBe(0)
-    expect(wrapper.emitted('row-selected')[2][0]).toEqual([])
-
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('false')
-    expect($rows.at(1).attributes('aria-selected')).toBe('false')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-    expect($rows.at(3).attributes('aria-selected')).toBe('false')
-
-    wrapper.destroy()
-  })
-
-  it('method `selectRow()` and `unselectRow()` in multi mode works', async () => {
-    const wrapper = mount(BTable, {
-      propsData: {
-        fields: testFields,
-        items: testItems,
-        selectable: true,
-        selectMode: 'multi'
-      }
-    })
-
-    expect(wrapper).toBeDefined()
-    await waitNT(wrapper.vm)
-
-    expect(wrapper.emitted('row-selected')).toBeUndefined()
-
-    // Execute `selectRow()` method (second row)
-    wrapper.vm.selectRow(1)
-    await waitNT(wrapper.vm)
-
-    expect(wrapper.emitted('row-selected')).toBeDefined()
-    expect(wrapper.emitted('row-selected').length).toBe(1)
-    expect(wrapper.emitted('row-selected')[0][0].length).toBe(1)
-    expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[1]])
-
-    let $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('false')
-    expect($rows.at(1).attributes('aria-selected')).toBe('true')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-    expect($rows.at(3).attributes('aria-selected')).toBe('false')
-
-    // Execute `selectRow()` method (fourth row)
-    wrapper.vm.selectRow(3)
-    await waitNT(wrapper.vm)
-
-    expect(wrapper.emitted('row-selected')).toBeDefined()
-    expect(wrapper.emitted('row-selected').length).toBe(2)
-    expect(wrapper.emitted('row-selected')[1][0].length).toBe(2)
-    expect(wrapper.emitted('row-selected')[1][0]).toEqual([testItems[1], testItems[3]])
-
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('false')
-    expect($rows.at(1).attributes('aria-selected')).toBe('true')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-    expect($rows.at(3).attributes('aria-selected')).toBe('true')
-
-    // Execute `unselectRow()` method on non-selected row (should not change anything)
-    wrapper.vm.unselectRow(0)
-    await waitNT(wrapper.vm)
-
-    expect(wrapper.emitted('row-selected')).toBeDefined()
-    expect(wrapper.emitted('row-selected').length).toBe(2)
-    expect(wrapper.emitted('row-selected')[1][0].length).toBe(2)
-    expect(wrapper.emitted('row-selected')[1][0]).toEqual([testItems[1], testItems[3]])
-
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('false')
-    expect($rows.at(1).attributes('aria-selected')).toBe('true')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-    expect($rows.at(3).attributes('aria-selected')).toBe('true')
-
-    // Execute `unselectRow()` method on selected row
-    wrapper.vm.unselectRow(3)
-    await waitNT(wrapper.vm)
-
-    expect(wrapper.emitted('row-selected')).toBeDefined()
-    expect(wrapper.emitted('row-selected').length).toBe(3)
-    expect(wrapper.emitted('row-selected')[2][0].length).toBe(1)
-    expect(wrapper.emitted('row-selected')[2][0]).toEqual([testItems[1]])
-
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('false')
-    expect($rows.at(1).attributes('aria-selected')).toBe('true')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-    expect($rows.at(3).attributes('aria-selected')).toBe('false')
-
-    wrapper.destroy()
-  })
-
-  it('method `selectRow()` and `unselectRow()` in range mode works', async () => {
-    const wrapper = mount(BTable, {
-      propsData: {
-        fields: testFields,
-        items: testItems,
-        selectable: true,
-        selectMode: 'range'
-      }
-    })
-
-    expect(wrapper).toBeDefined()
-    await waitNT(wrapper.vm)
-
-    expect(wrapper.emitted('row-selected')).toBeUndefined()
-
-    // Execute `selectRow()` method (second row)
-    wrapper.vm.selectRow(1)
-    await waitNT(wrapper.vm)
-
-    expect(wrapper.emitted('row-selected')).toBeDefined()
-    expect(wrapper.emitted('row-selected').length).toBe(1)
-    expect(wrapper.emitted('row-selected')[0][0].length).toBe(1)
-    expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[1]])
-
-    let $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('false')
-    expect($rows.at(1).attributes('aria-selected')).toBe('true')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-    expect($rows.at(3).attributes('aria-selected')).toBe('false')
-
-    // Execute `selectRow()` method (fourth row)
-    wrapper.vm.selectRow(3)
-    await waitNT(wrapper.vm)
-
-    expect(wrapper.emitted('row-selected')).toBeDefined()
-    expect(wrapper.emitted('row-selected').length).toBe(2)
-    expect(wrapper.emitted('row-selected')[1][0].length).toBe(2)
-    expect(wrapper.emitted('row-selected')[1][0]).toEqual([testItems[1], testItems[3]])
-
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('false')
-    expect($rows.at(1).attributes('aria-selected')).toBe('true')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-    expect($rows.at(3).attributes('aria-selected')).toBe('true')
-
-    // Execute `unselectRow()` method on non-selected row (should not change anything)
-    wrapper.vm.unselectRow(0)
-    await waitNT(wrapper.vm)
-
-    expect(wrapper.emitted('row-selected')).toBeDefined()
-    expect(wrapper.emitted('row-selected').length).toBe(2)
-    expect(wrapper.emitted('row-selected')[1][0].length).toBe(2)
-    expect(wrapper.emitted('row-selected')[1][0]).toEqual([testItems[1], testItems[3]])
-
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('false')
-    expect($rows.at(1).attributes('aria-selected')).toBe('true')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-    expect($rows.at(3).attributes('aria-selected')).toBe('true')
-
-    // Execute `unselectRow()` method on selected row
-    wrapper.vm.unselectRow(3)
-    await waitNT(wrapper.vm)
-
-    expect(wrapper.emitted('row-selected')).toBeDefined()
-    expect(wrapper.emitted('row-selected').length).toBe(3)
-    expect(wrapper.emitted('row-selected')[2][0].length).toBe(1)
-    expect(wrapper.emitted('row-selected')[2][0]).toEqual([testItems[1]])
-
-    $rows = wrapper.findAll('tbody > tr')
-    expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-    expect($rows.at(0).attributes('aria-selected')).toBe('false')
-    expect($rows.at(1).attributes('aria-selected')).toBe('true')
-    expect($rows.at(2).attributes('aria-selected')).toBe('false')
-    expect($rows.at(3).attributes('aria-selected')).toBe('false')
-
-    wrapper.destroy()
-  })
 })

@@ -2,156 +2,156 @@ import { mount } from '@vue/test-utils'
 import { BFormValidFeedback } from './form-valid-feedback'
 
 describe('form-valid-feedback', () => {
-  it('default should have tag div', async () => {
-    const wrapper = mount(BFormValidFeedback)
+    it('default should have tag div', async() => {
+        const wrapper = mount(BFormValidFeedback)
 
-    expect(wrapper.element.tagName).toBe('DIV')
+        expect(wrapper.element.tagName).toBe('DIV')
 
-    wrapper.destroy()
-  })
-
-  it('default should contain base class', async () => {
-    const wrapper = mount(BFormValidFeedback)
-
-    expect(wrapper.classes()).toContain('valid-feedback')
-
-    wrapper.destroy()
-  })
-
-  it('default should not have class d-block', async () => {
-    const wrapper = mount(BFormValidFeedback)
-
-    expect(wrapper.classes()).not.toContain('d-block')
-
-    wrapper.destroy()
-  })
-
-  it('default should not have class valid-tooltip', async () => {
-    const wrapper = mount(BFormValidFeedback)
-
-    expect(wrapper.classes()).not.toContain('valid-tooltip')
-
-    wrapper.destroy()
-  })
-
-  it('default should not have id', async () => {
-    const wrapper = mount(BFormValidFeedback)
-
-    expect(wrapper.attributes('id')).toBeUndefined()
-
-    wrapper.destroy()
-  })
-
-  it('default should have user supplied id', async () => {
-    const wrapper = mount(BFormValidFeedback, {
-      context: {
-        props: {
-          id: 'foobar'
-        }
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.attributes('id')).toBe('foobar')
+    it('default should contain base class', async() => {
+        const wrapper = mount(BFormValidFeedback)
 
-    wrapper.destroy()
-  })
+        expect(wrapper.classes()).toContain('valid-feedback')
 
-  it('should have tag small when tag=small', async () => {
-    const wrapper = mount(BFormValidFeedback, {
-      context: {
-        props: {
-          tag: 'small'
-        }
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('SMALL')
+    it('default should not have class d-block', async() => {
+        const wrapper = mount(BFormValidFeedback)
 
-    wrapper.destroy()
-  })
+        expect(wrapper.classes()).not.toContain('d-block')
 
-  it('should contain class d-block when force-show is set', async () => {
-    const wrapper = mount(BFormValidFeedback, {
-      context: {
-        props: {
-          forceShow: true
-        }
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.classes()).toContain('d-block')
+    it('default should not have class valid-tooltip', async() => {
+        const wrapper = mount(BFormValidFeedback)
 
-    wrapper.destroy()
-  })
+        expect(wrapper.classes()).not.toContain('valid-tooltip')
 
-  it('should contain class d-block when state is true', async () => {
-    const wrapper = mount(BFormValidFeedback, {
-      context: {
-        props: {
-          state: true
-        }
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.classes()).toContain('d-block')
+    it('default should not have id', async() => {
+        const wrapper = mount(BFormValidFeedback)
 
-    wrapper.destroy()
-  })
+        expect(wrapper.attributes('id')).toBeUndefined()
 
-  it('should not contain class d-block when state is false', async () => {
-    const wrapper = mount(BFormValidFeedback, {
-      context: {
-        props: {
-          state: false
-        }
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.classes()).not.toContain('d-block')
+    it('default should have user supplied id', async() => {
+        const wrapper = mount(BFormValidFeedback, {
+            context: {
+                props: {
+                    id: 'foobar'
+                }
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.attributes('id')).toBe('foobar')
 
-  it('should contain class d-block when force-show is true and state is false', async () => {
-    const wrapper = mount(BFormValidFeedback, {
-      context: {
-        props: {
-          forceShow: true,
-          state: false
-        }
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.classes()).toContain('d-block')
+    it('should have tag small when tag=small', async() => {
+        const wrapper = mount(BFormValidFeedback, {
+            context: {
+                props: {
+                    tag: 'small'
+                }
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('SMALL')
 
-  it('should contain class valid-tooltip when tooltip is set', async () => {
-    const wrapper = mount(BFormValidFeedback, {
-      context: {
-        props: {
-          tooltip: true
-        }
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.classes()).toContain('valid-tooltip')
+    it('should contain class d-block when force-show is set', async() => {
+        const wrapper = mount(BFormValidFeedback, {
+            context: {
+                props: {
+                    forceShow: true
+                }
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.classes()).toContain('d-block')
 
-  it('should not contain class valid-feedback when tooltip is set', async () => {
-    const wrapper = mount(BFormValidFeedback, {
-      context: {
-        props: {
-          tooltip: true
-        }
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.classes()).not.toContain('valid-feedback')
+    it('should contain class d-block when state is true', async() => {
+        const wrapper = mount(BFormValidFeedback, {
+            context: {
+                props: {
+                    state: true
+                }
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.classes()).toContain('d-block')
+
+        wrapper.unmount()
+    })
+
+    it('should not contain class d-block when state is false', async() => {
+        const wrapper = mount(BFormValidFeedback, {
+            context: {
+                props: {
+                    state: false
+                }
+            }
+        })
+
+        expect(wrapper.classes()).not.toContain('d-block')
+
+        wrapper.unmount()
+    })
+
+    it('should contain class d-block when force-show is true and state is false', async() => {
+        const wrapper = mount(BFormValidFeedback, {
+            context: {
+                props: {
+                    forceShow: true,
+                    state: false
+                }
+            }
+        })
+
+        expect(wrapper.classes()).toContain('d-block')
+
+        wrapper.unmount()
+    })
+
+    it('should contain class valid-tooltip when tooltip is set', async() => {
+        const wrapper = mount(BFormValidFeedback, {
+            context: {
+                props: {
+                    tooltip: true
+                }
+            }
+        })
+
+        expect(wrapper.classes()).toContain('valid-tooltip')
+
+        wrapper.unmount()
+    })
+
+    it('should not contain class valid-feedback when tooltip is set', async() => {
+        const wrapper = mount(BFormValidFeedback, {
+            context: {
+                props: {
+                    tooltip: true
+                }
+            }
+        })
+
+        expect(wrapper.classes()).not.toContain('valid-feedback')
+
+        wrapper.unmount()
+    })
 })

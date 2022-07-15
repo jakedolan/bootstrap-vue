@@ -2,78 +2,78 @@ import { mount } from '@vue/test-utils'
 import { BMediaAside } from './media-aside'
 
 describe('media-aside', () => {
-  it('has expected default structure', async () => {
-    const wrapper = mount(BMediaAside)
+    it('has expected default structure', async() => {
+        const wrapper = mount(BMediaAside)
 
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.classes()).toContain('media-aside')
-    expect(wrapper.classes()).toContain('align-self-start')
-    expect(wrapper.text()).toEqual('')
+        expect(wrapper.element.tagName).toBe('DIV')
+        expect(wrapper.classes()).toContain('media-aside')
+        expect(wrapper.classes()).toContain('align-self-start')
+        expect(wrapper.text()).toEqual('')
 
-    wrapper.destroy()
-  })
-
-  it('has custom root element when prop `tag` set', async () => {
-    const wrapper = mount(BMediaAside, {
-      propsData: {
-        tag: 'span'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('SPAN')
-    expect(wrapper.classes()).toContain('media-aside')
-    expect(wrapper.classes()).toContain('align-self-start')
-    expect(wrapper.classes().length).toBe(2)
-    expect(wrapper.text()).toEqual('')
+    it('has custom root element when prop `tag` set', async() => {
+        const wrapper = mount(BMediaAside, {
+            props: {
+                tag: 'span'
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('SPAN')
+        expect(wrapper.classes()).toContain('media-aside')
+        expect(wrapper.classes()).toContain('align-self-start')
+        expect(wrapper.classes().length).toBe(2)
+        expect(wrapper.text()).toEqual('')
 
-  it('has correct class when prop `right` set', async () => {
-    const wrapper = mount(BMediaAside, {
-      propsData: {
-        right: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.classes()).toContain('media-aside')
-    expect(wrapper.classes()).toContain('media-aside-right')
-    expect(wrapper.classes()).toContain('align-self-start')
-    expect(wrapper.classes().length).toBe(3)
+    it('has correct class when prop `right` set', async() => {
+        const wrapper = mount(BMediaAside, {
+            props: {
+                right: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('DIV')
+        expect(wrapper.classes()).toContain('media-aside')
+        expect(wrapper.classes()).toContain('media-aside-right')
+        expect(wrapper.classes()).toContain('align-self-start')
+        expect(wrapper.classes().length).toBe(3)
 
-  it('has alignment class when prop `vertical-align` set', async () => {
-    const wrapper = mount(BMediaAside, {
-      propsData: {
-        verticalAlign: 'bottom'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.classes()).toContain('media-aside')
-    expect(wrapper.classes()).toContain('align-self-end')
-    expect(wrapper.classes().length).toBe(2)
+    it('has alignment class when prop `vertical-align` set', async() => {
+        const wrapper = mount(BMediaAside, {
+            props: {
+                verticalAlign: 'bottom'
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('DIV')
+        expect(wrapper.classes()).toContain('media-aside')
+        expect(wrapper.classes()).toContain('align-self-end')
+        expect(wrapper.classes().length).toBe(2)
 
-  it('renders default slot content', async () => {
-    const wrapper = mount(BMediaAside, {
-      slots: {
-        default: '<b>foobar</b>'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.classes()).toContain('media-aside')
-    expect(wrapper.classes()).toContain('align-self-start')
-    expect(wrapper.classes().length).toBe(2)
-    expect(wrapper.findAll('b').length).toBe(1)
-    expect(wrapper.find('b').text()).toBe('foobar')
+    it('renders default slot content', async() => {
+        const wrapper = mount(BMediaAside, {
+            slots: {
+                default: '<b>foobar</b>'
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('DIV')
+        expect(wrapper.classes()).toContain('media-aside')
+        expect(wrapper.classes()).toContain('align-self-start')
+        expect(wrapper.classes().length).toBe(2)
+        expect(wrapper.findAll('b').length).toBe(1)
+        expect(wrapper.find('b').text()).toBe('foobar')
+
+        wrapper.unmount()
+    })
 })

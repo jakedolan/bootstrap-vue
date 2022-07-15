@@ -2,96 +2,96 @@ import { mount } from '@vue/test-utils'
 import { BForm } from './form'
 
 describe('form', () => {
-  it('has expected default structure', async () => {
-    const wrapper = mount(BForm)
+    it('has expected default structure', async() => {
+        const wrapper = mount(BForm)
 
-    expect(wrapper.element.tagName).toBe('FORM')
-    expect(wrapper.classes().length).toBe(0)
-    expect(wrapper.text()).toEqual('')
+        expect(wrapper.element.tagName).toBe('FORM')
+        expect(wrapper.classes().length).toBe(0)
+        expect(wrapper.text()).toEqual('')
 
-    wrapper.destroy()
-  })
-
-  it('renders default slot content', async () => {
-    const wrapper = mount(BForm, {
-      slots: {
-        default: 'foobar'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('FORM')
-    expect(wrapper.classes().length).toBe(0)
-    expect(wrapper.attributes('id')).toBeUndefined()
-    expect(wrapper.attributes('novalidate')).toBeUndefined()
-    expect(wrapper.text()).toEqual('foobar')
+    it('renders default slot content', async() => {
+        const wrapper = mount(BForm, {
+            slots: {
+                default: 'foobar'
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('FORM')
+        expect(wrapper.classes().length).toBe(0)
+        expect(wrapper.attributes('id')).toBeUndefined()
+        expect(wrapper.attributes('novalidate')).toBeUndefined()
+        expect(wrapper.text()).toEqual('foobar')
 
-  it('has class form-inline when prop inline set', async () => {
-    const wrapper = mount(BForm, {
-      propsData: {
-        inline: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('FORM')
-    expect(wrapper.classes()).toContain('form-inline')
-    expect(wrapper.classes().length).toBe(1)
-    expect(wrapper.attributes('id')).toBeUndefined()
-    expect(wrapper.attributes('novalidate')).toBeUndefined()
-    expect(wrapper.text()).toEqual('')
+    it('has class form-inline when prop inline set', async() => {
+        const wrapper = mount(BForm, {
+            props: {
+                inline: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('FORM')
+        expect(wrapper.classes()).toContain('form-inline')
+        expect(wrapper.classes().length).toBe(1)
+        expect(wrapper.attributes('id')).toBeUndefined()
+        expect(wrapper.attributes('novalidate')).toBeUndefined()
+        expect(wrapper.text()).toEqual('')
 
-  it('has class was-validation when prop validated set', async () => {
-    const wrapper = mount(BForm, {
-      propsData: {
-        validated: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('FORM')
-    expect(wrapper.classes()).toContain('was-validated')
-    expect(wrapper.classes().length).toBe(1)
-    expect(wrapper.attributes('id')).toBeUndefined()
-    expect(wrapper.attributes('novalidate')).toBeUndefined()
-    expect(wrapper.text()).toEqual('')
+    it('has class was-validation when prop validated set', async() => {
+        const wrapper = mount(BForm, {
+            props: {
+                validated: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('FORM')
+        expect(wrapper.classes()).toContain('was-validated')
+        expect(wrapper.classes().length).toBe(1)
+        expect(wrapper.attributes('id')).toBeUndefined()
+        expect(wrapper.attributes('novalidate')).toBeUndefined()
+        expect(wrapper.text()).toEqual('')
 
-  it('has user supplied id', async () => {
-    const wrapper = mount(BForm, {
-      propsData: {
-        id: 'foo'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('FORM')
-    expect(wrapper.classes().length).toBe(0)
-    expect(wrapper.attributes('id')).toBeDefined()
-    expect(wrapper.attributes('id')).toEqual('foo')
-    expect(wrapper.attributes('novalidate')).toBeUndefined()
-    expect(wrapper.text()).toEqual('')
+    it('has user supplied id', async() => {
+        const wrapper = mount(BForm, {
+            props: {
+                id: 'foo'
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('FORM')
+        expect(wrapper.classes().length).toBe(0)
+        expect(wrapper.attributes('id')).toBeDefined()
+        expect(wrapper.attributes('id')).toEqual('foo')
+        expect(wrapper.attributes('novalidate')).toBeUndefined()
+        expect(wrapper.text()).toEqual('')
 
-  it('has attribute novalidate when prop novalidate set', async () => {
-    const wrapper = mount(BForm, {
-      propsData: {
-        novalidate: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('FORM')
-    expect(wrapper.classes().length).toBe(0)
-    expect(wrapper.attributes('id')).toBeUndefined()
-    expect(wrapper.attributes('novalidate')).toBeDefined()
-    expect(wrapper.text()).toEqual('')
+    it('has attribute novalidate when prop novalidate set', async() => {
+        const wrapper = mount(BForm, {
+            props: {
+                novalidate: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('FORM')
+        expect(wrapper.classes().length).toBe(0)
+        expect(wrapper.attributes('id')).toBeUndefined()
+        expect(wrapper.attributes('novalidate')).toBeDefined()
+        expect(wrapper.text()).toEqual('')
+
+        wrapper.unmount()
+    })
 })

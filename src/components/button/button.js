@@ -1,8 +1,8 @@
 import { defineComponent, h } from 'vue'
-import { mergeData } from 'vue-functional-data-merge'
 import { NAME_BUTTON } from '../../constants/components'
 import { CODE_ENTER, CODE_SPACE } from '../../constants/key-codes'
 import { PROP_TYPE_BOOLEAN, PROP_TYPE_STRING } from '../../constants/props'
+import { SLOT_NAME_DEFAULT } from '../../constants/slots'
 import { concat } from '../../utils/array'
 import { addClass, isTag, removeClass } from '../../utils/dom'
 import { stopEvent } from '../../utils/events'
@@ -11,10 +11,11 @@ import { omit, sortKeys } from '../../utils/object'
 import { makeProp, makePropsConfigurable, pluckProps } from '../../utils/props'
 import { isLink as isLinkStrict } from '../../utils/router'
 import { BLink, props as BLinkProps } from '../link/link'
+import { normalizeSlot } from '../../utils/normalize-slot'
 
 // --- Props ---
 
-const linkProps = omit(BLinkProps, ['event', 'routerTag'])
+const linkProps = omit(BLinkProps, ['ariaDisabled', 'disabled', 'event', 'routerTag'])
 delete linkProps.href.default
 delete linkProps.to.default
 
@@ -23,7 +24,7 @@ export const props = makePropsConfigurable(
     ...linkProps,
     ariaDisabled: makeProp(PROP_TYPE_BOOLEAN, null),
     block: makeProp(PROP_TYPE_BOOLEAN, false),
-    disabled: makeProp(PROP_TYPE_BOOLEAN, false),
+    disabled: makeProp(PROP_TYPE_BOOLEAN, null),
     pill: makeProp(PROP_TYPE_BOOLEAN, false),
     // Tri-state: `true`, `false` or `null`
     // => On, off, not a toggle
@@ -90,6 +91,7 @@ const computeAttrs = (props, data) => {
   if (nonStandardTag || hashLink) {
     tabindex = '0'
   }
+
   return {
     // Type only used for "real" buttons
     type: button && !link ? props.type : null,
@@ -100,13 +102,11 @@ const computeAttrs = (props, data) => {
     // Except when link has `href` of `#`
     role: nonStandardTag || hashLink ? 'button' : role,
     // We set the `aria-disabled` state for non-standard tags
-    'aria-disabled': nonStandardTag
-      ? String(props.disabled)
-      : props.ariaDisabled
-        ? String(props.ariaDisabled)
-        : null,
+    'aria-disabled': props.ariaDisabled ? true : 
+        nonStandardTag ? (props.disabled ? true : null) : 
+          link ? (props.disabled ? true : null) : null,
     // For toggles, we need to set the pressed state for ARIA
-    'aria-pressed': toggle ? String(props.pressed) : null,
+    'aria-pressed': toggle ? (props.pressed ?? null) : null,
     // `autocomplete="off"` is needed in toggle mode to prevent some browsers
     // from remembering the previous setting when using the back button
     autocomplete: toggle ? 'off' : null,
@@ -123,7 +123,6 @@ const computeAttrs = (props, data) => {
 // @vue/component
 export const BButton = /*#__PURE__*/ defineComponent({
   name: NAME_BUTTON,
-  functional: true,
   props,
   render() {
     const { $props, $data, $attrs, $slots } = this
@@ -136,22 +135,22 @@ export const BButton = /*#__PURE__*/ defineComponent({
         // When the link is a `href="#"` or a non-standard tag (has `role="button"`),
         // we add a keydown handlers for CODE_SPACE/CODE_ENTER
         /* istanbul ignore next */
-        if ($props.disabled || !(nonStandardTag || hashLink)) {
-          return false
+        if ($props.disabled || $props.ariaDisabled || !(nonStandardTag || hashLink)) {
+          return
         }
         const { keyCode } = event
         // Add CODE_SPACE handler for `href="#"` and CODE_ENTER handler for non-standard tags
-        if ($props.ariaDisabled && (keyCode === CODE_SPACE || keyCode === CODE_ENTER)) {
+        if (keyCode === CODE_SPACE || (keyCode === CODE_ENTER && nonStandardTag)) {
+          const target = event.currentTarget || event.target
           stopEvent(event, { propagation: false })
-          return false
+          target.click()
         }
       },
       onClick(event) {
         /* istanbul ignore if: blink/button disabled should handle this */
         if (($props.disabled || $props.ariaDisabled) && isEvent(event)) {
-          stopEvent(event, { immediatePropagation: true })
-          return false
-        } else if (toggle && $attrs && $attrs['onUpdate:pressed']) {
+          stopEvent(event)
+        } else if (toggle && $attrs['onUpdate:pressed']) {
           // Send `.sync` updates to any "pressed" prop (if `.sync` listeners)
           // `concat()` will normalize the value to an array without
           // double wrapping an array value in an array
@@ -169,19 +168,23 @@ export const BButton = /*#__PURE__*/ defineComponent({
       on.onFocusout = handleFocus
     }
 
+    const localProps = computeLinkProps($props);
+    const localAttrs = computeAttrs($props, $data);
+
     const componentData = {
       class: ['btn', ...computeClass($props)],
-      ...computeLinkProps($props),
-      ...computeAttrs($props, $data),
-      ...on
+      ...localProps,
+      ...localAttrs,
+      ...on,
     }
-    
-    const merged = mergeData($data, componentData);
+
+    // const merged = mergeData($data, componentData);
     
     return h(link ? BLink : $props.tag, 
-      componentData, 
+      componentData,       
       {
-        default: () => $slots.default() 
-      })
+        default: () => [normalizeSlot(SLOT_NAME_DEFAULT, {}, $slots)]
+      }
+    )
   }
 })

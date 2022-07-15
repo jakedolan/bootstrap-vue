@@ -7,6 +7,7 @@ import {
     PROP_TYPE_OBJECT_STRING,
     PROP_TYPE_STRING
 } from '../../constants/props'
+import { SLOT_NAME_DEFAULT } from '../../constants/slots'
 import { concat } from '../../utils/array'
 import { attemptBlur, attemptFocus, isTag } from '../../utils/dom'
 import { getRootEventName, stopEvent } from '../../utils/events'
@@ -19,6 +20,7 @@ import { attrsMixin } from '../../mixins/attrs'
 import { listenOnRootMixin } from '../../mixins/listen-on-root'
 import { listenersMixin } from '../../mixins/listeners'
 import { normalizeSlotMixin } from '../../mixins/normalize-slot'
+import { normalizeSlot } from '../../utils/normalize-slot'
 
 // --- Constants ---
 
@@ -58,6 +60,7 @@ export const props = makePropsConfigurable(
         ...nuxtLinkProps,
         ...routerLinkProps,
         active: makeProp(PROP_TYPE_BOOLEAN, false),
+        ariaDisabled: makeProp(PROP_TYPE_BOOLEAN, null),
         disabled: makeProp(PROP_TYPE_BOOLEAN, false),
         href: makeProp(PROP_TYPE_STRING),
         // Must be `null` if no value provided
@@ -126,7 +129,7 @@ export const BLink = /*#__PURE__*/ defineComponent({
                 routerTag,
                 isRouterLink
             } = this
-
+            
             return {
                 ...bvAttrs,
                 // If `href` attribute exists on `<router-link>` (even `undefined` or `null`)
@@ -136,7 +139,7 @@ export const BLink = /*#__PURE__*/ defineComponent({
                 // We don't render `rel` or `target` on non link tags when using `vue-router`
                 ...(isRouterLink && routerTag && !isTag(routerTag, 'a') ? {} : { rel, target }),
                 tabindex: disabled ? '-1' : isUndefined(bvAttrs.tabindex) ? null : bvAttrs.tabindex,
-                'aria-disabled': disabled ? 'true' : null
+                'aria-disabled': (this.$props.ariaDisabled || disabled) ? 'true' : null
             }
         },
         computedListeners() {
@@ -145,7 +148,8 @@ export const BLink = /*#__PURE__*/ defineComponent({
                 ...this.bvListeners,
                 // We want to overwrite any click handler since our callback
                 // will invoke the user supplied handler(s) if `!this.disabled`
-                onClick: this.onClick
+                onClick: this.onClick,
+                
             }
         }
     },
@@ -153,7 +157,7 @@ export const BLink = /*#__PURE__*/ defineComponent({
         onClick(event) {
             const eventIsEvent = isEvent(event)
             const isRouterLink = this.isRouterLink
-            const suppliedHandler = this.bvListeners.click
+            const suppliedHandler = this.bvListeners.onClick
             if (eventIsEvent && this.disabled) {
                 // Stop event from bubbling up
                 // Kill the event loop attached to this specific `EventTarget`
@@ -191,7 +195,7 @@ export const BLink = /*#__PURE__*/ defineComponent({
         }
     },
     render() {
-        const { active, disabled } = this
+        const { active, disabled, $slots } = this
 
         return h(
             this.computedTag, {
@@ -202,7 +206,10 @@ export const BLink = /*#__PURE__*/ defineComponent({
                 // [this.isRouterLink ? 'nativeOn' : 'on']: this.computedListeners
                 ...this.computedListeners
             },
-            this.normalizeSlot()
+            {
+              default: () => [normalizeSlot(SLOT_NAME_DEFAULT, {}, $slots)]
+            }
+            
         )
     }
 })

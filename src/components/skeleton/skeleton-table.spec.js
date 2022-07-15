@@ -2,118 +2,118 @@ import { mount } from '@vue/test-utils'
 import { BSkeletonTable } from './skeleton-table'
 
 describe('skeleton-table', () => {
-  it('element has default layout', async () => {
-    const wrapper = mount(BSkeletonTable)
+    it('element has default layout', async() => {
+        const wrapper = mount(BSkeletonTable)
 
-    expect(wrapper).toBeDefined()
-    expect(wrapper.element.tagName).toBe('TABLE')
-    expect(wrapper.find('thead').exists()).toBe(true)
-    expect(wrapper.findAll('thead > tr > th').length).toBe(5)
-    expect(wrapper.findAll('tbody > tr').length).toBe(3)
-    expect(wrapper.findAll('tbody > tr > td > div').length).toBe(15)
-    expect(wrapper.find('tfoot').exists()).toBe(false)
+        expect(wrapper).toBeDefined()
+        expect(wrapper.element.tagName).toBe('TABLE')
+        expect(wrapper.find('thead').exists()).toBe(true)
+        expect(wrapper.findAll('thead > tr > th').length).toBe(5)
+        expect(wrapper.findAll('tbody > tr').length).toBe(3)
+        expect(wrapper.findAll('tbody > tr > td > div').length).toBe(15)
+        expect(wrapper.find('tfoot').exists()).toBe(false)
 
-    wrapper.destroy()
-  })
-
-  it("prop `hide-header` doesn't render `<thead>`", async () => {
-    const wrapper = mount(BSkeletonTable, {
-      propsData: {
-        hideHeader: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    expect(wrapper.element.tagName).toBe('TABLE')
-    expect(wrapper.find('thead').exists()).toBe(false)
+    it("prop `hide-header` doesn't render `<thead>`", async() => {
+        const wrapper = mount(BSkeletonTable, {
+            props: {
+                hideHeader: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper).toBeDefined()
+        expect(wrapper.element.tagName).toBe('TABLE')
+        expect(wrapper.find('thead').exists()).toBe(false)
 
-  it('prop `show-footer` renders `<tfoot>`', async () => {
-    const wrapper = mount(BSkeletonTable, {
-      propsData: {
-        showFooter: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    expect(wrapper.element.tagName).toBe('TABLE')
-    expect(wrapper.find('tfoot').exists()).toBe(true)
+    it('prop `show-footer` renders `<tfoot>`', async() => {
+        const wrapper = mount(BSkeletonTable, {
+            props: {
+                showFooter: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper).toBeDefined()
+        expect(wrapper.element.tagName).toBe('TABLE')
+        expect(wrapper.find('tfoot').exists()).toBe(true)
 
-  it('setting `rows` prop changes amount of `tr` rendered in `tbody`', async () => {
-    const wrapper = mount(BSkeletonTable, {
-      propsData: {
-        rows: 7
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    expect(wrapper.element.tagName).toBe('TABLE')
-    expect(wrapper.findAll('tbody > tr').length).toBe(7)
+    it('setting `rows` prop changes amount of `tr` rendered in `tbody`', async() => {
+        const wrapper = mount(BSkeletonTable, {
+            props: {
+                rows: 7
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper).toBeDefined()
+        expect(wrapper.element.tagName).toBe('TABLE')
+        expect(wrapper.findAll('tbody > tr').length).toBe(7)
 
-  it('setting `columns` prop changes amount of `th` rendered in `thead`', async () => {
-    const wrapper = mount(BSkeletonTable, {
-      propsData: {
-        columns: 6
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    expect(wrapper.element.tagName).toBe('TABLE')
-    expect(wrapper.findAll('thead > tr > th').length).toBe(6)
+    it('setting `columns` prop changes amount of `th` rendered in `thead`', async() => {
+        const wrapper = mount(BSkeletonTable, {
+            props: {
+                columns: 6
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper).toBeDefined()
+        expect(wrapper.element.tagName).toBe('TABLE')
+        expect(wrapper.findAll('thead > tr > th').length).toBe(6)
 
-  it('`table-props` are properly passed to the table', async () => {
-    const wrapper = mount(BSkeletonTable, {
-      propsData: {
-        tableProps: {
-          bordered: true,
-          striped: true
-        }
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    expect(wrapper.element.tagName).toBe('TABLE')
-    expect(wrapper.classes()).toContain('table-bordered')
-    expect(wrapper.classes()).toContain('table-striped')
+    it('`table-props` are properly passed to the table', async() => {
+        const wrapper = mount(BSkeletonTable, {
+            props: {
+                tableProps: {
+                    bordered: true,
+                    striped: true
+                }
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper).toBeDefined()
+        expect(wrapper.element.tagName).toBe('TABLE')
+        expect(wrapper.classes()).toContain('table-bordered')
+        expect(wrapper.classes()).toContain('table-striped')
 
-  it('`animation` prop changes animation used in cells', async () => {
-    const wrapper = mount(BSkeletonTable, {
-      propsData: {
-        animation: 'fade'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper).toBeDefined()
-    expect(wrapper.element.tagName).toBe('TABLE')
-    expect(wrapper.find('tbody > tr > td > div').classes()).toContain('b-skeleton-animate-fade')
+    it('`animation` prop changes animation used in cells', async() => {
+        const wrapper = mount(BSkeletonTable, {
+            props: {
+                animation: 'fade'
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper).toBeDefined()
+        expect(wrapper.element.tagName).toBe('TABLE')
+        expect(wrapper.find('tbody > tr > td > div').classes()).toContain('b-skeleton-animate-fade')
 
-  it('accepts custom classes', async () => {
-    const wrapper = mount(BSkeletonTable, {
-      context: {
-        class: ['foobar']
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.classes()).toContain('b-table')
-    expect(wrapper.classes()).toContain('foobar')
+    it('accepts custom classes', async() => {
+        const wrapper = mount(BSkeletonTable, {
+            context: {
+                class: ['foobar']
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.classes()).toContain('b-table')
+        expect(wrapper.classes()).toContain('foobar')
+
+        wrapper.unmount()
+    })
 })

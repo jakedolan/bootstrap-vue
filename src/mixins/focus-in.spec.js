@@ -53,6 +53,6 @@ describe('mixins/focus-in', () => {
         await waitNT(wrapper.vm)
         expect(count).toBe(2)
 
-        wrapper.destroy()
+        wrapper.unmount()
     })
 })

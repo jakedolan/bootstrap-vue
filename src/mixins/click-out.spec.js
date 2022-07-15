@@ -52,6 +52,6 @@ describe('utils/click-out', () => {
         await waitNT(wrapper.vm)
         expect(count).toBe(1)
 
-        wrapper.destroy()
+        wrapper.unmount()
     })
 })

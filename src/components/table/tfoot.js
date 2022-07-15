@@ -84,8 +84,6 @@ export const BTfoot = /*#__PURE__*/ defineComponent({
             'tfoot', {
                 class: this.tfootClasses,
                 ...this.tfootAttrs,
-                // Pass down any native listeners
-                // on: this.bvListeners
                 ...this.bvListeners
             },
             this.normalizeSlot()

@@ -3,328 +3,328 @@ import { waitNT } from '../../../tests/utils'
 import { BTab } from './tab'
 
 describe('tab', () => {
-  it('default has expected classes, attributes and structure', async () => {
-    const wrapper = mount(BTab)
+    it('default has expected classes, attributes and structure', async() => {
+        const wrapper = mount(BTab)
 
-    expect(wrapper).toBeDefined()
+        expect(wrapper).toBeDefined()
 
-    await waitNT(wrapper.vm)
+        await waitNT(wrapper.vm)
 
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.classes()).toContain('tab-pane')
-    expect(wrapper.classes()).not.toContain('disabled')
-    expect(wrapper.classes()).not.toContain('active')
-    expect(wrapper.classes()).not.toContain('show')
-    expect(wrapper.classes()).not.toContain('fade')
-    expect(wrapper.classes()).not.toContain('card-body')
-    expect(wrapper.attributes('role')).toBe('tabpanel')
-    expect(wrapper.attributes('aria-hidden')).toBe('true')
-    expect(wrapper.attributes('labelledby')).toBeUndefined()
-    expect(wrapper.attributes('tabindex')).toBeUndefined()
-    expect(wrapper.attributes('id')).toBeDefined()
+        expect(wrapper.element.tagName).toBe('DIV')
+        expect(wrapper.classes()).toContain('tab-pane')
+        expect(wrapper.classes()).not.toContain('disabled')
+        expect(wrapper.classes()).not.toContain('active')
+        expect(wrapper.classes()).not.toContain('show')
+        expect(wrapper.classes()).not.toContain('fade')
+        expect(wrapper.classes()).not.toContain('card-body')
+        expect(wrapper.attributes('role')).toBe('tabpanel')
+        expect(wrapper.attributes('aria-hidden')).toBe('true')
+        expect(wrapper.attributes('labelledby')).toBeUndefined()
+        expect(wrapper.attributes('tabindex')).toBeUndefined()
+        expect(wrapper.attributes('id')).toBeDefined()
 
-    wrapper.destroy()
-  })
-
-  it('default has expected data state', async () => {
-    const wrapper = mount(BTab)
-
-    expect(wrapper.vm._isTab).toBe(true)
-    expect(wrapper.vm.localActive).toBe(false)
-
-    wrapper.destroy()
-  })
-
-  it('has class disabled when disabled=true', async () => {
-    const wrapper = mount(BTab, {
-      propsData: { disabled: true }
+        wrapper.unmount()
     })
 
-    expect(wrapper.classes()).toContain('disabled')
-    expect(wrapper.classes()).toContain('tab-pane')
-    expect(wrapper.classes()).not.toContain('active')
-    expect(wrapper.classes()).not.toContain('card-body')
+    it('default has expected data state', async() => {
+        const wrapper = mount(BTab)
 
-    wrapper.destroy()
-  })
+        expect(wrapper.vm._isTab).toBe(true)
+        expect(wrapper.vm.localActive).toBe(false)
 
-  it('has class active when active=true', async () => {
-    const wrapper = mount(BTab, {
-      propsData: { active: true }
+        wrapper.unmount()
     })
 
-    expect(wrapper.classes()).toContain('active')
-    expect(wrapper.classes()).not.toContain('disabled')
-    expect(wrapper.classes()).not.toContain('card-body')
+    it('has class disabled when disabled=true', async() => {
+        const wrapper = mount(BTab, {
+            props: { disabled: true }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.classes()).toContain('disabled')
+        expect(wrapper.classes()).toContain('tab-pane')
+        expect(wrapper.classes()).not.toContain('active')
+        expect(wrapper.classes()).not.toContain('card-body')
 
-  it('does not have class active when active=true and disabled=true', async () => {
-    const wrapper = mount(BTab, {
-      propsData: {
-        active: true,
-        disabled: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.classes()).not.toContain('active')
-    expect(wrapper.classes()).toContain('disabled')
-    expect(wrapper.classes()).toContain('tab-pane')
-    expect(wrapper.classes()).not.toContain('card-body')
+    it('has class active when active=true', async() => {
+        const wrapper = mount(BTab, {
+            props: { active: true }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.classes()).toContain('active')
+        expect(wrapper.classes()).not.toContain('disabled')
+        expect(wrapper.classes()).not.toContain('card-body')
 
-  it('has class active and show when localActive becomes true', async () => {
-    const wrapper = mount(BTab)
-
-    expect(wrapper.classes()).not.toContain('active')
-    expect(wrapper.classes()).not.toContain('disabled')
-    expect(wrapper.classes()).not.toContain('card-body')
-
-    await wrapper.setData({ localActive: true })
-    await waitNT(wrapper.vm)
-
-    expect(wrapper.classes()).toContain('active')
-    expect(wrapper.classes()).not.toContain('disabled')
-    expect(wrapper.classes()).not.toContain('card-body')
-
-    await wrapper.setData({ localActive: false })
-    await waitNT(wrapper.vm)
-
-    expect(wrapper.classes()).not.toContain('active')
-    expect(wrapper.classes()).not.toContain('disabled')
-    expect(wrapper.classes()).not.toContain('card-body')
-
-    wrapper.destroy()
-  })
-
-  it('emits event "update:active" when localActive becomes true', async () => {
-    const wrapper = mount(BTab)
-
-    let called = false
-    let value = null
-    wrapper.vm.$on('update:active', v => {
-      called = true
-      value = v
+        wrapper.unmount()
     })
 
-    expect(called).toBe(false)
-    expect(value).toBe(null)
-
-    await wrapper.setData({ localActive: true })
-
-    expect(called).toBe(true)
-    expect(value).toBe(true)
-
-    wrapper.destroy()
-  })
-
-  it('has class card-body when parent has card=true', async () => {
-    const wrapper = mount(BTab, {
-      provide() {
-        return {
-          getBvTabs: () => ({
-            fade: false,
-            lazy: false,
-            card: true,
-            noKeyNav: true
-          })
-        }
-      }
-    })
-
-    expect(wrapper.classes()).toContain('card-body')
-    expect(wrapper.classes()).toContain('tab-pane')
-    expect(wrapper.classes()).not.toContain('disabled')
-    expect(wrapper.classes()).not.toContain('active')
-
-    wrapper.destroy()
-  })
-
-  it('does not have class card-body when parent has card=true and prop no-body is set', async () => {
-    const wrapper = mount(BTab, {
-      provide() {
-        return {
-          getBvTabs: () => ({
-            fade: false,
-            lazy: false,
-            card: true,
-            noKeyNav: true
-          })
-        }
-      },
-      propsData: {
-        noBody: true
-      }
-    })
-
-    expect(wrapper.classes()).not.toContain('card-body')
-    expect(wrapper.classes()).toContain('tab-pane')
-    expect(wrapper.classes()).not.toContain('disabled')
-    expect(wrapper.classes()).not.toContain('active')
-
-    wrapper.destroy()
-  })
-
-  it("calls parent's updateButton() when title slot provided", async () => {
-    let called = false
-    let vm = null
-    const wrapper = mount(BTab, {
-      provide() {
-        return {
-          getBvTabs: () => ({
-            fade: false,
-            lazy: false,
-            card: false,
-            noKeyNav: false,
-            updateButton(tab) {
-              called = true
-              vm = tab
-              return true
+    it('does not have class active when active=true and disabled=true', async() => {
+        const wrapper = mount(BTab, {
+            props: {
+                active: true,
+                disabled: true
             }
-          })
-        }
-      },
-      slots: {
-        title: '<b>foobar</b>'
-      }
+        })
+
+        expect(wrapper.classes()).not.toContain('active')
+        expect(wrapper.classes()).toContain('disabled')
+        expect(wrapper.classes()).toContain('tab-pane')
+        expect(wrapper.classes()).not.toContain('card-body')
+
+        wrapper.unmount()
     })
 
-    await wrapper.setData({ localActive: true })
+    it('has class active and show when localActive becomes true', async() => {
+        const wrapper = mount(BTab)
 
-    expect(called).toBe(true)
-    expect(vm).toEqual(wrapper.vm)
+        expect(wrapper.classes()).not.toContain('active')
+        expect(wrapper.classes()).not.toContain('disabled')
+        expect(wrapper.classes()).not.toContain('card-body')
 
-    wrapper.destroy()
-  })
+        await wrapper.setData({ localActive: true })
+        await waitNT(wrapper.vm)
 
-  it('calls parent de/activateTab() when prop active changes', async () => {
-    let activateCalled = false
-    let activateVm = null
-    let deactivateCalled = false
-    let deactivateVm = null
+        expect(wrapper.classes()).toContain('active')
+        expect(wrapper.classes()).not.toContain('disabled')
+        expect(wrapper.classes()).not.toContain('card-body')
 
-    const wrapper = mount(BTab, {
-      provide() {
-        return {
-          getBvTabs: () => ({
-            fade: false,
-            lazy: false,
-            card: false,
-            noKeyNav: false,
-            activateTab(tab) {
-              activateCalled = true
-              activateVm = tab
-              tab.localActive = true
-              return true
+        await wrapper.setData({ localActive: false })
+        await waitNT(wrapper.vm)
+
+        expect(wrapper.classes()).not.toContain('active')
+        expect(wrapper.classes()).not.toContain('disabled')
+        expect(wrapper.classes()).not.toContain('card-body')
+
+        wrapper.unmount()
+    })
+
+    it('emits event "update:active" when localActive becomes true', async() => {
+        const wrapper = mount(BTab)
+
+        let called = false
+        let value = null
+        wrapper.vm.$on('update:active', v => {
+            called = true
+            value = v
+        })
+
+        expect(called).toBe(false)
+        expect(value).toBe(null)
+
+        await wrapper.setData({ localActive: true })
+
+        expect(called).toBe(true)
+        expect(value).toBe(true)
+
+        wrapper.unmount()
+    })
+
+    it('has class card-body when parent has card=true', async() => {
+        const wrapper = mount(BTab, {
+            provide() {
+                return {
+                    getBvTabs: () => ({
+                        fade: false,
+                        lazy: false,
+                        card: true,
+                        noKeyNav: true
+                    })
+                }
+            }
+        })
+
+        expect(wrapper.classes()).toContain('card-body')
+        expect(wrapper.classes()).toContain('tab-pane')
+        expect(wrapper.classes()).not.toContain('disabled')
+        expect(wrapper.classes()).not.toContain('active')
+
+        wrapper.unmount()
+    })
+
+    it('does not have class card-body when parent has card=true and prop no-body is set', async() => {
+        const wrapper = mount(BTab, {
+            provide() {
+                return {
+                    getBvTabs: () => ({
+                        fade: false,
+                        lazy: false,
+                        card: true,
+                        noKeyNav: true
+                    })
+                }
             },
-            deactivateTab(tab) {
-              deactivateCalled = true
-              deactivateVm = tab
-              tab.localActive = false
-              return true
+            props: {
+                noBody: true
             }
-          })
-        }
-      }
+        })
+
+        expect(wrapper.classes()).not.toContain('card-body')
+        expect(wrapper.classes()).toContain('tab-pane')
+        expect(wrapper.classes()).not.toContain('disabled')
+        expect(wrapper.classes()).not.toContain('active')
+
+        wrapper.unmount()
     })
 
-    expect(activateCalled).toBe(false)
-    expect(activateVm).toBe(null)
-    expect(deactivateCalled).toBe(false)
-    expect(deactivateVm).toBe(null)
-
-    await wrapper.setProps({ active: true })
-
-    expect(activateCalled).toBe(true)
-    expect(activateVm).toBe(wrapper.vm)
-    expect(deactivateCalled).toBe(false)
-    expect(deactivateVm).toBe(null)
-
-    activateCalled = false
-    activateVm = null
-    deactivateCalled = false
-    deactivateVm = null
-
-    await wrapper.setProps({ active: false })
-
-    expect(activateCalled).toBe(false)
-    expect(activateVm).toBe(null)
-    expect(deactivateCalled).toBe(true)
-    expect(deactivateVm).toBe(wrapper.vm)
-
-    wrapper.destroy()
-  })
-
-  it('does not call parent activateTab() when prop active changes and disabled=true', async () => {
-    let activateCalled = false
-    let activateVm = null
-
-    const wrapper = mount(BTab, {
-      provide() {
-        return {
-          getBvTabs: () => ({
-            fade: false,
-            lazy: false,
-            card: false,
-            noKeyNav: false,
-            activateTab(tab) {
-              activateCalled = true
-              activateVm = tab
-              tab.localActive = true
-              return true
+    it("calls parent's updateButton() when title slot provided", async() => {
+        let called = false
+        let vm = null
+        const wrapper = mount(BTab, {
+            provide() {
+                return {
+                    getBvTabs: () => ({
+                        fade: false,
+                        lazy: false,
+                        card: false,
+                        noKeyNav: false,
+                        updateButton(tab) {
+                            called = true
+                            vm = tab
+                            return true
+                        }
+                    })
+                }
+            },
+            slots: {
+                title: '<b>foobar</b>'
             }
-          })
-        }
-      },
-      propsData: { disabled: true }
+        })
+
+        await wrapper.setData({ localActive: true })
+
+        expect(called).toBe(true)
+        expect(vm).toEqual(wrapper.vm)
+
+        wrapper.unmount()
     })
 
-    expect(activateCalled).toBe(false)
-    expect(activateVm).toBe(null)
+    it('calls parent de/activateTab() when prop active changes', async() => {
+        let activateCalled = false
+        let activateVm = null
+        let deactivateCalled = false
+        let deactivateVm = null
 
-    await wrapper.setProps({ active: true })
-
-    expect(activateCalled).toBe(false)
-    expect(activateVm).toBe(null)
-
-    wrapper.destroy()
-  })
-
-  it('does not call parent deactivateTab() when deactivate() called and not active', async () => {
-    let deactivateCalled = false
-    let deactivateVm = null
-
-    const wrapper = mount(BTab, {
-      provide() {
-        return {
-          getBvTabs: () => ({
-            fade: false,
-            lazy: false,
-            card: false,
-            noKeyNav: false,
-            deactivateTab(tab) {
-              deactivateCalled = true
-              deactivateVm = tab
-              tab.localActive = false
-              return true
+        const wrapper = mount(BTab, {
+            provide() {
+                return {
+                    getBvTabs: () => ({
+                        fade: false,
+                        lazy: false,
+                        card: false,
+                        noKeyNav: false,
+                        activateTab(tab) {
+                            activateCalled = true
+                            activateVm = tab
+                            tab.localActive = true
+                            return true
+                        },
+                        deactivateTab(tab) {
+                            deactivateCalled = true
+                            deactivateVm = tab
+                            tab.localActive = false
+                            return true
+                        }
+                    })
+                }
             }
-          })
-        }
-      }
+        })
+
+        expect(activateCalled).toBe(false)
+        expect(activateVm).toBe(null)
+        expect(deactivateCalled).toBe(false)
+        expect(deactivateVm).toBe(null)
+
+        await wrapper.setProps({ active: true })
+
+        expect(activateCalled).toBe(true)
+        expect(activateVm).toBe(wrapper.vm)
+        expect(deactivateCalled).toBe(false)
+        expect(deactivateVm).toBe(null)
+
+        activateCalled = false
+        activateVm = null
+        deactivateCalled = false
+        deactivateVm = null
+
+        await wrapper.setProps({ active: false })
+
+        expect(activateCalled).toBe(false)
+        expect(activateVm).toBe(null)
+        expect(deactivateCalled).toBe(true)
+        expect(deactivateVm).toBe(wrapper.vm)
+
+        wrapper.unmount()
     })
 
-    expect(deactivateCalled).toBe(false)
-    expect(deactivateVm).toBe(null)
+    it('does not call parent activateTab() when prop active changes and disabled=true', async() => {
+        let activateCalled = false
+        let activateVm = null
 
-    const result = wrapper.vm.deactivate()
+        const wrapper = mount(BTab, {
+            provide() {
+                return {
+                    getBvTabs: () => ({
+                        fade: false,
+                        lazy: false,
+                        card: false,
+                        noKeyNav: false,
+                        activateTab(tab) {
+                            activateCalled = true
+                            activateVm = tab
+                            tab.localActive = true
+                            return true
+                        }
+                    })
+                }
+            },
+            props: { disabled: true }
+        })
 
-    expect(deactivateCalled).toBe(false)
-    expect(deactivateVm).toBe(null)
-    expect(result).toBe(false)
+        expect(activateCalled).toBe(false)
+        expect(activateVm).toBe(null)
 
-    wrapper.destroy()
-  })
+        await wrapper.setProps({ active: true })
+
+        expect(activateCalled).toBe(false)
+        expect(activateVm).toBe(null)
+
+        wrapper.unmount()
+    })
+
+    it('does not call parent deactivateTab() when deactivate() called and not active', async() => {
+        let deactivateCalled = false
+        let deactivateVm = null
+
+        const wrapper = mount(BTab, {
+            provide() {
+                return {
+                    getBvTabs: () => ({
+                        fade: false,
+                        lazy: false,
+                        card: false,
+                        noKeyNav: false,
+                        deactivateTab(tab) {
+                            deactivateCalled = true
+                            deactivateVm = tab
+                            tab.localActive = false
+                            return true
+                        }
+                    })
+                }
+            }
+        })
+
+        expect(deactivateCalled).toBe(false)
+        expect(deactivateVm).toBe(null)
+
+        const result = wrapper.vm.deactivate()
+
+        expect(deactivateCalled).toBe(false)
+        expect(deactivateVm).toBe(null)
+        expect(result).toBe(false)
+
+        wrapper.unmount()
+    })
 })

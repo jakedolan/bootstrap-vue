@@ -183,8 +183,6 @@ export const BTd = /*#__PURE__*/ defineComponent({
             this.tag, {
                 class: this.cellClasses,
                 ...this.cellAttrs,
-                // Transfer any native listeners
-                // on: this.bvListeners
                 ...this.bvListeners,
             }, [this.isStackedCell ? h('div', [$content]) : $content]
         )

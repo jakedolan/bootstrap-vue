@@ -2,57 +2,57 @@ import { mount } from '@vue/test-utils'
 import { BDropdownDivider } from './dropdown-divider'
 
 describe('dropdown > dropdown-divider', () => {
-  it('works', async () => {
-    const wrapper = mount(BDropdownDivider)
+    it('works', async() => {
+        const wrapper = mount(BDropdownDivider)
 
-    expect(wrapper.element.tagName).toBe('LI')
+        expect(wrapper.element.tagName).toBe('LI')
 
-    const divider = wrapper.find('hr')
-    expect(divider.element.tagName).toBe('HR')
-    expect(divider.classes()).toContain('dropdown-divider')
-    expect(divider.classes().length).toBe(1)
-    expect(divider.attributes('role')).toBeDefined()
-    expect(divider.attributes('role')).toEqual('separator')
-    expect(divider.text()).toEqual('')
+        const divider = wrapper.find('hr')
+        expect(divider.element.tagName).toBe('HR')
+        expect(divider.classes()).toContain('dropdown-divider')
+        expect(divider.classes().length).toBe(1)
+        expect(divider.attributes('role')).toBeDefined()
+        expect(divider.attributes('role')).toEqual('separator')
+        expect(divider.text()).toEqual('')
 
-    wrapper.destroy()
-  })
-
-  it('renders custom root element when prop tag set', async () => {
-    const wrapper = mount(BDropdownDivider, {
-      context: {
-        props: { tag: 'span' }
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('LI')
+    it('renders custom root element when prop tag set', async() => {
+        const wrapper = mount(BDropdownDivider, {
+            context: {
+                props: { tag: 'span' }
+            }
+        })
 
-    const divider = wrapper.find('span')
-    expect(divider.element.tagName).toBe('SPAN')
-    expect(divider.classes()).toContain('dropdown-divider')
-    expect(divider.classes().length).toBe(1)
-    expect(divider.attributes('role')).toBeDefined()
-    expect(divider.attributes('role')).toEqual('separator')
-    expect(divider.text()).toEqual('')
+        expect(wrapper.element.tagName).toBe('LI')
 
-    wrapper.destroy()
-  })
+        const divider = wrapper.find('span')
+        expect(divider.element.tagName).toBe('SPAN')
+        expect(divider.classes()).toContain('dropdown-divider')
+        expect(divider.classes().length).toBe(1)
+        expect(divider.attributes('role')).toBeDefined()
+        expect(divider.attributes('role')).toEqual('separator')
+        expect(divider.text()).toEqual('')
 
-  it('does not render default slot content', async () => {
-    const wrapper = mount(BDropdownDivider, {
-      slots: { default: 'foobar' }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('LI')
+    it('does not render default slot content', async() => {
+        const wrapper = mount(BDropdownDivider, {
+            slots: { default: 'foobar' }
+        })
 
-    const divider = wrapper.find('hr')
-    expect(divider.element.tagName).toBe('HR')
-    expect(divider.classes()).toContain('dropdown-divider')
-    expect(divider.classes().length).toBe(1)
-    expect(divider.attributes('role')).toBeDefined()
-    expect(divider.attributes('role')).toEqual('separator')
-    expect(divider.text()).toEqual('')
+        expect(wrapper.element.tagName).toBe('LI')
 
-    wrapper.destroy()
-  })
+        const divider = wrapper.find('hr')
+        expect(divider.element.tagName).toBe('HR')
+        expect(divider.classes()).toContain('dropdown-divider')
+        expect(divider.classes().length).toBe(1)
+        expect(divider.attributes('role')).toBeDefined()
+        expect(divider.attributes('role')).toEqual('separator')
+        expect(divider.text()).toEqual('')
+
+        wrapper.unmount()
+    })
 })

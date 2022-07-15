@@ -2,122 +2,122 @@ import { mount } from '@vue/test-utils'
 import { BBreadcrumbItem } from './breadcrumb-item'
 
 describe('breadcrumb-item', () => {
-  it('has default classes and structure', async () => {
-    const wrapper = mount(BBreadcrumbItem)
+    it('has default classes and structure', async() => {
+        const wrapper = mount(BBreadcrumbItem)
 
-    expect(wrapper.element.tagName).toBe('LI')
-    expect(wrapper.classes()).toContain('breadcrumb-item')
-    expect(wrapper.classes()).not.toContain('active')
-    expect(wrapper.classes().length).toBe(1)
+        expect(wrapper.element.tagName).toBe('LI')
+        expect(wrapper.classes()).toContain('breadcrumb-item')
+        expect(wrapper.classes()).not.toContain('active')
+        expect(wrapper.classes().length).toBe(1)
 
-    wrapper.destroy()
-  })
-
-  it('has class active when prop active is set', async () => {
-    const wrapper = mount(BBreadcrumbItem, {
-      propsData: {
-        active: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('LI')
-    expect(wrapper.classes()).toContain('active')
-    expect(wrapper.classes()).toContain('breadcrumb-item')
-    expect(wrapper.classes().length).toBe(2)
+    it('has class active when prop active is set', async() => {
+        const wrapper = mount(BBreadcrumbItem, {
+            props: {
+                active: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('LI')
+        expect(wrapper.classes()).toContain('active')
+        expect(wrapper.classes()).toContain('breadcrumb-item')
+        expect(wrapper.classes().length).toBe(2)
 
-  it('has link as child', async () => {
-    const wrapper = mount(BBreadcrumbItem)
-
-    expect(wrapper.element.tagName).toBe('LI')
-    expect(wrapper.find('a').exists()).toBe(true)
-    expect(wrapper.find('a').attributes('href')).toBe('#')
-
-    wrapper.destroy()
-  })
-
-  it('has link as child and href', async () => {
-    const wrapper = mount(BBreadcrumbItem, {
-      propsData: {
-        href: '/foo/bar'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('LI')
-    expect(wrapper.find('a').exists()).toBe(true)
-    expect(wrapper.find('a').attributes('href')).toBe('/foo/bar')
+    it('has link as child', async() => {
+        const wrapper = mount(BBreadcrumbItem)
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('LI')
+        expect(wrapper.find('a').exists()).toBe(true)
+        expect(wrapper.find('a').attributes('href')).toBe('#')
 
-  it('has child span and class active when prop active is set', async () => {
-    const wrapper = mount(BBreadcrumbItem, {
-      propsData: {
-        active: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('LI')
-    expect(wrapper.classes()).toContain('active')
-    expect(wrapper.classes()).toContain('breadcrumb-item')
-    expect(wrapper.classes().length).toBe(2)
-    expect(wrapper.find('span').exists()).toBe(true)
+    it('has link as child and href', async() => {
+        const wrapper = mount(BBreadcrumbItem, {
+            props: {
+                href: '/foo/bar'
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('LI')
+        expect(wrapper.find('a').exists()).toBe(true)
+        expect(wrapper.find('a').attributes('href')).toBe('/foo/bar')
 
-  it('has child text content from prop text', async () => {
-    const wrapper = mount(BBreadcrumbItem, {
-      propsData: {
-        active: true,
-        text: 'foobar'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('LI')
-    expect(wrapper.classes()).toContain('active')
-    expect(wrapper.classes()).toContain('breadcrumb-item')
-    expect(wrapper.classes().length).toBe(2)
-    expect(wrapper.text()).toBe('foobar')
+    it('has child span and class active when prop active is set', async() => {
+        const wrapper = mount(BBreadcrumbItem, {
+            props: {
+                active: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('LI')
+        expect(wrapper.classes()).toContain('active')
+        expect(wrapper.classes()).toContain('breadcrumb-item')
+        expect(wrapper.classes().length).toBe(2)
+        expect(wrapper.find('span').exists()).toBe(true)
 
-  it('has child text content from prop html', async () => {
-    const wrapper = mount(BBreadcrumbItem, {
-      propsData: {
-        active: true,
-        html: 'foobar'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('LI')
-    expect(wrapper.classes()).toContain('active')
-    expect(wrapper.classes()).toContain('breadcrumb-item')
-    expect(wrapper.classes().length).toBe(2)
-    expect(wrapper.text()).toBe('foobar')
+    it('has child text content from prop text', async() => {
+        const wrapper = mount(BBreadcrumbItem, {
+            props: {
+                active: true,
+                text: 'foobar'
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('LI')
+        expect(wrapper.classes()).toContain('active')
+        expect(wrapper.classes()).toContain('breadcrumb-item')
+        expect(wrapper.classes().length).toBe(2)
+        expect(wrapper.text()).toBe('foobar')
 
-  it('has child text content from default slot', async () => {
-    const wrapper = mount(BBreadcrumbItem, {
-      propsData: {
-        active: true
-      },
-      slots: {
-        default: 'foobar'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('LI')
-    expect(wrapper.classes()).toContain('active')
-    expect(wrapper.classes()).toContain('breadcrumb-item')
-    expect(wrapper.classes().length).toBe(2)
-    expect(wrapper.text()).toBe('foobar')
+    it('has child text content from prop html', async() => {
+        const wrapper = mount(BBreadcrumbItem, {
+            props: {
+                active: true,
+                html: 'foobar'
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('LI')
+        expect(wrapper.classes()).toContain('active')
+        expect(wrapper.classes()).toContain('breadcrumb-item')
+        expect(wrapper.classes().length).toBe(2)
+        expect(wrapper.text()).toBe('foobar')
+
+        wrapper.unmount()
+    })
+
+    it('has child text content from default slot', async() => {
+        const wrapper = mount(BBreadcrumbItem, {
+            props: {
+                active: true
+            },
+            slots: {
+                default: 'foobar'
+            }
+        })
+
+        expect(wrapper.element.tagName).toBe('LI')
+        expect(wrapper.classes()).toContain('active')
+        expect(wrapper.classes()).toContain('breadcrumb-item')
+        expect(wrapper.classes().length).toBe(2)
+        expect(wrapper.text()).toBe('foobar')
+
+        wrapper.unmount()
+    })
 })

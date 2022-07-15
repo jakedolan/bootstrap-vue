@@ -111,8 +111,6 @@ export const BTr = /*#__PURE__*/ defineComponent({
             'tr', {
                 class: this.trClasses,
                 ...this.trAttrs,
-                // Pass native listeners to child
-                // on: this.bvListeners
                 ...this.bvListeners
             },
             this.normalizeSlot()

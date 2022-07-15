@@ -2,59 +2,59 @@ import { mount } from '@vue/test-utils'
 import { BCardSubTitle } from './card-sub-title'
 
 describe('card-sub-title', () => {
-  it('default has tag "h6"', async () => {
-    const wrapper = mount(BCardSubTitle)
+    it('default has tag "h6"', async() => {
+        const wrapper = mount(BCardSubTitle)
 
-    expect(wrapper.element.tagName).toBe('H6')
+        expect(wrapper.element.tagName).toBe('H6')
 
-    wrapper.destroy()
-  })
-
-  it('default has class "card-subtitle" and "text-muted"', async () => {
-    const wrapper = mount(BCardSubTitle)
-
-    expect(wrapper.classes()).toContain('card-subtitle')
-    expect(wrapper.classes()).toContain('text-muted')
-    expect(wrapper.classes().length).toBe(2)
-
-    wrapper.destroy()
-  })
-
-  it('renders custom tag', async () => {
-    const wrapper = mount(BCardSubTitle, {
-      context: {
-        props: { subTitleTag: 'div' }
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('DIV')
+    it('default has class "card-subtitle" and "text-muted"', async() => {
+        const wrapper = mount(BCardSubTitle)
 
-    wrapper.destroy()
-  })
+        expect(wrapper.classes()).toContain('card-subtitle')
+        expect(wrapper.classes()).toContain('text-muted')
+        expect(wrapper.classes().length).toBe(2)
 
-  it('accepts subTitleTextVariant value', async () => {
-    const wrapper = mount(BCardSubTitle, {
-      context: {
-        props: { subTitleTextVariant: 'info' }
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.classes()).toContain('card-subtitle')
-    expect(wrapper.classes()).toContain('text-info')
-    expect(wrapper.classes().length).toBe(2)
+    it('renders custom tag', async() => {
+        const wrapper = mount(BCardSubTitle, {
+            context: {
+                props: { subTitleTag: 'div' }
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('DIV')
 
-  it('has content from default slot', async () => {
-    const wrapper = mount(BCardSubTitle, {
-      slots: {
-        default: 'foobar'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.text()).toContain('foobar')
+    it('accepts subTitleTextVariant value', async() => {
+        const wrapper = mount(BCardSubTitle, {
+            context: {
+                props: { subTitleTextVariant: 'info' }
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.classes()).toContain('card-subtitle')
+        expect(wrapper.classes()).toContain('text-info')
+        expect(wrapper.classes().length).toBe(2)
+
+        wrapper.unmount()
+    })
+
+    it('has content from default slot', async() => {
+        const wrapper = mount(BCardSubTitle, {
+            slots: {
+                default: 'foobar'
+            }
+        })
+
+        expect(wrapper.text()).toContain('foobar')
+
+        wrapper.unmount()
+    })
 })

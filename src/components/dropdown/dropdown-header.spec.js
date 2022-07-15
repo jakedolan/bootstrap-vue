@@ -2,72 +2,72 @@ import { mount } from '@vue/test-utils'
 import { BDropdownHeader } from './dropdown-header'
 
 describe('dropdown > dropdown-header', () => {
-  it('works', async () => {
-    const wrapper = mount(BDropdownHeader)
+    it('works', async() => {
+        const wrapper = mount(BDropdownHeader)
 
-    expect(wrapper.element.tagName).toBe('LI')
+        expect(wrapper.element.tagName).toBe('LI')
 
-    const header = wrapper.find('header')
-    expect(header.element.tagName).toBe('HEADER')
-    expect(header.classes()).toContain('dropdown-header')
-    expect(header.classes().length).toBe(1)
-    expect(header.attributes('id')).toBeUndefined()
-    expect(header.text()).toEqual('')
+        const header = wrapper.find('header')
+        expect(header.element.tagName).toBe('HEADER')
+        expect(header.classes()).toContain('dropdown-header')
+        expect(header.classes().length).toBe(1)
+        expect(header.attributes('id')).toBeUndefined()
+        expect(header.text()).toEqual('')
 
-    wrapper.destroy()
-  })
-
-  it('renders custom header element when prop tag set', async () => {
-    const wrapper = mount(BDropdownHeader, {
-      context: {
-        props: { tag: 'h2' }
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('LI')
+    it('renders custom header element when prop tag set', async() => {
+        const wrapper = mount(BDropdownHeader, {
+            context: {
+                props: { tag: 'h2' }
+            }
+        })
 
-    const header = wrapper.find('h2')
-    expect(header.element.tagName).toBe('H2')
-    expect(header.classes()).toContain('dropdown-header')
-    expect(header.classes().length).toBe(1)
-    expect(header.attributes('id')).toBeUndefined()
-    expect(header.text()).toEqual('')
+        expect(wrapper.element.tagName).toBe('LI')
 
-    wrapper.destroy()
-  })
+        const header = wrapper.find('h2')
+        expect(header.element.tagName).toBe('H2')
+        expect(header.classes()).toContain('dropdown-header')
+        expect(header.classes().length).toBe(1)
+        expect(header.attributes('id')).toBeUndefined()
+        expect(header.text()).toEqual('')
 
-  it('user supplied id when prop id set', async () => {
-    const wrapper = mount(BDropdownHeader, {
-      context: {
-        props: { id: 'foo' }
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('LI')
+    it('user supplied id when prop id set', async() => {
+        const wrapper = mount(BDropdownHeader, {
+            context: {
+                props: { id: 'foo' }
+            }
+        })
 
-    const header = wrapper.find('header')
-    expect(header.element.tagName).toBe('HEADER')
-    expect(header.classes()).toContain('dropdown-header')
-    expect(header.classes().length).toBe(1)
-    expect(header.attributes('id')).toBeDefined()
-    expect(header.attributes('id')).toEqual('foo')
+        expect(wrapper.element.tagName).toBe('LI')
 
-    wrapper.destroy()
-  })
+        const header = wrapper.find('header')
+        expect(header.element.tagName).toBe('HEADER')
+        expect(header.classes()).toContain('dropdown-header')
+        expect(header.classes().length).toBe(1)
+        expect(header.attributes('id')).toBeDefined()
+        expect(header.attributes('id')).toEqual('foo')
 
-  it('renders default slot content', async () => {
-    const wrapper = mount(BDropdownHeader, {
-      slots: { default: 'foobar' }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('LI')
+    it('renders default slot content', async() => {
+        const wrapper = mount(BDropdownHeader, {
+            slots: { default: 'foobar' }
+        })
 
-    const header = wrapper.find('header')
-    expect(header.element.tagName).toBe('HEADER')
-    expect(header.classes()).toContain('dropdown-header')
-    expect(header.classes().length).toBe(1)
-    expect(header.text()).toEqual('foobar')
+        expect(wrapper.element.tagName).toBe('LI')
 
-    wrapper.destroy()
-  })
+        const header = wrapper.find('header')
+        expect(header.element.tagName).toBe('HEADER')
+        expect(header.classes()).toContain('dropdown-header')
+        expect(header.classes().length).toBe(1)
+        expect(header.text()).toEqual('foobar')
+
+        wrapper.unmount()
+    })
 })

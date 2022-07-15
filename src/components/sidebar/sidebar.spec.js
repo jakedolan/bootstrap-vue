@@ -9,396 +9,396 @@ const ROOT_EVENT_NAME_STATE = 'bv::collapse::state'
 const ROOT_EVENT_NAME_SYNC_STATE = 'bv::collapse::sync-state'
 
 describe('sidebar', () => {
-  it('should have expected default structure', async () => {
-    const wrapper = mount(BSidebar, {
-      attachTo: document.body,
-      propsData: {
-        id: 'test-1',
-        visible: true
-      }
+    it('should have expected default structure', async() => {
+        const wrapper = mount(BSidebar, {
+            attachTo: document.body,
+            props: {
+                id: 'test-1',
+                visible: true
+            }
+        })
+
+        expect(wrapper.vm).toBeDefined()
+
+        const $sidebar = wrapper.find('.b-sidebar')
+        expect($sidebar.exists()).toBe(true)
+
+        const $backdrop = wrapper.find('.b-sidebar-backdrop')
+        expect($backdrop.exists()).toBe(false)
+
+        expect($sidebar.element.tagName).toBe('DIV')
+        expect($sidebar.attributes('id')).toBeDefined()
+        expect($sidebar.attributes('id')).toEqual('test-1')
+        expect($sidebar.classes()).toContain('b-sidebar')
+        expect($sidebar.classes()).not.toContain('b-sidebar-right')
+            // `show` and `slide` class only added during transition
+        expect($sidebar.classes()).not.toContain('show')
+        expect($sidebar.classes()).not.toContain('slide')
+        expect($sidebar.text()).toEqual('')
+            // Check for no presence of `display: none' from `v-show` directive
+        expect($sidebar.element).toBeVisible()
+
+        expect($sidebar.find('.b-sidebar-header').exists()).toBe(true)
+        expect($sidebar.find('.b-sidebar-body').exists()).toBe(true)
+        expect($sidebar.find('.b-sidebar-footer').exists()).toBe(false)
+
+        await wrapper.setProps({ visible: false })
+        await waitRAF()
+        await waitRAF()
+        expect(wrapper.vm).toBeDefined()
+        expect(wrapper.element.tagName).toBe('DIV')
+            // Check for no presence of `display: none' from `v-show` directive
+        expect($sidebar.element).not.toBeVisible()
+
+        await wrapper.setProps({ visible: true })
+        await waitRAF()
+        await waitRAF()
+        expect(wrapper.element.tagName).toBe('DIV')
+            // Check for no presence of `display: none' from `v-show` directive
+        expect($sidebar.element).toBeVisible()
+
+        wrapper.unmount()
     })
 
-    expect(wrapper.vm).toBeDefined()
+    it('shows backdrop when prop `backdrop` is `true`', async() => {
+        const wrapper = mount(BSidebar, {
+            attachTo: document.body,
+            props: {
+                id: 'test-backdrop',
+                noCloseOnBackdrop: true,
+                visible: true,
+                backdrop: true
+            }
+        })
 
-    const $sidebar = wrapper.find('.b-sidebar')
-    expect($sidebar.exists()).toBe(true)
+        expect(wrapper.vm).toBeDefined()
 
-    const $backdrop = wrapper.find('.b-sidebar-backdrop')
-    expect($backdrop.exists()).toBe(false)
+        const $sidebar = wrapper.find('.b-sidebar')
+        expect($sidebar.exists()).toBe(true)
 
-    expect($sidebar.element.tagName).toBe('DIV')
-    expect($sidebar.attributes('id')).toBeDefined()
-    expect($sidebar.attributes('id')).toEqual('test-1')
-    expect($sidebar.classes()).toContain('b-sidebar')
-    expect($sidebar.classes()).not.toContain('b-sidebar-right')
-    // `show` and `slide` class only added during transition
-    expect($sidebar.classes()).not.toContain('show')
-    expect($sidebar.classes()).not.toContain('slide')
-    expect($sidebar.text()).toEqual('')
-    // Check for no presence of `display: none' from `v-show` directive
-    expect($sidebar.element).toBeVisible()
+        const $backdrop = wrapper.find('.b-sidebar-backdrop')
+        expect($backdrop.exists()).toBe(true)
+        expect($backdrop.classes()).toContain('bg-dark')
 
-    expect($sidebar.find('.b-sidebar-header').exists()).toBe(true)
-    expect($sidebar.find('.b-sidebar-body').exists()).toBe(true)
-    expect($sidebar.find('.b-sidebar-footer').exists()).toBe(false)
+        await $backdrop.trigger('click')
+        await waitRAF()
+        await waitRAF()
+        expect($sidebar.element).toBeVisible()
+        expect($backdrop.element).toBeVisible()
 
-    await wrapper.setProps({ visible: false })
-    await waitRAF()
-    await waitRAF()
-    expect(wrapper.vm).toBeDefined()
-    expect(wrapper.element.tagName).toBe('DIV')
-    // Check for no presence of `display: none' from `v-show` directive
-    expect($sidebar.element).not.toBeVisible()
+        await wrapper.setProps({ noCloseOnBackdrop: false })
+        await waitRAF()
+        await waitRAF()
+        expect($sidebar.element).toBeVisible()
+        expect($backdrop.element).toBeVisible()
 
-    await wrapper.setProps({ visible: true })
-    await waitRAF()
-    await waitRAF()
-    expect(wrapper.element.tagName).toBe('DIV')
-    // Check for no presence of `display: none' from `v-show` directive
-    expect($sidebar.element).toBeVisible()
+        await $backdrop.trigger('click')
+        await waitRAF()
+        await waitRAF()
+        expect($sidebar.element).not.toBeVisible()
+        expect($backdrop.element).not.toBeVisible()
 
-    wrapper.destroy()
-  })
-
-  it('shows backdrop when prop `backdrop` is `true`', async () => {
-    const wrapper = mount(BSidebar, {
-      attachTo: document.body,
-      propsData: {
-        id: 'test-backdrop',
-        noCloseOnBackdrop: true,
-        visible: true,
-        backdrop: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.vm).toBeDefined()
+    it('applies "bg-*" class to backdrop based on `backdrop-variant` prop', async() => {
+        const wrapper = mount(BSidebar, {
+            attachTo: document.body,
+            props: {
+                id: 'test-backdrop',
+                noCloseOnBackdrop: true,
+                visible: true,
+                backdrop: true,
+                backdropVariant: 'transparent'
+            }
+        })
 
-    const $sidebar = wrapper.find('.b-sidebar')
-    expect($sidebar.exists()).toBe(true)
+        expect(wrapper.vm).toBeDefined()
 
-    const $backdrop = wrapper.find('.b-sidebar-backdrop')
-    expect($backdrop.exists()).toBe(true)
-    expect($backdrop.classes()).toContain('bg-dark')
+        const $sidebar = wrapper.find('.b-sidebar')
+        expect($sidebar.exists()).toBe(true)
 
-    await $backdrop.trigger('click')
-    await waitRAF()
-    await waitRAF()
-    expect($sidebar.element).toBeVisible()
-    expect($backdrop.element).toBeVisible()
+        const $backdrop = wrapper.find('.b-sidebar-backdrop')
+        expect($backdrop.exists()).toBe(true)
+        expect($backdrop.classes()).toContain('bg-transparent')
 
-    await wrapper.setProps({ noCloseOnBackdrop: false })
-    await waitRAF()
-    await waitRAF()
-    expect($sidebar.element).toBeVisible()
-    expect($backdrop.element).toBeVisible()
+        await $backdrop.trigger('click')
+        await waitRAF()
+        await waitRAF()
+        expect($sidebar.element).toBeVisible()
+        expect($backdrop.element).toBeVisible()
 
-    await $backdrop.trigger('click')
-    await waitRAF()
-    await waitRAF()
-    expect($sidebar.element).not.toBeVisible()
-    expect($backdrop.element).not.toBeVisible()
+        await wrapper.setProps({ noCloseOnBackdrop: false })
+        await waitRAF()
+        await waitRAF()
+        expect($sidebar.element).toBeVisible()
+        expect($backdrop.element).toBeVisible()
 
-    wrapper.destroy()
-  })
+        await $backdrop.trigger('click')
+        await waitRAF()
+        await waitRAF()
+        expect($sidebar.element).not.toBeVisible()
+        expect($backdrop.element).not.toBeVisible()
 
-  it('applies "bg-*" class to backdrop based on `backdrop-variant` prop', async () => {
-    const wrapper = mount(BSidebar, {
-      attachTo: document.body,
-      propsData: {
-        id: 'test-backdrop',
-        noCloseOnBackdrop: true,
-        visible: true,
-        backdrop: true,
-        backdropVariant: 'transparent'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.vm).toBeDefined()
+    it('shows and hides in response to v-b-toggle events', async() => {
+        const wrapper = mount(BSidebar, {
+            attachTo: document.body,
+            props: {
+                id: 'test-toggle'
+            }
+        })
 
-    const $sidebar = wrapper.find('.b-sidebar')
-    expect($sidebar.exists()).toBe(true)
+        expect(wrapper.vm).toBeDefined()
 
-    const $backdrop = wrapper.find('.b-sidebar-backdrop')
-    expect($backdrop.exists()).toBe(true)
-    expect($backdrop.classes()).toContain('bg-transparent')
+        const $sidebar = wrapper.find('.b-sidebar')
+        expect($sidebar.exists()).toBe(true)
+        expect($sidebar.element.tagName).toBe('DIV')
+        expect($sidebar.element).not.toBeVisible()
 
-    await $backdrop.trigger('click')
-    await waitRAF()
-    await waitRAF()
-    expect($sidebar.element).toBeVisible()
-    expect($backdrop.element).toBeVisible()
+        wrapper.vm.$root.$emit(ROOT_ACTION_EVENT_NAME_TOGGLE, 'test-toggle')
+        await waitNT(wrapper.vm)
+        await waitRAF()
+        await waitRAF()
+        expect($sidebar.element.tagName).toBe('DIV')
+        expect($sidebar.element).toBeVisible()
 
-    await wrapper.setProps({ noCloseOnBackdrop: false })
-    await waitRAF()
-    await waitRAF()
-    expect($sidebar.element).toBeVisible()
-    expect($backdrop.element).toBeVisible()
+        wrapper.vm.$root.$emit(ROOT_ACTION_EVENT_NAME_TOGGLE, 'test-toggle')
+        await waitNT(wrapper.vm)
+        await waitRAF()
+        await waitRAF()
+        expect($sidebar.element.tagName).toBe('DIV')
+        expect($sidebar.element).not.toBeVisible()
 
-    await $backdrop.trigger('click')
-    await waitRAF()
-    await waitRAF()
-    expect($sidebar.element).not.toBeVisible()
-    expect($backdrop.element).not.toBeVisible()
+        wrapper.vm.$root.$emit(ROOT_ACTION_EVENT_NAME_TOGGLE, 'foobar')
+        await waitNT(wrapper.vm)
+        await waitRAF()
+        await waitRAF()
+        expect($sidebar.element.tagName).toBe('DIV')
+        expect($sidebar.element).not.toBeVisible()
 
-    wrapper.destroy()
-  })
-
-  it('shows and hides in response to v-b-toggle events', async () => {
-    const wrapper = mount(BSidebar, {
-      attachTo: document.body,
-      propsData: {
-        id: 'test-toggle'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.vm).toBeDefined()
+    it('closes when ESC key is pressed', async() => {
+        const wrapper = mount(BSidebar, {
+            attachTo: document.body,
+            props: {
+                id: 'test-esc'
+            }
+        })
 
-    const $sidebar = wrapper.find('.b-sidebar')
-    expect($sidebar.exists()).toBe(true)
-    expect($sidebar.element.tagName).toBe('DIV')
-    expect($sidebar.element).not.toBeVisible()
+        expect(wrapper.vm).toBeDefined()
 
-    wrapper.vm.$root.$emit(ROOT_ACTION_EVENT_NAME_TOGGLE, 'test-toggle')
-    await waitNT(wrapper.vm)
-    await waitRAF()
-    await waitRAF()
-    expect($sidebar.element.tagName).toBe('DIV')
-    expect($sidebar.element).toBeVisible()
+        const $sidebar = wrapper.find('.b-sidebar')
+        expect($sidebar.exists()).toBe(true)
+        expect($sidebar.element.tagName).toBe('DIV')
+        expect($sidebar.element).not.toBeVisible()
 
-    wrapper.vm.$root.$emit(ROOT_ACTION_EVENT_NAME_TOGGLE, 'test-toggle')
-    await waitNT(wrapper.vm)
-    await waitRAF()
-    await waitRAF()
-    expect($sidebar.element.tagName).toBe('DIV')
-    expect($sidebar.element).not.toBeVisible()
+        wrapper.vm.$root.$emit(ROOT_ACTION_EVENT_NAME_TOGGLE, 'test-esc')
+        await waitNT(wrapper.vm)
+        await waitRAF()
+        await waitRAF()
+        expect($sidebar.element.tagName).toBe('DIV')
+        expect($sidebar.element).toBeVisible()
 
-    wrapper.vm.$root.$emit(ROOT_ACTION_EVENT_NAME_TOGGLE, 'foobar')
-    await waitNT(wrapper.vm)
-    await waitRAF()
-    await waitRAF()
-    expect($sidebar.element.tagName).toBe('DIV')
-    expect($sidebar.element).not.toBeVisible()
+        await wrapper.trigger('keydown.esc')
+        await waitRAF()
+        await waitRAF()
+        expect($sidebar.element.tagName).toBe('DIV')
+        expect($sidebar.element).not.toBeVisible()
 
-    wrapper.destroy()
-  })
+        await wrapper.setProps({ noCloseOnEsc: true })
+        wrapper.vm.$root.$emit(ROOT_ACTION_EVENT_NAME_TOGGLE, 'test-esc')
+        await waitRAF()
+        await waitRAF()
+        expect($sidebar.element.tagName).toBe('DIV')
+        expect($sidebar.element).toBeVisible()
 
-  it('closes when ESC key is pressed', async () => {
-    const wrapper = mount(BSidebar, {
-      attachTo: document.body,
-      propsData: {
-        id: 'test-esc'
-      }
+        await wrapper.trigger('keydown.esc')
+        await waitRAF()
+        await waitRAF()
+        expect($sidebar.element.tagName).toBe('DIV')
+        expect($sidebar.element).toBeVisible()
+
+        wrapper.unmount()
     })
 
-    expect(wrapper.vm).toBeDefined()
+    it('handles state sync requests', async() => {
+        const wrapper = mount(BSidebar, {
+            attachTo: document.body,
+            props: {
+                id: 'test-sync',
+                visible: true
+            }
+        })
 
-    const $sidebar = wrapper.find('.b-sidebar')
-    expect($sidebar.exists()).toBe(true)
-    expect($sidebar.element.tagName).toBe('DIV')
-    expect($sidebar.element).not.toBeVisible()
+        expect(wrapper.vm).toBeDefined()
 
-    wrapper.vm.$root.$emit(ROOT_ACTION_EVENT_NAME_TOGGLE, 'test-esc')
-    await waitNT(wrapper.vm)
-    await waitRAF()
-    await waitRAF()
-    expect($sidebar.element.tagName).toBe('DIV')
-    expect($sidebar.element).toBeVisible()
+        const rootWrapper = createWrapper(wrapper.vm.$root)
+        await waitNT(wrapper.vm)
+        await waitRAF()
+        await waitRAF()
+        expect(rootWrapper.emitted(ROOT_EVENT_NAME_STATE)).toBeDefined()
+        expect(rootWrapper.emitted(ROOT_EVENT_NAME_STATE).length).toBe(1)
+        expect(rootWrapper.emitted(ROOT_EVENT_NAME_STATE)[0][0]).toBe('test-sync') // ID
+        expect(rootWrapper.emitted(ROOT_EVENT_NAME_STATE)[0][1]).toBe(true) // Visible state
+        expect(rootWrapper.emitted(ROOT_EVENT_NAME_SYNC_STATE)).toBeUndefined()
 
-    await wrapper.trigger('keydown.esc')
-    await waitRAF()
-    await waitRAF()
-    expect($sidebar.element.tagName).toBe('DIV')
-    expect($sidebar.element).not.toBeVisible()
+        rootWrapper.vm.$root.$emit(ROOT_ACTION_EVENT_NAME_REQUEST_STATE, 'test-sync')
+        await waitNT(wrapper.vm)
+        await waitRAF()
+        await waitRAF()
+        expect(rootWrapper.emitted(ROOT_EVENT_NAME_SYNC_STATE)).toBeDefined()
+        expect(rootWrapper.emitted(ROOT_EVENT_NAME_SYNC_STATE).length).toBe(1)
+        expect(rootWrapper.emitted(ROOT_EVENT_NAME_SYNC_STATE)[0][0]).toBe('test-sync') // ID
+        expect(rootWrapper.emitted(ROOT_EVENT_NAME_SYNC_STATE)[0][1]).toBe(true) // Visible state
 
-    await wrapper.setProps({ noCloseOnEsc: true })
-    wrapper.vm.$root.$emit(ROOT_ACTION_EVENT_NAME_TOGGLE, 'test-esc')
-    await waitRAF()
-    await waitRAF()
-    expect($sidebar.element.tagName).toBe('DIV')
-    expect($sidebar.element).toBeVisible()
-
-    await wrapper.trigger('keydown.esc')
-    await waitRAF()
-    await waitRAF()
-    expect($sidebar.element.tagName).toBe('DIV')
-    expect($sidebar.element).toBeVisible()
-
-    wrapper.destroy()
-  })
-
-  it('handles state sync requests', async () => {
-    const wrapper = mount(BSidebar, {
-      attachTo: document.body,
-      propsData: {
-        id: 'test-sync',
-        visible: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.vm).toBeDefined()
+    it('should have expected structure when `no-header` is set', async() => {
+        const wrapper = mount(BSidebar, {
+            attachTo: document.body,
+            props: {
+                id: 'test-2',
+                visible: true,
+                noHeader: true
+            }
+        })
 
-    const rootWrapper = createWrapper(wrapper.vm.$root)
-    await waitNT(wrapper.vm)
-    await waitRAF()
-    await waitRAF()
-    expect(rootWrapper.emitted(ROOT_EVENT_NAME_STATE)).toBeDefined()
-    expect(rootWrapper.emitted(ROOT_EVENT_NAME_STATE).length).toBe(1)
-    expect(rootWrapper.emitted(ROOT_EVENT_NAME_STATE)[0][0]).toBe('test-sync') // ID
-    expect(rootWrapper.emitted(ROOT_EVENT_NAME_STATE)[0][1]).toBe(true) // Visible state
-    expect(rootWrapper.emitted(ROOT_EVENT_NAME_SYNC_STATE)).toBeUndefined()
+        expect(wrapper.vm).toBeDefined()
+        expect(wrapper.element.tagName).toBe('DIV')
+        expect(wrapper.find('.b-sidebar-header').exists()).toBe(false)
+        expect(wrapper.find('.b-sidebar-body').exists()).toBe(true)
+        expect(wrapper.find('.b-sidebar-footer').exists()).toBe(false)
 
-    rootWrapper.vm.$root.$emit(ROOT_ACTION_EVENT_NAME_REQUEST_STATE, 'test-sync')
-    await waitNT(wrapper.vm)
-    await waitRAF()
-    await waitRAF()
-    expect(rootWrapper.emitted(ROOT_EVENT_NAME_SYNC_STATE)).toBeDefined()
-    expect(rootWrapper.emitted(ROOT_EVENT_NAME_SYNC_STATE).length).toBe(1)
-    expect(rootWrapper.emitted(ROOT_EVENT_NAME_SYNC_STATE)[0][0]).toBe('test-sync') // ID
-    expect(rootWrapper.emitted(ROOT_EVENT_NAME_SYNC_STATE)[0][1]).toBe(true) // Visible state
-
-    wrapper.destroy()
-  })
-
-  it('should have expected structure when `no-header` is set', async () => {
-    const wrapper = mount(BSidebar, {
-      attachTo: document.body,
-      propsData: {
-        id: 'test-2',
-        visible: true,
-        noHeader: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.vm).toBeDefined()
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.find('.b-sidebar-header').exists()).toBe(false)
-    expect(wrapper.find('.b-sidebar-body').exists()).toBe(true)
-    expect(wrapper.find('.b-sidebar-footer').exists()).toBe(false)
+    it('should have expected structure when `no-header-close` is set', async() => {
+        const wrapper = mount(BSidebar, {
+            attachTo: document.body,
+            props: {
+                id: 'test-3',
+                visible: true,
+                noHeaderClose: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.vm).toBeDefined()
+        expect(wrapper.element.tagName).toBe('DIV')
+        expect(wrapper.find('.b-sidebar-header').exists()).toBe(true)
+        expect(wrapper.find('.b-sidebar-header .close').exists()).toBe(false)
+        expect(wrapper.find('.b-sidebar-body').exists()).toBe(true)
+        expect(wrapper.find('.b-sidebar-footer').exists()).toBe(false)
 
-  it('should have expected structure when `no-header-close` is set', async () => {
-    const wrapper = mount(BSidebar, {
-      attachTo: document.body,
-      propsData: {
-        id: 'test-3',
-        visible: true,
-        noHeaderClose: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.vm).toBeDefined()
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.find('.b-sidebar-header').exists()).toBe(true)
-    expect(wrapper.find('.b-sidebar-header .close').exists()).toBe(false)
-    expect(wrapper.find('.b-sidebar-body').exists()).toBe(true)
-    expect(wrapper.find('.b-sidebar-footer').exists()).toBe(false)
+    it('should have expected structure when `lazy` is set', async() => {
+        const wrapper = mount(BSidebar, {
+            attachTo: document.body,
+            props: {
+                id: 'test-4',
+                visible: false,
+                lazy: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.vm).toBeDefined()
+        expect(wrapper.element.tagName).toBe('DIV')
+        expect(wrapper.find('.b-sidebar-header').exists()).toBe(true)
+        expect(wrapper.find('.b-sidebar-body').exists()).toBe(false)
+        expect(wrapper.find('.b-sidebar-footer').exists()).toBe(false)
 
-  it('should have expected structure when `lazy` is set', async () => {
-    const wrapper = mount(BSidebar, {
-      attachTo: document.body,
-      propsData: {
-        id: 'test-4',
-        visible: false,
-        lazy: true
-      }
+        await wrapper.setProps({ visible: true })
+        await waitRAF()
+        await waitRAF()
+        expect(wrapper.element.tagName).toBe('DIV')
+        expect(wrapper.find('.b-sidebar-header').exists()).toBe(true)
+        expect(wrapper.find('.b-sidebar-body').exists()).toBe(true)
+        expect(wrapper.find('.b-sidebar-footer').exists()).toBe(false)
+
+        wrapper.unmount()
     })
 
-    expect(wrapper.vm).toBeDefined()
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.find('.b-sidebar-header').exists()).toBe(true)
-    expect(wrapper.find('.b-sidebar-body').exists()).toBe(false)
-    expect(wrapper.find('.b-sidebar-footer').exists()).toBe(false)
+    it('should have expected structure when `header` slot provided', async() => {
+        const wrapper = mount(BSidebar, {
+            attachTo: document.body,
+            props: {
+                id: 'sidebar-header-slot',
+                visible: true,
+                title: 'TITLE',
+                headerTag: 'div'
+            },
+            slots: {
+                header: 'Custom header'
+            }
+        })
 
-    await wrapper.setProps({ visible: true })
-    await waitRAF()
-    await waitRAF()
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.find('.b-sidebar-header').exists()).toBe(true)
-    expect(wrapper.find('.b-sidebar-body').exists()).toBe(true)
-    expect(wrapper.find('.b-sidebar-footer').exists()).toBe(false)
+        expect(wrapper.vm).toBeDefined()
+        expect(wrapper.element.tagName).toBe('DIV')
 
-    wrapper.destroy()
-  })
+        const $header = wrapper.find('.b-sidebar-header')
+        expect($header.exists()).toBe(true)
+        expect($header.element.tagName).toBe('DIV')
+        expect($header.find('strong').exists()).toBe(false)
+        expect($header.find('button').exists()).toBe(false)
+        expect($header.text()).toContain('Custom header')
+        expect($header.text()).not.toContain('TITLE')
 
-  it('should have expected structure when `header` slot provided', async () => {
-    const wrapper = mount(BSidebar, {
-      attachTo: document.body,
-      propsData: {
-        id: 'sidebar-header-slot',
-        visible: true,
-        title: 'TITLE',
-        headerTag: 'div'
-      },
-      slots: {
-        header: 'Custom header'
-      }
+        expect(wrapper.find('.b-sidebar-footer').exists()).toBe(false)
+
+        wrapper.unmount()
     })
 
-    expect(wrapper.vm).toBeDefined()
-    expect(wrapper.element.tagName).toBe('DIV')
+    it('should have expected structure when `footer` slot provided', async() => {
+        const wrapper = mount(BSidebar, {
+            attachTo: document.body,
+            props: {
+                id: 'test-5',
+                visible: true,
+                footerTag: 'div'
+            },
+            slots: {
+                footer: '<span>FOOTER</span>'
+            }
+        })
 
-    const $header = wrapper.find('.b-sidebar-header')
-    expect($header.exists()).toBe(true)
-    expect($header.element.tagName).toBe('DIV')
-    expect($header.find('strong').exists()).toBe(false)
-    expect($header.find('button').exists()).toBe(false)
-    expect($header.text()).toContain('Custom header')
-    expect($header.text()).not.toContain('TITLE')
+        expect(wrapper.vm).toBeDefined()
+        expect(wrapper.element.tagName).toBe('DIV')
 
-    expect(wrapper.find('.b-sidebar-footer').exists()).toBe(false)
+        expect(wrapper.find('.b-sidebar-header').exists()).toBe(true)
+        expect(wrapper.find('.b-sidebar-body').exists()).toBe(true)
 
-    wrapper.destroy()
-  })
+        const $footer = wrapper.find('.b-sidebar-footer')
+        expect($footer.exists()).toBe(true)
+        expect($footer.element.tagName).toBe('DIV')
+        expect($footer.text()).toEqual('FOOTER')
 
-  it('should have expected structure when `footer` slot provided', async () => {
-    const wrapper = mount(BSidebar, {
-      attachTo: document.body,
-      propsData: {
-        id: 'test-5',
-        visible: true,
-        footerTag: 'div'
-      },
-      slots: {
-        footer: '<span>FOOTER</span>'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.vm).toBeDefined()
-    expect(wrapper.element.tagName).toBe('DIV')
+    it('should have expected structure when `title` prop provided', async() => {
+        const wrapper = mount(BSidebar, {
+            attachTo: document.body,
+            props: {
+                id: 'test-title',
+                visible: true,
+                title: 'TITLE'
+            }
+        })
 
-    expect(wrapper.find('.b-sidebar-header').exists()).toBe(true)
-    expect(wrapper.find('.b-sidebar-body').exists()).toBe(true)
+        expect(wrapper.vm).toBeDefined()
+        expect(wrapper.element.tagName).toBe('DIV')
+        expect(wrapper.find('.b-sidebar-header').exists()).toBe(true)
+        expect(wrapper.find('.b-sidebar-header > strong').text()).toEqual('TITLE')
+        expect(wrapper.find('.b-sidebar-body').exists()).toBe(true)
+        expect(wrapper.find('.b-sidebar-footer').exists()).toBe(false)
 
-    const $footer = wrapper.find('.b-sidebar-footer')
-    expect($footer.exists()).toBe(true)
-    expect($footer.element.tagName).toBe('DIV')
-    expect($footer.text()).toEqual('FOOTER')
-
-    wrapper.destroy()
-  })
-
-  it('should have expected structure when `title` prop provided', async () => {
-    const wrapper = mount(BSidebar, {
-      attachTo: document.body,
-      propsData: {
-        id: 'test-title',
-        visible: true,
-        title: 'TITLE'
-      }
+        wrapper.unmount()
     })
-
-    expect(wrapper.vm).toBeDefined()
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.find('.b-sidebar-header').exists()).toBe(true)
-    expect(wrapper.find('.b-sidebar-header > strong').text()).toEqual('TITLE')
-    expect(wrapper.find('.b-sidebar-body').exists()).toBe(true)
-    expect(wrapper.find('.b-sidebar-footer').exists()).toBe(false)
-
-    wrapper.destroy()
-  })
 })

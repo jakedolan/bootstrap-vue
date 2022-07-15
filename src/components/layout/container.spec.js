@@ -2,74 +2,74 @@ import { mount } from '@vue/test-utils'
 import { BContainer } from './container'
 
 describe('layout > container', () => {
-  it('should have expected default structure', async () => {
-    const wrapper = mount(BContainer)
+    it('should have expected default structure', async() => {
+        const wrapper = mount(BContainer)
 
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.classes()).toContain('container')
-    expect(wrapper.classes().length).toBe(1)
-    expect(wrapper.text()).toEqual('')
+        expect(wrapper.element.tagName).toBe('DIV')
+        expect(wrapper.classes()).toContain('container')
+        expect(wrapper.classes().length).toBe(1)
+        expect(wrapper.text()).toEqual('')
 
-    wrapper.destroy()
-  })
-
-  it('renders custom root element when prop tag set', async () => {
-    const wrapper = mount(BContainer, {
-      propsData: {
-        tag: 'section'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('SECTION')
-    expect(wrapper.classes()).toContain('container')
-    expect(wrapper.classes().length).toBe(1)
-    expect(wrapper.text()).toEqual('')
+    it('renders custom root element when prop tag set', async() => {
+        const wrapper = mount(BContainer, {
+            props: {
+                tag: 'section'
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('SECTION')
+        expect(wrapper.classes()).toContain('container')
+        expect(wrapper.classes().length).toBe(1)
+        expect(wrapper.text()).toEqual('')
 
-  it('should have container-fluid class when prop fluid set', async () => {
-    const wrapper = mount(BContainer, {
-      propsData: {
-        fluid: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.classes()).toContain('container-fluid')
-    expect(wrapper.classes().length).toBe(1)
-    expect(wrapper.text()).toEqual('')
+    it('should have container-fluid class when prop fluid set', async() => {
+        const wrapper = mount(BContainer, {
+            props: {
+                fluid: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('DIV')
+        expect(wrapper.classes()).toContain('container-fluid')
+        expect(wrapper.classes().length).toBe(1)
+        expect(wrapper.text()).toEqual('')
 
-  it('should have container-md class when prop fluid="md"', async () => {
-    const wrapper = mount(BContainer, {
-      propsData: {
-        fluid: 'md'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.classes()).toContain('container-md')
-    expect(wrapper.classes().length).toBe(1)
-    expect(wrapper.text()).toEqual('')
+    it('should have container-md class when prop fluid="md"', async() => {
+        const wrapper = mount(BContainer, {
+            props: {
+                fluid: 'md'
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('DIV')
+        expect(wrapper.classes()).toContain('container-md')
+        expect(wrapper.classes().length).toBe(1)
+        expect(wrapper.text()).toEqual('')
 
-  it('has content from default slot', async () => {
-    const wrapper = mount(BContainer, {
-      slots: {
-        default: 'foobar'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.classes()).toContain('container')
-    expect(wrapper.classes().length).toBe(1)
-    expect(wrapper.text()).toEqual('foobar')
+    it('has content from default slot', async() => {
+        const wrapper = mount(BContainer, {
+            slots: {
+                default: 'foobar'
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('DIV')
+        expect(wrapper.classes()).toContain('container')
+        expect(wrapper.classes().length).toBe(1)
+        expect(wrapper.text()).toEqual('foobar')
+
+        wrapper.unmount()
+    })
 })

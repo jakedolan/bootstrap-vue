@@ -87,8 +87,6 @@ export const BThead = /*#__PURE__*/ defineComponent({
             'thead', {
                 class: this.theadClasses,
                 ...this.theadAttrs,
-                // Pass down any native listeners
-                // on: this.bvListeners
                 ...this.bvListeners
             },
             this.normalizeSlot()

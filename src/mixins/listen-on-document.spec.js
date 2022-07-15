@@ -64,7 +64,7 @@ describe('mixins/listen-on-document', () => {
 
         const wrapper = mount(App, {
             attachTo: document.body,
-            propsData: {
+            props: {
                 destroy: false
             }
         })
@@ -118,6 +118,6 @@ describe('mixins/listen-on-document', () => {
         expect(spyClick2).toHaveBeenCalledTimes(2)
         expect(spyFocusin).toHaveBeenCalledTimes(2)
 
-        wrapper.destroy()
+        wrapper.unmount()
     })
 })

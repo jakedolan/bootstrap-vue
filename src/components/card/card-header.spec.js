@@ -2,97 +2,97 @@ import { mount } from '@vue/test-utils'
 import { BCardHeader } from './card-header'
 
 describe('card-header', () => {
-  it('has root element "div"', async () => {
-    const wrapper = mount(BCardHeader)
+    it('has root element "div"', async() => {
+        const wrapper = mount(BCardHeader)
 
-    expect(wrapper.element.tagName).toBe('DIV')
+        expect(wrapper.element.tagName).toBe('DIV')
 
-    wrapper.destroy()
-  })
-
-  it('has class card-header', async () => {
-    const wrapper = mount(BCardHeader)
-
-    expect(wrapper.classes()).toContain('card-header')
-    expect(wrapper.classes().length).toBe(1)
-
-    wrapper.destroy()
-  })
-
-  it('has custom root element when prop headerTag is set', async () => {
-    const wrapper = mount(BCardHeader, {
-      context: {
-        props: {
-          headerTag: 'header'
-        }
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('HEADER')
-    expect(wrapper.classes()).toContain('card-header')
+    it('has class card-header', async() => {
+        const wrapper = mount(BCardHeader)
 
-    wrapper.destroy()
-  })
+        expect(wrapper.classes()).toContain('card-header')
+        expect(wrapper.classes().length).toBe(1)
 
-  it('has class bg-info when prop headerBgVariant=info', async () => {
-    const wrapper = mount(BCardHeader, {
-      context: {
-        props: { headerBgVariant: 'info' }
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.classes()).toContain('card-header')
-    expect(wrapper.classes()).toContain('bg-info')
-    expect(wrapper.classes().length).toBe(2)
+    it('has custom root element when prop headerTag is set', async() => {
+        const wrapper = mount(BCardHeader, {
+            context: {
+                props: {
+                    headerTag: 'header'
+                }
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('HEADER')
+        expect(wrapper.classes()).toContain('card-header')
 
-  it('has class text-info when prop headerTextVariant=info', async () => {
-    const wrapper = mount(BCardHeader, {
-      context: {
-        props: { headerTextVariant: 'info' }
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.classes()).toContain('card-header')
-    expect(wrapper.classes()).toContain('text-info')
-    expect(wrapper.classes().length).toBe(2)
+    it('has class bg-info when prop headerBgVariant=info', async() => {
+        const wrapper = mount(BCardHeader, {
+            context: {
+                props: { headerBgVariant: 'info' }
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.classes()).toContain('card-header')
+        expect(wrapper.classes()).toContain('bg-info')
+        expect(wrapper.classes().length).toBe(2)
 
-  it('has class border-info when prop headerBorderVariant=info', async () => {
-    const wrapper = mount(BCardHeader, {
-      context: {
-        props: { headerBorderVariant: 'info' }
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.classes()).toContain('card-header')
-    expect(wrapper.classes()).toContain('border-info')
-    expect(wrapper.classes().length).toBe(2)
+    it('has class text-info when prop headerTextVariant=info', async() => {
+        const wrapper = mount(BCardHeader, {
+            context: {
+                props: { headerTextVariant: 'info' }
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.classes()).toContain('card-header')
+        expect(wrapper.classes()).toContain('text-info')
+        expect(wrapper.classes().length).toBe(2)
 
-  it('has all variant classes when all variant props set', async () => {
-    const wrapper = mount(BCardHeader, {
-      context: {
-        props: {
-          headerTextVariant: 'info',
-          headerBgVariant: 'danger',
-          headerBorderVariant: 'dark'
-        }
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.classes()).toContain('card-header')
-    expect(wrapper.classes()).toContain('text-info')
-    expect(wrapper.classes()).toContain('bg-danger')
-    expect(wrapper.classes()).toContain('border-dark')
-    expect(wrapper.classes().length).toBe(4)
+    it('has class border-info when prop headerBorderVariant=info', async() => {
+        const wrapper = mount(BCardHeader, {
+            context: {
+                props: { headerBorderVariant: 'info' }
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.classes()).toContain('card-header')
+        expect(wrapper.classes()).toContain('border-info')
+        expect(wrapper.classes().length).toBe(2)
+
+        wrapper.unmount()
+    })
+
+    it('has all variant classes when all variant props set', async() => {
+        const wrapper = mount(BCardHeader, {
+            context: {
+                props: {
+                    headerTextVariant: 'info',
+                    headerBgVariant: 'danger',
+                    headerBorderVariant: 'dark'
+                }
+            }
+        })
+
+        expect(wrapper.classes()).toContain('card-header')
+        expect(wrapper.classes()).toContain('text-info')
+        expect(wrapper.classes()).toContain('bg-danger')
+        expect(wrapper.classes()).toContain('border-dark')
+        expect(wrapper.classes().length).toBe(4)
+
+        wrapper.unmount()
+    })
 })

@@ -5,60 +5,60 @@ import { getInstanceFromVNode } from '../../utils/get-instance-from-vnode'
 import { BVTransporter } from './transporter'
 
 describe('utils/transporter component', () => {
-  it('renders in-pace when disabled=true', async () => {
-    const App = {
-      compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
-      render(h) {
-        return h(BVTransporter, { props: { disabled: true } }, [h('div', 'content')])
-      }
-    }
+    it('renders in-pace when disabled=true', async() => {
+        const App = {
+            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
+            render(h) {
+                return h(BVTransporter, { props: { disabled: true } }, [h('div', 'content')])
+            }
+        }
 
-    const wrapper = mount(App, {
-      attachTo: document.body
+        const wrapper = mount(App, {
+            attachTo: document.body
+        })
+
+        expect(wrapper.vm).toBeDefined()
+        expect(wrapper.element.tagName).toBe('DIV')
+        expect(wrapper.text()).toEqual('content')
+
+        wrapper.unmount()
     })
 
-    expect(wrapper.vm).toBeDefined()
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.text()).toEqual('content')
+    it('does not render in-pace when disabled=false', async() => {
+        const App = {
+            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
+            render(h) {
+                return h(BVTransporter, { props: { disabled: false } }, [
+                    h('div', { attrs: { id: 'foobar' } }, 'content')
+                ])
+            }
+        }
 
-    wrapper.destroy()
-  })
+        const wrapper = mount(App, {
+            attachTo: document.body
+        })
 
-  it('does not render in-pace when disabled=false', async () => {
-    const App = {
-      compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
-      render(h) {
-        return h(BVTransporter, { props: { disabled: false } }, [
-          h('div', { attrs: { id: 'foobar' } }, 'content')
-        ])
-      }
-    }
+        expect(wrapper.vm).toBeDefined()
 
-    const wrapper = mount(App, {
-      attachTo: document.body
+        await waitNT(wrapper.vm)
+
+        expect(wrapper.element.nodeType).toBe(Node.COMMENT_NODE)
+
+        const target = document.getElementById('foobar')
+        expect(target).toBeDefined()
+        expect(target).not.toBe(null)
+        expect(getInstanceFromVNode(target)).toBeDefined() // Target
+        if (!isVue3) {
+            expect(getInstanceFromVNode(target).$options.name).toBe('BVTransporterTarget')
+        }
+        expect(target.tagName).toEqual('DIV')
+        expect(target.parentElement).toBeDefined()
+        expect(target.parentElement).toBe(document.body)
+
+        wrapper.unmount()
+
+        await waitNT(wrapper.vm)
+
+        expect(target.parentElement).toEqual(null)
     })
-
-    expect(wrapper.vm).toBeDefined()
-
-    await waitNT(wrapper.vm)
-
-    expect(wrapper.element.nodeType).toBe(Node.COMMENT_NODE)
-
-    const target = document.getElementById('foobar')
-    expect(target).toBeDefined()
-    expect(target).not.toBe(null)
-    expect(getInstanceFromVNode(target)).toBeDefined() // Target
-    if (!isVue3) {
-      expect(getInstanceFromVNode(target).$options.name).toBe('BVTransporterTarget')
-    }
-    expect(target.tagName).toEqual('DIV')
-    expect(target.parentElement).toBeDefined()
-    expect(target.parentElement).toBe(document.body)
-
-    wrapper.destroy()
-
-    await waitNT(wrapper.vm)
-
-    expect(target.parentElement).toEqual(null)
-  })
 })

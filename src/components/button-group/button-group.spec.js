@@ -2,97 +2,97 @@ import { mount } from '@vue/test-utils'
 import { BButtonGroup } from './button-group'
 
 describe('button-group', () => {
-  it('has expected default structure', async () => {
-    const wrapper = mount(BButtonGroup)
+    it('has expected default structure', async() => {
+        const wrapper = mount(BButtonGroup)
 
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.classes()).toContain('btn-group')
-    expect(wrapper.classes().length).toBe(1)
-    expect(wrapper.attributes('role')).toBeDefined()
-    expect(wrapper.attributes('role')).toBe('group')
-    expect(wrapper.text()).toBe('')
+        expect(wrapper.element.tagName).toBe('DIV')
+        expect(wrapper.classes()).toContain('btn-group')
+        expect(wrapper.classes().length).toBe(1)
+        expect(wrapper.attributes('role')).toBeDefined()
+        expect(wrapper.attributes('role')).toBe('group')
+        expect(wrapper.text()).toBe('')
 
-    wrapper.destroy()
-  })
-
-  it('should render default slot', async () => {
-    const wrapper = mount(BButtonGroup, {
-      slots: {
-        default: '<span>foobar</span>'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.classes()).toContain('btn-group')
-    expect(wrapper.classes().length).toBe(1)
-    expect(wrapper.attributes('role')).toBeDefined()
-    expect(wrapper.attributes('role')).toBe('group')
-    expect(wrapper.find('span').exists()).toBe(true)
-    expect(wrapper.text()).toBe('foobar')
+    it('should render default slot', async() => {
+        const wrapper = mount(BButtonGroup, {
+            slots: {
+                default: '<span>foobar</span>'
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('DIV')
+        expect(wrapper.classes()).toContain('btn-group')
+        expect(wrapper.classes().length).toBe(1)
+        expect(wrapper.attributes('role')).toBeDefined()
+        expect(wrapper.attributes('role')).toBe('group')
+        expect(wrapper.find('span').exists()).toBe(true)
+        expect(wrapper.text()).toBe('foobar')
 
-  it('should apply vertical class', async () => {
-    const wrapper = mount(BButtonGroup, {
-      propsData: {
-        vertical: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.classes()).toContain('btn-group-vertical')
-    expect(wrapper.classes()).not.toContain('btn-group')
-    expect(wrapper.classes().length).toBe(1)
+    it('should apply vertical class', async() => {
+        const wrapper = mount(BButtonGroup, {
+            props: {
+                vertical: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('DIV')
+        expect(wrapper.classes()).toContain('btn-group-vertical')
+        expect(wrapper.classes()).not.toContain('btn-group')
+        expect(wrapper.classes().length).toBe(1)
 
-  it('should apply size class', async () => {
-    const wrapper = mount(BButtonGroup, {
-      propsData: {
-        size: 'sm'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.classes()).toContain('btn-group')
-    expect(wrapper.classes()).toContain('btn-group-sm')
-    expect(wrapper.classes().length).toBe(2)
+    it('should apply size class', async() => {
+        const wrapper = mount(BButtonGroup, {
+            props: {
+                size: 'sm'
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('DIV')
+        expect(wrapper.classes()).toContain('btn-group')
+        expect(wrapper.classes()).toContain('btn-group-sm')
+        expect(wrapper.classes().length).toBe(2)
 
-  it('should apply size class when vertical', async () => {
-    const wrapper = mount(BButtonGroup, {
-      propsData: {
-        size: 'sm',
-        vertical: true
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.classes()).toContain('btn-group-sm')
-    expect(wrapper.classes()).toContain('btn-group-vertical')
-    expect(wrapper.classes()).not.toContain('btn-group')
-    expect(wrapper.classes().length).toBe(2)
+    it('should apply size class when vertical', async() => {
+        const wrapper = mount(BButtonGroup, {
+            props: {
+                size: 'sm',
+                vertical: true
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('DIV')
+        expect(wrapper.classes()).toContain('btn-group-sm')
+        expect(wrapper.classes()).toContain('btn-group-vertical')
+        expect(wrapper.classes()).not.toContain('btn-group')
+        expect(wrapper.classes().length).toBe(2)
 
-  it('has custom role when aria-role prop set', async () => {
-    const wrapper = mount(BButtonGroup, {
-      propsData: {
-        ariaRole: 'foobar'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.classes()).toContain('btn-group')
-    expect(wrapper.classes().length).toBe(1)
-    expect(wrapper.attributes('role')).toBeDefined()
-    expect(wrapper.attributes('role')).toBe('foobar')
+    it('has custom role when aria-role prop set', async() => {
+        const wrapper = mount(BButtonGroup, {
+            props: {
+                ariaRole: 'foobar'
+            }
+        })
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('DIV')
+        expect(wrapper.classes()).toContain('btn-group')
+        expect(wrapper.classes().length).toBe(1)
+        expect(wrapper.attributes('role')).toBeDefined()
+        expect(wrapper.attributes('role')).toBe('foobar')
+
+        wrapper.unmount()
+    })
 })

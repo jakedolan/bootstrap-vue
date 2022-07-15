@@ -3,72 +3,72 @@ import { waitNT } from '../../../tests/utils'
 import { BAvatarGroup } from './avatar-group'
 
 describe('avatar-group', () => {
-  it('should have expected default structure', async () => {
-    const wrapper = mount(BAvatarGroup)
+    it('should have expected default structure', async() => {
+        const wrapper = mount(BAvatarGroup)
 
-    expect(wrapper.vm).toBeDefined()
-    await waitNT(wrapper.vm)
+        expect(wrapper.vm).toBeDefined()
+        await waitNT(wrapper.vm)
 
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.classes()).toContain('b-avatar-group')
-    expect(wrapper.classes().length).toBe(1)
-    expect(wrapper.attributes('role')).toEqual('group')
+        expect(wrapper.element.tagName).toBe('DIV')
+        expect(wrapper.classes()).toContain('b-avatar-group')
+        expect(wrapper.classes().length).toBe(1)
+        expect(wrapper.attributes('role')).toEqual('group')
 
-    wrapper.destroy()
-  })
-
-  it('should render custom root element when prop tag is set', async () => {
-    const wrapper = mount(BAvatarGroup, {
-      propsData: {
-        tag: 'article'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.vm).toBeDefined()
-    await waitNT(wrapper.vm)
+    it('should render custom root element when prop tag is set', async() => {
+        const wrapper = mount(BAvatarGroup, {
+            props: {
+                tag: 'article'
+            }
+        })
 
-    expect(wrapper.element.tagName).toBe('ARTICLE')
-    expect(wrapper.classes()).toContain('b-avatar-group')
-    expect(wrapper.classes().length).toBe(1)
-    expect(wrapper.attributes('role')).toEqual('group')
+        expect(wrapper.vm).toBeDefined()
+        await waitNT(wrapper.vm)
 
-    wrapper.destroy()
-  })
+        expect(wrapper.element.tagName).toBe('ARTICLE')
+        expect(wrapper.classes()).toContain('b-avatar-group')
+        expect(wrapper.classes().length).toBe(1)
+        expect(wrapper.attributes('role')).toEqual('group')
 
-  it('should render content from default slot', async () => {
-    const wrapper = mount(BAvatarGroup, {
-      slots: {
-        default: '<span>FOOBAR</span>'
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.vm).toBeDefined()
-    await waitNT(wrapper.vm)
+    it('should render content from default slot', async() => {
+        const wrapper = mount(BAvatarGroup, {
+            slots: {
+                default: '<span>FOOBAR</span>'
+            }
+        })
 
-    expect(wrapper.element.tagName).toBe('DIV')
-    expect(wrapper.classes()).toContain('b-avatar-group')
-    expect(wrapper.classes().length).toBe(1)
-    expect(wrapper.attributes('role')).toEqual('group')
+        expect(wrapper.vm).toBeDefined()
+        await waitNT(wrapper.vm)
 
-    expect(wrapper.text()).toEqual('FOOBAR')
-    expect(wrapper.find('span').exists()).toBe(true)
+        expect(wrapper.element.tagName).toBe('DIV')
+        expect(wrapper.classes()).toContain('b-avatar-group')
+        expect(wrapper.classes().length).toBe(1)
+        expect(wrapper.attributes('role')).toEqual('group')
 
-    wrapper.destroy()
-  })
+        expect(wrapper.text()).toEqual('FOOBAR')
+        expect(wrapper.find('span').exists()).toBe(true)
 
-  it('overlap props work', async () => {
-    const wrapper = mount(BAvatarGroup, {
-      propsData: {
-        overlap: 0.65
-      }
+        wrapper.unmount()
     })
 
-    expect(wrapper.vm).toBeDefined()
-    await waitNT(wrapper.vm)
+    it('overlap props work', async() => {
+        const wrapper = mount(BAvatarGroup, {
+            props: {
+                overlap: 0.65
+            }
+        })
 
-    expect(wrapper.vm.overlap).toBe(0.65)
-    expect(wrapper.vm.overlapScale).toBe(0.325)
+        expect(wrapper.vm).toBeDefined()
+        await waitNT(wrapper.vm)
 
-    wrapper.destroy()
-  })
+        expect(wrapper.vm.overlap).toBe(0.65)
+        expect(wrapper.vm.overlapScale).toBe(0.325)
+
+        wrapper.unmount()
+    })
 })
