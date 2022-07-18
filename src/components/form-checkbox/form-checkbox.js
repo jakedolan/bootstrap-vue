@@ -23,13 +23,13 @@ const MODEL_EVENT_NAME_INDETERMINATE = MODEL_EVENT_NAME_PREFIX + MODEL_PROP_NAME
 export const props = makePropsConfigurable(
     sortKeys({
         ...formRadioCheckProps,
-        modelValue: makeProp(PROP_TYPE_ANY, true),
         // Not applicable in multi-check mode
         [MODEL_PROP_NAME_INDETERMINATE]: makeProp(PROP_TYPE_BOOLEAN, false),
         // Custom switch styling
         switch: makeProp(PROP_TYPE_BOOLEAN, false),
         // Not applicable in multi-check mode
         uncheckedValue: makeProp(PROP_TYPE_ANY, false),
+        value: makeProp(PROP_TYPE_ANY, true)
     }),
     NAME_FORM_CHECKBOX
 )
@@ -48,13 +48,21 @@ export const BFormCheckbox = /*#__PURE__*/ defineComponent({
     },
     props,
     emits: [MODEL_EVENT_NAME, EVENT_NAME_CHANGE, MODEL_EVENT_NAME_INDETERMINATE, ],
-    expose: ['focus'],
+    expose: ['blur', 'focus'],
     computed: {
         bvGroup() {
             return this.getBvGroup()
         },
         isChecked() {
-            const { modelValue: value, computedLocalChecked: checked } = this
+            const { value, computedLocalChecked: checked } = this
+            // console.log("isChecked", {
+            //     value: value,
+            //     checked: checked,
+            //     isArray: isArray(checked),
+            //     looseIndexOf: (isArray(checked) ? looseIndexOf(checked, value) > -1 : null),
+            //     looselyequal: looseEqual(checked, value)
+            // })
+
             return isArray(checked) ? looseIndexOf(checked, value) > -1 : looseEqual(checked, value)
         },
         isRadio() {
@@ -85,7 +93,7 @@ export const BFormCheckbox = /*#__PURE__*/ defineComponent({
         },
 
         handleChange({ target: { checked, indeterminate } }) {
-            const { modelValue: value, uncheckedValue } = this
+            const { value, uncheckedValue } = this
 
             // Update `computedLocalChecked`
             let localChecked = this.computedLocalChecked

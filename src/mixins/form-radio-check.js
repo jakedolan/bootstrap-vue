@@ -48,6 +48,8 @@ export const props = makePropsConfigurable(
     'formRadioCheckControls'
 )
 
+// console.log("props", props)
+
 // --- Mixin ---
 
 // @vue/component
@@ -84,6 +86,11 @@ export const formRadioCheckMixin = defineComponent({
             }
         },
         isChecked() {
+            // console.log("isChecked", {
+            //   value: this.value,
+            //   computedLocalChecked: this.computedLocalChecked, 
+            //   looselyequal: looseEqual(this.value, this.computedLocalChecked) 
+            // })
             return looseEqual(this.value, this.computedLocalChecked)
         },
         isRadio() {
@@ -150,6 +157,9 @@ export const formRadioCheckMixin = defineComponent({
         },
         buttonClasses() {
             const { computedSize } = this
+
+            // console.log("???", this.isChecked)
+
             return [
                 'btn',
                 `btn-${this.computedButtonVariant}`,
@@ -262,7 +272,7 @@ export const formRadioCheckMixin = defineComponent({
             // https://github.com/bootstrap-vue/bootstrap-vue/issues/2911
             'position-static': isPlain && !$content
         }];
-        if (isBtnMode) {
+        if (!isBtnMode) {
             componentClass.push(this.stateClass);
         }
 
@@ -283,6 +293,7 @@ export const formRadioCheckMixin = defineComponent({
         })
 
         if (isBtnMode) {
+            // console.log("buttonClasses??", this.buttonClasses)
             let $button = h('label', { class: this.buttonClasses }, [$input, $content])
             if (!this.isGroup) {
                 // Standalone button mode, so wrap in 'btn-group-toggle'
