@@ -73,11 +73,9 @@ export const props = makePropsConfigurable(
 // @vue/component
 export const BAlert = /*#__PURE__*/ defineComponent({
     name: NAME_ALERT,
-    compatConfig: {
-        MODE: 3,
-    },
     mixins: [modelMixin, normalizeSlotMixin],
     props,
+    emits: [EVENT_NAME_DISMISS_COUNT_DOWN, EVENT_NAME_DISMISSED, MODEL_EVENT_NAME],
     data() {
         return {
             countDown: 0,
