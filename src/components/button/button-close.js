@@ -48,13 +48,16 @@ export const BButtonClose = /*#__PURE__*/ defineComponent({
             }
         }
 
-        componentData.innerHTML = $props.content;
+        if (!hasNormalizedSlot(SLOT_NAME_DEFAULT, $slots)) {
+          
+          componentData.innerHTML = $props.content;
+        }
 
         return h(
             'button',
-            componentData, {
-                default: () => [$props.content]
-            }
+            componentData, 
+            normalizeSlot(SLOT_NAME_DEFAULT, {}, $slots)
+            
         )
     }
 })
