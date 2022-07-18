@@ -1,11 +1,17 @@
 import { h } from 'vue';
-import VueRouter from 'vue-router'
+import { createRouter, createWebHistory, RouterView } from 'vue-router'
 import { mount } from '@vue/test-utils'
-import { waitRAF } from '../../../tests/utils'
-import { Vue } from '../../vue'
+import { waitNT, waitRAF } from '../../../tests/utils'
 import { BDropdownItem } from './dropdown-item'
 
-Vue.use(VueRouter)
+const router = createRouter({
+    history: createWebHistory(),
+    routes: [
+        { path: '/', component: { name: 'R', template: '<div class="r">ROOT</div>' } },
+        { path: '/a', component: { name: 'A', template: '<div class="a">A</div>' } },
+        { path: '/b', component: { name: 'B', template: '<div class="a">B</div>' } }
+    ]
+})
 
 describe('dropdown-item', () => {
     it('renders with tag "a" and href="#" by default', async() => {
@@ -34,13 +40,15 @@ describe('dropdown-item', () => {
         let called = false
         let refocus = null
         const wrapper = mount(BDropdownItem, {
-            provide: {
-                getBvDropdown: () => ({
-                    hide(arg) {
-                        called = true
-                        refocus = arg
-                    }
-                })
+            global: {
+                provide: {
+                    getBvDropdown: () => ({
+                        hide(arg) {
+                            called = true
+                            refocus = arg
+                        }
+                    })
+                }
             }
         })
         expect(wrapper.element.tagName).toBe('LI')
@@ -60,13 +68,15 @@ describe('dropdown-item', () => {
         let refocus = null
         const wrapper = mount(BDropdownItem, {
             props: { disabled: true },
-            provide: {
-                getBvDropdown: () => ({
-                    hide(arg) {
-                        called = true
-                        refocus = arg
-                    }
-                })
+            global: {
+                provide: {
+                    getBvDropdown: () => ({
+                        hide(arg) {
+                            called = true
+                            refocus = arg
+                        }
+                    })
+                }
             }
         })
         expect(wrapper.element.tagName).toBe('LI')
@@ -98,33 +108,34 @@ describe('dropdown-item', () => {
 
     describe('router-link support', () => {
         it('works', async() => {
-            const router = new VueRouter({
-                mode: 'abstract',
-                routes: [
-                    { path: '/', component: { name: 'R', template: '<div class="r">ROOT</div>' } },
-                    { path: '/a', component: { name: 'A', template: '<div class="a">A</div>' } },
-                    { path: '/b', component: { name: 'B', template: '<div class="a">B</div>' } }
-                ]
-            })
+            router.push('/')
+            await router.isReady()
 
             const App = {
-                router,
                 render() {
-                    return h('ul', [
-                        // <router-link>
-                        h(BDropdownItem, { props: { to: '/a' } }, ['to-a']),
-                        // Regular link
-                        h(BDropdownItem, { props: { href: '/a' } }, ['href-a']),
-                        // <router-link>
-                        h(BDropdownItem, { props: { to: { path: '/b' } } }, ['to-path-b']),
-                        h('router-view')
-                    ])
+                    return h('ul', {}, {
+                        default: () => [
+                            // <router-link>
+                            h(BDropdownItem, { to: '/a' }, { default: () => ['to-a'] }),
+                            // Regular link
+                            h(BDropdownItem, { href: '/a' }, { default: () => ['href-a'] }),
+                            // <router-link>
+                            h(BDropdownItem, { to: { path: '/b' } }, { default: () => ['to-path-b'] }),
+                            h('router-view')
+                        ]
+                    })
                 }
             }
 
             const wrapper = mount(App, {
-                attachTo: document.body
+                attachTo: document.body,
+                global: {
+                    plugins: [router],
+                }
             })
+
+            await waitNT(wrapper.vm)
+            await waitRAF()
 
             expect(wrapper.vm).toBeDefined()
             expect(wrapper.element.tagName).toBe('UL')
@@ -134,12 +145,12 @@ describe('dropdown-item', () => {
 
             const $links = wrapper.findAllComponents('a')
 
-            $links.wrappers.forEach($link => {
+            $links.forEach(($link, i) => {
                 expect($link.vm).toBeDefined()
-                expect($links[0].vm.$options.name).toBe('BLink')
+                expect($links[i].vm.$options.name).toBe('BLink')
             })
             expect(
-                $links.wrappers.map($link => $link.findComponent({ name: 'RouterLink' }).exists())
+                $links.map($link => $link.findComponent({ name: 'RouterLink' }).exists())
             ).toStrictEqual([true, false, true])
 
             wrapper.unmount()

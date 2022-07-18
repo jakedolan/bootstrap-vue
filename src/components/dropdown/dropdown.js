@@ -61,6 +61,7 @@ export const BDropdown = /*#__PURE__*/ defineComponent({
     name: NAME_DROPDOWN,
     mixins: [idMixin, dropdownMixin, normalizeSlotMixin],
     props,
+    emits: ['click', 'hidden', 'hide', 'show', 'shown', 'toggle'],
     computed: {
         dropdownClasses() {
             const { block, split } = this
@@ -125,6 +126,7 @@ export const BDropdown = /*#__PURE__*/ defineComponent({
                 btnProps.type = splitButtonType
             }
 
+            const $splitButtonChildren = $buttonChildren
             $split = h(
                 BButton, {
                     class: this.splitClass,
@@ -135,8 +137,8 @@ export const BDropdown = /*#__PURE__*/ defineComponent({
                     ref: 'button'
                 },
                 {
-                  default: () => $buttonChildren
-                }                
+                  default: () => $splitButtonChildren
+                }
             )
 
             // Overwrite button content for the toggle when in `split` mode

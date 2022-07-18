@@ -1,4 +1,4 @@
-import { defineComponent, h } from 'vue'
+import { computed, defineComponent, h } from 'vue'
 import { NAME_DROPDOWN_ITEM } from '../../constants/components'
 import { EVENT_NAME_CLICK } from '../../constants/events'
 import { PROP_TYPE_ARRAY_OBJECT_STRING, PROP_TYPE_STRING } from '../../constants/props'
@@ -59,7 +59,7 @@ export const BDropdownItem = /*#__PURE__*/ defineComponent({
         }
     },
     render() {
-        const { linkClass, variant, active, disabled, onClick, bvAttrs } = this
+        const { $props, linkClass, variant, active, disabled, onClick, bvAttrs } = this
 
         return h(
             'li', {
@@ -71,12 +71,12 @@ export const BDropdownItem = /*#__PURE__*/ defineComponent({
                     BLink, {
                         class: ['dropdown-item', linkClass, {
                             [`text-${variant}`]: variant && !(active || disabled) }],
-                        ...pluckProps(linkProps, this.$props),
+                        ...pluckProps(linkProps, $props),
                         ...this.computedAttrs,
                         onClick: onClick,
                         ref: 'item'
                     },
-                    this.normalizeSlot()
+                    { default: () => this.normalizeSlot() }
                 )
             ]
         )

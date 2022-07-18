@@ -119,6 +119,7 @@ describe('dropdown', () => {
         expect($split.attributes('id')).toEqual(`${wrapperId}__BV_button_`)
         expect($split.attributes('type')).toBeDefined()
         expect($split.attributes('type')).toEqual('button')
+
         expect($split.text()).toEqual('')
 
         expect($toggle.classes()).toContain('btn')
@@ -153,6 +154,7 @@ describe('dropdown', () => {
         wrapper.unmount()
     })
 
+
     it('split mode accepts split-button-type value', async() => {
         const wrapper = mount(BDropdown, {
             attachTo: document.body,
@@ -182,6 +184,8 @@ describe('dropdown', () => {
 
         wrapper.unmount()
     })
+
+
 
     it('renders default slot inside menu', async() => {
         const wrapper = mount(BDropdown, {
@@ -307,7 +311,6 @@ describe('dropdown', () => {
 
         wrapper.unmount()
     })
-
     it('should have "btn-group" and "d-flex" classes when block and split are true', async() => {
         const wrapper = mount(BDropdown, {
             attachTo: document.body,
@@ -517,6 +520,7 @@ describe('dropdown', () => {
         wrapper.unmount()
     })
 
+
     it('dropdown opens and closes', async() => {
         const App = {
             props: {
@@ -525,9 +529,11 @@ describe('dropdown', () => {
             render() {
                 const { disabled } = this
 
-                return h('div', { attrs: { id: 'container' } }, [
-                    h(BDropdown, { props: { id: 'test', disabled } }, [h(BDropdownItem, 'item')]),
-                    h('input', { attrs: { id: 'input' } })
+                return h('div', { id: 'container' }, [
+                    h(BDropdown, { id: 'test', disabled }, {
+                        default: () => [h(BDropdownItem, {}, { default: () => 'item' })]
+                    }),
+                    h('input', { id: 'input' })
                 ])
             }
         }
@@ -719,7 +725,7 @@ describe('dropdown', () => {
         expect($toggle.attributes('aria-expanded')).toEqual('true')
 
         // Should close on root emit when argument is not self
-        emitter.$emit('bv::dropdown::shown')
+        emitter.$emit('bv::dropdown::shown', {})
         await waitRAF()
         await waitNT(wrapper.vm)
         await waitRAF()
@@ -790,14 +796,18 @@ describe('dropdown', () => {
     it('Keyboard navigation works when open', async() => {
         const App = {
             render() {
-                return h('div', [
-                    h(BDropdown, { props: { id: 'test' } }, [
-                        h(BDropdownItem, { attrs: { id: 'item-1' } }, 'item'),
-                        h(BDropdownItem, { attrs: { id: 'item-2' } }, 'item'),
-                        h(BDropdownItem, { attrs: { id: 'item-3' }, props: { disabled: true } }, 'item'),
-                        h(BDropdownItem, { attrs: { id: 'item-4' } }, 'item')
-                    ])
-                ])
+                return h('div', {}, {
+                    default: () => [
+                        h(BDropdown, { id: 'test' }, {
+                            default: () => [
+                                h(BDropdownItem, { id: 'item-1' }, { default: () => 'item' }),
+                                h(BDropdownItem, { id: 'item-2' }, { default: () => 'item' }),
+                                h(BDropdownItem, { id: 'item-3', disabled: true }, { default: () => 'item' }),
+                                h(BDropdownItem, { id: 'item-4' }, { default: () => 'item' })
+                            ]
+                        })
+                    ]
+                })
             }
         }
 
@@ -859,6 +869,7 @@ describe('dropdown', () => {
         await waitRAF()
         await waitNT(wrapper.vm)
         await waitRAF()
+
         expect(document.activeElement).toBe($items[3].element)
 
         // Move down to next menu item (should remain on same item)
@@ -1120,4 +1131,6 @@ describe('dropdown', () => {
 
         wrapper.unmount()
     })
+
+
 })

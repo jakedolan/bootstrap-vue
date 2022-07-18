@@ -53,13 +53,15 @@ describe('dropdown-item-button', () => {
         let called = false
         let refocus = null
         const wrapper = mount(BDropdownItemButton, {
-            provide: {
-                getBvDropdown: () => ({
-                    hide(arg) {
-                        called = true
-                        refocus = arg
-                    }
-                })
+            global: {
+                provide: {
+                    getBvDropdown: () => ({
+                        hide(arg) {
+                            called = true
+                            refocus = arg
+                        }
+                    })
+                }
             }
         })
         expect(wrapper.element.tagName).toBe('LI')
@@ -80,13 +82,15 @@ describe('dropdown-item-button', () => {
             props: {
                 disabled: true
             },
-            provide: {
-                getBvDropdown: () => ({
-                    hide(arg) {
-                        called = true
-                        refocus = arg
-                    }
-                })
+            global: {
+                provide: {
+                    getBvDropdown: () => ({
+                        hide(arg) {
+                            called = true
+                            refocus = arg
+                        }
+                    })
+                }
             }
         })
         expect(wrapper.element.tagName).toBe('LI')

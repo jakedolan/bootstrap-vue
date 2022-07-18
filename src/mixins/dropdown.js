@@ -37,6 +37,7 @@ import { clickOutMixin } from './click-out'
 import { focusInMixin } from './focus-in'
 import { idMixin, props as idProps } from './id'
 import { listenOnRootMixin } from './listen-on-root'
+import { emitter } from '../utils/emitter.js'
 
 // --- Constants ---
 
@@ -155,7 +156,7 @@ export const dropdownMixin = defineComponent({
                     if (this.emitter) {
                         this.emitter.off(`${EVENT_NAME_HIDDEN}:${this[COMPONENT_UID_KEY]}`, this.focusToggler)
                     } else {
-                        this.$off(EVENT_NAME_HIDDEN, this.focusToggler)
+                        emitter.off(EVENT_NAME_HIDDEN, this.focusToggler)
                     }
 
                     return
@@ -330,7 +331,7 @@ export const dropdownMixin = defineComponent({
                 if (this.emitter) {
                     this.emitter.once(`${EVENT_NAME_HIDDEN}:${this[COMPONENT_UID_KEY]}`, this.focusToggler)
                 } else {
-                    this.$once(EVENT_NAME_HIDDEN, this.focusToggler)
+                    emitter.once(EVENT_NAME_HIDDEN, this.focusToggler)
                 }
             }
         },
@@ -397,7 +398,7 @@ export const dropdownMixin = defineComponent({
                 if (this.emitter) {
                     this.emitter.once(`${EVENT_NAME_HIDDEN}:${this[COMPONENT_UID_KEY]}`, this.focusToggler)
                 } else {
-                    this.$once(EVENT_NAME_HIDDEN, this.focusToggler)
+                    emitter.once(EVENT_NAME_HIDDEN, this.focusToggler)
                 }
             }
         },
