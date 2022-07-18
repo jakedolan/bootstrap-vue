@@ -1,3 +1,4 @@
+import { h } from 'vue';
 import { mount } from '@vue/test-utils'
 import { waitNT } from '../../../tests/utils'
 import { BFormRadioGroup } from './form-radio-group'
@@ -295,8 +296,7 @@ describe('form-radio-group', () => {
 
     it('button mode button-variant works', async() => {
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
-            render(h) {
+            render() {
                 return h(
                     BFormRadioGroup, {
                         props: {
@@ -324,9 +324,9 @@ describe('form-radio-group', () => {
         expect(btns).toBeDefined()
         expect(btns.length).toBe(3)
             // Expect them to have the correct variant classes
-        expect(btns.at(0).classes()).toContain('btn-primary')
-        expect(btns.at(1).classes()).toContain('btn-primary')
-        expect(btns.at(2).classes()).toContain('btn-danger')
+        expect(btns[0].classes()).toContain('btn-primary')
+        expect(btns[1].classes()).toContain('btn-primary')
+        expect(btns[2].classes()).toContain('btn-danger')
 
         wrapper.unmount()
     })
@@ -365,9 +365,9 @@ describe('form-radio-group', () => {
         expect(radios.length).toBe(3)
         expect(wrapper.vm.localChecked).toEqual('')
         expect(radios.wrappers.every(c => c.find('input[type=radio]').exists())).toBe(true)
-        expect(radios.at(0).attributes('disabled')).toBeUndefined()
-        expect(radios.at(1).attributes('disabled')).toBeUndefined()
-        expect(radios.at(2).attributes('disabled')).toBeDefined()
+        expect(radios[0].attributes('disabled')).toBeUndefined()
+        expect(radios[1].attributes('disabled')).toBeUndefined()
+        expect(radios[2].attributes('disabled')).toBeDefined()
 
         wrapper.unmount()
     })
@@ -410,7 +410,7 @@ describe('form-radio-group', () => {
         expect(radios.length).toBe(3)
         expect(wrapper.vm.localChecked).toEqual('')
 
-        await radios.at(0).trigger('click')
+        await radios[0].trigger('click')
         expect(wrapper.vm.localChecked).toEqual('one')
         expect(wrapper.emitted('change')).toBeDefined()
         expect(wrapper.emitted('change').length).toBe(1)
@@ -419,14 +419,14 @@ describe('form-radio-group', () => {
         expect(wrapper.emitted('input').length).toBe(1)
         expect(wrapper.emitted('input')[0][0]).toEqual('one')
 
-        await radios.at(2).trigger('click')
+        await radios[2].trigger('click')
         expect(wrapper.vm.localChecked).toEqual('three')
         expect(wrapper.emitted('change').length).toBe(2)
         expect(wrapper.emitted('change')[1][0]).toEqual('three')
         expect(wrapper.emitted('input').length).toBe(2)
         expect(wrapper.emitted('input')[1][0]).toEqual('three')
 
-        await radios.at(0).trigger('click')
+        await radios[0].trigger('click')
         expect(wrapper.vm.localChecked).toEqual('one')
         expect(wrapper.emitted('change').length).toBe(3)
         expect(wrapper.emitted('change')[2][0]).toEqual('one')
@@ -449,9 +449,9 @@ describe('form-radio-group', () => {
         expect(radios.length).toBe(3)
         expect(wrapper.vm.localChecked).toEqual('two')
         expect(radios.wrappers.every(w => w.attributes('type') === 'radio')).toBe(true)
-        expect(radios.at(0).element.checked).toBe(false)
-        expect(radios.at(1).element.checked).toBe(true)
-        expect(radios.at(2).element.checked).toBe(false)
+        expect(radios[0].element.checked).toBe(false)
+        expect(radios[1].element.checked).toBe(true)
+        expect(radios[2].element.checked).toBe(false)
 
         await wrapper.setProps({ checked: 'three' })
         await waitNT(wrapper.vm)
@@ -459,9 +459,9 @@ describe('form-radio-group', () => {
 
         expect(wrapper.vm.localChecked).toEqual('three')
         expect(radios.wrappers.every(w => w.attributes('type') === 'radio')).toBe(true)
-        expect(radios.at(0).element.checked).toBe(false)
-        expect(radios.at(1).element.checked).toBe(false)
-        expect(radios.at(2).element.checked).toBe(true)
+        expect(radios[0].element.checked).toBe(false)
+        expect(radios[1].element.checked).toBe(false)
+        expect(radios[2].element.checked).toBe(true)
 
         wrapper.unmount()
     })

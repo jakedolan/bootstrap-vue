@@ -17,7 +17,6 @@ export const props = makePropsConfigurable({
 // @vue/component
 export const BFormRow = /*#__PURE__*/ defineComponent({
     name: NAME_FORM_ROW,
-    functional: true,
     props,
     render(h, { props, data, children }) {
         return h(

@@ -5,10 +5,6 @@ import { concat } from '../utils/array'
 
 // @vue/component
 export const normalizeSlotMixin = defineComponent({
-    compatConfig: {
-        MODE: 3,
-        INSTANCE_SCOPED_SLOTS: 'suppress-warning'
-    },
     methods: {
         // Returns `true` if the either a ` or `$slot` exists with the specified name
         // `name` can be a string name or an array of names

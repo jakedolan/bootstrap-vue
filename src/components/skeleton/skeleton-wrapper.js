@@ -19,11 +19,6 @@ export const props = makePropsConfigurable({
 // @vue/component
 export const BSkeletonWrapper = /*#__PURE__*/ defineComponent({
     name: NAME_SKELETON_WRAPPER,
-    compatConfig: {
-        MODE: 3,
-        INSTANCE_SCOPED_SLOTS: 'suppress-warning'
-    },
-    functional: true,
     props,
     render(h, { data, props, slots, scopedSlots }) {
         const $slots = slots()

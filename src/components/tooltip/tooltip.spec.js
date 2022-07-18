@@ -1,12 +1,13 @@
+import { h } from 'vue';
 import { createWrapper, mount } from '@vue/test-utils'
 import { waitNT, waitRAF } from '../../../tests/utils'
 import { BTooltip } from './tooltip'
+import { emitter } from '../../utils/emitter.js'
 
 const MODAL_CLOSE_EVENT = 'bv::modal::hidden'
 
 // Our test application
 const App = {
-    compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
     props: [
         'target',
         'triggers',
@@ -22,7 +23,7 @@ const App = {
         'delay',
         'isModal'
     ],
-    render(h) {
+    render() {
         const tipProps = {
             target: this.target || 'foo',
             triggers: this.triggers,
@@ -801,7 +802,7 @@ describe('b-tooltip', () => {
         expect(tip.classList.contains('b-tooltip')).toBe(true)
 
         // Hide the tooltip by emitting root event with correct ID (forceHide)
-        wrapper.vm.$root.$emit('bv::hide::tooltip', 'foo')
+        emitter.$emit('bv::hide::tooltip', { id: 'foo' })
         await waitNT(wrapper.vm)
         await waitRAF()
         await waitNT(wrapper.vm)
@@ -872,7 +873,7 @@ describe('b-tooltip', () => {
         expect(tip.classList.contains('tooltip')).toBe(true)
 
         // Tooltip should ignore when ID is not its own
-        wrapper.vm.$root.$emit('bv::hide::tooltip', 'wrong-id')
+        emitter.$emit('bv::hide::tooltip', { id: 'wrong-id' })
         await waitNT(wrapper.vm)
         await waitRAF()
         await waitNT(wrapper.vm)
@@ -945,7 +946,7 @@ describe('b-tooltip', () => {
         expect(tip.classList.contains('b-tooltip')).toBe(true)
 
         // Hide the tooltip by emitting root event with no ID (forceHide)
-        wrapper.vm.$root.$emit('bv::hide::tooltip')
+        emitter.$emit('bv::hide::tooltip')
         await waitNT(wrapper.vm)
         await waitRAF()
         await waitNT(wrapper.vm)
@@ -1017,7 +1018,7 @@ describe('b-tooltip', () => {
         expect(tip.classList.contains('tooltip')).toBe(true)
 
         // Tooltip should ignore when ID is not its own
-        wrapper.vm.$root.$emit(MODAL_CLOSE_EVENT, 'some-modal')
+        emitter.$emit(MODAL_CLOSE_EVENT, { id: 'some-modal' })
         await waitNT(wrapper.vm)
         await waitRAF()
         await waitNT(wrapper.vm)
@@ -1090,7 +1091,7 @@ describe('b-tooltip', () => {
         expect(tip.classList.contains('tooltip')).toBe(true)
 
         // Tooltip should ignore when ID is not its own
-        wrapper.vm.$root.$emit(MODAL_CLOSE_EVENT, 'some-modal')
+        emitter.$emit(MODAL_CLOSE_EVENT, { id: 'some-modal' })
         await waitNT(wrapper.vm)
         await waitRAF()
         await waitNT(wrapper.vm)
@@ -1187,7 +1188,7 @@ describe('b-tooltip', () => {
 
         // Try and show element via root event (using ID of trigger button)
         // Note that this generates a console warning
-        wrapper.vm.$root.$emit('bv::show::tooltip', 'foo')
+        emitter.$emit('bv::show::tooltip', { id: 'foo' })
         await waitNT(wrapper.vm)
         await waitRAF()
         await waitNT(wrapper.vm)
@@ -1203,7 +1204,7 @@ describe('b-tooltip', () => {
         expect(document.getElementById(adb)).toBe(null)
 
         // Try and show element via root event (using show all)
-        wrapper.vm.$root.$emit('bv::show::tooltip')
+        emitter.$emit('bv::show::tooltip')
         await waitNT(wrapper.vm)
         await waitRAF()
         await waitNT(wrapper.vm)

@@ -197,16 +197,17 @@ describe('alert', () => {
         expect(wrapper.classes()).toContain('alert')
         expect(wrapper.find('button').exists()).toBe(true)
         expect(wrapper.emitted('dismissed')).toBeUndefined()
-        expect(wrapper.emitted('input')).toBeUndefined()
+
+        expect(wrapper.emitted('update:show')).toBeUndefined()
 
         await wrapper.find('button').trigger('click')
 
         expect(wrapper.element.nodeType).toBe(Node.COMMENT_NODE)
         expect(wrapper.emitted('dismissed')).toBeDefined()
         expect(wrapper.emitted('dismissed').length).toBe(1)
-        expect(wrapper.emitted('input')).toBeDefined()
-        expect(wrapper.emitted('input').length).toBe(1)
-        expect(wrapper.emitted('input')[0][0]).toBe(false)
+        expect(wrapper.emitted('update:show')).toBeDefined()
+        expect(wrapper.emitted('update:show').length).toBe(1)
+        expect(wrapper.emitted('update:show')[0][0]).toBe(false)
 
         wrapper.unmount()
     })

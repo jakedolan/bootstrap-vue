@@ -19,7 +19,6 @@ export const props = makePropsConfigurable({
 // @vue/component
 export const BContainer = /*#__PURE__*/ defineComponent({
     name: NAME_CONTAINER,
-    functional: true,
     props,
     render(h, { props, data, children }) {
         const { fluid } = props

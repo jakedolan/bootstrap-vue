@@ -1,14 +1,15 @@
-import { isVue3 } from '../../vue'
+import { h } from 'vue';
 import { mount } from '@vue/test-utils'
 import { waitNT } from '../../../tests/utils'
 import { getInstanceFromVNode } from '../../utils/get-instance-from-vnode'
 import { BVTransporter } from './transporter'
 
+const isVue3 = true;
+
 describe('utils/transporter component', () => {
     it('renders in-pace when disabled=true', async() => {
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
-            render(h) {
+            render() {
                 return h(BVTransporter, { props: { disabled: true } }, [h('div', 'content')])
             }
         }
@@ -26,8 +27,7 @@ describe('utils/transporter component', () => {
 
     it('does not render in-pace when disabled=false', async() => {
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
-            render(h) {
+            render() {
                 return h(BVTransporter, { props: { disabled: false } }, [
                     h('div', { attrs: { id: 'foobar' } }, 'content')
                 ])

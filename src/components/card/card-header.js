@@ -24,7 +24,6 @@ export const props = makePropsConfigurable(
 // @vue/component
 export const BCardHeader = /*#__PURE__*/ defineComponent({
     name: NAME_CARD_HEADER,
-    functional: true,
     props,
     render(h, { props, data, children }) {
         const { headerBgVariant, headerBorderVariant, headerTextVariant } = props

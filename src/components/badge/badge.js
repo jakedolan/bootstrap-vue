@@ -28,7 +28,6 @@ export const props = makePropsConfigurable(
 // @vue/component
 export const BBadge = /*#__PURE__*/ defineComponent({
     name: NAME_BADGE,
-    functional: true,
     props,
     render(h, { props, data, children }) {
         const { active, disabled } = props

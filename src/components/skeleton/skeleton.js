@@ -22,7 +22,6 @@ export const props = makePropsConfigurable({
 // @vue/component
 export const BSkeleton = /*#__PURE__*/ defineComponent({
     name: NAME_SKELETON,
-    functional: true,
     props,
     render(h, { data, props }) {
         const { size, animation, variant } = props

@@ -17,7 +17,6 @@ export const props = makePropsConfigurable(
 // @vue/component
 export const BInputGroupAppend = /*#__PURE__*/ defineComponent({
     name: NAME_INPUT_GROUP_APPEND,
-    functional: true,
     props,
     render(h, { props, data, children }) {
         // Pass all our data down to child, and set `append` to `true`

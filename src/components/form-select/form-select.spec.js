@@ -306,12 +306,12 @@ describe('form-select', () => {
         })
         const $options = wrapper.findAll('option')
         expect($options.length).toBe(3)
-        expect($options.at(0).text()).toBe('one')
-        expect($options.at(1).text()).toBe('two')
-        expect($options.at(2).text()).toBe('three')
-        expect($options.at(0).attributes('value')).toBe('one')
-        expect($options.at(1).attributes('value')).toBe('two')
-        expect($options.at(2).attributes('value')).toBe('three')
+        expect($options[0].text()).toBe('one')
+        expect($options[1].text()).toBe('two')
+        expect($options[2].text()).toBe('three')
+        expect($options[0].attributes('value')).toBe('one')
+        expect($options[1].attributes('value')).toBe('two')
+        expect($options[2].attributes('value')).toBe('three')
         expect($options.wrappers.every(o => o.find('[disabled]').exists())).toBe(false)
 
         wrapper.unmount()
@@ -330,27 +330,24 @@ describe('form-select', () => {
 
         const $options = wrapper.findAll('option')
         expect($options.length).toBe(3)
-        expect($options.at(0).text()).toBe('one')
-        expect($options.at(1).text()).toBe('two')
-        expect($options.at(2).text()).toBe('three')
-        expect($options.at(0).attributes('value')).toBe('1')
-        expect($options.at(1).attributes('value')).toBe('2')
-        expect($options.at(2).attributes('value')).toBe('3')
+        expect($options[0].text()).toBe('one')
+        expect($options[1].text()).toBe('two')
+        expect($options[2].text()).toBe('three')
+        expect($options[0].attributes('value')).toBe('1')
+        expect($options[1].attributes('value')).toBe('2')
+        expect($options[2].attributes('value')).toBe('3')
         expect(
-            $options
-            .at(0)
+            $options[0]
             .find('[disabled]')
             .exists()
         ).toBe(false)
         expect(
-            $options
-            .at(1)
+            $options[1]
             .find('[disabled]')
             .exists()
         ).toBe(true)
         expect(
-            $options
-            .at(2)
+            $options[2]
             .find('[disabled]')
             .exists()
         ).toBe(false)
@@ -378,45 +375,39 @@ describe('form-select', () => {
 
         const $options = wrapper.findAll('option')
         expect($options.length).toBe(3)
-        expect($options.at(0).text()).toBe('1,50 €')
-        expect($options.at(1).text()).toBe('5,00 €')
-        expect($options.at(2).text()).toBe('50,75 €')
+        expect($options[0].text()).toBe('1,50 €')
+        expect($options[1].text()).toBe('5,00 €')
+        expect($options[2].text()).toBe('50,75 €')
         expect(
-            $options
-            .at(0)
+            $options[0]
             .find('span')
             .exists()
         ).toBe(false)
         expect(
-            $options
-            .at(1)
+            $options[1]
             .find('span')
             .exists()
         ).toBe(true)
         expect(
-            $options
-            .at(2)
+            $options[2]
             .find('span')
             .exists()
         ).toBe(false)
-        expect($options.at(0).attributes('value')).toBe('1.5')
-        expect($options.at(1).attributes('value')).toBe('5')
-        expect($options.at(2).attributes('value')).toBe('50.75')
+        expect($options[0].attributes('value')).toBe('1.5')
+        expect($options[1].attributes('value')).toBe('5')
+        expect($options[2].attributes('value')).toBe('50.75')
         expect(
-            $options
-            .at(0)
+            $options[0]
             .find('[disabled]')
             .exists()
         ).toBe(false)
         expect(
-            $options
-            .at(1)
+            $options[1]
             .find('[disabled]')
             .exists()
         ).toBe(false)
         expect(
-            $options
-            .at(2)
+            $options[2]
             .find('[disabled]')
             .exists()
         ).toBe(true)
@@ -441,42 +432,38 @@ describe('form-select', () => {
 
         const $groups = wrapper.findAll('optgroup')
         expect($groups.length).toBe(2)
-        expect($groups.at(0).attributes('label')).toBe('group one')
-        expect($groups.at(1).attributes('label')).toBe('group two')
-        expect($groups.at(0).findAll('option').length).toBe(2)
-        expect($groups.at(1).findAll('option').length).toBe(2)
+        expect($groups[0].attributes('label')).toBe('group one')
+        expect($groups[1].attributes('label')).toBe('group two')
+        expect($groups[0].findAll('option').length).toBe(2)
+        expect($groups[1].findAll('option').length).toBe(2)
 
         const $options = wrapper.findAll('option')
         expect($options.length).toBe(4)
-        expect($options.at(0).text()).toBe('one')
-        expect($options.at(1).text()).toBe('two')
-        expect($options.at(2).text()).toBe('three')
-        expect($options.at(3).text()).toBe('four')
-        expect($options.at(0).attributes('value')).toBe('1')
-        expect($options.at(1).attributes('value')).toBe('2')
-        expect($options.at(2).attributes('value')).toBe('3')
-        expect($options.at(3).attributes('value')).toBe('4')
+        expect($options[0].text()).toBe('one')
+        expect($options[1].text()).toBe('two')
+        expect($options[2].text()).toBe('three')
+        expect($options[3].text()).toBe('four')
+        expect($options[0].attributes('value')).toBe('1')
+        expect($options[1].attributes('value')).toBe('2')
+        expect($options[2].attributes('value')).toBe('3')
+        expect($options[3].attributes('value')).toBe('4')
         expect(
-            $options
-            .at(0)
+            $options[0]
             .find('[disabled]')
             .exists()
         ).toBe(false)
         expect(
-            $options
-            .at(1)
+            $options[1]
             .find('[disabled]')
             .exists()
         ).toBe(false)
         expect(
-            $options
-            .at(2)
+            $options[2]
             .find('[disabled]')
             .exists()
         ).toBe(false)
         expect(
-            $options
-            .at(3)
+            $options[3]
             .find('[disabled]')
             .exists()
         ).toBe(true)
@@ -500,40 +487,36 @@ describe('form-select', () => {
 
         const $groups = wrapper.findAll('optgroup')
         expect($groups.length).toBe(1)
-        expect($groups.at(0).attributes('label')).toBe('group')
-        expect($groups.at(0).findAll('option').length).toBe(2)
+        expect($groups[0].attributes('label')).toBe('group')
+        expect($groups[0].findAll('option').length).toBe(2)
 
         const $options = wrapper.findAll('option')
         expect($options.length).toBe(4)
-        expect($options.at(0).text()).toBe('one')
-        expect($options.at(1).text()).toBe('two')
-        expect($options.at(2).text()).toBe('three')
-        expect($options.at(3).text()).toBe('four')
-        expect($options.at(0).attributes('value')).toBe('1')
-        expect($options.at(1).attributes('value')).toBe('2')
-        expect($options.at(2).attributes('value')).toBe('3')
-        expect($options.at(3).attributes('value')).toBe('4')
+        expect($options[0].text()).toBe('one')
+        expect($options[1].text()).toBe('two')
+        expect($options[2].text()).toBe('three')
+        expect($options[3].text()).toBe('four')
+        expect($options[0].attributes('value')).toBe('1')
+        expect($options[1].attributes('value')).toBe('2')
+        expect($options[2].attributes('value')).toBe('3')
+        expect($options[3].attributes('value')).toBe('4')
         expect(
-            $options
-            .at(0)
+            $options[0]
             .find('[disabled]')
             .exists()
         ).toBe(false)
         expect(
-            $options
-            .at(1)
+            $options[1]
             .find('[disabled]')
             .exists()
         ).toBe(false)
         expect(
-            $options
-            .at(2)
+            $options[2]
             .find('[disabled]')
             .exists()
         ).toBe(false)
         expect(
-            $options
-            .at(3)
+            $options[3]
             .find('[disabled]')
             .exists()
         ).toBe(true)
@@ -551,12 +534,12 @@ describe('form-select', () => {
 
         const $options = wrapper.findAll('option')
         expect($options.length).toBe(3)
-        expect($options.at(0).text()).toBe('1')
-        expect($options.at(1).text()).toBe('Two')
-        expect($options.at(2).text()).toBe('three')
-        expect($options.at(0).attributes('value')).toBe('one')
-        expect($options.at(1).attributes('value')).toBe('2')
-        expect($options.at(2).attributes('value')).toBe('three')
+        expect($options[0].text()).toBe('1')
+        expect($options[1].text()).toBe('Two')
+        expect($options[2].text()).toBe('three')
+        expect($options[0].attributes('value')).toBe('one')
+        expect($options[1].attributes('value')).toBe('2')
+        expect($options[2].attributes('value')).toBe('three')
 
         expect(spyWarn).toHaveBeenCalledWith(
             '[BootstrapVue warn]: BFormSelect - Setting prop "options" to an object is deprecated. Use the array format instead.'
@@ -578,12 +561,12 @@ describe('form-select', () => {
 
         const $options = wrapper.findAll('option')
         expect($options.length).toBe(3)
-        expect($options.at(0).text()).toBe('one')
-        expect($options.at(1).text()).toBe('two')
-        expect($options.at(2).text()).toBe('three')
-        expect($options.at(0).attributes('value')).toBe('1')
-        expect($options.at(1).attributes('value')).toBe('2')
-        expect($options.at(2).attributes('value')).toBe('3')
+        expect($options[0].text()).toBe('one')
+        expect($options[1].text()).toBe('two')
+        expect($options[2].text()).toBe('three')
+        expect($options[0].attributes('value')).toBe('1')
+        expect($options[1].attributes('value')).toBe('2')
+        expect($options[2].attributes('value')).toBe('3')
 
         wrapper.unmount()
     })
@@ -601,7 +584,7 @@ describe('form-select', () => {
         expect(wrapper.emitted('change')).toBeUndefined()
 
         // select 3rd option
-        $options.at(2).setSelected()
+        $options[2].setSelected()
         await waitNT(wrapper.vm)
 
         expect(wrapper.emitted('input')).toBeDefined()
@@ -622,21 +605,21 @@ describe('form-select', () => {
         const $options = wrapper.findAll('option')
         expect($options.length).toBe(3)
 
-        expect($options.at(0).element.selected).toBe(true)
+        expect($options[0].element.selected).toBe(true)
 
         // Select 2nd option
         await wrapper.setProps({
             value: 'two'
         })
 
-        expect($options.at(1).element.selected).toBe(true)
+        expect($options[1].element.selected).toBe(true)
 
         // Select 3rd option
         await wrapper.setProps({
             value: { three: 3 }
         })
 
-        expect($options.at(2).element.selected).toBe(true)
+        expect($options[2].element.selected).toBe(true)
 
         wrapper.unmount()
     })
@@ -658,7 +641,7 @@ describe('form-select', () => {
         expect(wrapper.emitted('change')).toBeUndefined()
 
         // Select 3rd option
-        $options.at(2).setSelected()
+        $options[2].setSelected()
         await waitNT(wrapper.vm)
 
         expect(wrapper.emitted('input')).toBeDefined()
@@ -685,8 +668,8 @@ describe('form-select', () => {
         expect(wrapper.emitted('change')).toBeUndefined()
 
         // Select 2nd and 3rd option
-        $options.at(1).element.selected = true
-        $options.at(2).element.selected = true
+        $options[1].element.selected = true
+        $options[2].element.selected = true
         await wrapper.trigger('change')
         expect(wrapper.emitted('input')).toBeDefined()
         expect(wrapper.emitted('change')).toBeDefined()
@@ -716,8 +699,8 @@ describe('form-select', () => {
         expect(wrapper.emitted('change')).toBeUndefined()
 
         // Select 2nd and 3rd option
-        $options.at(1).element.selected = true
-        $options.at(2).element.selected = true
+        $options[1].element.selected = true
+        $options[2].element.selected = true
         await wrapper.trigger('change')
         expect(wrapper.emitted('input')).toBeDefined()
         expect(wrapper.emitted('change')).toBeDefined()

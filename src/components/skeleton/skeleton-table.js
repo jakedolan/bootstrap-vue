@@ -34,7 +34,6 @@ export const props = makePropsConfigurable({
 // @vue/component
 export const BSkeletonTable = /*#__PURE__*/ defineComponent({
     name: NAME_SKELETON_TABLE,
-    functional: true,
     props,
     render(h, { data, props }) {
         const { animation, columns } = props

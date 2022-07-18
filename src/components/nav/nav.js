@@ -33,7 +33,6 @@ export const props = makePropsConfigurable({
 // @vue/component
 export const BNav = /*#__PURE__*/ defineComponent({
     name: NAME_NAV,
-    functional: true,
     props,
     render(h, { props, data, children }) {
         const { tabs, pills, vertical, align, cardHeader } = props

@@ -1,3 +1,4 @@
+import { h } from 'vue';
 import { mount } from '@vue/test-utils'
 import { listenOnDocumentMixin } from './listen-on-document'
 
@@ -8,11 +9,6 @@ describe('mixins/listen-on-document', () => {
         const spyFocusin = jest.fn()
 
         const TestComponent = {
-            compatConfig: {
-                MODE: 3,
-                RENDER_FUNCTION: 'suppress-warning',
-
-            },
             mixins: [listenOnDocumentMixin],
             props: {
                 offClickOne: {
@@ -32,13 +28,12 @@ describe('mixins/listen-on-document', () => {
                     }
                 }
             },
-            render(h) {
+            render() {
                 return h('div', this.$slots.default)
             }
         }
 
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
             components: { TestComponent },
             props: {
                 offClickOne: {
@@ -50,7 +45,7 @@ describe('mixins/listen-on-document', () => {
                     default: false
                 }
             },
-            render(h) {
+            render() {
                 const props = {
                     offClickOne: this.offClickOne
                 }

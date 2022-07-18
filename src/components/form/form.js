@@ -20,7 +20,6 @@ export const props = makePropsConfigurable({
 // @vue/component
 export const BForm = /*#__PURE__*/ defineComponent({
     name: NAME_FORM,
-    functional: true,
     props,
     render(h, { props, data, children }) {
         return h(

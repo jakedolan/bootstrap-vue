@@ -59,10 +59,6 @@ export const props = sortKeys({
 
 // @vue/component
 export const BVFormBtnLabelControl = /*#__PURE__*/ defineComponent({
-    compatConfig: {
-        MODE: 3,
-        CUSTOM_DIR: 'suppress-warning'
-    },
     name: NAME_FORM_BUTTON_LABEL_CONTROL,
     directives: {
         'b-hover': VBHover

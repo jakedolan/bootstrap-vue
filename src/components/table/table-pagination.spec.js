@@ -32,20 +32,17 @@ describe('table > pagination', () => {
         expect(wrapper.findAll('tbody > tr').length).toBe(3)
         const $trs = wrapper.findAll('tbody > tr')
         expect(
-            $trs
-            .at(0)
+            $trs[0]
             .find('td')
             .text()
         ).toBe('1')
         expect(
-            $trs
-            .at(1)
+            $trs[1]
             .find('td')
             .text()
         ).toBe('4')
         expect(
-            $trs
-            .at(2)
+            $trs[2]
             .find('td')
             .text()
         ).toBe('7')
@@ -64,20 +61,17 @@ describe('table > pagination', () => {
         expect(wrapper.findAll('tbody > tr').length).toBe(3)
         let $trs = wrapper.findAll('tbody > tr')
         expect(
-            $trs
-            .at(0)
+            $trs[0]
             .find('td')
             .text()
         ).toBe('1')
         expect(
-            $trs
-            .at(1)
+            $trs[1]
             .find('td')
             .text()
         ).toBe('4')
         expect(
-            $trs
-            .at(2)
+            $trs[2]
             .find('td')
             .text()
         ).toBe('7')
@@ -87,14 +81,12 @@ describe('table > pagination', () => {
         expect(wrapper.findAll('tbody > tr').length).toBe(2)
         $trs = wrapper.findAll('tbody > tr')
         expect(
-            $trs
-            .at(0)
+            $trs[0]
             .find('td')
             .text()
         ).toBe('10')
         expect(
-            $trs
-            .at(1)
+            $trs[1]
             .find('td')
             .text()
         ).toBe('13')

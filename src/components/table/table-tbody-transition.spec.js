@@ -1,8 +1,8 @@
 import { config as vtuConfig, mount } from '@vue/test-utils'
 import { TransitionGroupStub } from '../../../tests/components'
-import { isVue3 } from '../../vue'
 import { BTable } from './table'
 
+const isVue3 = true;
 // Stub `<transition-group>` component
 if (!isVue3) {
     vtuConfig.stubs['transition-group'] = TransitionGroupStub

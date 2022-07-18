@@ -11,7 +11,6 @@ export const props = {}
 // @vue/component
 export const BNavText = /*#__PURE__*/ defineComponent({
     name: NAME_NAV_TEXT,
-    functional: true,
     props,
     render(h, { data, children }) {
         return h('li', mergeData(data, { class: 'navbar-text' }), children)

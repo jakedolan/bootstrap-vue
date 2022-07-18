@@ -19,7 +19,6 @@ export const props = makePropsConfigurable({
 // @vue/component
 export const BCardTitle = /*#__PURE__*/ defineComponent({
     name: NAME_CARD_TITLE,
-    functional: true,
     props,
     render(h, { props, data, children }) {
         return h(

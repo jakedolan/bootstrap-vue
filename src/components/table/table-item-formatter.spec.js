@@ -22,8 +22,8 @@ describe('table > field-formatter', () => {
         expect(wrapper.findAll('tbody > tr').length).toBe(1)
         expect(wrapper.findAll('tbody > tr > td').length).toBe(2)
         const $tds = wrapper.findAll('tbody > tr > td')
-        expect($tds.at(0).text()).toBe('3')
-        expect($tds.at(1).text()).toBe('2')
+        expect($tds[0].text()).toBe('3')
+        expect($tds[1].text()).toBe('2')
 
         wrapper.unmount()
     })
@@ -46,8 +46,8 @@ describe('table > field-formatter', () => {
         expect(wrapper.findAll('tbody > tr').length).toBe(1)
         expect(wrapper.findAll('tbody > tr > td').length).toBe(2)
         const $tds = wrapper.findAll('tbody > tr > td')
-        expect($tds.at(0).text()).toBe('3')
-        expect($tds.at(1).text()).toBe('2')
+        expect($tds[0].text()).toBe('3')
+        expect($tds[1].text()).toBe('2')
 
         wrapper.unmount()
     })

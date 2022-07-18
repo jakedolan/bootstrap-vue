@@ -24,7 +24,7 @@ describe('table > tfoot events', () => {
         const $ths = wrapper.findAll('tfoot > tr > th')
         expect($ths.length).toBe(testFields.length)
         expect(wrapper.emitted('head-clicked')).toBeUndefined()
-        await $ths.at(0).trigger('click')
+        await $ths[0].trigger('click')
         expect(wrapper.emitted('head-clicked')).toBeDefined()
         expect(wrapper.emitted('head-clicked').length).toBe(1)
         expect(wrapper.emitted('head-clicked')[0][0]).toEqual(testFields[0].key) // Field key
@@ -32,7 +32,7 @@ describe('table > tfoot events', () => {
         expect(wrapper.emitted('head-clicked')[0][2]).toBeInstanceOf(MouseEvent) // Event
         expect(wrapper.emitted('head-clicked')[0][3]).toBe(true) // Is footer
 
-        await $ths.at(2).trigger('click')
+        await $ths[2].trigger('click')
         expect(wrapper.emitted('head-clicked').length).toBe(2)
         expect(wrapper.emitted('head-clicked')[1][0]).toEqual(testFields[2].key) // Field key
         expect(wrapper.emitted('head-clicked')[1][1]).toEqual(testFields[2]) // Field definition
@@ -60,7 +60,7 @@ describe('table > tfoot events', () => {
         const $ths = wrapper.findAll('tfoot > tr > th')
         expect($ths.length).toBe(testFields.length)
         expect(wrapper.emitted('head-clicked')).toBeUndefined()
-        await $ths.at(0).trigger('click')
+        await $ths[0].trigger('click')
         expect(wrapper.emitted('head-clicked')).toBeUndefined()
 
         wrapper.unmount()
@@ -86,7 +86,7 @@ describe('table > tfoot events', () => {
         const $ths = wrapper.findAll('tfoot > tr > th')
         expect($ths.length).toBe(testFields.length)
         expect(wrapper.emitted('head-clicked')).toBeUndefined()
-        await $ths.at(0).trigger('click')
+        await $ths[0].trigger('click')
         expect(wrapper.emitted('head-clicked')).toBeUndefined()
 
         wrapper.unmount()

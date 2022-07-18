@@ -20,7 +20,6 @@ export const props = makePropsConfigurable({
 // @vue/component
 export const BDropdownText = /*#__PURE__*/ defineComponent({
     name: NAME_DROPDOWN_TEXT,
-    functional: true,
     props,
     render(h, { props, data, children }) {
         const { tag, textClass, variant } = props

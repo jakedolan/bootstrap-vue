@@ -85,9 +85,6 @@ export const props = makePropsConfigurable(
 
 // @vue/component
 export const dropdownMixin = defineComponent({
-    compatConfig: {
-        MODE: 3,
-    },
     mixins: [idMixin, listenOnRootMixin, clickOutMixin, focusInMixin],
     provide() {
         return { getBvDropdown: () => this }
@@ -227,7 +224,7 @@ export const dropdownMixin = defineComponent({
             }
 
             // Ensure other menus are closed
-            this.emitOnRoot(ROOT_EVENT_NAME_SHOWN, this)
+            this.emitOnRoot(ROOT_EVENT_NAME_SHOWN, { vm: this })
 
             // Enable listeners
             this.whileOpenListen(true)
@@ -242,7 +239,7 @@ export const dropdownMixin = defineComponent({
         },
         hideMenu() {
             this.whileOpenListen(false)
-            this.emitOnRoot(ROOT_EVENT_NAME_HIDDEN, this)
+            this.emitOnRoot(ROOT_EVENT_NAME_HIDDEN, { vm: this })
             if (this.emitter) {
                 this.emitter.emit(`EVENT_NAME_HIDDEN:${this[COMPONENT_UID_KEY]}`);
             }
@@ -301,7 +298,7 @@ export const dropdownMixin = defineComponent({
             this.listenForFocusIn = isOpen
                 // Hide the dropdown when another dropdown is opened
             const method = isOpen ? 'listenOnRoot' : 'listenOffRoot'
-            this[method](ROOT_EVENT_NAME_SHOWN, this.rootCloseListener)
+            this[method](ROOT_EVENT_NAME_SHOWN, ({ vm }) => this.rootCloseListener(vm))
         },
         rootCloseListener(vm) {
             if (vm !== this) {

@@ -2,6 +2,7 @@ import { mount } from '@vue/test-utils'
 import { BButtonClose } from './button-close'
 
 describe('button-close', () => {
+
     it('has root element "button"', async() => {
         const wrapper = mount(BButtonClose)
 
@@ -37,9 +38,7 @@ describe('button-close', () => {
 
     it('has attribute "disabled" when prop "disabled" is set', async() => {
         const wrapper = mount(BButtonClose, {
-            context: {
-                props: { disabled: true }
-            }
+            props: { disabled: true }
         })
 
         expect(wrapper.attributes('disabled')).toBeDefined()
@@ -57,9 +56,7 @@ describe('button-close', () => {
 
     it('has custom attribute "aria-label" when prop "aria-label" set', async() => {
         const wrapper = mount(BButtonClose, {
-            context: {
-                props: { ariaLabel: 'foobar' }
-            }
+            props: { ariaLabel: 'foobar' }
         })
 
         expect(wrapper.attributes('aria-label')).toBe('foobar')
@@ -69,9 +66,7 @@ describe('button-close', () => {
 
     it('has text variant class when "variant" prop set', async() => {
         const wrapper = mount(BButtonClose, {
-            context: {
-                props: { textVariant: 'primary' }
-            }
+            props: { textVariant: 'primary' }
         })
 
         expect(wrapper.classes()).toContain('close')
@@ -86,15 +81,14 @@ describe('button-close', () => {
 
         // '&times;' gets converted to '×'
         expect(wrapper.text()).toContain('×')
-
         wrapper.unmount()
     })
 
+
     it('should have custom content from "content" prop', async() => {
         const wrapper = mount(BButtonClose, {
-            context: {
-                props: { content: 'Close' }
-            }
+            props: { content: 'Close' }
+
         })
 
         expect(wrapper.text()).toContain('Close')
@@ -120,8 +114,8 @@ describe('button-close', () => {
             event = e
         })
         const wrapper = mount(BButtonClose, {
-            context: {
-                on: { click: spy1 }
+            attrs: {
+                onClick: spy1
             },
             slots: {
                 default: '<i>some <span>text</span></i>'
@@ -151,11 +145,9 @@ describe('button-close', () => {
     it('should not emit "click" event when disabled and clicked', async() => {
         const spy1 = jest.fn()
         const wrapper = mount(BButtonClose, {
-            context: {
-                props: {
-                    disabled: true
-                },
-                on: { click: spy1 }
+            attrs: { onClick: spy1 },
+            props: {
+                disabled: true
             },
             slots: {
                 default: '<i>some <span>text</span></i>'
@@ -188,9 +180,8 @@ describe('button-close', () => {
         const spy1 = jest.fn()
         const spy2 = jest.fn()
         const wrapper = mount(BButtonClose, {
-            context: {
-                on: { click: [spy1, spy2] }
-            }
+            attrs: { onClick: [spy1, spy2] }
+
         })
 
         expect(spy1).not.toHaveBeenCalled()
@@ -207,4 +198,5 @@ describe('button-close', () => {
 
         wrapper.unmount()
     })
+
 })

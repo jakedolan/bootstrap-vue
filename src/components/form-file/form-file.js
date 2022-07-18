@@ -178,10 +178,6 @@ const props = makePropsConfigurable(
 // @vue/component
 export const BFormFile = /*#__PURE__*/ defineComponent({
     name: NAME_FORM_FILE,
-    compatConfig: {
-        MODE: 3,
-
-    },
     mixins: [
         attrsMixin,
         idMixin,

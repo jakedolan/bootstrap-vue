@@ -1,3 +1,4 @@
+import { h } from 'vue';
 import { mount } from '@vue/test-utils'
 import { waitNT, waitRAF } from '../../../tests/utils'
 import { BFormFile } from './form-file'
@@ -546,8 +547,7 @@ describe('form-file', () => {
 
     it('form native reset event triggers BFormFile reset', async() => {
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
-            render(h) {
+            render() {
                 return h('form', {}, [h(BFormFile, { id: 'foo' })])
             }
         }

@@ -182,10 +182,6 @@ export const props = makePropsConfigurable(
 // @vue/component
 export const BCalendar = defineComponent({
     name: NAME_CALENDAR,
-    compatConfig: {
-        MODE: 3,
-
-    },
     // Mixin order is important!
     mixins: [attrsMixin, idMixin, modelMixin, normalizeSlotMixin],
     props,

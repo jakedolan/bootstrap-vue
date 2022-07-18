@@ -24,7 +24,6 @@ export const props = makePropsConfigurable({
 // @vue/component
 export const BListGroup = /*#__PURE__*/ defineComponent({
     name: NAME_LIST_GROUP,
-    functional: true,
     props,
     render(h, { props, data, children }) {
         let horizontal = props.horizontal === '' ? true : props.horizontal

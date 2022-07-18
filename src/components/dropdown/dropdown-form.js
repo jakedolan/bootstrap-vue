@@ -22,7 +22,6 @@ export const props = makePropsConfigurable(
 // @vue/component
 export const BDropdownForm = /*#__PURE__*/ defineComponent({
     name: NAME_DROPDOWN_FORM,
-    functional: true,
     props,
     render(h, { props, data, listeners, children }) {
         return h('li', mergeData(omit(data, ['attrs', 'on']), { role: 'presentation' }), [

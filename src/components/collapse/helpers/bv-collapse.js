@@ -76,7 +76,6 @@ export const props = {
 // @vue/component
 export const BVCollapse = /*#__PURE__*/ defineComponent({
     name: NAME_COLLAPSE_HELPER,
-    functional: true,
     inheritAttrs: false,
     props,
     render() {
@@ -91,10 +90,12 @@ export const BVCollapse = /*#__PURE__*/ defineComponent({
         return h(Transition,
             // We merge in the `appear` prop last
             componentData,
+
             // Note: `<transition>` supports a single root element only
             {
                 default: () => normalizeSlot(SLOT_NAME_DEFAULT, {}, $slots)
             }
+
         )
     }
 })

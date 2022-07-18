@@ -24,7 +24,6 @@ export const props = makePropsConfigurable({
 // @vue/component
 export const BFormValidFeedback = /*#__PURE__*/ defineComponent({
     name: NAME_FORM_VALID_FEEDBACK,
-    functional: true,
     props,
     render(h, { props, data, children }) {
         const { tooltip, ariaLive } = props

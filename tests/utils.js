@@ -1,11 +1,6 @@
 // --- Utils for testing ---
 
 export const wrapWithMethods = (Component, methods) => ({
-  compatConfig: {
-    MODE: 3,
-    INSTANCE_LISTENERS: false,
-    INSTANCE_SCOPED_SLOTS: false
-  },
   inheritAttrs: false,
   components: { wrappedComponent: Component },
   methods,

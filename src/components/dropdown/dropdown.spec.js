@@ -1,7 +1,9 @@
+import { h } from 'vue';
 import { mount } from '@vue/test-utils'
 import { waitNT, waitRAF } from '../../../tests/utils'
 import { BDropdown } from './dropdown'
 import { BDropdownItem } from './dropdown-item'
+import { emitter } from '../../utils/emitter.js'
 
 describe('dropdown', () => {
     const originalCreateRange = document.createRange
@@ -108,8 +110,8 @@ describe('dropdown', () => {
 
         expect(wrapper.findAll('button').length).toBe(2)
         const $buttons = wrapper.findAll('button')
-        const $split = $buttons.at(0)
-        const $toggle = $buttons.at(1)
+        const $split = $buttons[0]
+        const $toggle = $buttons[1]
 
         expect($split.classes()).toContain('btn')
         expect($split.classes()).toContain('btn-secondary')
@@ -169,8 +171,8 @@ describe('dropdown', () => {
 
         expect(wrapper.findAll('button').length).toBe(2)
         const $buttons = wrapper.findAll('button')
-        const $split = $buttons.at(0)
-        const $toggle = $buttons.at(1)
+        const $split = $buttons[0]
+        const $toggle = $buttons[1]
 
         expect($split.attributes('type')).toBeDefined()
         expect($split.attributes('type')).toEqual('submit')
@@ -234,8 +236,8 @@ describe('dropdown', () => {
 
         expect(wrapper.findAll('button').length).toBe(2)
         const $buttons = wrapper.findAll('button')
-        const $split = $buttons.at(0)
-        const $toggle = $buttons.at(1)
+        const $split = $buttons[0]
+        const $toggle = $buttons[1]
 
         expect($split.text()).toEqual('foobar')
         expect($toggle.classes()).toContain('dropdown-toggle')
@@ -460,7 +462,7 @@ describe('dropdown', () => {
         })
 
         const $buttons = wrapper.findAll('button')
-        const $split = $buttons.at(0)
+        const $split = $buttons[0]
         expect($split.classes()).toContain(splitClass)
 
         wrapper.unmount()
@@ -505,7 +507,7 @@ describe('dropdown', () => {
 
         expect(wrapper.findAll('button').length).toBe(2)
         const $buttons = wrapper.findAll('button')
-        const $split = $buttons.at(0)
+        const $split = $buttons[0]
 
         await $split.trigger('click')
 
@@ -517,11 +519,10 @@ describe('dropdown', () => {
 
     it('dropdown opens and closes', async() => {
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
             props: {
                 disabled: { type: Boolean, default: false }
             },
-            render(h) {
+            render() {
                 const { disabled } = this
 
                 return h('div', { attrs: { id: 'container' } }, [
@@ -718,7 +719,7 @@ describe('dropdown', () => {
         expect($toggle.attributes('aria-expanded')).toEqual('true')
 
         // Should close on root emit when argument is not self
-        wrapper.vm.$root.$emit('bv::dropdown::shown')
+        emitter.$emit('bv::dropdown::shown')
         await waitRAF()
         await waitNT(wrapper.vm)
         await waitRAF()
@@ -788,8 +789,7 @@ describe('dropdown', () => {
 
     it('Keyboard navigation works when open', async() => {
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
-            render(h) {
+            render() {
                 return h('div', [
                     h(BDropdown, { props: { id: 'test' } }, [
                         h(BDropdownItem, { attrs: { id: 'item-1' } }, 'item'),
@@ -841,61 +841,61 @@ describe('dropdown', () => {
         await waitRAF()
         await waitNT(wrapper.vm)
         await waitRAF()
-        expect(document.activeElement).toBe($items.at(0).element)
+        expect(document.activeElement).toBe($items[0].element)
 
         // Move to second menu item
-        await $items.at(0).trigger('keydown.down')
+        await $items[0].trigger('keydown.down')
         await waitRAF()
         await waitNT(wrapper.vm)
         await waitRAF()
         await waitNT(wrapper.vm)
         await waitRAF()
-        expect(document.activeElement).toBe($items.at(1).element)
+        expect(document.activeElement).toBe($items[1].element)
 
         // Move down to next menu item (should skip disabled item)
-        await $items.at(1).trigger('keydown.down')
+        await $items[1].trigger('keydown.down')
         await waitRAF()
         await waitNT(wrapper.vm)
         await waitRAF()
         await waitNT(wrapper.vm)
         await waitRAF()
-        expect(document.activeElement).toBe($items.at(3).element)
+        expect(document.activeElement).toBe($items[3].element)
 
         // Move down to next menu item (should remain on same item)
-        await $items.at(3).trigger('keydown.down')
+        await $items[3].trigger('keydown.down')
         await waitRAF()
         await waitNT(wrapper.vm)
         await waitRAF()
         await waitNT(wrapper.vm)
         await waitRAF()
-        expect(document.activeElement).toBe($items.at(3).element)
+        expect(document.activeElement).toBe($items[3].element)
 
         // Move up to previous menu item (should skip disabled item)
-        await $items.at(3).trigger('keydown.up')
+        await $items[3].trigger('keydown.up')
         await waitRAF()
         await waitNT(wrapper.vm)
         await waitRAF()
         await waitNT(wrapper.vm)
         await waitRAF()
-        expect(document.activeElement).toBe($items.at(1).element)
+        expect(document.activeElement).toBe($items[1].element)
 
         // Move up to previous menu item
-        await $items.at(1).trigger('keydown.up')
+        await $items[1].trigger('keydown.up')
         await waitRAF()
         await waitNT(wrapper.vm)
         await waitRAF()
         await waitNT(wrapper.vm)
         await waitRAF()
-        expect(document.activeElement).toBe($items.at(0).element)
+        expect(document.activeElement).toBe($items[0].element)
 
         // Move up to previous menu item (should remain on first item)
-        await $items.at(0).trigger('keydown.up')
+        await $items[0].trigger('keydown.up')
         await waitRAF()
         await waitNT(wrapper.vm)
         await waitRAF()
         await waitNT(wrapper.vm)
         await waitRAF()
-        expect(document.activeElement).toBe($items.at(0).element)
+        expect(document.activeElement).toBe($items[0].element)
 
         wrapper.unmount()
     })
@@ -958,8 +958,8 @@ describe('dropdown', () => {
         expect(wrapper.vm).toBeDefined()
 
         expect(wrapper.findAll('.btn').length).toBe(2)
-        const $split = wrapper.findAll('.btn').at(0)
-        const $toggle = wrapper.findAll('.btn').at(1)
+        const $split = wrapper.findAll('.btn')[0]
+        const $toggle = wrapper.findAll('.btn')[1]
 
         expect($split.element.tagName).toBe('BUTTON')
         expect($split.classes()).toContain('btn-lg')
@@ -1002,7 +1002,7 @@ describe('dropdown', () => {
         expect(wrapper.vm).toBeDefined()
 
         expect(wrapper.findAll('.btn').length).toBe(2)
-        const $split = wrapper.findAll('.btn').at(0)
+        const $split = wrapper.findAll('.btn')[0]
 
         expect($split.element.tagName).toBe('BUTTON')
         expect($split.text()).toEqual('foobar')
@@ -1044,8 +1044,8 @@ describe('dropdown', () => {
         expect(wrapper.vm).toBeDefined()
 
         expect(wrapper.findAll('.btn').length).toBe(2)
-        const $split = wrapper.findAll('.btn').at(0)
-        const $toggle = wrapper.findAll('.btn').at(1)
+        const $split = wrapper.findAll('.btn')[0]
+        const $toggle = wrapper.findAll('.btn')[1]
 
         expect($split.element.tagName).toBe('BUTTON')
         expect($split.classes()).toContain('btn-primary')
@@ -1079,8 +1079,8 @@ describe('dropdown', () => {
 
         expect(wrapper.findAll('.btn').length).toBe(2)
         const $buttons = wrapper.findAll('.btn')
-        const $split = $buttons.at(0)
-        const $toggle = $buttons.at(1)
+        const $split = $buttons[0]
+        const $toggle = $buttons[1]
 
         expect($toggle.element.tagName).toBe('BUTTON')
 
@@ -1107,8 +1107,8 @@ describe('dropdown', () => {
 
         expect(wrapper.findAll('.btn').length).toBe(2)
         const $buttons = wrapper.findAll('.btn')
-        const $split = $buttons.at(0)
-        const $toggle = $buttons.at(1)
+        const $split = $buttons[0]
+        const $toggle = $buttons[1]
 
         expect($toggle.element.tagName).toBe('BUTTON')
 

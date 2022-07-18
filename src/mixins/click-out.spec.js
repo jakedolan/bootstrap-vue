@@ -1,3 +1,4 @@
+import { h } from 'vue';
 import { mount } from '@vue/test-utils'
 import { waitNT } from '../../tests/utils'
 import { clickOutMixin } from './click-out'
@@ -6,11 +7,6 @@ describe('utils/click-out', () => {
     it('works', async() => {
         let count = 0
         const App = {
-            compatConfig: {
-                MODE: 3,
-                RENDER_FUNCTION: 'suppress-warning',
-
-            },
             mixins: [clickOutMixin],
             // `listenForClickOut` comes from the mixin data
             created() {
@@ -21,7 +17,7 @@ describe('utils/click-out', () => {
                     count++
                 }
             },
-            render(h) {
+            render() {
                 return h('div', [h('button', 'button')])
             }
         }

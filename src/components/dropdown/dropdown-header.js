@@ -21,7 +21,6 @@ export const props = makePropsConfigurable({
 // @vue/component
 export const BDropdownHeader = /*#__PURE__*/ defineComponent({
     name: NAME_DROPDOWN_HEADER,
-    functional: true,
     props,
     render(h, { props, data, children }) {
         const { tag, variant } = props

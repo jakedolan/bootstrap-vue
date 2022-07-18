@@ -1,3 +1,4 @@
+import { h } from 'vue';
 import VueRouter from 'vue-router'
 import { mount } from '@vue/test-utils'
 import { waitNT, waitRAF } from '../../../tests/utils'
@@ -65,15 +66,15 @@ describe('pagination-nav', () => {
         expect($links.length).toBe(9)
 
         // Default base URL is '/', and link will be the page number
-        expect($links.at(0).attributes('href')).toBe('/1')
-        expect($links.at(1).attributes('href')).toBe('/2')
-        expect($links.at(2).attributes('href')).toBe('/1')
-        expect($links.at(3).attributes('href')).toBe('/2')
-        expect($links.at(4).attributes('href')).toBe('/3')
-        expect($links.at(5).attributes('href')).toBe('/4')
-        expect($links.at(6).attributes('href')).toBe('/5')
-        expect($links.at(7).attributes('href')).toBe('/4')
-        expect($links.at(8).attributes('href')).toBe('/5')
+        expect($links[0].attributes('href')).toBe('/1')
+        expect($links[1].attributes('href')).toBe('/2')
+        expect($links[2].attributes('href')).toBe('/1')
+        expect($links[3].attributes('href')).toBe('/2')
+        expect($links[4].attributes('href')).toBe('/3')
+        expect($links[5].attributes('href')).toBe('/4')
+        expect($links[6].attributes('href')).toBe('/5')
+        expect($links[7].attributes('href')).toBe('/4')
+        expect($links[8].attributes('href')).toBe('/5')
 
         wrapper.unmount()
     })
@@ -93,11 +94,11 @@ describe('pagination-nav', () => {
         const $links = wrapper.findAll('a.page-link')
         expect($links.length).toBe(9)
 
-        expect($links.at(2).text()).toBe('1')
-        expect($links.at(3).text()).toBe('2')
-        expect($links.at(4).text()).toBe('3')
-        expect($links.at(5).text()).toBe('4')
-        expect($links.at(6).text()).toBe('5')
+        expect($links[2].text()).toBe('1')
+        expect($links[3].text()).toBe('2')
+        expect($links[4].text()).toBe('3')
+        expect($links[5].text()).toBe('4')
+        expect($links[6].text()).toBe('5')
 
         wrapper.unmount()
     })
@@ -186,15 +187,15 @@ describe('pagination-nav', () => {
         expect($links.length).toBe(9)
 
         // Default base URL is '/', and link will be the page number
-        expect($links.at(0).attributes('href')).toBe('/foo/1')
-        expect($links.at(1).attributes('href')).toBe('/foo/2')
-        expect($links.at(2).attributes('href')).toBe('/foo/1')
-        expect($links.at(3).attributes('href')).toBe('/foo/2')
-        expect($links.at(4).attributes('href')).toBe('/foo/3')
-        expect($links.at(5).attributes('href')).toBe('/foo/4')
-        expect($links.at(6).attributes('href')).toBe('/foo/5')
-        expect($links.at(7).attributes('href')).toBe('/foo/4')
-        expect($links.at(8).attributes('href')).toBe('/foo/5')
+        expect($links[0].attributes('href')).toBe('/foo/1')
+        expect($links[1].attributes('href')).toBe('/foo/2')
+        expect($links[2].attributes('href')).toBe('/foo/1')
+        expect($links[3].attributes('href')).toBe('/foo/2')
+        expect($links[4].attributes('href')).toBe('/foo/3')
+        expect($links[5].attributes('href')).toBe('/foo/4')
+        expect($links[6].attributes('href')).toBe('/foo/5')
+        expect($links[7].attributes('href')).toBe('/foo/4')
+        expect($links[8].attributes('href')).toBe('/foo/5')
 
         wrapper.unmount()
     })
@@ -216,15 +217,15 @@ describe('pagination-nav', () => {
         expect($links.length).toBe(9)
 
         // Default base URL is '/', and link will be the page number
-        expect($links.at(0).attributes('href')).toBe('?1')
-        expect($links.at(1).attributes('href')).toBe('?2')
-        expect($links.at(2).attributes('href')).toBe('?1')
-        expect($links.at(3).attributes('href')).toBe('?2')
-        expect($links.at(4).attributes('href')).toBe('?3')
-        expect($links.at(5).attributes('href')).toBe('?4')
-        expect($links.at(6).attributes('href')).toBe('?5')
-        expect($links.at(7).attributes('href')).toBe('?4')
-        expect($links.at(8).attributes('href')).toBe('?5')
+        expect($links[0].attributes('href')).toBe('?1')
+        expect($links[1].attributes('href')).toBe('?2')
+        expect($links[2].attributes('href')).toBe('?1')
+        expect($links[3].attributes('href')).toBe('?2')
+        expect($links[4].attributes('href')).toBe('?3')
+        expect($links[5].attributes('href')).toBe('?4')
+        expect($links[6].attributes('href')).toBe('?5')
+        expect($links[7].attributes('href')).toBe('?4')
+        expect($links[8].attributes('href')).toBe('?5')
 
         wrapper.unmount()
     })
@@ -246,15 +247,15 @@ describe('pagination-nav', () => {
         expect($links.length).toBe(9)
 
         // Default base URL is '/', and link will be the page number
-        expect($links.at(0).attributes('href')).toBe('/baz?1')
-        expect($links.at(1).attributes('href')).toBe('/baz?2')
-        expect($links.at(2).attributes('href')).toBe('/baz?1')
-        expect($links.at(3).attributes('href')).toBe('/baz?2')
-        expect($links.at(4).attributes('href')).toBe('/baz?3')
-        expect($links.at(5).attributes('href')).toBe('/baz?4')
-        expect($links.at(6).attributes('href')).toBe('/baz?5')
-        expect($links.at(7).attributes('href')).toBe('/baz?4')
-        expect($links.at(8).attributes('href')).toBe('/baz?5')
+        expect($links[0].attributes('href')).toBe('/baz?1')
+        expect($links[1].attributes('href')).toBe('/baz?2')
+        expect($links[2].attributes('href')).toBe('/baz?1')
+        expect($links[3].attributes('href')).toBe('/baz?2')
+        expect($links[4].attributes('href')).toBe('/baz?3')
+        expect($links[5].attributes('href')).toBe('/baz?4')
+        expect($links[6].attributes('href')).toBe('/baz?5')
+        expect($links[7].attributes('href')).toBe('/baz?4')
+        expect($links[8].attributes('href')).toBe('/baz?5')
 
         wrapper.unmount()
     })
@@ -275,11 +276,11 @@ describe('pagination-nav', () => {
         const $links = wrapper.findAll('a.page-link')
         expect($links.length).toBe(9)
 
-        expect($links.at(2).text()).toBe('Page 1')
-        expect($links.at(3).text()).toBe('Page 2')
-        expect($links.at(4).text()).toBe('Page 3')
-        expect($links.at(5).text()).toBe('Page 4')
-        expect($links.at(6).text()).toBe('Page 5')
+        expect($links[2].text()).toBe('Page 1')
+        expect($links[3].text()).toBe('Page 2')
+        expect($links[4].text()).toBe('Page 3')
+        expect($links[5].text()).toBe('Page 4')
+        expect($links[6].text()).toBe('Page 5')
 
         wrapper.unmount()
     })
@@ -300,22 +301,22 @@ describe('pagination-nav', () => {
         expect($links.length).toBe(9)
 
         // Default base URL is '/', and link will be the page number
-        expect($links.at(0).attributes('href')).toBe('/baz?1')
-        expect($links.at(1).attributes('href')).toBe('/baz?2')
-        expect($links.at(2).attributes('href')).toBe('/baz?1')
-        expect($links.at(3).attributes('href')).toBe('/baz?2')
-        expect($links.at(4).attributes('href')).toBe('/baz?3')
-        expect($links.at(5).attributes('href')).toBe('/baz?4')
-        expect($links.at(6).attributes('href')).toBe('/baz?5')
-        expect($links.at(7).attributes('href')).toBe('/baz?4')
-        expect($links.at(8).attributes('href')).toBe('/baz?5')
+        expect($links[0].attributes('href')).toBe('/baz?1')
+        expect($links[1].attributes('href')).toBe('/baz?2')
+        expect($links[2].attributes('href')).toBe('/baz?1')
+        expect($links[3].attributes('href')).toBe('/baz?2')
+        expect($links[4].attributes('href')).toBe('/baz?3')
+        expect($links[5].attributes('href')).toBe('/baz?4')
+        expect($links[6].attributes('href')).toBe('/baz?5')
+        expect($links[7].attributes('href')).toBe('/baz?4')
+        expect($links[8].attributes('href')).toBe('/baz?5')
 
         // Page buttons have correct content
-        expect($links.at(2).text()).toBe('1')
-        expect($links.at(3).text()).toBe('2')
-        expect($links.at(4).text()).toBe('3')
-        expect($links.at(5).text()).toBe('4')
-        expect($links.at(6).text()).toBe('5')
+        expect($links[2].text()).toBe('1')
+        expect($links[3].text()).toBe('2')
+        expect($links[4].text()).toBe('3')
+        expect($links[5].text()).toBe('4')
+        expect($links[6].text()).toBe('5')
 
         wrapper.unmount()
     })
@@ -342,22 +343,22 @@ describe('pagination-nav', () => {
         expect($links.length).toBe(9)
 
         // Default base URL is '/', and link will be the page number
-        expect($links.at(0).attributes('href')).toBe('/baz?1')
-        expect($links.at(1).attributes('href')).toBe('/baz?2')
-        expect($links.at(2).attributes('href')).toBe('/baz?1')
-        expect($links.at(3).attributes('href')).toBe('/baz?2')
-        expect($links.at(4).attributes('href')).toBe('/baz?3')
-        expect($links.at(5).attributes('href')).toBe('/baz?4')
-        expect($links.at(6).attributes('href')).toBe('/baz?5')
-        expect($links.at(7).attributes('href')).toBe('/baz?4')
-        expect($links.at(8).attributes('href')).toBe('/baz?5')
+        expect($links[0].attributes('href')).toBe('/baz?1')
+        expect($links[1].attributes('href')).toBe('/baz?2')
+        expect($links[2].attributes('href')).toBe('/baz?1')
+        expect($links[3].attributes('href')).toBe('/baz?2')
+        expect($links[4].attributes('href')).toBe('/baz?3')
+        expect($links[5].attributes('href')).toBe('/baz?4')
+        expect($links[6].attributes('href')).toBe('/baz?5')
+        expect($links[7].attributes('href')).toBe('/baz?4')
+        expect($links[8].attributes('href')).toBe('/baz?5')
 
         // Page buttons have correct content
-        expect($links.at(2).text()).toBe('one')
-        expect($links.at(3).text()).toBe('two')
-        expect($links.at(4).text()).toBe('three')
-        expect($links.at(5).text()).toBe('four')
-        expect($links.at(6).text()).toBe('five')
+        expect($links[2].text()).toBe('one')
+        expect($links[3].text()).toBe('two')
+        expect($links[4].text()).toBe('three')
+        expect($links[5].text()).toBe('four')
+        expect($links[6].text()).toBe('five')
 
         wrapper.unmount()
     })
@@ -377,13 +378,13 @@ describe('pagination-nav', () => {
         let $links = wrapper.findAll('a.page-link')
         expect($links.length).toBe(7)
 
-        expect($links.at(0).attributes('href')).toBe('/baz?1')
-        expect($links.at(1).attributes('href')).toBe('/baz?1')
-        expect($links.at(2).attributes('href')).toBe('/baz?1')
-        expect($links.at(3).attributes('href')).toBe('/baz?2')
-        expect($links.at(4).attributes('href')).toBe('/baz?3')
-        expect($links.at(5).attributes('href')).toBe('/baz?3')
-        expect($links.at(6).attributes('href')).toBe('/baz?3')
+        expect($links[0].attributes('href')).toBe('/baz?1')
+        expect($links[1].attributes('href')).toBe('/baz?1')
+        expect($links[2].attributes('href')).toBe('/baz?1')
+        expect($links[3].attributes('href')).toBe('/baz?2')
+        expect($links[4].attributes('href')).toBe('/baz?3')
+        expect($links[5].attributes('href')).toBe('/baz?3')
+        expect($links[6].attributes('href')).toBe('/baz?3')
 
         // Add extra page
         await wrapper.setProps({
@@ -394,21 +395,20 @@ describe('pagination-nav', () => {
         $links = wrapper.findAll('a.page-link')
         expect($links.length).toBe(8)
 
-        expect($links.at(0).attributes('href')).toBe('/baz?1')
-        expect($links.at(1).attributes('href')).toBe('/baz?1')
-        expect($links.at(2).attributes('href')).toBe('/baz?1')
-        expect($links.at(3).attributes('href')).toBe('/baz?2')
-        expect($links.at(4).attributes('href')).toBe('/baz?3')
-        expect($links.at(5).attributes('href')).toBe('/baz?4')
-        expect($links.at(6).attributes('href')).toBe('/baz?3')
-        expect($links.at(7).attributes('href')).toBe('/baz?4')
+        expect($links[0].attributes('href')).toBe('/baz?1')
+        expect($links[1].attributes('href')).toBe('/baz?1')
+        expect($links[2].attributes('href')).toBe('/baz?1')
+        expect($links[3].attributes('href')).toBe('/baz?2')
+        expect($links[4].attributes('href')).toBe('/baz?3')
+        expect($links[5].attributes('href')).toBe('/baz?4')
+        expect($links[6].attributes('href')).toBe('/baz?3')
+        expect($links[7].attributes('href')).toBe('/baz?4')
 
         wrapper.unmount()
     })
 
     it('clicking buttons updates the v-model', async() => {
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
             methods: {
                 onPageClick(bvEvent, page) {
                     // Prevent 3rd page from being selected
@@ -417,7 +417,7 @@ describe('pagination-nav', () => {
                     }
                 }
             },
-            render(h) {
+            render() {
                 return h(BPaginationNav, {
                     props: {
                         baseUrl: '#', // Needed to prevent JSDOM errors
@@ -448,7 +448,7 @@ describe('pagination-nav', () => {
 
         // Click on current (1st) page link (does nothing)
         await lis
-            .at(2)
+            [2]
             .find('a')
             .trigger('click')
         await waitRAF()
@@ -459,7 +459,7 @@ describe('pagination-nav', () => {
 
         // Click on 2nd page link
         await lis
-            .at(3)
+            [3]
             .find('a')
             .trigger('click')
         await waitRAF()
@@ -473,7 +473,7 @@ describe('pagination-nav', () => {
 
         // Click goto last page link
         await lis
-            .at(8)
+            [8]
             .find('a')
             .trigger('click')
         await waitRAF()
@@ -484,7 +484,7 @@ describe('pagination-nav', () => {
 
         // Click prev page link
         await lis
-            .at(1)
+            [1]
             .find('a')
             .trigger('click')
         await waitRAF()
@@ -495,7 +495,7 @@ describe('pagination-nav', () => {
 
         // Click on 3rd page link (prevented)
         await lis
-            .at(4)
+            [4]
             .find('a')
             .trigger('click')
         await waitRAF()
@@ -544,7 +544,6 @@ describe('pagination-nav', () => {
 
         it('works with $router to detect path and linkGen returns location object', async() => {
             const App = {
-                    compatConfig: { MODE: 3, COMPONENT_FUNCTIONAL: 'suppress-warning' },
                     components: { BPaginationNav },
                     methods: {
                         linkGen(page) {
@@ -563,8 +562,7 @@ describe('pagination-nav', () => {
                 }
                 // Our router view component
             const FooRoute = {
-                    compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
-                    render(h) {
+                    render() {
                         return h('div', { class: 'foo-content' }, ['stub'])
                     }
                 }
@@ -607,7 +605,6 @@ describe('pagination-nav', () => {
 
         it('works with $router to detect path and use-router set and linkGen returns string', async() => {
             const App = {
-                    compatConfig: { MODE: 3, COMPONENT_FUNCTIONAL: 'suppress-warning' },
                     components: { BPaginationNav },
                     methods: {
                         linkGen(page) {
@@ -626,8 +623,7 @@ describe('pagination-nav', () => {
                 }
                 // Our router view component
             const FooRoute = {
-                    compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
-                    render(h) {
+                    render() {
                         return h('div', { class: 'foo-content' }, ['stub'])
                     }
                 }

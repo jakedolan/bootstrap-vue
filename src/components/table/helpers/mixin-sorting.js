@@ -71,9 +71,6 @@ export const props = {
 
 // @vue/component
 export const sortingMixin = defineComponent({
-    compatConfig: {
-        INSTANCE_LISTENERS: 'suppress-warning'
-    },
     props,
     data() {
         return {

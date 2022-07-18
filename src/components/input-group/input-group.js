@@ -29,11 +29,6 @@ export const props = makePropsConfigurable({
 // @vue/component
 export const BInputGroup = /*#__PURE__*/ defineComponent({
     name: NAME_INPUT_GROUP,
-    compatConfig: {
-        MODE: 3,
-        INSTANCE_SCOPED_SLOTS: 'suppress-warning'
-    },
-    functional: true,
     props,
     render(h, { props, data, slots, scopedSlots }) {
         const { prepend, prependHtml, append, appendHtml, size } = props

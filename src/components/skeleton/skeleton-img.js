@@ -25,7 +25,6 @@ export const props = makePropsConfigurable({
 // @vue/component
 export const BSkeletonImg = /*#__PURE__*/ defineComponent({
     name: NAME_SKELETON_IMG,
-    functional: true,
     props,
     render(h, { data, props }) {
         const { aspect, width, height, animation, variant, cardImg } = props

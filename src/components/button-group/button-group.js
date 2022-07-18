@@ -25,19 +25,18 @@ export const props = makePropsConfigurable(
 // @vue/component
 export const BButtonGroup = /*#__PURE__*/ defineComponent({
     name: NAME_BUTTON_GROUP,
-    functional: true,
     props,
     render() {
-      const { $props, $slots } = this
+        const { $props, $slots } = this
 
-      const componentData = {
-        class: [{
-          'btn-group': !$props.vertical,
-          'btn-group-vertical': $props.vertical, 
-          [`btn-group-${$props.size}`]: $props.size
-        }],
-        role: $props.ariaRole
-      }
+        const componentData = {
+            class: [{
+                'btn-group': !$props.vertical,
+                'btn-group-vertical': $props.vertical,
+                [`btn-group-${$props.size}`]: $props.size
+            }],
+            role: $props.ariaRole
+        }
         return h(
             $props.tag,
             componentData,

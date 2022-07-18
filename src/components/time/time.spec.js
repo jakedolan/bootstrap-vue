@@ -54,15 +54,15 @@ describe('time', () => {
 
         const $spinners = wrapper.findAll('[role="spinbutton"]')
         expect($spinners.length).toBe(3)
-        expect($spinners.at(0).text()).toEqual('13')
-        expect($spinners.at(1).text()).toEqual('14')
-        expect($spinners.at(2).text()).toEqual('15')
+        expect($spinners[0].text()).toEqual('13')
+        expect($spinners[1].text()).toEqual('14')
+        expect($spinners[2].text()).toEqual('15')
 
         await wrapper.setProps({ value: '01:02:03' })
         await waitRAF()
-        expect($spinners.at(0).text()).toEqual('01')
-        expect($spinners.at(1).text()).toEqual('02')
-        expect($spinners.at(2).text()).toEqual('03')
+        expect($spinners[0].text()).toEqual('01')
+        expect($spinners[1].text()).toEqual('02')
+        expect($spinners[2].text()).toEqual('03')
 
         wrapper.unmount()
     })
@@ -82,15 +82,15 @@ describe('time', () => {
 
         const $spinners = wrapper.findAll('[role="spinbutton"]')
         expect($spinners.length).toBe(3)
-        expect($spinners.at(0).text()).toEqual('01')
-        expect($spinners.at(1).text()).toEqual('02')
-        expect($spinners.at(2).text()).toEqual('AM')
+        expect($spinners[0].text()).toEqual('01')
+        expect($spinners[1].text()).toEqual('02')
+        expect($spinners[2].text()).toEqual('AM')
 
         await wrapper.setProps({ value: '13:14:00' })
         await waitRAF()
-        expect($spinners.at(0).text()).toEqual('01')
-        expect($spinners.at(1).text()).toEqual('14')
-        expect($spinners.at(2).text()).toEqual('PM')
+        expect($spinners[0].text()).toEqual('01')
+        expect($spinners[1].text()).toEqual('14')
+        expect($spinners[2].text()).toEqual('PM')
 
         wrapper.unmount()
     })
@@ -110,13 +110,13 @@ describe('time', () => {
 
         const $spinners = wrapper.findAll('[role="spinbutton"]')
         expect($spinners.length).toBe(2)
-        expect($spinners.at(0).text()).toEqual('01')
-        expect($spinners.at(1).text()).toEqual('02')
+        expect($spinners[0].text()).toEqual('01')
+        expect($spinners[1].text()).toEqual('02')
 
         await wrapper.setProps({ value: '13:14:00' })
         await waitRAF()
-        expect($spinners.at(0).text()).toEqual('13')
-        expect($spinners.at(1).text()).toEqual('14')
+        expect($spinners[0].text()).toEqual('13')
+        expect($spinners[1].text()).toEqual('14')
 
         wrapper.unmount()
     })
@@ -138,9 +138,9 @@ describe('time', () => {
         const $spinners = wrapper.findAll('[role="spinbutton"]')
         expect($spinners.length).toBe(3)
 
-        expect($spinners.at(0).text()).toEqual('01')
-        expect($spinners.at(1).text()).toEqual('02')
-        expect($spinners.at(2).text()).toEqual('03')
+        expect($spinners[0].text()).toEqual('01')
+        expect($spinners[1].text()).toEqual('02')
+        expect($spinners[2].text()).toEqual('03')
 
         wrapper.unmount()
     })
@@ -205,10 +205,10 @@ describe('time', () => {
         const $spinners = wrapper.findAll('[role="spinbutton"]')
         expect($spinners.length).toBe(4)
 
-        const $hours = $spinners.at(0)
-        const $minutes = $spinners.at(1)
-        const $seconds = $spinners.at(2)
-        const $ampm = $spinners.at(3)
+        const $hours = $spinners[0]
+        const $minutes = $spinners[1]
+        const $seconds = $spinners[2]
+        const $ampm = $spinners[3]
 
         await $hours.trigger('keydown.up')
         await $hours.trigger('keyup.up')
@@ -291,10 +291,10 @@ describe('time', () => {
         const $spinners = wrapper.findAll('[role="spinbutton"]')
         expect($spinners.length).toBe(4)
 
-        const $hours = $spinners.at(0)
-        const $minutes = $spinners.at(1)
-        const $seconds = $spinners.at(2)
-        const $ampm = $spinners.at(3)
+        const $hours = $spinners[0]
+        const $minutes = $spinners[1]
+        const $seconds = $spinners[2]
+        const $ampm = $spinners[3]
 
         expect(document.activeElement).not.toBe($hours.element)
         expect(document.activeElement).not.toBe($minutes.element)

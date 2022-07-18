@@ -23,7 +23,6 @@ export const makeIcon = (name, content) => {
 
     return /*#__PURE__*/ defineComponent({
         name: iconName,
-        functional: true,
         props: iconProps,
         render() {
           const { $data, $props } = this;

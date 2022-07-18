@@ -24,11 +24,6 @@ export const props = makePropsConfigurable({
 // @vue/component
 export const BSpinner = /*#__PURE__*/ defineComponent({
     name: NAME_SPINNER,
-    compatConfig: {
-        MODE: 3,
-        INSTANCE_SCOPED_SLOTS: 'suppress-warning'
-    },
-    functional: true,
     props,
     render() {
       const { $props, $data, $slots } = this

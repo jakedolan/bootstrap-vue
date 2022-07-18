@@ -363,7 +363,7 @@ describe('form-timepicker', () => {
 
         expect($buttons.length).toBe(3)
 
-        const $now = $buttons.at(0)
+        const $now = $buttons[0]
 
         await $now.trigger('click')
         await waitRAF()
@@ -381,7 +381,7 @@ describe('form-timepicker', () => {
 
         $buttons = wrapper.findAll('.b-time > footer button')
         expect($buttons.length).toBe(3)
-        const $reset = $buttons.at(1)
+        const $reset = $buttons[1]
 
         await $reset.trigger('click')
         await waitRAF()
@@ -398,7 +398,7 @@ describe('form-timepicker', () => {
 
         $buttons = wrapper.findAll('.b-time > footer button')
         expect($buttons.length).toBe(3)
-        const $close = $buttons.at(2)
+        const $close = $buttons[2]
 
         await $close.trigger('click')
         await waitRAF()

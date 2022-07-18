@@ -39,14 +39,12 @@ describe('table > thead thead-top slot', () => {
         expect(wrapper.findAll('thead > tr').length).toBe(2)
         expect(
             wrapper
-            .findAll('thead > tr')
-            .at(0)
+            .findAll('thead > tr')[0]
             .text()
         ).toBe('foobar')
         expect(
             wrapper
-            .findAll('thead > tr')
-            .at(0)
+            .findAll('thead > tr')[0]
             .classes()
         ).toContain('test')
 
@@ -80,14 +78,12 @@ describe('table > thead thead-top slot', () => {
         expect(wrapper.findAll('thead > tr').length).toBe(2)
         expect(
             wrapper
-            .findAll('thead > tr')
-            .at(0)
+            .findAll('thead > tr')[0]
             .text()
         ).toBe('foobar')
         expect(
             wrapper
-            .findAll('thead > tr')
-            .at(0)
+            .findAll('thead > tr')[0]
             .classes()
         ).toContain('test')
 

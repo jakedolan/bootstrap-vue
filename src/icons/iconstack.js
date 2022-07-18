@@ -17,7 +17,6 @@ export const props = makePropsConfigurable(
 // @vue/component
 export const BIconstack = /*#__PURE__*/ defineComponent({
   name: NAME_ICONSTACK,
-  functional: true,
   props,
   render(h, { data, props, children }) {
     return h(

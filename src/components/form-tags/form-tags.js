@@ -143,10 +143,6 @@ const props = makePropsConfigurable(
 // @vue/component
 export const BFormTags = /*#__PURE__*/ defineComponent({
     name: NAME_FORM_TAGS,
-    compatConfig: {
-        MODE: 3,
-
-    },
     mixins: [
         listenersMixin,
         idMixin,

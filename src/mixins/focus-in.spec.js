@@ -1,3 +1,4 @@
+import { h } from 'vue';
 import { mount } from '@vue/test-utils'
 import { waitNT } from '../../tests/utils'
 import { focusInMixin } from './focus-in'
@@ -6,11 +7,6 @@ describe('mixins/focus-in', () => {
     it('works', async() => {
         let count = 0
         const App = {
-            compatConfig: {
-                MODE: 3,
-                RENDER_FUNCTION: 'suppress-warning',
-
-            },
             mixins: [focusInMixin],
             // listenForFocusIn comes from the mixin
             created() {
@@ -21,7 +17,7 @@ describe('mixins/focus-in', () => {
                     count++
                 }
             },
-            render(h) {
+            render() {
                 return h('div', [h('button', 'button')])
             }
         }

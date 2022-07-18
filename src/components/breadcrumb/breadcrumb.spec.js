@@ -50,56 +50,49 @@ describe('breadcrumb', () => {
 
         // HREF testing
         expect(
-            $lis
-            .at(0)
+            $lis[0]
             .find('a')
             .exists()
         ).toBe(true)
         expect(
-            $lis
-            .at(0)
+            $lis[0]
             .find('a')
             .attributes('href')
         ).toBe('/')
-        expect($lis.at(0).text()).toBe('Home')
+        expect($lis[0].text()).toBe('Home')
 
         expect(
-            $lis
-            .at(1)
+            $lis[1]
             .find('a')
             .exists()
         ).toBe(true)
         expect(
-            $lis
-            .at(1)
+            $lis[1]
             .find('a')
             .attributes('href')
         ).toBe('/admin')
-        expect($lis.at(1).text()).toBe('Admin')
+        expect($lis[1].text()).toBe('Admin')
 
         expect(
-            $lis
-            .at(2)
+            $lis[2]
             .find('a')
             .exists()
         ).toBe(true)
         expect(
-            $lis
-            .at(2)
+            $lis[2]
             .find('a')
             .attributes('href')
         ).toBe('/admin/manage')
-        expect($lis.at(2).text()).toBe('Manage')
+        expect($lis[2].text()).toBe('Manage')
 
         // Last item should have active state
-        expect($lis.at(3).classes()).toContain('active')
+        expect($lis[3].classes()).toContain('active')
         expect(
-            $lis
-            .at(3)
+            $lis[3]
             .find('span')
             .exists()
         ).toBe(true)
-        expect($lis.at(3).text()).toBe('Library')
+        expect($lis[3].text()).toBe('Library')
 
         wrapper.unmount()
     })
@@ -125,58 +118,51 @@ describe('breadcrumb', () => {
 
         // HREF testing
         expect(
-            $lis
-            .at(0)
+            $lis[0]
             .find('a')
             .exists()
         ).toBe(true)
         expect(
-            $lis
-            .at(0)
+            $lis[0]
             .find('a')
             .attributes('href')
         ).toBe('/')
-        expect($lis.at(0).text()).toBe('Home')
+        expect($lis[0].text()).toBe('Home')
 
         // This one should be a span/active
         expect(
-            $lis
-            .at(1)
+            $lis[1]
             .find('span')
             .exists()
         ).toBe(true)
-        expect($lis.at(1).classes()).toContain('active')
-        expect($lis.at(1).text()).toBe('Admin')
+        expect($lis[1].classes()).toContain('active')
+        expect($lis[1].text()).toBe('Admin')
 
         expect(
-            $lis
-            .at(2)
+            $lis[2]
             .find('a')
             .exists()
         ).toBe(true)
         expect(
-            $lis
-            .at(2)
+            $lis[2]
             .find('a')
             .attributes('href')
         ).toBe('/admin/manage')
-        expect($lis.at(2).text()).toBe('Manage')
+        expect($lis[2].text()).toBe('Manage')
 
         // Last item should have active state
-        expect($lis.at(3).classes()).not.toContain('active')
+        expect($lis[3].classes()).not.toContain('active')
         expect(
-            $lis
-            .at(3)
+            $lis[3]
             .find('a')
             .exists()
         ).toBe(true)
         expect(
-            $lis
-            .at(3)
+            $lis[3]
             .find('a')
             .attributes('href')
         ).toBe('/admin/manage/library')
-        expect($lis.at(3).text()).toBe('Library')
+        expect($lis[3].text()).toBe('Library')
 
         wrapper.unmount()
     })

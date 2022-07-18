@@ -24,7 +24,6 @@ export const props = makePropsConfigurable(
 // @vue/component
 export const BNavItem = /*#__PURE__*/ defineComponent({
     name: NAME_NAV_ITEM,
-    functional: true,
     props,
     render(h, { props, data, listeners, children }) {
         return h(

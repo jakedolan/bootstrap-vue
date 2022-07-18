@@ -1,8 +1,8 @@
 import { mount } from '@vue/test-utils'
-import { isVue3 } from '../../vue'
 import { waitNT } from '../../../tests/utils'
 import { BTable } from './table'
 
+const isVue3 = true;
 const testItems = [{ a: 1, b: 2, c: 3 }, { a: 5, b: 5, c: 6 }, { a: 7, b: 8, c: 9 }]
 const testFields = ['a', 'b', 'c']
 
@@ -22,7 +22,7 @@ describe('table > tbody row events', () => {
         const $rows = wrapper.findAll('tbody > tr')
         expect($rows.length).toBe(3)
         expect(wrapper.emitted('row-clicked')).toBeUndefined()
-        await $rows.at(1).trigger('click')
+        await $rows[1].trigger('click')
         expect(wrapper.emitted('row-clicked')).toBeDefined()
         expect(wrapper.emitted('row-clicked').length).toBe(1)
         expect(wrapper.emitted('row-clicked')[0][0]).toEqual(testItems[1]) // Row item
@@ -49,7 +49,7 @@ describe('table > tbody row events', () => {
         const $rows = wrapper.findAll('tbody > tr')
         expect($rows.length).toBe(3)
         expect(wrapper.emitted('row-clicked')).toBeUndefined()
-        await $rows.at(1).trigger('click')
+        await $rows[1].trigger('click')
         expect(wrapper.emitted('row-clicked')).toBeUndefined()
 
         wrapper.unmount()
@@ -73,7 +73,7 @@ describe('table > tbody row events', () => {
         await wrapper.setData({
             localBusy: true
         })
-        await $rows.at(1).trigger('click')
+        await $rows[1].trigger('click')
         expect(wrapper.emitted('row-clicked')).toBeUndefined()
 
         wrapper.unmount()
@@ -94,7 +94,7 @@ describe('table > tbody row events', () => {
         const $rows = wrapper.findAll('tbody > tr')
         expect($rows.length).toBe(3)
         expect(wrapper.emitted('row-dblclicked')).toBeUndefined()
-        await $rows.at(1).trigger('dblclick')
+        await $rows[1].trigger('dblclick')
         expect(wrapper.emitted('row-dblclicked')).toBeDefined()
         expect(wrapper.emitted('row-dblclicked').length).toBe(1)
         expect(wrapper.emitted('row-dblclicked')[0][0]).toEqual(testItems[1]) // Row item
@@ -120,7 +120,7 @@ describe('table > tbody row events', () => {
         const $rows = wrapper.findAll('tbody > tr')
         expect($rows.length).toBe(3)
         expect(wrapper.emitted('row-dblclicked')).toBeUndefined()
-        await $rows.at(1).trigger('dblclick')
+        await $rows[1].trigger('dblclick')
         expect(wrapper.emitted('row-dblclicked')).toBeUndefined()
 
         wrapper.unmount()
@@ -141,7 +141,7 @@ describe('table > tbody row events', () => {
         const $rows = wrapper.findAll('tbody > tr')
         expect($rows.length).toBe(3)
         expect(wrapper.emitted('row-middle-clicked')).toBeUndefined()
-        await $rows.at(1).trigger('auxclick', { which: 2 })
+        await $rows[1].trigger('auxclick', { which: 2 })
         expect(wrapper.emitted('row-middle-clicked')).toBeDefined()
         expect(wrapper.emitted('row-middle-clicked').length).toBe(1)
         expect(wrapper.emitted('row-middle-clicked')[0][0]).toEqual(testItems[1]) // Row item
@@ -167,7 +167,7 @@ describe('table > tbody row events', () => {
         const $rows = wrapper.findAll('tbody > tr')
         expect($rows.length).toBe(3)
         expect(wrapper.emitted('row-middle-clicked')).toBeUndefined()
-        await $rows.at(1).trigger('auxclick', { which: 2 })
+        await $rows[1].trigger('auxclick', { which: 2 })
         expect(wrapper.emitted('row-middle-clicked')).toBeUndefined()
 
         wrapper.unmount()
@@ -188,7 +188,7 @@ describe('table > tbody row events', () => {
         const $rows = wrapper.findAll('tbody > tr')
         expect($rows.length).toBe(3)
         expect(wrapper.emitted('row-contextmenu')).toBeUndefined()
-        await $rows.at(1).trigger('contextmenu')
+        await $rows[1].trigger('contextmenu')
         expect(wrapper.emitted('row-contextmenu')).toBeDefined()
         expect(wrapper.emitted('row-contextmenu').length).toBe(1)
         expect(wrapper.emitted('row-contextmenu')[0][0]).toEqual(testItems[1]) // Row item
@@ -214,7 +214,7 @@ describe('table > tbody row events', () => {
         const $rows = wrapper.findAll('tbody > tr')
         expect($rows.length).toBe(3)
         expect(wrapper.emitted('row-contextmenu')).toBeUndefined()
-        await $rows.at(1).trigger('contextmenu')
+        await $rows[1].trigger('contextmenu')
         expect(wrapper.emitted('row-contextmenu')).toBeUndefined()
 
         wrapper.unmount()
@@ -235,7 +235,7 @@ describe('table > tbody row events', () => {
         const $rows = wrapper.findAll('tbody > tr')
         expect($rows.length).toBe(3)
         expect(wrapper.emitted('row-hovered')).toBeUndefined()
-        await $rows.at(1).trigger('mouseenter')
+        await $rows[1].trigger('mouseenter')
         expect(wrapper.emitted('row-hovered')).toBeDefined()
         expect(wrapper.emitted('row-hovered').length).toBe(1)
         expect(wrapper.emitted('row-hovered')[0][0]).toEqual(testItems[1]) // Row item
@@ -261,7 +261,7 @@ describe('table > tbody row events', () => {
         const $rows = wrapper.findAll('tbody > tr')
         expect($rows.length).toBe(3)
         expect(wrapper.emitted('row-hovered')).toBeUndefined()
-        await $rows.at(1).trigger('mouseenter')
+        await $rows[1].trigger('mouseenter')
         expect(wrapper.emitted('row-hovered')).toBeUndefined()
 
         wrapper.unmount()
@@ -283,7 +283,7 @@ describe('table > tbody row events', () => {
         const $rows = wrapper.findAll('tbody > tr')
         expect($rows.length).toBe(3)
         expect(wrapper.emitted('row-hovered')).toBeUndefined()
-        await $rows.at(1).trigger('mouseenter')
+        await $rows[1].trigger('mouseenter')
         expect(wrapper.emitted('row-hovered')).toBeUndefined()
 
         wrapper.unmount()
@@ -304,7 +304,7 @@ describe('table > tbody row events', () => {
         const $rows = wrapper.findAll('tbody > tr')
         expect($rows.length).toBe(3)
         expect(wrapper.emitted('row-unhovered')).toBeUndefined()
-        await $rows.at(1).trigger('mouseleave')
+        await $rows[1].trigger('mouseleave')
         expect(wrapper.emitted('row-unhovered')).toBeDefined()
         expect(wrapper.emitted('row-unhovered').length).toBe(1)
         expect(wrapper.emitted('row-unhovered')[0][0]).toEqual(testItems[1]) // Row item
@@ -330,7 +330,7 @@ describe('table > tbody row events', () => {
         const $rows = wrapper.findAll('tbody > tr')
         expect($rows.length).toBe(3)
         expect(wrapper.emitted('row-unhovered')).toBeUndefined()
-        await $rows.at(1).trigger('mouseleave')
+        await $rows[1].trigger('mouseleave')
         expect(wrapper.emitted('row-unhovered')).toBeUndefined()
 
         wrapper.unmount()
@@ -353,7 +353,7 @@ describe('table > tbody row events', () => {
         const $rows = wrapper.findAll('tbody > tr')
         expect($rows.length).toBe(3)
         expect(wrapper.emitted('row-unhovered')).toBeUndefined()
-        await $rows.at(1).trigger('mouseleave')
+        await $rows[1].trigger('mouseleave')
         expect(wrapper.emitted('row-unhovered')).toBeUndefined()
 
         wrapper.unmount()
@@ -376,9 +376,9 @@ describe('table > tbody row events', () => {
         const $rows = wrapper.findAll('tbody > tr')
         expect($rows.length).toBe(3)
         expect(wrapper.emitted('row-clicked')).toBeUndefined()
-        $rows.at(1).element.focus() // Event only works when the TR is focused
+        $rows[1].element.focus() // Event only works when the TR is focused
         await waitNT(wrapper.vm)
-        await $rows.at(1).trigger('keydown.enter')
+        await $rows[1].trigger('keydown.enter')
         await waitNT(wrapper.vm)
         expect(wrapper.emitted('row-clicked')).toBeDefined()
         expect(wrapper.emitted('row-clicked').length).toBe(1)
@@ -406,8 +406,8 @@ describe('table > tbody row events', () => {
         const $rows = wrapper.findAll('tbody > tr')
         expect($rows.length).toBe(3)
         expect(wrapper.emitted('row-clicked')).toBeUndefined()
-        $rows.at(1).element.focus() // Event only works when the TR is focused
-        await $rows.at(1).trigger('keydown.enter')
+        $rows[1].element.focus() // Event only works when the TR is focused
+        await $rows[1].trigger('keydown.enter')
         expect(wrapper.emitted('row-clicked')).toBeUndefined()
 
         wrapper.unmount()
@@ -493,37 +493,37 @@ describe('table > tbody row events', () => {
         expect($rows.length).toBe(3)
         expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
 
-        expect(document.activeElement).not.toBe($rows.at(0).element)
-        expect(document.activeElement).not.toBe($rows.at(1).element)
-        expect(document.activeElement).not.toBe($rows.at(2).element)
+        expect(document.activeElement).not.toBe($rows[0].element)
+        expect(document.activeElement).not.toBe($rows[1].element)
+        expect(document.activeElement).not.toBe($rows[2].element)
 
-        $rows.at(0).element.focus()
-        expect(document.activeElement).toBe($rows.at(0).element)
+        $rows[0].element.focus()
+        expect(document.activeElement).toBe($rows[0].element)
 
-        await $rows.at(0).trigger('keydown.end')
-        expect(document.activeElement).toBe($rows.at(2).element)
+        await $rows[0].trigger('keydown.end')
+        expect(document.activeElement).toBe($rows[2].element)
 
-        await $rows.at(2).trigger('keydown.home')
-        expect(document.activeElement).toBe($rows.at(0).element)
+        await $rows[2].trigger('keydown.home')
+        expect(document.activeElement).toBe($rows[0].element)
 
-        await $rows.at(0).trigger('keydown.down')
-        expect(document.activeElement).toBe($rows.at(1).element)
+        await $rows[0].trigger('keydown.down')
+        expect(document.activeElement).toBe($rows[1].element)
 
-        await $rows.at(1).trigger('keydown.up')
-        expect(document.activeElement).toBe($rows.at(0).element)
+        await $rows[1].trigger('keydown.up')
+        expect(document.activeElement).toBe($rows[0].element)
 
-        await $rows.at(0).trigger('keydown.down', { shiftKey: true })
-        expect(document.activeElement).toBe($rows.at(2).element)
+        await $rows[0].trigger('keydown.down', { shiftKey: true })
+        expect(document.activeElement).toBe($rows[2].element)
 
-        await $rows.at(2).trigger('keydown.up', { shiftKey: true })
-        expect(document.activeElement).toBe($rows.at(0).element)
+        await $rows[2].trigger('keydown.up', { shiftKey: true })
+        expect(document.activeElement).toBe($rows[0].element)
 
         // Should only move focus if TR was target
         await $rows
-            .at(0)
+            [0]
             .find('td')
             .trigger('keydown.down')
-        expect(document.activeElement).toBe($rows.at(0).element)
+        expect(document.activeElement).toBe($rows[0].element)
 
         wrapper.unmount()
     })

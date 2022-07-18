@@ -101,14 +101,21 @@ describe('tab', () => {
     })
 
     it('emits event "update:active" when localActive becomes true', async() => {
-        const wrapper = mount(BTab)
 
         let called = false
         let value = null
-        wrapper.vm.$on('update:active', v => {
-            called = true
-            value = v
+
+
+        const wrapper = mount(BTab, {
+            attrs: {
+                'onUpdate:active': (v) => {
+                    called = true
+                    value = v
+                }
+            }
         })
+
+
 
         expect(called).toBe(false)
         expect(value).toBe(null)

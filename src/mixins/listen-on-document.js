@@ -13,10 +13,6 @@ const PROP = '$_documentListeners'
 
 // @vue/component
 export const listenOnDocumentMixin = defineComponent({
-    compatConfig: {
-        MODE: 3,
-
-    },
     created() {
         // Define non-reactive property
         // Object of arrays, keyed by event name,

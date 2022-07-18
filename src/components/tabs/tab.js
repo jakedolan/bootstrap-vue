@@ -45,10 +45,6 @@ export const props = makePropsConfigurable(
 // @vue/component
 export const BTab = /*#__PURE__*/ defineComponent({
     name: NAME_TAB,
-    compatConfig: {
-        MODE: 3,
-
-    },
     mixins: [idMixin, normalizeSlotMixin],
     inject: {
         getBvTabs: {

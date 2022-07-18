@@ -46,11 +46,11 @@ describe('form-datalist', () => {
 
         expect($options.length).toBe(2)
 
-        expect($options.at(0).text()).toBe('one')
-        expect($options.at(1).text()).toBe('two')
+        expect($options[0].text()).toBe('one')
+        expect($options[1].text()).toBe('two')
 
-        expect($options.at(0).attributes('value')).toBe('one')
-        expect($options.at(1).attributes('value')).toBe('two')
+        expect($options[0].attributes('value')).toBe('one')
+        expect($options[1].attributes('value')).toBe('two')
 
         wrapper.unmount()
     })

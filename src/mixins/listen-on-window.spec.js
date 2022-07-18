@@ -1,3 +1,4 @@
+import { h } from 'vue';
 import { mount } from '@vue/test-utils'
 import { listenOnWindowMixin } from './listen-on-window'
 
@@ -8,11 +9,6 @@ describe('mixins/listen-on-window', () => {
         const spyScroll = jest.fn()
 
         const TestComponent = {
-            compatConfig: {
-                MODE: 3,
-                RENDER_FUNCTION: 'suppress-warning',
-
-            },
             mixins: [listenOnWindowMixin],
             props: {
                 offResizeOne: {
@@ -32,13 +28,12 @@ describe('mixins/listen-on-window', () => {
                     }
                 }
             },
-            render(h) {
+            render() {
                 return h('div', this.$slots.default)
             }
         }
 
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
             components: { TestComponent },
             props: {
                 offResizeOne: {
@@ -50,7 +45,7 @@ describe('mixins/listen-on-window', () => {
                     default: false
                 }
             },
-            render(h) {
+            render() {
                 const props = {
                     offResizeOne: this.offResizeOne
                 }

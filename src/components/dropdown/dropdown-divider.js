@@ -18,7 +18,6 @@ export const props = makePropsConfigurable({
 // @vue/component
 export const BDropdownDivider = /*#__PURE__*/ defineComponent({
     name: NAME_DROPDOWN_DIVIDER,
-    functional: true,
     props,
     render(h, { props, data }) {
         return h('li', mergeData(omit(data, ['attrs']), { role: 'presentation' }), [

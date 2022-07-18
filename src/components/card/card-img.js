@@ -24,7 +24,6 @@ export const props = makePropsConfigurable(
 // @vue/component
 export const BCardImg = /*#__PURE__*/ defineComponent({
     name: NAME_CARD_IMG,
-    functional: true,
     props,
     render(h, { props, data }) {
         const { src, alt, width, height } = props

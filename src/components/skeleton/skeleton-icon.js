@@ -20,7 +20,6 @@ export const props = makePropsConfigurable({
 // @vue/component
 export const BSkeletonIcon = /*#__PURE__*/ defineComponent({
     name: NAME_SKELETON_ICON,
-    functional: true,
     props,
     render(h, { data, props }) {
         const { icon, animation } = props

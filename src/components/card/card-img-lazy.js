@@ -22,7 +22,6 @@ export const props = makePropsConfigurable(
 // @vue/component
 export const BCardImgLazy = /*#__PURE__*/ defineComponent({
     name: NAME_CARD_IMG_LAZY,
-    functional: true,
     props,
     render(h, { props, data }) {
         let baseClass = 'card-img'

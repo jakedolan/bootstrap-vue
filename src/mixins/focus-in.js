@@ -4,10 +4,6 @@ import { eventOn, eventOff } from '../utils/events'
 
 // @vue/component
 export const focusInMixin = defineComponent({
-    compatConfig: {
-        MODE: 3,
-
-    },
     data() {
         return {
             listenForFocusIn: false

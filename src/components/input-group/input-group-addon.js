@@ -21,7 +21,6 @@ export const props = makePropsConfigurable({
 // @vue/component
 export const BInputGroupAddon = /*#__PURE__*/ defineComponent({
     name: NAME_INPUT_GROUP_ADDON,
-    functional: true,
     props,
     render(h, { props, data, children }) {
         const { append } = props

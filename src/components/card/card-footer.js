@@ -24,7 +24,6 @@ export const props = makePropsConfigurable(
 // @vue/component
 export const BCardFooter = /*#__PURE__*/ defineComponent({
     name: NAME_CARD_FOOTER,
-    functional: true,
     props,
     render(h, { props, data, children }) {
         const { footerBgVariant, footerBorderVariant, footerTextVariant } = props

@@ -1,3 +1,4 @@
+import { h } from 'vue';
 import { mount } from '@vue/test-utils'
 import { waitNT } from '../../../tests/utils'
 import { isVisible, getBCR, contains } from '../../utils/dom'
@@ -6,7 +7,7 @@ import { BPagination } from './pagination'
 const wrapperArrayToArray = wrapperArray => {
     const array = []
     for (let i = 0; i < wrapperArray.length; i++) {
-        array.push(wrapperArray.at(i))
+        array.push(wrapperArray[i])
     }
     return array
 }
@@ -64,11 +65,11 @@ describe('pagination', () => {
             }
         })
 
-        const first = lis.at(0)
-        const prev = lis.at(1)
-        const page = lis.at(2)
-        const next = lis.at(3)
-        const last = lis.at(4)
+        const first = lis[0]
+        const prev = lis[1]
+        const page = lis[2]
+        const next = lis[3]
+        const last = lis[4]
 
         // Button content
         expect(first.find('.page-link').text()).toEqual('«')
@@ -134,9 +135,9 @@ describe('pagination', () => {
 
         const $links = wrapper.findAll('button.page-link')
         expect($links.length).toBe(5)
-        expect($links.at(0).text()).toBe('Page 1')
-        expect($links.at(1).text()).toBe('Page 2')
-        expect($links.at(2).text()).toBe('Page 3')
+        expect($links[0].text()).toBe('Page 1')
+        expect($links[1].text()).toBe('Page 2')
+        expect($links[2].text()).toBe('Page 3')
 
         wrapper.unmount()
     })
@@ -441,26 +442,22 @@ describe('pagination', () => {
         expect(wrapper.findAll('button').length).toBe(4)
         expect(
             wrapper
-            .findAll('button')
-            .at(0)
+            .findAll('button')[0]
             .attributes('aria-label')
         ).toBe('Go to page 1')
         expect(
             wrapper
-            .findAll('button')
-            .at(1)
+            .findAll('button')[1]
             .attributes('aria-label')
         ).toBe('Go to page 2')
         expect(
             wrapper
-            .findAll('button')
-            .at(2)
+            .findAll('button')[2]
             .attributes('aria-label')
         ).toBe('Go to page 3')
         expect(
             wrapper
-            .findAll('button')
-            .at(3)
+            .findAll('button')[3]
             .attributes('aria-label')
         ).toBe('Go to next page')
 
@@ -487,20 +484,17 @@ describe('pagination', () => {
         ).toBe(true)
         expect(
             wrapper
-            .findAll('.page-link')
-            .at(2)
+            .findAll('.page-link')[2]
             .attributes('aria-disabled')
         ).toBe('true')
         expect(
             wrapper
-            .findAll('.page-link')
-            .at(3)
+            .findAll('.page-link')[3]
             .attributes('aria-disabled')
         ).toBe('true')
         expect(
             wrapper
-            .findAll('.page-link')
-            .at(4)
+            .findAll('.page-link')[4]
             .attributes('aria-disabled')
         ).toBe('true')
 
@@ -632,8 +626,8 @@ describe('pagination', () => {
             // Grab the page buttons
         let lis = wrapper.findAll('li')
         expect(lis.length).toBe(9)
-        expect(lis.at(2).attributes('role')).not.toBe('separator')
-        expect(lis.at(6).attributes('role')).toBe('separator')
+        expect(lis[2].attributes('role')).not.toBe('separator')
+        expect(lis[6].attributes('role')).toBe('separator')
 
         // Should have both ellipsis showing when currentPage = 4
         await wrapper.setProps({
@@ -643,8 +637,8 @@ describe('pagination', () => {
         expect(wrapper.vm.computedCurrentPage).toBe(4)
         lis = wrapper.findAll('li')
         expect(lis.length).toBe(9)
-        expect(lis.at(2).attributes('role')).toBe('separator')
-        expect(lis.at(6).attributes('role')).toBe('separator')
+        expect(lis[2].attributes('role')).toBe('separator')
+        expect(lis[6].attributes('role')).toBe('separator')
 
         // Should have first ellipsis showing when currentPage = 5
         await wrapper.setProps({
@@ -654,15 +648,14 @@ describe('pagination', () => {
         expect(wrapper.vm.computedCurrentPage).toBe(5)
         lis = wrapper.findAll('li')
         expect(lis.length).toBe(9)
-        expect(lis.at(2).attributes('role')).toBe('separator')
-        expect(lis.at(6).attributes('role')).not.toBe('separator')
+        expect(lis[2].attributes('role')).toBe('separator')
+        expect(lis[6].attributes('role')).not.toBe('separator')
 
         wrapper.unmount()
     })
 
     it('clicking buttons updates the v-model', async() => {
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
             methods: {
                 onPageClick(bvEvent, page) {
                     // Prevent 3rd page from being selected
@@ -671,7 +664,7 @@ describe('pagination', () => {
                     }
                 }
             },
-            render(h) {
+            render() {
                 return h(BPagination, {
                     props: {
                         totalRows: 5,
@@ -701,7 +694,7 @@ describe('pagination', () => {
 
         // Click on current (1st) page button (does nothing)
         await lis
-            .at(2)
+            [2]
             .find('button')
             .trigger('click')
         expect(pagination.vm.computedCurrentPage).toBe(1)
@@ -711,7 +704,7 @@ describe('pagination', () => {
 
         // Click on 2nd button
         await lis
-            .at(3)
+            [3]
             .find('button')
             .trigger('click')
         expect(pagination.vm.computedCurrentPage).toBe(2)
@@ -724,7 +717,7 @@ describe('pagination', () => {
 
         // Click goto last button
         await lis
-            .at(8)
+            [8]
             .find('button')
             .trigger('keydown.space') // Generates a click event
         expect(pagination.vm.computedCurrentPage).toBe(5)
@@ -734,7 +727,7 @@ describe('pagination', () => {
 
         // Click prev button
         await lis
-            .at(1)
+            [1]
             .find('button')
             .trigger('click')
         expect(pagination.vm.computedCurrentPage).toBe(4)
@@ -744,7 +737,7 @@ describe('pagination', () => {
 
         // Click on 3rd button (prevented)
         await lis
-            .at(4)
+            [4]
             .find('button')
             .trigger('click')
         expect(pagination.vm.computedCurrentPage).toBe(4)
@@ -1103,38 +1096,38 @@ describe('pagination', () => {
 
             // Sanity check for getBCR override
             expect(wrapper.element.getBoundingClientRect().width).toBe(24)
-            expect(getBCR(links.at(3).element).width).toBe(24)
-            expect(contains(document.body, links.at(3).element)).toBe(true)
-            expect(isVisible(links.at(3).element)).toBe(true)
+            expect(getBCR(links[3].element).width).toBe(24)
+            expect(contains(document.body, links[3].element)).toBe(true)
+            expect(isVisible(links[3].element)).toBe(true)
 
             // Focus the active button
-            links.at(3).element.focus()
+            links[3].element.focus()
             await waitNT(wrapper.vm)
-            expect(document.activeElement).toEqual(links.at(3).element)
+            expect(document.activeElement).toEqual(links[3].element)
 
             // LEFT
             await wrapper.trigger('keydown.left')
-            expect(document.activeElement).toEqual(links.at(2).element)
+            expect(document.activeElement).toEqual(links[2].element)
 
             // RIGHT
-            await links.at(2).trigger('keydown.right')
-            expect(document.activeElement).toEqual(links.at(3).element)
+            await links[2].trigger('keydown.right')
+            expect(document.activeElement).toEqual(links[3].element)
 
             // UP (same as LEFT)
             await wrapper.trigger('keydown.up')
-            expect(document.activeElement).toEqual(links.at(2).element)
+            expect(document.activeElement).toEqual(links[2].element)
 
             // DOWN (same as RIGHT)
-            await links.at(2).trigger('keydown.down')
-            expect(document.activeElement).toEqual(links.at(3).element)
+            await links[2].trigger('keydown.down')
+            expect(document.activeElement).toEqual(links[3].element)
 
             // SHIFT-RIGHT
-            await links.at(2).trigger('keydown.right', { shiftKey: true })
-            expect(document.activeElement).toEqual(links.at(6).element)
+            await links[2].trigger('keydown.right', { shiftKey: true })
+            expect(document.activeElement).toEqual(links[6].element)
 
             // SHIFT-LEFT
-            await links.at(6).trigger('keydown.left', { shiftKey: true })
-            expect(document.activeElement).toEqual(links.at(0).element)
+            await links[6].trigger('keydown.left', { shiftKey: true })
+            expect(document.activeElement).toEqual(links[0].element)
 
             wrapper.unmount()
         })
@@ -1156,13 +1149,13 @@ describe('pagination', () => {
             expect(links.length).toBe(7)
 
             // Focus the last button
-            links.at(6).element.focus()
+            links[6].element.focus()
             await waitNT(wrapper.vm)
-            expect(document.activeElement).toEqual(links.at(6).element)
+            expect(document.activeElement).toEqual(links[6].element)
 
             wrapper.vm.focusCurrent()
             await waitNT(wrapper.vm)
-            expect(document.activeElement).toEqual(links.at(3).element)
+            expect(document.activeElement).toEqual(links[3].element)
 
             wrapper.unmount()
         })
@@ -1186,12 +1179,12 @@ describe('pagination', () => {
             expect(links.length).toBe(6)
 
             // Click on the 4th button (page 4, index 3)
-            links.at(3).element.click()
+            links[3].element.click()
             await waitNT(wrapper.vm)
                 // Links re-rendered with first bookends enabled and an ellipsis
             links = wrapper.findAll('button.page-link')
                 // The 4th link should be page 4, and retain focus
-            expect(document.activeElement).toEqual(links.at(3).element)
+            expect(document.activeElement).toEqual(links[3].element)
 
             wrapper.unmount()
         })

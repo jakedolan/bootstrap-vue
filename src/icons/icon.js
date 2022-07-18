@@ -38,7 +38,6 @@ export const props = makePropsConfigurable(
 // @vue/component
 export const BIcon = /*#__PURE__*/ defineComponent({
   name: NAME_ICON,
-  functional: true,
   props,
   render() {
     const { $props, $parent } = this

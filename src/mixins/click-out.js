@@ -5,10 +5,6 @@ import { eventOn, eventOff } from '../utils/events'
 
 // @vue/component
 export const clickOutMixin = defineComponent({
-    compatConfig: {
-        MODE: 3,
-
-    },
     data() {
         return {
             listenForClickOut: false

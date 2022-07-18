@@ -101,10 +101,6 @@ export const props = makePropsConfigurable(
 
 // @vue/component
 export const BFormSpinbutton = /*#__PURE__*/ defineComponent({
-    compatConfig: {
-        MODE: 3,
-
-    },
     name: NAME_FORM_SPINBUTTON,
     // Mixin order is important!
     mixins: [attrsMixin, idMixin, modelMixin, formSizeMixin, formStateMixin, normalizeSlotMixin],

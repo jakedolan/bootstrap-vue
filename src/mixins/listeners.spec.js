@@ -1,27 +1,22 @@
-import { isVue3 } from '../vue'
 import { h } from 'vue';
 import { mount } from '@vue/test-utils'
 import { listenersMixin } from './listeners'
 
+
+const isVue3 = true;
 // Note: The following tests indirectly test `utils/cache`
 
 describe('mixins > listeners', () => {
     it('works', async() => {
         const BTest = {
-            compatConfig: {
-                MODE: 3,
-                RENDER_FUNCTION: 'suppress-warning',
-                INSTANCE_LISTENERS: 'suppress-warning'
-            },
             name: 'BTest',
             mixins: [listenersMixin],
             inheritAttrs: false,
             render() {
-                return h('button', { ...this.bvListeners })
+                return h('button', {...this.bvListeners })
             }
         }
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
             name: 'App',
             props: ['listenClick', 'listenFocus', 'listenBlur'],
             computed: {
@@ -39,7 +34,7 @@ describe('mixins > listeners', () => {
                     return listeners
                 }
             },
-            render(h) {
+            render() {
                 return h(BTest, { on: this.listeners })
             }
         }
@@ -99,13 +94,8 @@ describe('mixins > listeners', () => {
         let input2RenderCount = 0
 
         const Input1 = {
-            compatConfig: {
-                MODE: 3,
-                RENDER_FUNCTION: 'suppress-warning',
-                INSTANCE_LISTENERS: 'suppress-warning'
-            },
             props: ['value'],
-            render(h) {
+            render() {
                 input1RenderCount++
                 return h('input', {
                     attrs: { value: this.value },
@@ -115,19 +105,14 @@ describe('mixins > listeners', () => {
             }
         }
         const Input2 = {
-            compatConfig: {
-                MODE: 3,
-                RENDER_FUNCTION: 'suppress-warning',
-                INSTANCE_LISTENERS: 'suppress-warning'
-            },
             props: ['value'],
             mixins: [listenersMixin],
-            render(h) {
+            render() {
                 input2RenderCount++
                 return h('input', {
                     value: this.value,
-                    ...this.bvListeners, 
-                    onInput: e => this.$emit('input', e.target.value) 
+                    ...this.bvListeners,
+                    onInput: e => this.$emit('input', e.target.value)
                 })
             }
         }
@@ -180,21 +165,21 @@ describe('mixins > listeners', () => {
 
         const $inputs1 = wrapper1.findAllComponents(Input1)
         expect($inputs1.length).toBe(2)
-        expect($inputs1.at(0)).toBeDefined()
-        expect($inputs1.at(1)).toBeDefined()
+        expect($inputs1[0]).toBeDefined()
+        expect($inputs1[1]).toBeDefined()
         expect(wrapper1.emitted().focus1).not.toBeTruthy()
         expect(wrapper1.emitted().focus2).not.toBeTruthy()
         expect(input1RenderCount).toBe(2)
 
-        await $inputs1.at(0).trigger('focus')
+        await $inputs1[0].trigger('focus')
         expect(wrapper1.emitted().focus1).not.toBeTruthy()
-        await $inputs1.at(1).trigger('focus')
+        await $inputs1[1].trigger('focus')
         expect(wrapper1.emitted().focus2).not.toBeTruthy()
         expect(input1RenderCount).toBe(2)
 
         // Enable focus events for the first input and trigger it
         await wrapper1.setProps({ listenFocus1: true })
-        await $inputs1.at(0).trigger('focus')
+        await $inputs1[0].trigger('focus')
         expect(wrapper1.emitted().focus1).toBeTruthy()
         expect(wrapper1.emitted().focus2).not.toBeTruthy()
             // Both `Input1`'s are re-rendered (See: https://github.com/vuejs/vue/issues/7257)
@@ -202,7 +187,7 @@ describe('mixins > listeners', () => {
 
         // Enable focus events for the second input and trigger it
         await wrapper1.setProps({ listenFocus2: true })
-        await $inputs1.at(1).trigger('focus')
+        await $inputs1[1].trigger('focus')
         expect(wrapper1.emitted().focus1).toBeTruthy()
         expect(wrapper1.emitted().focus2).toBeTruthy()
             // Both `Input1`'s are re-rendered (See: https://github.com/vuejs/vue/issues/7257)
@@ -212,21 +197,21 @@ describe('mixins > listeners', () => {
 
         const $inputs2 = wrapper2.findAllComponents(Input2)
         expect($inputs2.length).toBe(2)
-        expect($inputs2.at(0)).toBeDefined()
-        expect($inputs2.at(1)).toBeDefined()
+        expect($inputs2[0]).toBeDefined()
+        expect($inputs2[1]).toBeDefined()
         expect(wrapper2.emitted().focus1).not.toBeTruthy()
         expect(wrapper2.emitted().focus2).not.toBeTruthy()
         expect(input2RenderCount).toBe(2)
 
-        await $inputs2.at(0).trigger('focus')
+        await $inputs2[0].trigger('focus')
         expect(wrapper2.emitted().focus1).not.toBeTruthy()
-        await $inputs2.at(1).trigger('focus')
+        await $inputs2[1].trigger('focus')
         expect(wrapper2.emitted().focus2).not.toBeTruthy()
         expect(input2RenderCount).toBe(2)
 
         // Enable focus events for the first input and trigger it
         await wrapper2.setProps({ listenFocus1: true })
-        await $inputs2.at(0).trigger('focus')
+        await $inputs2[0].trigger('focus')
         expect(wrapper2.emitted().focus1).toBeTruthy()
         expect(wrapper2.emitted().focus2).not.toBeTruthy()
             // With `listenersMixin` only the affected `Input2` is re-rendered
@@ -234,7 +219,7 @@ describe('mixins > listeners', () => {
 
         // Enable focus events for the second input and trigger it
         await wrapper2.setProps({ listenFocus2: true })
-        await $inputs2.at(1).trigger('focus')
+        await $inputs2[1].trigger('focus')
         expect(wrapper2.emitted().focus1).toBeTruthy()
         expect(wrapper2.emitted().focus2).toBeTruthy()
             // With `listenersMixin` only the affected `Input2` is re-rendered

@@ -139,10 +139,6 @@ export const props = makePropsConfigurable(
 // @vue/component
 export const BFormRating = /*#__PURE__*/ defineComponent({
     name: NAME_FORM_RATING,
-    compatConfig: {
-        MODE: 3,
-        INSTANCE_SCOPED_SLOTS: 'suppress-warning'
-    },
     components: { BIconStar, BIconStarHalf, BIconStarFill, BIconX },
     mixins: [idMixin, modelMixin, formSizeMixin],
     props,

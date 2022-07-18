@@ -1,3 +1,4 @@
+import { h } from 'vue';
 import { mount } from '@vue/test-utils'
 import { waitNT } from '../../../tests/utils'
 import { BLink } from '../link/link'
@@ -114,8 +115,7 @@ describe('tabs', () => {
 
     it('sets correct tab active when first tab is disabled', async() => {
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
-            render(h) {
+            render() {
                 return h(BTabs, [
                     h(BTab, { props: { disabled: true } }, 'tab 0'),
                     h(BTab, { props: {} }, 'tab 1'),
@@ -147,8 +147,7 @@ describe('tabs', () => {
 
     it('sets current index based on active prop of b-tab', async() => {
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
-            render(h) {
+            render() {
                 return h(BTabs, [
                     h(BTab, { props: { active: false } }, 'tab 0'),
                     h(BTab, { props: { active: true } }, 'tab 1'),
@@ -180,11 +179,10 @@ describe('tabs', () => {
 
     it('selects first non-disabled tab when active tab disabled', async() => {
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
             props: {
                 activeTab: { type: Number, default: 1 }
             },
-            render(h) {
+            render() {
                 const { activeTab } = this
 
                 return h(BTabs, [
@@ -206,9 +204,9 @@ describe('tabs', () => {
 
         // Expect 2nd tab (index 1) to be active
         expect($tabs.vm.currentTab).toBe(1)
-        expect($tabs.findAllComponents(BTab).at(0).vm.localActive).toBe(false)
-        expect($tabs.findAllComponents(BTab).at(1).vm.localActive).toBe(true)
-        expect($tabs.findAllComponents(BTab).at(2).vm.localActive).toBe(false)
+        expect($tabs.findAllComponents(BTab)[0].vm.localActive).toBe(false)
+        expect($tabs.findAllComponents(BTab)[1].vm.localActive).toBe(true)
+        expect($tabs.findAllComponents(BTab)[2].vm.localActive).toBe(false)
 
         expect($tabs.emitted('input')).toBeDefined()
         expect($tabs.emitted('input').length).toBe(1)
@@ -220,9 +218,9 @@ describe('tabs', () => {
 
         // Expect last tab (index 2) to be active
         expect($tabs.vm.currentTab).toBe(2)
-        expect($tabs.findAllComponents(BTab).at(0).vm.localActive).toBe(false)
-        expect($tabs.findAllComponents(BTab).at(1).vm.localActive).toBe(false)
-        expect($tabs.findAllComponents(BTab).at(2).vm.localActive).toBe(true)
+        expect($tabs.findAllComponents(BTab)[0].vm.localActive).toBe(false)
+        expect($tabs.findAllComponents(BTab)[1].vm.localActive).toBe(false)
+        expect($tabs.findAllComponents(BTab)[2].vm.localActive).toBe(true)
         expect($tabs.emitted('input').length).toBe(2)
         expect($tabs.emitted('input')[1][0]).toBe(2)
 
@@ -231,11 +229,10 @@ describe('tabs', () => {
 
     it('v-model works', async() => {
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
             props: {
                 activeTab: { type: Number, default: 0 }
             },
-            render(h) {
+            render() {
                 return h(BTabs, { props: { value: this.activeTab } }, [
                     h(BTab, 'Tab 1'),
                     h(BTab, 'Tab 2'),
@@ -278,11 +275,10 @@ describe('tabs', () => {
 
     it('v-model works when trying to activate a disabled tab', async() => {
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
             props: {
                 activeTab: { type: Number, default: 0 }
             },
-            render(h) {
+            render() {
                 return h(BTabs, { props: { value: this.activeTab } }, [
                     h(BTab, 'Tab 1'),
                     h(BTab, { props: { disabled: true } }, 'Tab 2'),
@@ -328,7 +324,6 @@ describe('tabs', () => {
 
     it('`activate-tab` event works', async() => {
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
             props: {
                 activeTab: { type: Number, default: 0 }
             },
@@ -340,7 +335,7 @@ describe('tabs', () => {
                     }
                 }
             },
-            render(h) {
+            render() {
                 return h(
                     BTabs, {
                         props: { value: this.activeTab },
@@ -396,8 +391,7 @@ describe('tabs', () => {
 
     it('clicking on tab activates the tab, and tab emits click event', async() => {
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
-            render(h) {
+            render() {
                 return h(BTabs, { props: { value: 0 } }, [
                     h(BTab, { props: { title: 'one' } }, 'tab 0'),
                     h(BTab, { props: { title: 'two' } }, 'tab 1'),
@@ -415,9 +409,9 @@ describe('tabs', () => {
         expect($tabs).toBeDefined()
         expect($tabs.findAllComponents(BTab).length).toBe(3)
 
-        const tab1 = $tabs.findAllComponents(BTab).at(0)
-        const tab2 = $tabs.findAllComponents(BTab).at(1)
-        const tab3 = $tabs.findAllComponents(BTab).at(2)
+        const tab1 = $tabs.findAllComponents(BTab)[0]
+        const tab2 = $tabs.findAllComponents(BTab)[1]
+        const tab3 = $tabs.findAllComponents(BTab)[2]
 
         expect(wrapper.findAll('.nav-link')).toBeDefined()
         expect(wrapper.findAll('.nav-link').length).toBe(3)
@@ -431,8 +425,7 @@ describe('tabs', () => {
         // Try to set 2nd BTab to be active via click
         expect(tab2.emitted('click')).toBeUndefined()
         await wrapper
-            .findAll('.nav-link')
-            .at(1)
+            .findAll('.nav-link')[1]
             .trigger('click')
         expect($tabs.vm.currentTab).toBe(1)
         expect(tab1.vm.localActive).toBe(false)
@@ -443,8 +436,7 @@ describe('tabs', () => {
         // Try to set 3rd BTab to be active via click
         expect(tab3.emitted('click')).toBeUndefined()
         await wrapper
-            .findAll('.nav-link')
-            .at(2)
+            .findAll('.nav-link')[2]
             .trigger('click')
         expect($tabs.vm.currentTab).toBe(2)
         expect(tab1.vm.localActive).toBe(false)
@@ -455,8 +447,7 @@ describe('tabs', () => {
         // Try to set 1st BTab to be active via click (space === click in keynav mode)
         expect(tab1.emitted('click')).toBeUndefined()
         await wrapper
-            .findAll('.nav-link')
-            .at(0)
+            .findAll('.nav-link')[0]
             .trigger('keydown.space')
         expect($tabs.vm.currentTab).toBe(0)
         expect(tab1.vm.localActive).toBe(true)
@@ -469,8 +460,7 @@ describe('tabs', () => {
 
     it('pressing space on tab activates the tab, and tab emits click event', async() => {
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
-            render(h) {
+            render() {
                 return h(BTabs, { props: { value: 0, noKeyNav: true } }, [
                     h(BTab, { props: { title: 'one' } }, 'tab 0'),
                     h(BTab, { props: { title: 'two' } }, 'tab 1'),
@@ -488,9 +478,9 @@ describe('tabs', () => {
         expect($tabs).toBeDefined()
         expect($tabs.findAllComponents(BTab).length).toBe(3)
 
-        const tab1 = $tabs.findAllComponents(BTab).at(0)
-        const tab2 = $tabs.findAllComponents(BTab).at(1)
-        const tab3 = $tabs.findAllComponents(BTab).at(2)
+        const tab1 = $tabs.findAllComponents(BTab)[0]
+        const tab2 = $tabs.findAllComponents(BTab)[1]
+        const tab3 = $tabs.findAllComponents(BTab)[2]
 
         expect(wrapper.findAll('.nav-link')).toBeDefined()
         expect(wrapper.findAll('.nav-link').length).toBe(3)
@@ -504,8 +494,7 @@ describe('tabs', () => {
         // Try to set 2nd BTab to be active via space keypress
         expect(tab2.emitted('click')).toBeUndefined()
         await wrapper
-            .findAll('.nav-link')
-            .at(1)
+            .findAll('.nav-link')[1]
             .trigger('keydown.space')
         expect($tabs.vm.currentTab).toBe(1)
         expect(tab1.vm.localActive).toBe(false)
@@ -516,8 +505,7 @@ describe('tabs', () => {
         // Try to set 3rd BTab to be active via space keypress
         expect(tab3.emitted('click')).toBeUndefined()
         await wrapper
-            .findAll('.nav-link')
-            .at(2)
+            .findAll('.nav-link')[2]
             .trigger('keydown.space')
         expect($tabs.vm.currentTab).toBe(2)
         expect(tab1.vm.localActive).toBe(false)
@@ -528,8 +516,7 @@ describe('tabs', () => {
         // Try to set 1st BTab to be active via space keypress
         expect(tab1.emitted('click')).toBeUndefined()
         await wrapper
-            .findAll('.nav-link')
-            .at(0)
+            .findAll('.nav-link')[0]
             .trigger('keydown.space')
         expect($tabs.vm.currentTab).toBe(0)
         expect(tab1.vm.localActive).toBe(true)
@@ -542,8 +529,7 @@ describe('tabs', () => {
 
     it('key nav works', async() => {
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
-            render(h) {
+            render() {
                 return h(BTabs, { props: { value: 0 } }, [
                     h(BTab, { props: { title: 'one' } }, 'tab 0'),
                     h(BTab, { props: { title: 'two' } }, 'tab 1'),
@@ -561,9 +547,9 @@ describe('tabs', () => {
         expect($tabs).toBeDefined()
         expect($tabs.findAllComponents(BTab).length).toBe(3)
 
-        const tab1 = $tabs.findAllComponents(BTab).at(0)
-        const tab2 = $tabs.findAllComponents(BTab).at(1)
-        const tab3 = $tabs.findAllComponents(BTab).at(2)
+        const tab1 = $tabs.findAllComponents(BTab)[0]
+        const tab2 = $tabs.findAllComponents(BTab)[1]
+        const tab3 = $tabs.findAllComponents(BTab)[2]
 
         expect(wrapper.findAll('.nav-link')).toBeDefined()
         expect(wrapper.findAll('.nav-link').length).toBe(3)
@@ -576,8 +562,7 @@ describe('tabs', () => {
 
         // RIGHT moves to next tab
         await wrapper
-            .findAllComponents(BLink)
-            .at(0)
+            .findAllComponents(BLink)[0]
             .trigger('keydown.right')
         expect($tabs.vm.currentTab).toBe(1)
         expect(tab1.vm.localActive).toBe(false)
@@ -586,8 +571,7 @@ describe('tabs', () => {
 
         // END key moves to last tab
         await wrapper
-            .findAllComponents(BLink)
-            .at(1)
+            .findAllComponents(BLink)[1]
             .trigger('keydown.end')
         expect($tabs.vm.currentTab).toBe(2)
         expect(tab1.vm.localActive).toBe(false)
@@ -596,8 +580,7 @@ describe('tabs', () => {
 
         // LEFT moves to previous tab
         await wrapper
-            .findAllComponents(BLink)
-            .at(2)
+            .findAllComponents(BLink)[2]
             .trigger('keydown.left')
         expect($tabs.vm.currentTab).toBe(1)
         expect(tab1.vm.localActive).toBe(false)
@@ -606,8 +589,7 @@ describe('tabs', () => {
 
         // HOME moves to first tab
         await wrapper
-            .findAllComponents(BLink)
-            .at(1)
+            .findAllComponents(BLink)[1]
             .trigger('keydown.home')
         expect($tabs.vm.currentTab).toBe(0)
         expect(tab1.vm.localActive).toBe(true)
@@ -619,11 +601,10 @@ describe('tabs', () => {
 
     it('disabling active tab selects first non-disabled tab', async() => {
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
             props: {
                 disabledTabs: { type: Array, default: () => [] }
             },
-            render(h) {
+            render() {
                 const { disabledTabs } = this
 
                 return h(BTabs, { props: { value: 2 } }, [
@@ -643,9 +624,9 @@ describe('tabs', () => {
         expect($tabs).toBeDefined()
         expect($tabs.findAllComponents(BTab).length).toBe(3)
 
-        const tab1 = $tabs.findAllComponents(BTab).at(0)
-        const tab2 = $tabs.findAllComponents(BTab).at(1)
-        const tab3 = $tabs.findAllComponents(BTab).at(2)
+        const tab1 = $tabs.findAllComponents(BTab)[0]
+        const tab2 = $tabs.findAllComponents(BTab)[1]
+        const tab3 = $tabs.findAllComponents(BTab)[2]
 
         // Expect 3rd tab (index 2) to be active
         expect($tabs.vm.currentTab).toBe(2)
@@ -676,8 +657,7 @@ describe('tabs', () => {
 
     it('tab title slots are reactive', async() => {
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
-            render(h) {
+            render() {
                 return h(BTabs, { props: { value: 2 } }, [
                     h(BTab, { props: { title: 'original' } }, 'tab content')
                 ])
@@ -714,11 +694,10 @@ describe('tabs', () => {
     it('"active-nav-item-class" is applied to active nav item', async() => {
         const activeNavItemClass = 'text-success'
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
             props: {
                 activeTab: { type: Number, default: 0 }
             },
-            render(h) {
+            render() {
                 return h(BTabs, { props: { value: this.activeTab, activeNavItemClass } }, [
                     h(BTab, 'Tab 1'),
                     h(BTab, 'Tab 2'),
@@ -759,11 +738,10 @@ describe('tabs', () => {
     it('"active-tab-class" is applied to active tab', async() => {
         const activeTabClass = 'text-success'
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
             props: {
                 activeTab: { type: Number, default: 0 }
             },
-            render(h) {
+            render() {
                 return h(BTabs, { props: { value: this.activeTab, activeTabClass } }, [
                     h(BTab, 'Tab 1'),
                     h(BTab, 'Tab 2'),
@@ -800,14 +778,13 @@ describe('tabs', () => {
 
     it('emits "changed" event when tabs change', async() => {
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
             props: {
                 tabs: {
                     type: Array,
                     default: () => ['Tab 1', 'Tab 2', 'Tab 3']
                 }
             },
-            render(h) {
+            render() {
                 return h(BTabs, this.tabs.map(tab => h(BTab, tab)))
             }
         }

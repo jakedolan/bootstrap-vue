@@ -70,7 +70,6 @@ export const generateProps = () => {
 // @vue/component
 export const BRow = {
     name: NAME_ROW,
-    functional: true,
     get props() {
         // Allow props to be lazy evaled on first access and
         // then they become a non-getter afterwards

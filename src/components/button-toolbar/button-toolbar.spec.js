@@ -1,3 +1,4 @@
+import { h } from 'vue';
 import { mount } from '@vue/test-utils'
 import { waitNT } from '../../../tests/utils'
 import { BButton } from '../button/button'
@@ -82,12 +83,7 @@ describe('button-toolbar', () => {
 
         // Test App for keynav
         const App = {
-            compatConfig: {
-                MODE: 3,
-                RENDER_FUNCTION: 'suppress-warning',
-                COMPONENT_FUNCTIONAL: 'suppress-warning'
-            },
-            render(h) {
+            render() {
                 return h(BButtonToolbar, { props: { keyNav: true } }, [
                     h(BButtonGroup, [h(BButton, 'a'), h(BButton, 'b')]),
                     h(BButtonGroup, [h(BButton, { props: { disabled: true } }, 'c'), h(BButton, 'd')]),
@@ -114,38 +110,32 @@ describe('button-toolbar', () => {
             expect($btns).toBeDefined()
             expect($btns.length).toBe(6)
             expect(
-                $btns
-                .at(0)
+                $btns[0]
                 .find('button[tabindex="-1"')
                 .exists()
             ).toBe(true)
             expect(
-                $btns
-                .at(1)
+                $btns[1]
                 .find('button[tabindex="-1"')
                 .exists()
             ).toBe(true)
             expect(
-                    $btns
-                    .at(2)
+                    $btns[2]
                     .find('button[tabindex="-1"')
                     .exists()
                 ).toBe(false) // Disabled button
             expect(
-                $btns
-                .at(3)
+                $btns[3]
                 .find('button[tabindex="-1"')
                 .exists()
             ).toBe(true)
             expect(
-                $btns
-                .at(4)
+                $btns[4]
                 .find('button[tabindex="-1"')
                 .exists()
             ).toBe(true)
             expect(
-                $btns
-                .at(5)
+                $btns[5]
                 .find('button[tabindex="-1"')
                 .exists()
             ).toBe(true)
@@ -168,10 +158,10 @@ describe('button-toolbar', () => {
             expect($btns.length).toBe(6)
 
             expect(document.activeElement).not.toBe(wrapper.element)
-            expect(document.activeElement).not.toBe($btns.at(0).element)
+            expect(document.activeElement).not.toBe($btns[0].element)
 
             await wrapper.trigger('focusin')
-            expect(document.activeElement).toBe($btns.at(0).element)
+            expect(document.activeElement).toBe($btns[0].element)
 
             wrapper.unmount()
         })
@@ -191,28 +181,28 @@ describe('button-toolbar', () => {
             expect($btns.length).toBe(6)
 
             // Focus first button
-            $btns.at(0).element.focus()
-            expect(document.activeElement).toBe($btns.at(0).element)
+            $btns[0].element.focus()
+            expect(document.activeElement).toBe($btns[0].element)
 
             // Cursor right
-            await $btns.at(0).trigger('keydown.right')
-            expect(document.activeElement).toBe($btns.at(1).element)
+            await $btns[0].trigger('keydown.right')
+            expect(document.activeElement).toBe($btns[1].element)
 
             // Cursor right (skips disabled button)
-            await $btns.at(1).trigger('keydown.right')
-            expect(document.activeElement).toBe($btns.at(3).element)
+            await $btns[1].trigger('keydown.right')
+            expect(document.activeElement).toBe($btns[3].element)
 
             // Cursor shift-right (focuses last button)
-            await $btns.at(1).trigger('keydown.right', { shiftKey: true })
-            expect(document.activeElement).toBe($btns.at(5).element)
+            await $btns[1].trigger('keydown.right', { shiftKey: true })
+            expect(document.activeElement).toBe($btns[5].element)
 
             // Cursor left
-            await $btns.at(5).trigger('keydown.left')
-            expect(document.activeElement).toBe($btns.at(4).element)
+            await $btns[5].trigger('keydown.left')
+            expect(document.activeElement).toBe($btns[4].element)
 
             // Cursor shift left (focuses first button)
-            await $btns.at(5).trigger('keydown.left', { shiftKey: true })
-            expect(document.activeElement).toBe($btns.at(0).element)
+            await $btns[5].trigger('keydown.left', { shiftKey: true })
+            expect(document.activeElement).toBe($btns[0].element)
 
             wrapper.unmount()
         })

@@ -18,7 +18,6 @@ export const props = makePropsConfigurable({
 // @vue/component
 export const BFormSelectOption = /*#__PURE__*/ defineComponent({
     name: NAME_FORM_SELECT_OPTION,
-    functional: true,
     props,
     render(h, { props, data, children }) {
         const { value, disabled } = props

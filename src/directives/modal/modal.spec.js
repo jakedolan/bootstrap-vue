@@ -7,11 +7,6 @@ describe('v-b-modal directive', () => {
     it('works on buttons', async() => {
         const spy = jest.fn()
         const App = {
-            compatConfig: {
-                MODE: 3,
-                CUSTOM_DIR: 'suppress-warning',
-
-            },
             directives: {
                 bModal: VBModal
             },
@@ -42,11 +37,6 @@ describe('v-b-modal directive', () => {
     it('works on links', async() => {
         const spy = jest.fn()
         const App = {
-            compatConfig: {
-                MODE: 3,
-                CUSTOM_DIR: 'suppress-warning',
-
-            },
             directives: {
                 bModal: VBModal
             },
@@ -85,12 +75,6 @@ describe('v-b-modal directive', () => {
     it('works on non-buttons', async() => {
         const spy = jest.fn()
         const App = {
-            compatConfig: {
-                MODE: 3,
-                CUSTOM_DIR: 'suppress-warning',
-                INSTANCE_LISTENERS: 'suppress-warning',
-
-            },
             directives: {
                 bModal: VBModal
             },
@@ -135,12 +119,6 @@ describe('v-b-modal directive', () => {
     it('works on non-buttons using keydown space', async() => {
         const spy = jest.fn()
         const App = {
-            compatConfig: {
-                MODE: 3,
-                CUSTOM_DIR: 'suppress-warning',
-                INSTANCE_LISTENERS: 'suppress-warning',
-
-            },
             directives: {
                 bModal: VBModal
             },
@@ -178,12 +156,6 @@ describe('v-b-modal directive', () => {
     it('works on non-buttons using keydown enter', async() => {
         const spy = jest.fn()
         const App = {
-            compatConfig: {
-                MODE: 3,
-                CUSTOM_DIR: 'suppress-warning',
-                INSTANCE_LISTENERS: 'suppress-warning',
-
-            },
             directives: {
                 bModal: VBModal
             },

@@ -20,7 +20,6 @@ export const props = makePropsConfigurable({
 // @vue/component
 export const BBreadcrumb = /*#__PURE__*/ defineComponent({
     name: NAME_BREADCRUMB,
-    functional: true,
     props,
     render(h, { props, data, children }) {
         const { items } = props
@@ -43,7 +42,7 @@ export const BBreadcrumb = /*#__PURE__*/ defineComponent({
                     active = idx + 1 === items.length
                 }
 
-                return h(BBreadcrumbItem, { ...(item || {}), active })
+                return h(BBreadcrumbItem, {...(item || {}), active })
             })
         }
 

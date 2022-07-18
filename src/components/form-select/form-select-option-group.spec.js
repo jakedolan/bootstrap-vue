@@ -35,12 +35,12 @@ describe('form-select-option-group', () => {
 
         const $options = wrapper.findAll('option')
         expect($options.length).toBe(3)
-        expect($options.at(0).text()).toBe('one')
-        expect($options.at(1).text()).toBe('two')
-        expect($options.at(2).text()).toBe('three')
-        expect($options.at(0).attributes('value')).toBe('one')
-        expect($options.at(1).attributes('value')).toBe('two')
-        expect($options.at(2).attributes('value')).toBe('three')
+        expect($options[0].text()).toBe('one')
+        expect($options[1].text()).toBe('two')
+        expect($options[2].text()).toBe('three')
+        expect($options[0].attributes('value')).toBe('one')
+        expect($options[1].attributes('value')).toBe('two')
+        expect($options[2].attributes('value')).toBe('three')
         expect($options.wrappers.every(o => o.find('[disabled]').exists())).toBe(false)
 
         wrapper.unmount()
@@ -64,27 +64,24 @@ describe('form-select-option-group', () => {
 
         const $options = wrapper.findAll('option')
         expect($options.length).toBe(3)
-        expect($options.at(0).text()).toBe('one')
-        expect($options.at(1).text()).toBe('two')
-        expect($options.at(2).text()).toBe('three')
-        expect($options.at(0).attributes('value')).toBe('1')
-        expect($options.at(1).attributes('value')).toBe('2')
-        expect($options.at(2).attributes('value')).toBe('3')
+        expect($options[0].text()).toBe('one')
+        expect($options[1].text()).toBe('two')
+        expect($options[2].text()).toBe('three')
+        expect($options[0].attributes('value')).toBe('1')
+        expect($options[1].attributes('value')).toBe('2')
+        expect($options[2].attributes('value')).toBe('3')
         expect(
-            $options
-            .at(0)
+            $options[0]
             .find('[disabled]')
             .exists()
         ).toBe(false)
         expect(
-            $options
-            .at(1)
+            $options[1]
             .find('[disabled]')
             .exists()
         ).toBe(true)
         expect(
-            $options
-            .at(2)
+            $options[2]
             .find('[disabled]')
             .exists()
         ).toBe(false)
@@ -107,12 +104,12 @@ describe('form-select-option-group', () => {
 
         const $options = wrapper.findAll('option')
         expect($options.length).toBe(3)
-        expect($options.at(0).text()).toBe('1')
-        expect($options.at(1).text()).toBe('Two')
-        expect($options.at(2).text()).toBe('three')
-        expect($options.at(0).attributes('value')).toBe('one')
-        expect($options.at(1).attributes('value')).toBe('2')
-        expect($options.at(2).attributes('value')).toBe('three')
+        expect($options[0].text()).toBe('1')
+        expect($options[1].text()).toBe('Two')
+        expect($options[2].text()).toBe('three')
+        expect($options[0].attributes('value')).toBe('one')
+        expect($options[1].attributes('value')).toBe('2')
+        expect($options[2].attributes('value')).toBe('three')
 
         expect(spyWarn).toHaveBeenCalledWith(
             '[BootstrapVue warn]: BFormSelectOptionGroup - Setting prop "options" to an object is deprecated. Use the array format instead.'
@@ -141,12 +138,12 @@ describe('form-select-option-group', () => {
 
         const $options = wrapper.findAll('option')
         expect($options.length).toBe(3)
-        expect($options.at(0).text()).toBe('one')
-        expect($options.at(1).text()).toBe('two')
-        expect($options.at(2).text()).toBe('three')
-        expect($options.at(0).attributes('value')).toBe('1')
-        expect($options.at(1).attributes('value')).toBe('2')
-        expect($options.at(2).attributes('value')).toBe('3')
+        expect($options[0].text()).toBe('one')
+        expect($options[1].text()).toBe('two')
+        expect($options[2].text()).toBe('three')
+        expect($options[0].attributes('value')).toBe('1')
+        expect($options[1].attributes('value')).toBe('2')
+        expect($options[2].attributes('value')).toBe('3')
 
         wrapper.unmount()
     })

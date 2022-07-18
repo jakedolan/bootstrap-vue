@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils'
 import { waitNT, waitRAF } from '../../../tests/utils'
 import { BNavbarToggle } from './navbar-toggle'
+import { emitter } from '../../utils/emitter.js'
 
 const ROOT_ACTION_EVENT_NAME_TOGGLE = 'bv::toggle::collapse'
 
@@ -92,12 +93,12 @@ describe('navbar-toggle', () => {
         expect(scope).not.toBe(null)
         expect(scope.expanded).toBe(false)
 
-        wrapper.vm.$root.$emit(ROOT_EVENT_NAME_STATE, 'target-6', true)
+        emitter.$emit(ROOT_EVENT_NAME_STATE, { id: 'target-6', show: true })
         await waitNT(wrapper.vm)
         expect(scope).not.toBe(null)
         expect(scope.expanded).toBe(true)
 
-        wrapper.vm.$root.$emit(ROOT_EVENT_NAME_STATE, 'target-6', false)
+        emitter.$emit(ROOT_EVENT_NAME_STATE, { id: 'target-6', show: false })
         await waitNT(wrapper.vm)
         expect(scope).not.toBe(null)
         expect(scope.expanded).toBe(false)
@@ -119,7 +120,7 @@ describe('navbar-toggle', () => {
         const onRootClick = () => {
             rootClicked = true
         }
-        wrapper.vm.$root.$on(ROOT_ACTION_EVENT_NAME_TOGGLE, onRootClick)
+        emitter.$on(ROOT_ACTION_EVENT_NAME_TOGGLE, onRootClick)
 
         expect(wrapper.emitted('click')).toBeUndefined()
         expect(rootClicked).toBe(false)
@@ -128,7 +129,7 @@ describe('navbar-toggle', () => {
         expect(wrapper.emitted('click')).toBeDefined()
         expect(rootClicked).toBe(true)
 
-        wrapper.vm.$root.$off(ROOT_ACTION_EVENT_NAME_TOGGLE, onRootClick)
+        emitter.$off(ROOT_ACTION_EVENT_NAME_TOGGLE, onRootClick)
 
         wrapper.unmount()
     })
@@ -141,28 +142,28 @@ describe('navbar-toggle', () => {
         })
 
         // Private state event
-        wrapper.vm.$root.$emit(ROOT_EVENT_NAME_STATE, 'target-8', true)
+        emitter.$emit(ROOT_EVENT_NAME_STATE, { id: 'target-8', show: true })
         await waitNT(wrapper.vm)
         expect(wrapper.attributes('aria-expanded')).toBe('true')
 
-        wrapper.vm.$root.$emit(ROOT_EVENT_NAME_STATE, 'target-8', false)
+        emitter.$emit(ROOT_EVENT_NAME_STATE, { id: 'target-8', show: false })
         await waitNT(wrapper.vm)
         expect(wrapper.attributes('aria-expanded')).toBe('false')
 
-        wrapper.vm.$root.$emit(ROOT_EVENT_NAME_STATE, 'foo', true)
+        emitter.$emit(ROOT_EVENT_NAME_STATE, { id: 'foo', show: true })
         await waitNT(wrapper.vm)
         expect(wrapper.attributes('aria-expanded')).toBe('false')
 
         // Private sync event
-        wrapper.vm.$root.$emit(ROOT_EVENT_NAME_SYNC_STATE, 'target-8', true)
+        emitter.$emit(ROOT_EVENT_NAME_SYNC_STATE, { id: 'target-8', show: true })
         await waitNT(wrapper.vm)
         expect(wrapper.attributes('aria-expanded')).toBe('true')
 
-        wrapper.vm.$root.$emit(ROOT_EVENT_NAME_SYNC_STATE, 'target-8', false)
+        emitter.$emit(ROOT_EVENT_NAME_SYNC_STATE, { id: 'target-8', show: false })
         await waitNT(wrapper.vm)
         expect(wrapper.attributes('aria-expanded')).toBe('false')
 
-        wrapper.vm.$root.$emit(ROOT_EVENT_NAME_SYNC_STATE, 'foo', true)
+        emitter.$emit(ROOT_EVENT_NAME_SYNC_STATE, { id: 'foo', show: true })
         await waitNT(wrapper.vm)
         expect(wrapper.attributes('aria-expanded')).toBe('false')
 

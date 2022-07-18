@@ -1,6 +1,8 @@
+import { h } from 'vue';
 import { mount } from '@vue/test-utils'
 import { waitNT } from '../../../tests/utils'
 import { BTable } from './table'
+import { emitter } from '../../utils/emitter.js'
 
 const testItems = [
     { a: 1, b: 2, c: 3 },
@@ -210,7 +212,7 @@ describe('table > provider functions', () => {
         expect(wrapper.emitted('refreshed').length).toBe(2)
 
         // Root event refreshing
-        wrapper.vm.$root.$emit('bv::refresh::table', 'the-table')
+        emitter.$emit('bv::refresh::table', { id: 'the-table' })
         await waitNT(wrapper.vm)
         await waitNT(wrapper.vm)
         expect(wrapper.emitted('refreshed').length).toBe(3)
@@ -351,7 +353,6 @@ describe('table > provider functions', () => {
         // that prop with the same object reference
         // https://forum.vuejs.org/t/vue-test-utils-watchers-on-object-properties-not-triggered/50900/11?u=tmorehouse
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
             data() {
                 return {
                     filter: {
@@ -366,7 +367,7 @@ describe('table > provider functions', () => {
                     return testItems.slice()
                 }
             },
-            render(h) {
+            render() {
                 return h(BTable, {
                     props: {
                         items: this.provider,

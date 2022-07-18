@@ -39,14 +39,12 @@ describe('table > tbody bottom-row slot', () => {
         expect(wrapper.findAll('tbody > tr').length).toBe(testItems.length + 1)
         expect(
             wrapper
-            .findAll('tbody > tr')
-            .at(testItems.length)
+            .findAll('tbody > tr')[testItems.length]
             .text()
         ).toBe('foobar')
         expect(
             wrapper
-            .findAll('tbody > tr')
-            .at(testItems.length)
+            .findAll('tbody > tr')[testItems.length]
             .classes()
         ).toContain('b-table-bottom-row')
 
@@ -78,14 +76,12 @@ describe('table > tbody bottom-row slot', () => {
         expect(wrapper.findAll('tbody > tr').length).toBe(testItems.length + 1)
         expect(
             wrapper
-            .findAll('tbody > tr')
-            .at(testItems.length)
+            .findAll('tbody > tr')[testItems.length]
             .text()
         ).toBe('foobar')
         expect(
             wrapper
-            .findAll('tbody > tr')
-            .at(testItems.length)
+            .findAll('tbody > tr')[testItems.length]
             .classes()
         ).toContain('b-table-bottom-row')
 

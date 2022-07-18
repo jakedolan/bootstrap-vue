@@ -54,7 +54,6 @@ export const props = {
 // @vue/component
 export const BVIconBase = /*#__PURE__*/ defineComponent({
     name: NAME_ICON_BASE,
-    functional: true,
     props,
     render() {
         const { $data, $props, $slots } = this

@@ -204,11 +204,6 @@ const renderBackdrop = (ctx) => {
 // @vue/component
 export const BSidebar = /*#__PURE__*/ defineComponent({
     name: NAME_SIDEBAR,
-    compatConfig: {
-        MODE: 3,
-        INSTANCE_SCOPED_SLOTS: 'suppress-warning',
-
-    },
     mixins: [attrsMixin, idMixin, modelMixin, listenOnRootMixin, normalizeSlotMixin],
     inheritAttrs: false,
     props,

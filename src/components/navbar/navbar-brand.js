@@ -25,7 +25,6 @@ export const props = makePropsConfigurable(
 // @vue/component
 export const BNavbarBrand = /*#__PURE__*/ defineComponent({
     name: NAME_NAVBAR_BRAND,
-    functional: true,
     props,
     render(h, { props, data, children }) {
         const isLink = props.to || props.href

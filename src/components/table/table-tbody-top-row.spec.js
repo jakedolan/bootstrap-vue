@@ -37,14 +37,12 @@ describe('table > tbody top-row slot', () => {
         expect(wrapper.findAll('tbody > tr').length).toBe(testItems.length + 1)
         expect(
             wrapper
-            .findAll('tbody > tr')
-            .at(0)
+            .findAll('tbody > tr')[0]
             .text()
         ).toBe('foobar')
         expect(
             wrapper
-            .findAll('tbody > tr')
-            .at(0)
+            .findAll('tbody > tr')[0]
             .classes()
         ).toContain('b-table-top-row')
     })
@@ -74,14 +72,12 @@ describe('table > tbody top-row slot', () => {
         expect(wrapper.findAll('tbody > tr').length).toBe(testItems.length + 1)
         expect(
             wrapper
-            .findAll('tbody > tr')
-            .at(0)
+            .findAll('tbody > tr')[0]
             .text()
         ).toBe('foobar')
         expect(
             wrapper
-            .findAll('tbody > tr')
-            .at(0)
+            .findAll('tbody > tr')[0]
             .classes()
         ).toContain('b-table-top-row')
     })

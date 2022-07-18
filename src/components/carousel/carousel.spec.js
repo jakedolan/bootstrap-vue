@@ -1,3 +1,4 @@
+import { h } from 'vue';
 import { mount } from '@vue/test-utils'
 import { waitNT, waitRAF } from '../../../tests/utils'
 import { BCarousel } from './carousel'
@@ -6,7 +7,6 @@ import { BCarouselSlide } from './carousel-slide'
 jest.useFakeTimers()
 
 const App = {
-    compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
     props: [
         // BCarousel props
         'interval',
@@ -19,7 +19,7 @@ const App = {
         // Custom props
         'slideCount'
     ],
-    render(h) {
+    render() {
         const props = {...this.$props }
         const { slideCount = 4 } = props
         delete props.slideCount
@@ -443,7 +443,7 @@ describe('carousel', () => {
         expect($carousel.emitted('sliding-end')).toBeUndefined()
         expect($carousel.emitted('input')).toBeUndefined()
 
-        await $indicators.at(3).trigger('click')
+        await $indicators[3].trigger('click')
 
         expect($carousel.emitted('sliding-start')).toBeDefined()
         expect($carousel.emitted('sliding-end')).toBeUndefined()
@@ -462,7 +462,7 @@ describe('carousel', () => {
         expect($carousel.emitted('input').length).toBe(1)
         expect($carousel.emitted('input')[0][0]).toEqual(3)
 
-        await $indicators.at(1).trigger('click')
+        await $indicators[1].trigger('click')
 
         expect($carousel.emitted('sliding-start').length).toBe(2)
         expect($carousel.emitted('sliding-end').length).toBe(1)
@@ -505,7 +505,7 @@ describe('carousel', () => {
         expect($carousel.emitted('sliding-end')).toBeUndefined()
         expect($carousel.emitted('input')).toBeUndefined()
 
-        await $indicators.at(3).trigger('keydown.space')
+        await $indicators[3].trigger('keydown.space')
 
         expect($carousel.emitted('sliding-start')).toBeDefined()
         expect($carousel.emitted('sliding-end')).toBeUndefined()
@@ -524,7 +524,7 @@ describe('carousel', () => {
         expect($carousel.emitted('input').length).toBe(1)
         expect($carousel.emitted('input')[0][0]).toEqual(3)
 
-        await $indicators.at(1).trigger('keydown.enter')
+        await $indicators[1].trigger('keydown.enter')
 
         expect($carousel.emitted('sliding-start').length).toBe(2)
         expect($carousel.emitted('sliding-end').length).toBe(1)

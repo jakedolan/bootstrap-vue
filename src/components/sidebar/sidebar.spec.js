@@ -1,6 +1,7 @@
 import { createWrapper, mount } from '@vue/test-utils'
 import { waitNT, waitRAF } from '../../../tests/utils'
 import { BSidebar } from './sidebar'
+import { emitter } from '../../utils/emitter.js'
 
 const ROOT_ACTION_EVENT_NAME_REQUEST_STATE = 'bv::request-state::collapse'
 const ROOT_ACTION_EVENT_NAME_TOGGLE = 'bv::toggle::collapse'
@@ -158,21 +159,21 @@ describe('sidebar', () => {
         expect($sidebar.element.tagName).toBe('DIV')
         expect($sidebar.element).not.toBeVisible()
 
-        wrapper.vm.$root.$emit(ROOT_ACTION_EVENT_NAME_TOGGLE, 'test-toggle')
+        emitter.$emit(ROOT_ACTION_EVENT_NAME_TOGGLE, { id: 'test-toggle' })
         await waitNT(wrapper.vm)
         await waitRAF()
         await waitRAF()
         expect($sidebar.element.tagName).toBe('DIV')
         expect($sidebar.element).toBeVisible()
 
-        wrapper.vm.$root.$emit(ROOT_ACTION_EVENT_NAME_TOGGLE, 'test-toggle')
+        emitter.$emit(ROOT_ACTION_EVENT_NAME_TOGGLE, { id: 'test-toggle' })
         await waitNT(wrapper.vm)
         await waitRAF()
         await waitRAF()
         expect($sidebar.element.tagName).toBe('DIV')
         expect($sidebar.element).not.toBeVisible()
 
-        wrapper.vm.$root.$emit(ROOT_ACTION_EVENT_NAME_TOGGLE, 'foobar')
+        emitter.$emit(ROOT_ACTION_EVENT_NAME_TOGGLE, { id: 'foobar' })
         await waitNT(wrapper.vm)
         await waitRAF()
         await waitRAF()
@@ -197,7 +198,7 @@ describe('sidebar', () => {
         expect($sidebar.element.tagName).toBe('DIV')
         expect($sidebar.element).not.toBeVisible()
 
-        wrapper.vm.$root.$emit(ROOT_ACTION_EVENT_NAME_TOGGLE, 'test-esc')
+        emitter.$emit(ROOT_ACTION_EVENT_NAME_TOGGLE, { id: 'test-esc' })
         await waitNT(wrapper.vm)
         await waitRAF()
         await waitRAF()
@@ -211,7 +212,7 @@ describe('sidebar', () => {
         expect($sidebar.element).not.toBeVisible()
 
         await wrapper.setProps({ noCloseOnEsc: true })
-        wrapper.vm.$root.$emit(ROOT_ACTION_EVENT_NAME_TOGGLE, 'test-esc')
+        emitter.$emit(ROOT_ACTION_EVENT_NAME_TOGGLE, { id: 'test-esc' })
         await waitRAF()
         await waitRAF()
         expect($sidebar.element.tagName).toBe('DIV')

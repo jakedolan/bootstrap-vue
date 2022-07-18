@@ -1,3 +1,4 @@
+import { h } from 'vue';
 import { mount } from '@vue/test-utils'
 import { waitNT } from '../../../tests/utils'
 import { BFormCheckboxGroup } from './form-checkbox-group'
@@ -316,8 +317,7 @@ describe('form-checkbox-group', () => {
 
     it('button mode button variant works', async() => {
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
-            render(h) {
+            render() {
                 return h(
                     BFormCheckboxGroup, {
                         props: {
@@ -346,9 +346,9 @@ describe('form-checkbox-group', () => {
         expect($btns).toBeDefined()
         expect($btns.length).toBe(3)
             // Expect them to have the correct variant classes
-        expect($btns.at(0).classes()).toContain('btn-primary')
-        expect($btns.at(1).classes()).toContain('btn-primary')
-        expect($btns.at(2).classes()).toContain('btn-danger')
+        expect($btns[0].classes()).toContain('btn-primary')
+        expect($btns[1].classes()).toContain('btn-primary')
+        expect($btns[2].classes()).toContain('btn-danger')
 
         wrapper.unmount()
     })
@@ -389,9 +389,9 @@ describe('form-checkbox-group', () => {
         expect($inputs.length).toBe(3)
         expect(wrapper.vm.localChecked).toEqual([])
         expect($inputs.wrappers.every(c => c.find('input[type=checkbox]').exists())).toBe(true)
-        expect($inputs.at(0).attributes('disabled')).toBeUndefined()
-        expect($inputs.at(1).attributes('disabled')).toBeUndefined()
-        expect($inputs.at(2).attributes('disabled')).toBeDefined()
+        expect($inputs[0].attributes('disabled')).toBeUndefined()
+        expect($inputs[1].attributes('disabled')).toBeUndefined()
+        expect($inputs[2].attributes('disabled')).toBeDefined()
 
         wrapper.unmount()
     })
@@ -411,7 +411,7 @@ describe('form-checkbox-group', () => {
         expect($inputs.length).toBe(3)
         expect(wrapper.vm.localChecked).toEqual([])
 
-        await $inputs.at(0).trigger('click')
+        await $inputs[0].trigger('click')
         expect(wrapper.vm.localChecked).toEqual(['one'])
         expect(wrapper.emitted('change')).toBeDefined()
         expect(wrapper.emitted('change').length).toBe(1)
@@ -420,21 +420,21 @@ describe('form-checkbox-group', () => {
         expect(wrapper.emitted('input').length).toBe(1)
         expect(wrapper.emitted('input')[0][0]).toEqual(['one'])
 
-        await $inputs.at(2).trigger('click')
+        await $inputs[2].trigger('click')
         expect(wrapper.vm.localChecked).toEqual(['one', 'three'])
         expect(wrapper.emitted('change').length).toBe(2)
         expect(wrapper.emitted('change')[1][0]).toEqual(['one', 'three'])
         expect(wrapper.emitted('input').length).toBe(2)
         expect(wrapper.emitted('input')[1][0]).toEqual(['one', 'three'])
 
-        await $inputs.at(0).trigger('click')
+        await $inputs[0].trigger('click')
         expect(wrapper.vm.localChecked).toEqual(['three'])
         expect(wrapper.emitted('change').length).toBe(3)
         expect(wrapper.emitted('change')[2][0]).toEqual(['three'])
         expect(wrapper.emitted('input').length).toBe(3)
         expect(wrapper.emitted('input')[2][0]).toEqual(['three'])
 
-        await $inputs.at(1).trigger('click')
+        await $inputs[1].trigger('click')
         expect(wrapper.vm.localChecked).toEqual(['three', 'two'])
         expect(wrapper.emitted('change').length).toBe(4)
         expect(wrapper.emitted('change')[3][0]).toEqual(['three', 'two'])
@@ -460,9 +460,9 @@ describe('form-checkbox-group', () => {
         expect($inputs.length).toBe(3)
         expect(wrapper.vm.localChecked).toEqual(value)
         expect($inputs.wrappers.every(c => c.find('input[type=checkbox]').exists())).toBe(true)
-        expect($inputs.at(0).element.checked).toBe(true)
-        expect($inputs.at(1).element.checked).toBe(true)
-        expect($inputs.at(2).element.checked).toBe(true)
+        expect($inputs[0].element.checked).toBe(true)
+        expect($inputs[1].element.checked).toBe(true)
+        expect($inputs[2].element.checked).toBe(true)
 
         expect(wrapper.emitted('input')).toBeUndefined()
 
@@ -472,9 +472,9 @@ describe('form-checkbox-group', () => {
 
         expect(wrapper.vm.localChecked).toEqual(value)
         expect($inputs.wrappers.every(c => c.find('input[type=checkbox]').exists())).toBe(true)
-        expect($inputs.at(0).element.checked).toBe(true)
-        expect($inputs.at(1).element.checked).toBe(true)
-        expect($inputs.at(2).element.checked).toBe(true)
+        expect($inputs[0].element.checked).toBe(true)
+        expect($inputs[1].element.checked).toBe(true)
+        expect($inputs[2].element.checked).toBe(true)
 
         expect(wrapper.emitted('input')).toBeUndefined()
 
@@ -484,9 +484,9 @@ describe('form-checkbox-group', () => {
 
         expect(wrapper.vm.localChecked).toEqual(value.slice().reverse())
         expect($inputs.wrappers.every(c => c.find('input[type=checkbox]').exists())).toBe(true)
-        expect($inputs.at(0).element.checked).toBe(true)
-        expect($inputs.at(1).element.checked).toBe(true)
-        expect($inputs.at(2).element.checked).toBe(true)
+        expect($inputs[0].element.checked).toBe(true)
+        expect($inputs[1].element.checked).toBe(true)
+        expect($inputs[2].element.checked).toBe(true)
         expect(wrapper.emitted('input')).toBeDefined()
         expect(wrapper.emitted('input').length).toBe(1)
         expect(wrapper.emitted('input')[0][0]).toEqual(value.slice().reverse())
@@ -509,16 +509,16 @@ describe('form-checkbox-group', () => {
         expect($inputs.length).toBe(3)
         expect(wrapper.vm.localChecked).toEqual(['two'])
         expect($inputs.wrappers.every(c => c.find('input[type=checkbox]').exists())).toBe(true)
-        expect($inputs.at(0).element.checked).toBe(false)
-        expect($inputs.at(1).element.checked).toBe(true)
-        expect($inputs.at(2).element.checked).toBe(false)
+        expect($inputs[0].element.checked).toBe(false)
+        expect($inputs[1].element.checked).toBe(true)
+        expect($inputs[2].element.checked).toBe(false)
 
         await wrapper.setProps({ checked: ['three', 'one'] })
         expect(wrapper.vm.localChecked).toEqual(['three', 'one'])
         expect($inputs.wrappers.every(c => c.find('input[type=checkbox]').exists())).toBe(true)
-        expect($inputs.at(0).element.checked).toBe(true)
-        expect($inputs.at(1).element.checked).toBe(false)
-        expect($inputs.at(2).element.checked).toBe(true)
+        expect($inputs[0].element.checked).toBe(true)
+        expect($inputs[1].element.checked).toBe(false)
+        expect($inputs[2].element.checked).toBe(true)
 
         wrapper.unmount()
     })

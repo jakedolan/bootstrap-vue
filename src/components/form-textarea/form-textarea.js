@@ -45,10 +45,6 @@ export const props = makePropsConfigurable(
 // @vue/component
 export const BFormTextarea = /*#__PURE__*/ defineComponent({
     name: NAME_FORM_TEXTAREA,
-    compatConfig: {
-        MODE: 3,
-        CUSTOM_DIR: 'suppress-warning'
-    },
     directives: {
         'b-visible': VBVisible
     },

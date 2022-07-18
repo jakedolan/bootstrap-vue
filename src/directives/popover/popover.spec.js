@@ -44,10 +44,6 @@ describe('v-b-popover directive', () => {
         jest.useFakeTimers()
 
         const App = {
-            compatConfig: {
-                MODE: 3,
-                CUSTOM_DIR: 'suppress-warning'
-            },
             directives: {
                 bPopover: VBPopover
             },
@@ -83,10 +79,6 @@ describe('v-b-popover directive', () => {
         jest.useFakeTimers()
 
         const App = {
-            compatConfig: {
-                MODE: 3,
-                CUSTOM_DIR: 'suppress-warning'
-            },
             directives: {
                 bPopover: VBPopover
             },

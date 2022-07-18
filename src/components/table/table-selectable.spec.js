@@ -184,8 +184,7 @@ describe('table > row select', () => {
 
         // Click first row
         await wrapper
-            .findAll('tbody > tr')
-            .at(0)
+            .findAll('tbody > tr')[0]
             .trigger('click')
 
         expect(wrapper.emitted('row-selected')).toBeDefined()
@@ -194,10 +193,10 @@ describe('table > row select', () => {
 
         $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('true')
-        expect($rows.at(1).attributes('aria-selected')).toBe('false')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
-        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect($rows[0].attributes('aria-selected')).toBe('true')
+        expect($rows[1].attributes('aria-selected')).toBe('false')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
+        expect($rows[3].attributes('aria-selected')).toBe('false')
         expect(wrapper.classes()).toContain('b-table-selectable')
         expect(wrapper.classes()).toContain('b-table-select-single')
         expect(wrapper.classes()).toContain('b-table-selecting')
@@ -206,8 +205,7 @@ describe('table > row select', () => {
 
         // Click third row to select it
         await wrapper
-            .findAll('tbody > tr')
-            .at(2)
+            .findAll('tbody > tr')[2]
             .trigger('click')
 
         expect(wrapper.emitted('row-selected').length).toBe(2)
@@ -215,10 +213,10 @@ describe('table > row select', () => {
 
         $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('false')
-        expect($rows.at(1).attributes('aria-selected')).toBe('false')
-        expect($rows.at(2).attributes('aria-selected')).toBe('true')
-        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect($rows[0].attributes('aria-selected')).toBe('false')
+        expect($rows[1].attributes('aria-selected')).toBe('false')
+        expect($rows[2].attributes('aria-selected')).toBe('true')
+        expect($rows[3].attributes('aria-selected')).toBe('false')
         expect(wrapper.classes()).toContain('b-table-selectable')
         expect(wrapper.classes()).toContain('b-table-select-single')
         expect(wrapper.classes()).toContain('b-table-selecting')
@@ -227,8 +225,7 @@ describe('table > row select', () => {
 
         // Click third row again to clear selection
         await wrapper
-            .findAll('tbody > tr')
-            .at(2)
+            .findAll('tbody > tr')[2]
             .trigger('click')
 
         expect(wrapper.emitted('row-selected').length).toBe(3)
@@ -236,10 +233,10 @@ describe('table > row select', () => {
 
         $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('false')
-        expect($rows.at(1).attributes('aria-selected')).toBe('false')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
-        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect($rows[0].attributes('aria-selected')).toBe('false')
+        expect($rows[1].attributes('aria-selected')).toBe('false')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
+        expect($rows[3].attributes('aria-selected')).toBe('false')
         expect(wrapper.classes()).toContain('b-table-selectable')
         expect(wrapper.classes()).toContain('b-table-select-single')
         expect(wrapper.classes()).not.toContain('b-table-selecting')
@@ -273,8 +270,7 @@ describe('table > row select', () => {
 
         // Click first row
         await wrapper
-            .findAll('tbody > tr')
-            .at(0)
+            .findAll('tbody > tr')[0]
             .trigger('click')
         expect(wrapper.emitted('row-selected')).toBeDefined()
         expect(wrapper.emitted('row-selected').length).toBe(1)
@@ -282,10 +278,10 @@ describe('table > row select', () => {
 
         let $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('true')
-        expect($rows.at(1).attributes('aria-selected')).toBe('false')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
-        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect($rows[0].attributes('aria-selected')).toBe('true')
+        expect($rows[1].attributes('aria-selected')).toBe('false')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
+        expect($rows[3].attributes('aria-selected')).toBe('false')
         expect(wrapper.classes()).toContain('b-table-selectable')
         expect(wrapper.classes()).toContain('b-table-selecting')
         expect(wrapper.classes()).toContain('b-table-select-multi')
@@ -294,8 +290,7 @@ describe('table > row select', () => {
 
         // Click third row
         await wrapper
-            .findAll('tbody > tr')
-            .at(2)
+            .findAll('tbody > tr')[2]
             .trigger('click')
 
         expect(wrapper.emitted('row-selected').length).toBe(2)
@@ -303,10 +298,10 @@ describe('table > row select', () => {
 
         $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('true')
-        expect($rows.at(1).attributes('aria-selected')).toBe('false')
-        expect($rows.at(2).attributes('aria-selected')).toBe('true')
-        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect($rows[0].attributes('aria-selected')).toBe('true')
+        expect($rows[1].attributes('aria-selected')).toBe('false')
+        expect($rows[2].attributes('aria-selected')).toBe('true')
+        expect($rows[3].attributes('aria-selected')).toBe('false')
         expect(wrapper.classes()).toContain('b-table-selectable')
         expect(wrapper.classes()).toContain('b-table-selecting')
         expect(wrapper.classes()).toContain('b-table-select-multi')
@@ -315,8 +310,7 @@ describe('table > row select', () => {
 
         // Click third row again
         await wrapper
-            .findAll('tbody > tr')
-            .at(2)
+            .findAll('tbody > tr')[2]
             .trigger('click')
 
         expect(wrapper.emitted('row-selected').length).toBe(3)
@@ -324,10 +318,10 @@ describe('table > row select', () => {
 
         $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('true')
-        expect($rows.at(1).attributes('aria-selected')).toBe('false')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
-        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect($rows[0].attributes('aria-selected')).toBe('true')
+        expect($rows[1].attributes('aria-selected')).toBe('false')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
+        expect($rows[3].attributes('aria-selected')).toBe('false')
         expect(wrapper.classes()).toContain('b-table-selectable')
         expect(wrapper.classes()).toContain('b-table-selecting')
         expect(wrapper.classes()).toContain('b-table-select-multi')
@@ -336,8 +330,7 @@ describe('table > row select', () => {
 
         // Click first row again
         await wrapper
-            .findAll('tbody > tr')
-            .at(0)
+            .findAll('tbody > tr')[0]
             .trigger('click')
 
         expect(wrapper.emitted('row-selected').length).toBe(4)
@@ -345,10 +338,10 @@ describe('table > row select', () => {
 
         $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('false')
-        expect($rows.at(1).attributes('aria-selected')).toBe('false')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
-        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect($rows[0].attributes('aria-selected')).toBe('false')
+        expect($rows[1].attributes('aria-selected')).toBe('false')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
+        expect($rows[3].attributes('aria-selected')).toBe('false')
         expect(wrapper.classes()).toContain('b-table-selectable')
         expect(wrapper.classes()).toContain('b-table-select-multi')
         expect(wrapper.classes()).not.toContain('b-table-selecting')
@@ -386,8 +379,7 @@ describe('table > row select', () => {
 
         // Click first row
         await wrapper
-            .findAll('tbody > tr')
-            .at(0)
+            .findAll('tbody > tr')[0]
             .trigger('click')
 
         expect(wrapper.emitted('row-selected')).toBeDefined()
@@ -396,10 +388,10 @@ describe('table > row select', () => {
 
         $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('true')
-        expect($rows.at(1).attributes('aria-selected')).toBe('false')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
-        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect($rows[0].attributes('aria-selected')).toBe('true')
+        expect($rows[1].attributes('aria-selected')).toBe('false')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
+        expect($rows[3].attributes('aria-selected')).toBe('false')
         expect(wrapper.classes()).toContain('b-table-selectable')
         expect(wrapper.classes()).toContain('b-table-select-range')
         expect(wrapper.classes()).toContain('b-table-selecting')
@@ -408,8 +400,7 @@ describe('table > row select', () => {
 
         // Shift-Click third row
         await wrapper
-            .findAll('tbody > tr')
-            .at(2)
+            .findAll('tbody > tr')[2]
             .trigger('click', { shiftKey: true })
 
         expect(wrapper.emitted('row-selected').length).toBe(2)
@@ -421,10 +412,10 @@ describe('table > row select', () => {
 
         $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('true')
-        expect($rows.at(1).attributes('aria-selected')).toBe('true')
-        expect($rows.at(2).attributes('aria-selected')).toBe('true')
-        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect($rows[0].attributes('aria-selected')).toBe('true')
+        expect($rows[1].attributes('aria-selected')).toBe('true')
+        expect($rows[2].attributes('aria-selected')).toBe('true')
+        expect($rows[3].attributes('aria-selected')).toBe('false')
         expect(wrapper.classes()).toContain('b-table-selectable')
         expect(wrapper.classes()).toContain('b-table-select-range')
         expect(wrapper.classes()).toContain('b-table-selecting')
@@ -433,8 +424,7 @@ describe('table > row select', () => {
 
         // Click third row again
         await wrapper
-            .findAll('tbody > tr')
-            .at(2)
+            .findAll('tbody > tr')[2]
             .trigger('click')
 
         expect(wrapper.emitted('row-selected').length).toBe(3)
@@ -442,10 +432,10 @@ describe('table > row select', () => {
 
         $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('false')
-        expect($rows.at(1).attributes('aria-selected')).toBe('false')
-        expect($rows.at(2).attributes('aria-selected')).toBe('true')
-        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect($rows[0].attributes('aria-selected')).toBe('false')
+        expect($rows[1].attributes('aria-selected')).toBe('false')
+        expect($rows[2].attributes('aria-selected')).toBe('true')
+        expect($rows[3].attributes('aria-selected')).toBe('false')
         expect(wrapper.classes()).toContain('b-table-selectable')
         expect(wrapper.classes()).toContain('b-table-select-range')
         expect(wrapper.classes()).toContain('b-table-selecting')
@@ -454,8 +444,7 @@ describe('table > row select', () => {
 
         // Click fourth row
         await wrapper
-            .findAll('tbody > tr')
-            .at(3)
+            .findAll('tbody > tr')[3]
             .trigger('click')
 
         expect(wrapper.emitted('row-selected').length).toBe(4)
@@ -463,10 +452,10 @@ describe('table > row select', () => {
 
         $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('false')
-        expect($rows.at(1).attributes('aria-selected')).toBe('false')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
-        expect($rows.at(3).attributes('aria-selected')).toBe('true')
+        expect($rows[0].attributes('aria-selected')).toBe('false')
+        expect($rows[1].attributes('aria-selected')).toBe('false')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
+        expect($rows[3].attributes('aria-selected')).toBe('true')
         expect(wrapper.classes()).toContain('b-table-selectable')
         expect(wrapper.classes()).toContain('b-table-select-range')
         expect(wrapper.classes()).toContain('b-table-selecting')
@@ -475,8 +464,7 @@ describe('table > row select', () => {
 
         // Click fourth row again
         await wrapper
-            .findAll('tbody > tr')
-            .at(3)
+            .findAll('tbody > tr')[3]
             .trigger('click')
 
         // No change to selected rows
@@ -484,10 +472,10 @@ describe('table > row select', () => {
 
         $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('false')
-        expect($rows.at(1).attributes('aria-selected')).toBe('false')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
-        expect($rows.at(3).attributes('aria-selected')).toBe('true')
+        expect($rows[0].attributes('aria-selected')).toBe('false')
+        expect($rows[1].attributes('aria-selected')).toBe('false')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
+        expect($rows[3].attributes('aria-selected')).toBe('true')
         expect(wrapper.classes()).toContain('b-table-selectable')
         expect(wrapper.classes()).toContain('b-table-select-range')
         expect(wrapper.classes()).toContain('b-table-selecting')
@@ -496,8 +484,7 @@ describe('table > row select', () => {
 
         // Ctrl-Click second row
         await wrapper
-            .findAll('tbody > tr')
-            .at(1)
+            .findAll('tbody > tr')[1]
             .trigger('click', { ctrlKey: true })
 
         expect(wrapper.emitted('row-selected').length).toBe(5)
@@ -505,10 +492,10 @@ describe('table > row select', () => {
 
         $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(w => w.element.matches('[tabindex="0"]'))).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('false')
-        expect($rows.at(1).attributes('aria-selected')).toBe('true')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
-        expect($rows.at(3).attributes('aria-selected')).toBe('true')
+        expect($rows[0].attributes('aria-selected')).toBe('false')
+        expect($rows[1].attributes('aria-selected')).toBe('true')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
+        expect($rows[3].attributes('aria-selected')).toBe('true')
         expect(wrapper.classes()).toContain('b-table-selectable')
         expect(wrapper.classes()).toContain('b-table-select-range')
         expect(wrapper.classes()).toContain('b-table-selecting')
@@ -517,8 +504,7 @@ describe('table > row select', () => {
 
         // Ctrl-Click second row
         await wrapper
-            .findAll('tbody > tr')
-            .at(1)
+            .findAll('tbody > tr')[1]
             .trigger('click', { ctrlKey: true })
 
         expect(wrapper.emitted('row-selected').length).toBe(6)
@@ -526,10 +512,10 @@ describe('table > row select', () => {
 
         $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(w => w.element.matches('[tabindex="0"]'))).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('false')
-        expect($rows.at(1).attributes('aria-selected')).toBe('false')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
-        expect($rows.at(3).attributes('aria-selected')).toBe('true')
+        expect($rows[0].attributes('aria-selected')).toBe('false')
+        expect($rows[1].attributes('aria-selected')).toBe('false')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
+        expect($rows[3].attributes('aria-selected')).toBe('true')
         expect(wrapper.classes()).toContain('b-table-selectable')
         expect(wrapper.classes()).toContain('b-table-select-range')
         expect(wrapper.classes()).toContain('b-table-selecting')
@@ -538,8 +524,7 @@ describe('table > row select', () => {
 
         // Ctrl-Click fourth row
         await wrapper
-            .findAll('tbody > tr')
-            .at(3)
+            .findAll('tbody > tr')[3]
             .trigger('click', { ctrlKey: true })
 
         expect(wrapper.emitted('row-selected').length).toBe(7)
@@ -547,10 +532,10 @@ describe('table > row select', () => {
 
         $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(w => w.element.matches('[tabindex="0"]'))).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('false')
-        expect($rows.at(1).attributes('aria-selected')).toBe('false')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
-        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect($rows[0].attributes('aria-selected')).toBe('false')
+        expect($rows[1].attributes('aria-selected')).toBe('false')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
+        expect($rows[3].attributes('aria-selected')).toBe('false')
         expect(wrapper.classes()).toContain('b-table-selectable')
         expect(wrapper.classes()).toContain('b-table-select-range')
         expect(wrapper.classes()).not.toContain('b-table-selecting')
@@ -575,13 +560,13 @@ describe('table > row select', () => {
 
         const $rows = wrapper.findAll('tbody > tr')
             // Click second row
-        await $rows.at(1).trigger('click')
+        await $rows[1].trigger('click')
             // Ctrl-click first row
-        await $rows.at(0).trigger('click', { ctrlKey: true })
+        await $rows[0].trigger('click', { ctrlKey: true })
             // Ctrl-click second row
-        await $rows.at(1).trigger('click', { ctrlKey: true })
+        await $rows[1].trigger('click', { ctrlKey: true })
             // Shift-click third row
-        await $rows.at(2).trigger('click', { shiftKey: true })
+        await $rows[2].trigger('click', { shiftKey: true })
 
         expect(wrapper.findAll('tbody .b-table-row-selected')).toHaveLength(3)
         wrapper.unmount()
@@ -604,8 +589,7 @@ describe('table > row select', () => {
 
         // Click first row
         await wrapper
-            .findAll('tbody > tr')
-            .at(0)
+            .findAll('tbody > tr')[0]
 
         .trigger('click')
         expect(wrapper.emitted('row-selected')).toBeDefined()
@@ -614,15 +598,14 @@ describe('table > row select', () => {
 
         let $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(w => w.element.matches('[tabindex="0"]'))).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('true')
-        expect($rows.at(1).attributes('aria-selected')).toBe('false')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
-        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect($rows[0].attributes('aria-selected')).toBe('true')
+        expect($rows[1].attributes('aria-selected')).toBe('false')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
+        expect($rows[3].attributes('aria-selected')).toBe('false')
 
         // Click row header
         await wrapper
-            .findAll('thead > tr > th')
-            .at(0)
+            .findAll('thead > tr > th')[0]
             .trigger('click')
 
         expect(wrapper.emitted('sort-changed')).toBeDefined()
@@ -658,8 +641,7 @@ describe('table > row select', () => {
 
         // Click first row
         await wrapper
-            .findAll('tbody > tr')
-            .at(0)
+            .findAll('tbody > tr')[0]
             .trigger('click')
 
         expect(wrapper.emitted('row-selected')).toBeDefined()
@@ -668,10 +650,10 @@ describe('table > row select', () => {
 
         $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('true')
-        expect($rows.at(1).attributes('aria-selected')).toBe('false')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
-        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect($rows[0].attributes('aria-selected')).toBe('true')
+        expect($rows[1].attributes('aria-selected')).toBe('false')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
+        expect($rows[3].attributes('aria-selected')).toBe('false')
 
         // Change filter
         await wrapper.setProps({ filter: '2' })
@@ -710,8 +692,7 @@ describe('table > row select', () => {
 
         // Click first row
         await wrapper
-            .findAll('tbody > tr')
-            .at(0)
+            .findAll('tbody > tr')[0]
             .trigger('click')
 
         expect(wrapper.emitted('row-selected')).toBeDefined()
@@ -722,9 +703,9 @@ describe('table > row select', () => {
         expect($rows.length).toBe(3)
         expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
             // We only have 3 rows max per page
-        expect($rows.at(0).attributes('aria-selected')).toBe('true')
-        expect($rows.at(1).attributes('aria-selected')).toBe('false')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
+        expect($rows[0].attributes('aria-selected')).toBe('true')
+        expect($rows[1].attributes('aria-selected')).toBe('false')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
 
         // Change page
         await wrapper.setProps({ currentPage: 2 })
@@ -757,8 +738,7 @@ describe('table > row select', () => {
 
         // Click first row
         await wrapper
-            .findAll('tbody > tr')
-            .at(0)
+            .findAll('tbody > tr')[0]
 
         .trigger('click')
         expect(wrapper.emitted('row-selected')).toBeDefined()
@@ -767,10 +747,10 @@ describe('table > row select', () => {
 
         let $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('true')
-        expect($rows.at(1).attributes('aria-selected')).toBe('false')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
-        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect($rows[0].attributes('aria-selected')).toBe('true')
+        expect($rows[1].attributes('aria-selected')).toBe('false')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
+        expect($rows[3].attributes('aria-selected')).toBe('false')
 
         // Change mode
         await wrapper.setProps({ selectMode: 'range' })
@@ -803,8 +783,7 @@ describe('table > row select', () => {
 
         // Click first row
         await wrapper
-            .findAll('tbody > tr')
-            .at(0)
+            .findAll('tbody > tr')[0]
             .trigger('click')
 
         expect(wrapper.emitted('row-selected')).toBeDefined()
@@ -813,10 +792,10 @@ describe('table > row select', () => {
 
         let $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('true')
-        expect($rows.at(1).attributes('aria-selected')).toBe('false')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
-        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect($rows[0].attributes('aria-selected')).toBe('true')
+        expect($rows[1].attributes('aria-selected')).toBe('false')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
+        expect($rows[3].attributes('aria-selected')).toBe('false')
         expect(wrapper.classes()).toContain('b-table-selectable')
         expect(wrapper.classes()).not.toContain('b-table-selecting-range')
 
@@ -860,10 +839,10 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[0]])
         const $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('true')
-        expect($rows.at(1).attributes('aria-selected')).toBe('false')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
-        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect($rows[0].attributes('aria-selected')).toBe('true')
+        expect($rows[1].attributes('aria-selected')).toBe('false')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
+        expect($rows[3].attributes('aria-selected')).toBe('false')
 
         wrapper.unmount()
     })
@@ -892,10 +871,10 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[0][0]).toEqual(testItems)
         const $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('true')
-        expect($rows.at(1).attributes('aria-selected')).toBe('true')
-        expect($rows.at(2).attributes('aria-selected')).toBe('true')
-        expect($rows.at(3).attributes('aria-selected')).toBe('true')
+        expect($rows[0].attributes('aria-selected')).toBe('true')
+        expect($rows[1].attributes('aria-selected')).toBe('true')
+        expect($rows[2].attributes('aria-selected')).toBe('true')
+        expect($rows[3].attributes('aria-selected')).toBe('true')
 
         wrapper.unmount()
     })
@@ -926,10 +905,10 @@ describe('table > row select', () => {
 
         const $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('true')
-        expect($rows.at(1).attributes('aria-selected')).toBe('true')
-        expect($rows.at(2).attributes('aria-selected')).toBe('true')
-        expect($rows.at(3).attributes('aria-selected')).toBe('true')
+        expect($rows[0].attributes('aria-selected')).toBe('true')
+        expect($rows[1].attributes('aria-selected')).toBe('true')
+        expect($rows[2].attributes('aria-selected')).toBe('true')
+        expect($rows[3].attributes('aria-selected')).toBe('true')
 
         wrapper.unmount()
     })
@@ -960,10 +939,10 @@ describe('table > row select', () => {
 
         let $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('false')
-        expect($rows.at(1).attributes('aria-selected')).toBe('true')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
-        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect($rows[0].attributes('aria-selected')).toBe('false')
+        expect($rows[1].attributes('aria-selected')).toBe('true')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
+        expect($rows[3].attributes('aria-selected')).toBe('false')
 
         // Execute `selectRow()` method (fourth row)
         wrapper.vm.selectRow(3)
@@ -976,10 +955,10 @@ describe('table > row select', () => {
 
         $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('false')
-        expect($rows.at(1).attributes('aria-selected')).toBe('false')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
-        expect($rows.at(3).attributes('aria-selected')).toBe('true')
+        expect($rows[0].attributes('aria-selected')).toBe('false')
+        expect($rows[1].attributes('aria-selected')).toBe('false')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
+        expect($rows[3].attributes('aria-selected')).toBe('true')
 
         // Execute `unselectRow()` method on non-selected row (should not change anything)
         wrapper.vm.unselectRow(0)
@@ -992,10 +971,10 @@ describe('table > row select', () => {
 
         $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('false')
-        expect($rows.at(1).attributes('aria-selected')).toBe('false')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
-        expect($rows.at(3).attributes('aria-selected')).toBe('true')
+        expect($rows[0].attributes('aria-selected')).toBe('false')
+        expect($rows[1].attributes('aria-selected')).toBe('false')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
+        expect($rows[3].attributes('aria-selected')).toBe('true')
 
         // Execute `unselectRow()` method on selected row
         wrapper.vm.unselectRow(3)
@@ -1008,10 +987,10 @@ describe('table > row select', () => {
 
         $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('false')
-        expect($rows.at(1).attributes('aria-selected')).toBe('false')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
-        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect($rows[0].attributes('aria-selected')).toBe('false')
+        expect($rows[1].attributes('aria-selected')).toBe('false')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
+        expect($rows[3].attributes('aria-selected')).toBe('false')
 
         wrapper.unmount()
     })
@@ -1042,10 +1021,10 @@ describe('table > row select', () => {
 
         let $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('false')
-        expect($rows.at(1).attributes('aria-selected')).toBe('true')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
-        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect($rows[0].attributes('aria-selected')).toBe('false')
+        expect($rows[1].attributes('aria-selected')).toBe('true')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
+        expect($rows[3].attributes('aria-selected')).toBe('false')
 
         // Execute `selectRow()` method (fourth row)
         wrapper.vm.selectRow(3)
@@ -1058,10 +1037,10 @@ describe('table > row select', () => {
 
         $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('false')
-        expect($rows.at(1).attributes('aria-selected')).toBe('true')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
-        expect($rows.at(3).attributes('aria-selected')).toBe('true')
+        expect($rows[0].attributes('aria-selected')).toBe('false')
+        expect($rows[1].attributes('aria-selected')).toBe('true')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
+        expect($rows[3].attributes('aria-selected')).toBe('true')
 
         // Execute `unselectRow()` method on non-selected row (should not change anything)
         wrapper.vm.unselectRow(0)
@@ -1074,10 +1053,10 @@ describe('table > row select', () => {
 
         $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('false')
-        expect($rows.at(1).attributes('aria-selected')).toBe('true')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
-        expect($rows.at(3).attributes('aria-selected')).toBe('true')
+        expect($rows[0].attributes('aria-selected')).toBe('false')
+        expect($rows[1].attributes('aria-selected')).toBe('true')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
+        expect($rows[3].attributes('aria-selected')).toBe('true')
 
         // Execute `unselectRow()` method on selected row
         wrapper.vm.unselectRow(3)
@@ -1090,10 +1069,10 @@ describe('table > row select', () => {
 
         $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('false')
-        expect($rows.at(1).attributes('aria-selected')).toBe('true')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
-        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect($rows[0].attributes('aria-selected')).toBe('false')
+        expect($rows[1].attributes('aria-selected')).toBe('true')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
+        expect($rows[3].attributes('aria-selected')).toBe('false')
 
         wrapper.unmount()
     })
@@ -1124,10 +1103,10 @@ describe('table > row select', () => {
 
         let $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('false')
-        expect($rows.at(1).attributes('aria-selected')).toBe('true')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
-        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect($rows[0].attributes('aria-selected')).toBe('false')
+        expect($rows[1].attributes('aria-selected')).toBe('true')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
+        expect($rows[3].attributes('aria-selected')).toBe('false')
 
         // Execute `selectRow()` method (fourth row)
         wrapper.vm.selectRow(3)
@@ -1140,10 +1119,10 @@ describe('table > row select', () => {
 
         $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('false')
-        expect($rows.at(1).attributes('aria-selected')).toBe('true')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
-        expect($rows.at(3).attributes('aria-selected')).toBe('true')
+        expect($rows[0].attributes('aria-selected')).toBe('false')
+        expect($rows[1].attributes('aria-selected')).toBe('true')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
+        expect($rows[3].attributes('aria-selected')).toBe('true')
 
         // Execute `unselectRow()` method on non-selected row (should not change anything)
         wrapper.vm.unselectRow(0)
@@ -1156,10 +1135,10 @@ describe('table > row select', () => {
 
         $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('false')
-        expect($rows.at(1).attributes('aria-selected')).toBe('true')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
-        expect($rows.at(3).attributes('aria-selected')).toBe('true')
+        expect($rows[0].attributes('aria-selected')).toBe('false')
+        expect($rows[1].attributes('aria-selected')).toBe('true')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
+        expect($rows[3].attributes('aria-selected')).toBe('true')
 
         // Execute `unselectRow()` method on selected row
         wrapper.vm.unselectRow(3)
@@ -1172,10 +1151,10 @@ describe('table > row select', () => {
 
         $rows = wrapper.findAll('tbody > tr')
         expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-        expect($rows.at(0).attributes('aria-selected')).toBe('false')
-        expect($rows.at(1).attributes('aria-selected')).toBe('true')
-        expect($rows.at(2).attributes('aria-selected')).toBe('false')
-        expect($rows.at(3).attributes('aria-selected')).toBe('false')
+        expect($rows[0].attributes('aria-selected')).toBe('false')
+        expect($rows[1].attributes('aria-selected')).toBe('true')
+        expect($rows[2].attributes('aria-selected')).toBe('false')
+        expect($rows[3].attributes('aria-selected')).toBe('false')
 
         wrapper.unmount()
     })

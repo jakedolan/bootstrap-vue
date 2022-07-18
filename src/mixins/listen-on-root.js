@@ -13,10 +13,6 @@ const PROP = '$_rootListeners'
 
 // @vue/component
 export const listenOnRootMixin = defineComponent({
-    compatConfig: {
-        MODE: 3,
-
-    },
     computed: {
         bvEventRoot() {
             if (this.emitter) {

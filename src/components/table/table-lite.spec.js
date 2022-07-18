@@ -300,40 +300,34 @@ describe('table-lite', () => {
         // Labels will have run through startCase
         expect(
             $trs[0]
-            .findAll('td')
-            .at(0)
+            .findAll('td')[0]
             .attributes('data-label')
         ).toBe('A')
         expect(
             $trs[1]
-            .findAll('td')
-            .at(0)
+            .findAll('td')[0]
             .attributes('data-label')
         ).toBe('A')
 
         expect(
             $trs[0]
-            .findAll('td')
-            .at(1)
+            .findAll('td')[1]
             .attributes('data-label')
         ).toBe('B')
         expect(
             $trs[1]
-            .findAll('td')
-            .at(1)
+            .findAll('td')[1]
             .attributes('data-label')
         ).toBe('B')
 
         expect(
             $trs[0]
-            .findAll('td')
-            .at(2)
+            .findAll('td')[2]
             .attributes('data-label')
         ).toBe('C')
         expect(
             $trs[1]
-            .findAll('td')
-            .at(2)
+            .findAll('td')[2]
             .attributes('data-label')
         ).toBe('C')
 
@@ -422,8 +416,8 @@ describe('table-lite', () => {
         // Prop as a string
         expect(wrapper.findAll('tbody > tr').length).toBe(2)
         let $trs = wrapper.findAll('tbody > tr')
-        expect($trs.at(0).classes()).toContain('foobar')
-        expect($trs.at(1).classes()).toContain('foobar')
+        expect($trs[0].classes()).toContain('foobar')
+        expect($trs[1].classes()).toContain('foobar')
 
         // As a function
         await wrapper.setProps({
@@ -434,10 +428,10 @@ describe('table-lite', () => {
 
         expect(wrapper.findAll('tbody > tr').length).toBe(2)
         $trs = wrapper.findAll('tbody > tr')
-        expect($trs.at(0).classes()).toContain('foo')
-        expect($trs.at(0).classes()).not.toContain('bar')
-        expect($trs.at(1).classes()).toContain('bar')
-        expect($trs.at(1).classes()).not.toContain('foo')
+        expect($trs[0].classes()).toContain('foo')
+        expect($trs[0].classes()).not.toContain('bar')
+        expect($trs[1].classes()).toContain('bar')
+        expect($trs[1].classes()).not.toContain('foo')
 
         wrapper.unmount()
     })
@@ -505,31 +499,27 @@ describe('table-lite', () => {
         expect(wrapper.findAll('tbody > tr').length).toBe(1)
         expect(wrapper.findAll('tbody > tr > *').length).toBe(2)
 
-        expect(wrapper.findAll('tbody > tr > *').at(0).element.tagName).toBe('TH')
+        expect(wrapper.findAll('tbody > tr > *')[0].element.tagName).toBe('TH')
         expect(
             wrapper
-            .findAll('tbody > tr > *')
-            .at(0)
+            .findAll('tbody > tr > *')[0]
             .attributes('role')
         ).toBe('rowheader')
         expect(
             wrapper
-            .findAll('tbody > tr > *')
-            .at(0)
+            .findAll('tbody > tr > *')[0]
             .attributes('scope')
         ).toBe('row')
 
-        expect(wrapper.findAll('tbody > tr > *').at(1).element.tagName).toBe('TD')
+        expect(wrapper.findAll('tbody > tr > *')[1].element.tagName).toBe('TD')
         expect(
             wrapper
-            .findAll('tbody > tr > *')
-            .at(1)
+            .findAll('tbody > tr > *')[1]
             .attributes('role')
         ).toBe('cell')
         expect(
             wrapper
-            .findAll('tbody > tr > *')
-            .at(1)
+            .findAll('tbody > tr > *')[1]
             .attributes('scope')
         ).toBeUndefined()
 
@@ -560,17 +550,17 @@ describe('table-lite', () => {
 
         const $tds = wrapper.findAll('tbody > tr > td')
 
-        expect($tds.at(0).attributes('data-foo')).toBe('bar')
-        expect($tds.at(0).attributes('data-parent')).toBeUndefined()
-        expect($tds.at(0).classes().length).toBe(0)
+        expect($tds[0].attributes('data-foo')).toBe('bar')
+        expect($tds[0].attributes('data-parent')).toBeUndefined()
+        expect($tds[0].classes().length).toBe(0)
 
-        expect($tds.at(1).classes()).toContain('baz')
-        expect($tds.at(1).attributes('data-foo')).toBeUndefined()
-        expect($tds.at(1).attributes('data-parent')).toBeUndefined()
+        expect($tds[1].classes()).toContain('baz')
+        expect($tds[1].attributes('data-foo')).toBeUndefined()
+        expect($tds[1].attributes('data-parent')).toBeUndefined()
 
-        expect($tds.at(2).attributes('data-parent')).toBe('parent')
-        expect($tds.at(2).attributes('data-foo')).toBeUndefined()
-        expect($tds.at(2).classes().length).toBe(0)
+        expect($tds[2].attributes('data-parent')).toBe('parent')
+        expect($tds[2].attributes('data-foo')).toBeUndefined()
+        expect($tds[2].classes().length).toBe(0)
 
         wrapper.unmount()
     })
@@ -606,23 +596,23 @@ describe('table-lite', () => {
         expect(wrapper.findAll('tbody > tr > th').length).toBe(1)
 
         const $headerThs = wrapper.findAll('thead > tr > th')
-        expect($headerThs.at(0).attributes('data-foo')).toBe('bar')
-        expect($headerThs.at(0).attributes('data-type')).toBeUndefined()
-        expect($headerThs.at(0).classes().length).toBe(0)
+        expect($headerThs[0].attributes('data-foo')).toBe('bar')
+        expect($headerThs[0].attributes('data-type')).toBeUndefined()
+        expect($headerThs[0].classes().length).toBe(0)
 
-        expect($headerThs.at(1).attributes('data-foo')).toBeUndefined()
-        expect($headerThs.at(1).attributes('data-type')).toBe('head')
-        expect($headerThs.at(1).classes().length).toBe(0)
+        expect($headerThs[1].attributes('data-foo')).toBeUndefined()
+        expect($headerThs[1].attributes('data-type')).toBe('head')
+        expect($headerThs[1].classes().length).toBe(0)
 
-        expect($headerThs.at(2).attributes('data-foo')).toBeUndefined()
-        expect($headerThs.at(2).attributes('data-type')).toBe('head')
-        expect($headerThs.at(2).classes().length).toBe(0)
+        expect($headerThs[2].attributes('data-foo')).toBeUndefined()
+        expect($headerThs[2].attributes('data-type')).toBe('head')
+        expect($headerThs[2].classes().length).toBe(0)
 
         const $bodyThs = wrapper.findAll('tbody > tr > th')
 
-        expect($bodyThs.at(0).attributes('data-foo')).toBeUndefined()
-        expect($bodyThs.at(0).attributes('data-type')).toBe('row')
-        expect($bodyThs.at(0).classes().length).toBe(0)
+        expect($bodyThs[0].attributes('data-foo')).toBeUndefined()
+        expect($bodyThs[0].attributes('data-type')).toBe('row')
+        expect($bodyThs[0].classes().length).toBe(0)
 
         wrapper.unmount()
     })
@@ -646,8 +636,8 @@ describe('table-lite', () => {
         expect(wrapper.findAll('tbody > tr').length).toBe(1)
         expect(wrapper.findAll('tbody > tr > td').length).toBe(2)
         const $tds = wrapper.findAll('tbody > tr > td')
-        expect($tds.at(0).text()).toBe('3')
-        expect($tds.at(1).text()).toBe('2')
+        expect($tds[0].text()).toBe('3')
+        expect($tds[1].text()).toBe('2')
 
         wrapper.unmount()
     })
@@ -670,8 +660,8 @@ describe('table-lite', () => {
         expect(wrapper.findAll('tbody > tr').length).toBe(1)
         expect(wrapper.findAll('tbody > tr > td').length).toBe(2)
         const $tds = wrapper.findAll('tbody > tr > td')
-        expect($tds.at(0).text()).toBe('3')
-        expect($tds.at(1).text()).toBe('2')
+        expect($tds[0].text()).toBe('3')
+        expect($tds[1].text()).toBe('2')
 
         wrapper.unmount()
     })

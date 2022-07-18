@@ -41,10 +41,6 @@ export const props = {
 
 // @vue/component
 export const filteringMixin = defineComponent({
-    compatConfig: {
-        MODE: 3,
-
-    },
     props,
     data() {
         return {

@@ -1,9 +1,9 @@
-import { defineComponent, h } from 'vue'
+import { defineComponent, h, resolveComponent } from 'vue'
 import { NAME_LINK } from '../../constants/components'
-import { EVENT_NAME_CLICK } from '../../constants/events'
 import {
     PROP_TYPE_ARRAY_STRING,
     PROP_TYPE_BOOLEAN,
+    PROP_TYPE_OBJECT,
     PROP_TYPE_OBJECT_STRING,
     PROP_TYPE_STRING
 } from '../../constants/props'
@@ -15,12 +15,12 @@ import { isBoolean, isEvent, isFunction, isUndefined } from '../../utils/inspect
 import { omit, sortKeys } from '../../utils/object'
 import { makeProp, makePropsConfigurable, pluckProps } from '../../utils/props'
 import { computeHref, computeRel, computeTag, isRouterLink } from '../../utils/router'
-import { getInstanceFromVNode } from '../../utils/get-instance-from-vnode'
 import { attrsMixin } from '../../mixins/attrs'
 import { listenOnRootMixin } from '../../mixins/listen-on-root'
 import { listenersMixin } from '../../mixins/listeners'
 import { normalizeSlotMixin } from '../../mixins/normalize-slot'
 import { normalizeSlot } from '../../utils/normalize-slot'
+
 
 // --- Constants ---
 
@@ -62,6 +62,7 @@ export const props = makePropsConfigurable(
         active: makeProp(PROP_TYPE_BOOLEAN, false),
         ariaDisabled: makeProp(PROP_TYPE_BOOLEAN, null),
         disabled: makeProp(PROP_TYPE_BOOLEAN, false),
+        emitter: makeProp(PROP_TYPE_OBJECT, null),
         href: makeProp(PROP_TYPE_STRING),
         // Must be `null` if no value provided
         rel: makeProp(PROP_TYPE_STRING, null),
@@ -105,19 +106,17 @@ export const BLink = /*#__PURE__*/ defineComponent({
         },
         computedProps() {
             const { event, prefetch, routerTag } = this
-            return this.isRouterLink ?
-                {
-                    ...pluckProps(
-                        omit({...routerLinkProps, ...(this.computedTag === 'nuxt-link' ? nuxtLinkProps : {}) }, ['event', 'prefetch', 'routerTag']),
-                        this
-                    ),
-                    // Only add these props, when actually defined
-                    ...(event ? { event } : {}),
-                    ...(isBoolean(prefetch) ? { prefetch } : {}),
-                    // Pass `router-tag` as `tag` prop
-                    ...(routerTag ? { tag: routerTag } : {})
-                } :
-                {}
+            return this.isRouterLink ? {
+                ...pluckProps(
+                    omit({...routerLinkProps, ...(this.computedTag === 'nuxt-link' ? nuxtLinkProps : {}) }, ['event', 'prefetch', 'routerTag']),
+                    this
+                ),
+                // Only add these props, when actually defined
+                ...(event ? { event } : {}),
+                ...(isBoolean(prefetch) ? { prefetch } : {}),
+                // Pass `router-tag` as `tag` prop
+                ...(routerTag ? { tag: routerTag } : {})
+            } : {}
         },
         computedAttrs() {
             const {
@@ -129,7 +128,7 @@ export const BLink = /*#__PURE__*/ defineComponent({
                 routerTag,
                 isRouterLink
             } = this
-            
+
             return {
                 ...bvAttrs,
                 // If `href` attribute exists on `<router-link>` (even `undefined` or `null`)
@@ -149,7 +148,7 @@ export const BLink = /*#__PURE__*/ defineComponent({
                 // We want to overwrite any click handler since our callback
                 // will invoke the user supplied handler(s) if `!this.disabled`
                 onClick: this.onClick,
-                
+
             }
         }
     },
@@ -164,12 +163,6 @@ export const BLink = /*#__PURE__*/ defineComponent({
                 // Needed to prevent `vue-router` for doing its thing
                 stopEvent(event, { immediatePropagation: true })
             } else {
-                // Router links do not emit instance `click` events, so we
-                // add in an `$emit('click', event)` on its Vue instance
-                /* istanbul ignore next: difficult to test, but we know it works */
-                if (isRouterLink && getInstanceFromVNode(event.currentTarget)) {
-                    getInstanceFromVNode(event.currentTarget).$emit(EVENT_NAME_CLICK, event)
-                }
                 // Call the suppliedHandler(s), if any provided
                 concat(suppliedHandler)
                     .filter(h => isFunction(h))
@@ -197,19 +190,20 @@ export const BLink = /*#__PURE__*/ defineComponent({
     render() {
         const { active, disabled, $slots } = this
 
-        return h(
-            this.computedTag, {
-                class: { active, disabled },
-                ...this.computedAttrs,
-                ...this.computedProps,
-                // We must use `nativeOn` for `<router-link>`/`<nuxt-link>` instead of `on`
-                // [this.isRouterLink ? 'nativeOn' : 'on']: this.computedListeners
-                ...this.computedListeners
-            },
-            {
-              default: () => [normalizeSlot(SLOT_NAME_DEFAULT, {}, $slots)]
+        // Resolving for router-link and nuxt-link
+        const component = this.computedTag === 'a' ? this.computedTag : resolveComponent(this.computedTag);
+
+        const componentAttrs = {
+          class: { active, disabled },
+          ...this.computedAttrs,
+          ...this.computedProps,
+          ...this.computedListeners
+        };
+
+        return h(component, componentAttrs, {
+                default: () => [normalizeSlot(SLOT_NAME_DEFAULT, {}, $slots)]
             }
-            
+
         )
     }
 })

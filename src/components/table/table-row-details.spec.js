@@ -22,20 +22,17 @@ describe('table > row details', () => {
         const $trs = wrapper.findAll('tbody > tr')
         expect($trs.length).toBe(3)
         expect(
-            $trs
-            .at(0)
+            $trs[0]
             .find('tr.b-table-details')
             .exists()
         ).toBe(false)
         expect(
-            $trs
-            .at(1)
+            $trs[1]
             .find('tr.b-table-details')
             .exists()
         ).toBe(false)
         expect(
-            $trs
-            .at(2)
+            $trs[2]
             .find('tr.b-table-details')
             .exists()
         ).toBe(false)
@@ -66,30 +63,26 @@ describe('table > row details', () => {
         const $trs = wrapper.findAll('tbody > tr')
         expect($trs.length).toBe(4)
         expect(
-            $trs
-            .at(0)
+            $trs[0]
             .find('tr.b-table-details')
             .exists()
         ).toBe(false)
         expect(
-            $trs
-            .at(1)
+            $trs[1]
             .find('tr.b-table-details')
             .exists()
         ).toBe(true)
         expect(
-            $trs
-            .at(2)
+            $trs[2]
             .find('tr.b-table-details')
             .exists()
         ).toBe(false)
         expect(
-            $trs
-            .at(3)
+            $trs[3]
             .find('tr.b-table-details')
             .exists()
         ).toBe(false)
-        expect($trs.at(1).text()).toBe('foobar')
+        expect($trs[1].text()).toBe('foobar')
 
         wrapper.unmount()
     })
@@ -118,37 +111,33 @@ describe('table > row details', () => {
         const $trs = wrapper.findAll('tbody > tr')
         expect($trs.length).toBe(4)
         expect(
-            $trs
-            .at(0)
+            $trs[0]
             .find('tr.b-table-details')
             .exists()
         ).toBe(false)
-        expect($trs.at(0).findAll('td').length).toBe(3)
+        expect($trs[0].findAll('td').length).toBe(3)
         expect(
-            $trs
-            .at(1)
+            $trs[1]
             .find('tr.b-table-details')
             .exists()
         ).toBe(true)
-        expect($trs.at(1).findAll('td').length).toBe(1)
-        expect($trs.at(1).text()).toBe('foobar')
-        const $detailsTd = $trs.at(1).find('td')
+        expect($trs[1].findAll('td').length).toBe(1)
+        expect($trs[1].text()).toBe('foobar')
+        const $detailsTd = $trs[1].find('td')
         expect($detailsTd.classes().length).toBe(1)
         expect($detailsTd.classes()).toContain('foobar-class')
         expect(
-            $trs
-            .at(2)
+            $trs[2]
             .find('tr.b-table-details')
             .exists()
         ).toBe(false)
-        expect($trs.at(2).findAll('td').length).toBe(3)
+        expect($trs[2].findAll('td').length).toBe(3)
         expect(
-            $trs
-            .at(3)
+            $trs[3]
             .find('tr.b-table-details')
             .exists()
         ).toBe(false)
-        expect($trs.at(3).findAll('td').length).toBe(3)
+        expect($trs[3].findAll('td').length).toBe(3)
 
         wrapper.unmount()
     })
@@ -180,37 +169,32 @@ describe('table > row details', () => {
         const $trs = wrapper.findAll('tbody > tr')
         expect($trs.length).toBe(5)
         expect(
-            $trs
-            .at(0)
+            $trs[0]
             .find('tr.b-table-details')
             .exists()
         ).toBe(false)
         expect(
-            $trs
-            .at(1)
+            $trs[1]
             .find('tr.b-table-details')
             .exists()
         ).toBe(true)
-        expect($trs.at(1).text()).toBe('foobar')
+        expect($trs[1].text()).toBe('foobar')
         expect(
-            $trs
-            .at(2)
+            $trs[2]
             .find('tr.b-table-details')
             .exists()
         ).toBe(false)
         expect(
-            $trs
-            .at(3)
+            $trs[3]
             .find('tr.b-table-details')
             .exists()
         ).toBe(false)
         expect(
-            $trs
-            .at(4)
+            $trs[4]
             .find('tr.b-table-details')
             .exists()
         ).toBe(true)
-        expect($trs.at(4).text()).toBe('foobar')
+        expect($trs[4].text()).toBe('foobar')
 
         wrapper.unmount()
     })
@@ -239,27 +223,23 @@ describe('table > row details', () => {
         $trs = wrapper.findAll('tbody > tr')
         expect($trs.length).toBe(4)
         expect(
-            $trs
-            .at(0)
+            $trs[0]
             .find('tr.b-table-details')
             .exists()
         ).toBe(false)
         expect(
-            $trs
-            .at(1)
+            $trs[1]
             .find('tr.b-table-details')
             .exists()
         ).toBe(true)
-        expect($trs.at(1).text()).toBe('foobar')
+        expect($trs[1].text()).toBe('foobar')
         expect(
-            $trs
-            .at(2)
+            $trs[2]
             .find('tr.b-table-details')
             .exists()
         ).toBe(false)
         expect(
-            $trs
-            .at(3)
+            $trs[3]
             .find('tr.b-table-details')
             .exists()
         ).toBe(false)
@@ -269,20 +249,17 @@ describe('table > row details', () => {
         $trs = wrapper.findAll('tbody > tr')
         expect($trs.length).toBe(3)
         expect(
-            $trs
-            .at(0)
+            $trs[0]
             .find('tr.b-table-details')
             .exists()
         ).toBe(false)
         expect(
-            $trs
-            .at(1)
+            $trs[1]
             .find('tr.b-table-details')
             .exists()
         ).toBe(false)
         expect(
-            $trs
-            .at(2)
+            $trs[2]
             .find('tr.b-table-details')
             .exists()
         ).toBe(false)
@@ -314,63 +291,53 @@ describe('table > row details', () => {
         const $trs = wrapper.findAll('tbody > tr')
         expect($trs.length).toBe(5)
         expect(
-            $trs
-            .at(0)
+            $trs[0]
             .find('tr.b-table-details')
             .exists()
         ).toBe(false)
         expect(
-            $trs
-            .at(0)
+            $trs[0]
             .find('tr.d-none')
             .exists()
         ).toBe(false)
         expect(
-            $trs
-            .at(1)
+            $trs[1]
             .find('tr.b-table-details')
             .exists()
         ).toBe(false)
         expect(
-            $trs
-            .at(1)
+            $trs[1]
             .find('tr.d-none')
             .exists()
         ).toBe(true)
         expect(
-            $trs
-            .at(2)
+            $trs[2]
             .find('tr.b-table-details')
             .exists()
         ).toBe(true)
         expect(
-            $trs
-            .at(2)
+            $trs[2]
             .find('tr.d-none')
             .exists()
         ).toBe(false)
-        expect($trs.at(2).text()).toBe('foobar')
+        expect($trs[2].text()).toBe('foobar')
         expect(
-            $trs
-            .at(3)
+            $trs[3]
             .find('tr.b-table-details')
             .exists()
         ).toBe(false)
         expect(
-            $trs
-            .at(3)
+            $trs[3]
             .find('tr.d-none')
             .exists()
         ).toBe(false)
         expect(
-            $trs
-            .at(4)
+            $trs[4]
             .find('tr.b-table-details')
             .exists()
         ).toBe(false)
         expect(
-            $trs
-            .at(4)
+            $trs[4]
             .find('tr.d-none')
             .exists()
         ).toBe(false)
@@ -407,18 +374,16 @@ describe('table > row details', () => {
         $trs = wrapper.findAll('tbody > tr')
         expect($trs.length).toBe(2)
         expect(
-            $trs
-            .at(0)
+            $trs[0]
             .find('tr.b-table-details')
             .exists()
         ).toBe(false)
         expect(
-            $trs
-            .at(1)
+            $trs[1]
             .find('tr.b-table-details')
             .exists()
         ).toBe(true)
-        expect($trs.at(1).text()).toBe('foobar')
+        expect($trs[1].text()).toBe('foobar')
 
         // Toggle details via details slot
         expect(scopeDetails).not.toBe(null)
@@ -430,8 +395,7 @@ describe('table > row details', () => {
         $trs = wrapper.findAll('tbody > tr')
         expect($trs.length).toBe(1)
         expect(
-            $trs
-            .at(0)
+            $trs[0]
             .find('tr.b-table-details')
             .exists()
         ).toBe(false)
@@ -446,18 +410,16 @@ describe('table > row details', () => {
         $trs = wrapper.findAll('tbody > tr')
         expect($trs.length).toBe(2)
         expect(
-            $trs
-            .at(0)
+            $trs[0]
             .find('tr.b-table-details')
             .exists()
         ).toBe(false)
         expect(
-            $trs
-            .at(1)
+            $trs[1]
             .find('tr.b-table-details')
             .exists()
         ).toBe(true)
-        expect($trs.at(1).text()).toBe('foobar')
+        expect($trs[1].text()).toBe('foobar')
 
         wrapper.unmount()
     })

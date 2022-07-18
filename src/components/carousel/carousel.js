@@ -134,10 +134,6 @@ export const props = makePropsConfigurable(
 // @vue/component
 export const BCarousel = /*#__PURE__*/ defineComponent({
     name: NAME_CAROUSEL,
-    compatConfig: {
-        MODE: 3,
-
-    },
     mixins: [idMixin, modelMixin, normalizeSlotMixin],
     provide() {
         return { getBvCarousel: () => this }

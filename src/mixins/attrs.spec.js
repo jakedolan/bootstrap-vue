@@ -1,22 +1,21 @@
-import { isVue3 } from '../vue'
+import { h } from 'vue';
 import { mount } from '@vue/test-utils'
 import { attrsMixin } from './attrs'
 
+const isVue3 = true;
 // Note: The following tests indirectly test `utils/cache`
 
 describe('mixins > attrs', () => {
     it('works', async() => {
         const BTest = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
             name: 'BTest',
             mixins: [attrsMixin],
             inheritAttrs: false,
-            render(h) {
+            render() {
                 return h('section', [h('article', { attrs: this.bvAttrs })])
             }
         }
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
             name: 'App',
             props: {
                 attrs: {
@@ -24,7 +23,7 @@ describe('mixins > attrs', () => {
                     default: () => ({})
                 }
             },
-            render(h) {
+            render() {
                 return h(BTest, { attrs: this.attrs })
             }
         }
@@ -100,12 +99,7 @@ describe('mixins > attrs', () => {
 
         const Input1 = {
             props: ['value'],
-            compatConfig: {
-                MODE: 3,
-                RENDER_FUNCTION: 'suppress-warning',
-                COMPONENT_V_MODEL: 'suppress-warning'
-            },
-            render(h) {
+            render() {
                 input1RenderCount++
                 return h('input', {
                     attrs: {...this.$attrs, value: this.value },
@@ -116,13 +110,8 @@ describe('mixins > attrs', () => {
         }
         const Input2 = {
             props: ['value'],
-            compatConfig: {
-                MODE: 3,
-                RENDER_FUNCTION: 'suppress-warning',
-                COMPONENT_V_MODEL: 'suppress-warning'
-            },
             mixins: [attrsMixin],
-            render(h) {
+            render() {
                 input2RenderCount++
                 return h('input', {
                     attrs: {...this.bvAttrs, value: this.value },
@@ -154,24 +143,24 @@ describe('mixins > attrs', () => {
 
         const $inputs1 = wrapper1.findAllComponents(Input1)
         expect($inputs1.length).toBe(2)
-        expect($inputs1.at(0)).toBeDefined()
-        expect($inputs1.at(0).vm.value).toBe(undefined)
-        expect($inputs1.at(1)).toBeDefined()
-        expect($inputs1.at(1).vm.value).toBe(undefined)
+        expect($inputs1[0]).toBeDefined()
+        expect($inputs1[0].vm.value).toBe(undefined)
+        expect($inputs1[1]).toBeDefined()
+        expect($inputs1[1].vm.value).toBe(undefined)
         expect(input1RenderCount).toBe(2)
 
         const $inputs2 = wrapper2.findAllComponents(Input2)
         expect($inputs2.length).toBe(2)
-        expect($inputs2.at(0)).toBeDefined()
-        expect($inputs2.at(0).vm.value).toBe(undefined)
-        expect($inputs2.at(1)).toBeDefined()
-        expect($inputs2.at(1).vm.value).toBe(undefined)
+        expect($inputs2[0]).toBeDefined()
+        expect($inputs2[0].vm.value).toBe(undefined)
+        expect($inputs2[1]).toBeDefined()
+        expect($inputs2[1].vm.value).toBe(undefined)
         expect(input2RenderCount).toBe(2)
 
         // Update the value for the first `Input1`
         await wrapper1.setProps({ value1: 'foo' })
-        expect($inputs1.at(0).vm.value).toBe('foo')
-        expect($inputs1.at(1).vm.value).toBe(undefined)
+        expect($inputs1[0].vm.value).toBe('foo')
+        expect($inputs1[1].vm.value).toBe(undefined)
         if (!isVue3) {
             // Both `Input1`'s are re-rendered (See: https://github.com/vuejs/vue/issues/7257)
             expect(input1RenderCount).toBe(4)
@@ -179,8 +168,8 @@ describe('mixins > attrs', () => {
 
         // Update the value for the second `Input1`
         await wrapper1.setProps({ value2: 'bar' })
-        expect($inputs1.at(0).vm.value).toBe('foo')
-        expect($inputs1.at(1).vm.value).toBe('bar')
+        expect($inputs1[0].vm.value).toBe('foo')
+        expect($inputs1[1].vm.value).toBe('bar')
         if (!isVue3) {
             // Both `Input1`'s are re-rendered (See: https://github.com/vuejs/vue/issues/7257)
             expect(input1RenderCount).toBe(6)
@@ -188,15 +177,15 @@ describe('mixins > attrs', () => {
 
         // Update the value for the first `Input2`
         await wrapper2.setProps({ value1: 'foo' })
-        expect($inputs2.at(0).vm.value).toBe('foo')
-        expect($inputs2.at(1).vm.value).toBe(undefined)
+        expect($inputs2[0].vm.value).toBe('foo')
+        expect($inputs2[1].vm.value).toBe(undefined)
             // With `attrsMixin` only the affected `Input2` is re-rendered
         expect(input2RenderCount).toBe(3)
 
         // Update the value for the second `Input2`
         await wrapper2.setProps({ value2: 'bar' })
-        expect($inputs2.at(0).vm.value).toBe('foo')
-        expect($inputs2.at(1).vm.value).toBe('bar')
+        expect($inputs2[0].vm.value).toBe('foo')
+        expect($inputs2[1].vm.value).toBe('bar')
             // With `attrsMixin` only the affected `Input2` is re-rendered
         expect(input2RenderCount).toBe(4)
 

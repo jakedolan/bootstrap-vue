@@ -27,7 +27,6 @@ export const props = makePropsConfigurable({
 // @vue/component
 export const BEmbed = /*#__PURE__*/ defineComponent({
     name: NAME_EMBED,
-    functional: true,
     props,
     render(h, { props, data, children }) {
         const { aspect } = props

@@ -43,11 +43,6 @@ export const props = makePropsConfigurable(
 // @vue/component
 export const BCard = /*#__PURE__*/ defineComponent({
     name: NAME_CARD,
-    compatConfig: {
-        MODE: 3,
-        INSTANCE_SCOPED_SLOTS: 'suppress-warning'
-    },
-    functional: true,
     props,
     render() {
         const { $props, $data, $slots } = this;

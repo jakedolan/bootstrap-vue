@@ -1,10 +1,10 @@
+import { h } from 'vue';
 import { mount } from '@vue/test-utils'
 import { waitNT, waitRAF } from '../../../tests/utils'
 import { BPopover } from './popover'
 
 // Our test application definition
 const App = {
-    compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
     props: [
         'triggers',
         'show',
@@ -16,7 +16,7 @@ const App = {
         'variant',
         'customClass'
     ],
-    render(h) {
+    render() {
         return h('article', { attrs: { id: 'wrapper' } }, [
             h(
                 'button', {

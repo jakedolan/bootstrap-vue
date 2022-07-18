@@ -58,9 +58,6 @@ export const props = makePropsConfigurable(
 // @vue/component
 export const BCollapse = /*#__PURE__*/ defineComponent({
     name: NAME_COLLAPSE,
-    compatConfig: {
-        MODE: 3,
-    },
     mixins: [idMixin, modelMixin, normalizeSlotMixin, listenOnRootMixin],
     props,
     emits: [EVENT_NAME_HIDE, EVENT_NAME_HIDDEN, EVENT_NAME_SHOW, EVENT_NAME_SHOWN, MODEL_EVENT_NAME],

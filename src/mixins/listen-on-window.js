@@ -13,10 +13,6 @@ const PROP = '$_windowListeners'
 
 // @vue/component
 export const listenOnWindowMixin = defineComponent({
-    compatConfig: {
-        MODE: 3,
-
-    },
     created() {
         // Define non-reactive property
         // Object of arrays, keyed by event name,

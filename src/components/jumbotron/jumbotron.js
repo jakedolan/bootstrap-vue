@@ -38,11 +38,6 @@ export const props = makePropsConfigurable({
 // @vue/component
 export const BJumbotron = /*#__PURE__*/ defineComponent({
     name: NAME_JUMBOTRON,
-    compatConfig: {
-        MODE: 3,
-        INSTANCE_SCOPED_SLOTS: 'suppress-warning'
-    },
-    functional: true,
     props,
     render(h, { props, data, slots, scopedSlots }) {
         const { header, headerHtml, lead, leadHtml, textVariant, bgVariant, borderVariant } = props

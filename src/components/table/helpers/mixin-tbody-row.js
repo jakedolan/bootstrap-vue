@@ -33,7 +33,6 @@ export const props = {
 
 // @vue/component
 export const tbodyRowMixin = defineComponent({
-    compatConfig: { MODE: 3, INSTANCE_LISTENERS: 'suppress-warning' },
     mixins: [useParentMixin],
     props,
     methods: {

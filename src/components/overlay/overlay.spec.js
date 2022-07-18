@@ -56,15 +56,14 @@ describe('overlay', () => {
         const $children = $overlay.findAll('div:not(.b-overlay)')
         expect($children.length).toBe(2)
 
-        expect($children.at(0).classes()).toContain('position-absolute')
-        expect($children.at(0).classes()).toContain('bg-light')
-        expect($children.at(0).text()).toBe('')
+        expect($children[0].classes()).toContain('position-absolute')
+        expect($children[0].classes()).toContain('bg-light')
+        expect($children[0].text()).toBe('')
 
-        expect($children.at(1).classes()).toContain('position-absolute')
-        expect($children.at(1).classes()).not.toContain('bg-light')
+        expect($children[1].classes()).toContain('position-absolute')
+        expect($children[1].classes()).not.toContain('bg-light')
         expect(
-            $children
-            .at(1)
+            $children[1]
             .find('.spinner-border')
             .exists()
         ).toBe(true)
@@ -239,15 +238,14 @@ describe('overlay', () => {
         const $children = wrapper.findAll('div:not(.b-overlay)')
         expect($children.length).toBe(2)
 
-        expect($children.at(0).classes()).toContain('position-absolute')
-        expect($children.at(0).classes()).toContain('bg-light')
-        expect($children.at(0).text()).toBe('')
+        expect($children[0].classes()).toContain('position-absolute')
+        expect($children[0].classes()).toContain('bg-light')
+        expect($children[0].text()).toBe('')
 
-        expect($children.at(1).classes()).toContain('position-absolute')
-        expect($children.at(1).classes()).not.toContain('bg-light')
+        expect($children[1].classes()).toContain('position-absolute')
+        expect($children[1].classes()).not.toContain('bg-light')
         expect(
-            $children
-            .at(1)
+            $children[1]
             .find('.spinner-border')
             .exists()
         ).toBe(true)

@@ -95,6 +95,8 @@ export const computeTag = ({ to, disabled, routerComponentName }, thisOrParent) 
     return ANCHOR_TAG
   }
 
+  // The resulting tag will need use vue 3 resolveComponent to be rendered properly.
+  
   // TODO:
   //   Check registered components for existence of user supplied router link component name
   //   We would need to check PascalCase, kebab-case, and camelCase versions of name:

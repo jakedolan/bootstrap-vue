@@ -62,10 +62,6 @@ export const props = makePropsConfigurable(
 
 // @vue/component
 export const formTextMixin = defineComponent({
-    compatConfig: {
-        MODE: 3,
-
-    },
     mixins: [modelMixin],
     props,
     data() {

@@ -17,10 +17,6 @@ export const makeModelMixin = (
 
     // @vue/component
     const mixin = defineComponent({
-        compatConfig: {
-            MODE: 3,
-            COMPONENT_V_MODEL: 'suppress-warning'
-        },
         model: {
             prop,
             event

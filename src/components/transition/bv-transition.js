@@ -51,7 +51,6 @@ export const props = {
 // @vue/component
 export const BVTransition = /*#__PURE__*/ defineComponent({
     name: NAME_TRANSITION,
-    functional: true,
     props,
     render() {
         let transProps = cloneDeep(this.$props.transProps)

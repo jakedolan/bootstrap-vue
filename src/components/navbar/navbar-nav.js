@@ -24,7 +24,6 @@ export const props = makePropsConfigurable(
 // @vue/component
 export const BNavbarNav = /*#__PURE__*/ defineComponent({
     name: NAME_NAVBAR_NAV,
-    functional: true,
     props,
     render(h, { props, data, children }) {
         const { align } = props

@@ -24,7 +24,6 @@ export const props = makePropsConfigurable(
 // @vue/component
 export const BBreadcrumbLink = /*#__PURE__*/ defineComponent({
     name: NAME_BREADCRUMB_LINK,
-    functional: true,
     props,
     render(h, { props: suppliedProps, data, children }) {
         const { active } = suppliedProps

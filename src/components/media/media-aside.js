@@ -19,7 +19,6 @@ export const props = makePropsConfigurable({
 // @vue/component
 export const BMediaAside = /*#__PURE__*/ defineComponent({
     name: NAME_MEDIA_ASIDE,
-    functional: true,
     props,
     render(h, { props, data, children }) {
         const { verticalAlign } = props

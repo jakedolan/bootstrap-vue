@@ -63,10 +63,6 @@ export const props = makePropsConfigurable(
 // @vue/component
 export const BFormInput = /*#__PURE__*/ defineComponent({
     name: NAME_FORM_INPUT,
-    compatConfig: {
-        MODE: 3,
-
-    },
     // Mixin order is important!
     mixins: [
         listenersMixin,

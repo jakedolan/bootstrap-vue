@@ -17,7 +17,6 @@ export const props = makePropsConfigurable({
 // @vue/component
 export const BCardText = /*#__PURE__*/ defineComponent({
     name: NAME_CARD_TEXT,
-    functional: true,
     props,
     render(h, { props, data, children }) {
         return h(props.textTag, mergeData(data, { class: 'card-text' }), children)

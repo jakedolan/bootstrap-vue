@@ -23,11 +23,6 @@ export const props = makePropsConfigurable({
 // @vue/component
 export const BButtonClose = /*#__PURE__*/ defineComponent({
     name: NAME_BUTTON_CLOSE,
-    compatConfig: {
-        MODE: 3,
-        INSTANCE_SCOPED_SLOTS: 'suppress-warning'
-    },
-    functional: true,
     props,
     render() {
         const { $props, $slots } = this
@@ -49,15 +44,15 @@ export const BButtonClose = /*#__PURE__*/ defineComponent({
         }
 
         if (!hasNormalizedSlot(SLOT_NAME_DEFAULT, $slots)) {
-          
-          componentData.innerHTML = $props.content;
+
+            componentData.innerHTML = $props.content;
         }
 
         return h(
             'button',
-            componentData, 
+            componentData,
             normalizeSlot(SLOT_NAME_DEFAULT, {}, $slots)
-            
+
         )
     }
 })

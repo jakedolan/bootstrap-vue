@@ -444,9 +444,9 @@ describe('form-date', () => {
         const $buttons = $footer.findAll('button')
         expect($buttons.length).toBe(3)
 
-        const $today = $buttons.at(0)
-        const $reset = $buttons.at(1)
-        const $close = $buttons.at(2)
+        const $today = $buttons[0]
+        const $reset = $buttons[1]
+        const $close = $buttons[2]
 
         await $today.trigger('click')
         await waitRAF()
@@ -520,7 +520,7 @@ describe('form-date', () => {
         const $buttons = $footer.findAll('button')
         expect($buttons.length).toBe(1)
 
-        const $reset = $buttons.at(0)
+        const $reset = $buttons[0]
 
         await $reset.trigger('click')
         await waitRAF()

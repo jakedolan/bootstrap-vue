@@ -26,8 +26,7 @@ describe('table > filtering', () => {
             // Map the rows to the first column text value
         const columnA = $rows.map(row => {
             return row
-                .findAll('td')
-                .at(0)
+                .findAll('td')[0]
                 .text()
         })
         expect(columnA[0]).toBe('3')
@@ -54,11 +53,11 @@ describe('table > filtering', () => {
         const $rows = wrapper.findAll('tbody > tr')
         expect($rows.length).toBe(1)
 
-        const $tds = $rows.at(0).findAll('td')
+        const $tds = $rows[0].findAll('td')
 
-        expect($tds.at(0).text()).toBe('2')
-        expect($tds.at(1).text()).toBe('a')
-        expect($tds.at(2).text()).toBe('z')
+        expect($tds[0].text()).toBe('2')
+        expect($tds[1].text()).toBe('a')
+        expect($tds[2].text()).toBe('z')
 
         wrapper.unmount()
     })

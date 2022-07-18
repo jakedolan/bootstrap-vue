@@ -1,3 +1,4 @@
+import { h } from 'vue';
 import { Vue } from '../../../vue'
 import { createWrapper, mount } from '@vue/test-utils'
 import { waitNT, waitRAF } from '../../../../tests/utils'
@@ -8,8 +9,7 @@ Vue.use(ModalPlugin)
 describe('$bvModal', () => {
     it('$bvModal.show() and $bvModal.hide() works', async() => {
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
-            render(h) {
+            render() {
                 return h('b-modal', { props: { static: true, id: 'test1' } }, 'content')
             }
         }
@@ -56,8 +56,7 @@ describe('$bvModal', () => {
 
     it('$bvModal.msgBoxOk() works', async() => {
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
-            render(h) {
+            render() {
                 return h('div', 'app')
             }
         }
@@ -118,8 +117,7 @@ describe('$bvModal', () => {
 
     it('$bvModal.msgBoxConfirm() works', async() => {
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
-            render(h) {
+            render() {
                 return h('div', 'app')
             }
         }
@@ -160,9 +158,9 @@ describe('$bvModal', () => {
         // Find the CANCEL button and click it
         expect($modal.findAll('button').length).toBe(2)
         const $buttons = $modal.findAll('button')
-        expect($buttons.at(0).text()).toEqual('Cancel')
-        expect($buttons.at(1).text()).toEqual('OK')
-        await $buttons.at(0).trigger('click')
+        expect($buttons[0].text()).toEqual('Cancel')
+        expect($buttons[1].text()).toEqual('OK')
+        await $buttons[0].trigger('click')
 
         // Promise should now resolve
         const result = await p

@@ -1,3 +1,4 @@
+import { h } from 'vue';
 import VueRouter from 'vue-router'
 import { mount } from '@vue/test-utils'
 import { waitRAF } from '../../../tests/utils'
@@ -107,13 +108,8 @@ describe('dropdown-item', () => {
             })
 
             const App = {
-                compatConfig: {
-                    MODE: 3,
-                    RENDER_FUNCTION: 'suppress-warning',
-                    COMPONENT_FUNCTIONAL: 'suppress-warning'
-                },
                 router,
-                render(h) {
+                render() {
                     return h('ul', [
                         // <router-link>
                         h(BDropdownItem, { props: { to: '/a' } }, ['to-a']),
@@ -140,7 +136,7 @@ describe('dropdown-item', () => {
 
             $links.wrappers.forEach($link => {
                 expect($link.vm).toBeDefined()
-                expect($links.at(0).vm.$options.name).toBe('BLink')
+                expect($links[0].vm.$options.name).toBe('BLink')
             })
             expect(
                 $links.wrappers.map($link => $link.findComponent({ name: 'RouterLink' }).exists())

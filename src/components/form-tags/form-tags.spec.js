@@ -1,3 +1,4 @@
+import { h } from 'vue';
 import { mount } from '@vue/test-utils'
 import { waitNT, waitRAF } from '../../../tests/utils'
 import { BFormTags } from './form-tags'
@@ -27,14 +28,14 @@ describe('form-tags', () => {
         const $tags = wrapper.findAll('.b-form-tag')
         expect($tags.length).toBe(2)
 
-        const $tag0 = $tags.at(0)
+        const $tag0 = $tags[0]
         expect($tag0.attributes('title')).toEqual('apple')
         expect($tag0.classes()).toContain('badge')
         expect($tag0.classes()).toContain('badge-secondary')
         expect($tag0.text()).toContain('apple')
         expect($tag0.find('button.close').exists()).toBe(true)
 
-        const $tag1 = $tags.at(1)
+        const $tag1 = $tags[1]
         expect($tag1.attributes('title')).toEqual('orange')
         expect($tag1.classes()).toContain('badge')
         expect($tag1.classes()).toContain('badge-secondary')
@@ -116,10 +117,10 @@ describe('form-tags', () => {
         await wrapper.setProps({ value: ['apple', 'orange'] })
         $hidden = wrapper.findAll('input[type=hidden]')
         expect($hidden.length).toBe(2)
-        expect($hidden.at(0).attributes('value')).toEqual('apple')
-        expect($hidden.at(0).attributes('name')).toEqual('foo')
-        expect($hidden.at(1).attributes('value')).toEqual('orange')
-        expect($hidden.at(1).attributes('name')).toEqual('foo')
+        expect($hidden[0].attributes('value')).toEqual('apple')
+        expect($hidden[0].attributes('name')).toEqual('foo')
+        expect($hidden[1].attributes('value')).toEqual('orange')
+        expect($hidden[1].attributes('name')).toEqual('foo')
 
         wrapper.unmount()
     })
@@ -211,10 +212,10 @@ describe('form-tags', () => {
         const $tags = wrapper.findAll('.b-form-tag')
         expect($tags.length).toBe(2)
 
-        const $tag0 = $tags.at(0)
+        const $tag0 = $tags[0]
         expect($tag0.find('button').exists()).toBe(false)
 
-        const $tag1 = $tags.at(1)
+        const $tag1 = $tags[1]
         expect($tag1.find('button').exists()).toBe(false)
 
         wrapper.unmount()
@@ -233,9 +234,9 @@ describe('form-tags', () => {
 
         let $tags = wrapper.findAll('.badge')
         expect($tags.length).toBe(4)
-        expect($tags.at(1).attributes('title')).toEqual('orange')
+        expect($tags[1].attributes('title')).toEqual('orange')
 
-        const $btn = $tags.at(1).find('button')
+        const $btn = $tags[1].find('button')
         expect($btn.exists()).toBe(true)
 
         await $btn.trigger('click')
@@ -243,7 +244,7 @@ describe('form-tags', () => {
 
         $tags = wrapper.findAll('.badge')
         expect($tags.length).toBe(3)
-        expect($tags.at(1).attributes('title')).toEqual('pear')
+        expect($tags[1].attributes('title')).toEqual('pear')
 
         wrapper.unmount()
     })
@@ -586,7 +587,7 @@ describe('form-tags', () => {
         const $tags = wrapper.findAll('.badge')
         expect($tags.length).toBe(2)
         await $tags
-            .at(1)
+            [1]
             .find('button')
             .trigger('click')
         expect(wrapper.vm.tags).toEqual(['one'])
@@ -631,7 +632,7 @@ describe('form-tags', () => {
         const $tags = wrapper.findAll('.badge')
         expect($tags.length).toBe(2)
         await $tags
-            .at(1)
+            [1]
             .find('button')
             .trigger('click')
         expect(wrapper.vm.tags).toEqual(['one'])
@@ -650,8 +651,7 @@ describe('form-tags', () => {
 
     it('form native reset event triggers reset', async() => {
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
-            render(h) {
+            render() {
                 return h('form', [
                     h(BFormTags, {
                         props: {
@@ -690,7 +690,7 @@ describe('form-tags', () => {
         const $tags = formTags.findAll('.badge')
         expect($tags.length).toBe(2)
         await $tags
-            .at(1)
+            [1]
             .find('button')
             .trigger('click')
         expect(formTags.vm.tags).toEqual(['one'])

@@ -1,3 +1,4 @@
+import { h } from 'vue';
 import { mount } from '@vue/test-utils'
 import { listenOnRootMixin } from './listen-on-root'
 
@@ -7,23 +8,17 @@ describe('mixins/listen-on-root', () => {
         const spyOnce = jest.fn()
 
         const TestComponent = {
-            compatConfig: {
-                MODE: 3,
-                RENDER_FUNCTION: 'suppress-warning',
-
-            },
             mixins: [listenOnRootMixin],
             created() {
                 this.listenOnRoot('root-on', spyOn)
                 this.listenOnRootOnce('root-once', spyOnce)
             },
-            render(h) {
+            render() {
                 return h('div', this.$slots.default)
             }
         }
 
         const App = {
-            compatConfig: { MODE: 3, RENDER_FUNCTION: 'suppress-warning' },
             components: { TestComponent },
             props: {
                 destroy: {
@@ -31,7 +26,7 @@ describe('mixins/listen-on-root', () => {
                     default: false
                 }
             },
-            render(h) {
+            render() {
                 return h('div', [this.destroy ? h() : h(TestComponent, 'test-component')])
             }
         }

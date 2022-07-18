@@ -32,14 +32,13 @@ export const props = makePropsConfigurable(
 // @vue/component
 export const BCardBody = /*#__PURE__*/ defineComponent({
     name: NAME_CARD_BODY,
-    functional: true,
     props,
     render(h, { props, data, children }) {
         const { bodyBgVariant, bodyBorderVariant, bodyTextVariant } = props
 
         let $title = h()
         if (props.title) {
-            $title = h(BCardTitle, { ...pluckProps(titleProps, props) })
+            $title = h(BCardTitle, {...pluckProps(titleProps, props) })
         }
 
         let $subTitle = h()
@@ -54,8 +53,8 @@ export const BCardBody = /*#__PURE__*/ defineComponent({
             props.bodyTag,
             mergeData(data, {
                 class: [
-                  'card-body',
-                  {
+                    'card-body',
+                    {
                         'card-img-overlay': props.overlay,
                         [`bg-${bodyBgVariant}`]: bodyBgVariant,
                         [`border-${bodyBorderVariant}`]: bodyBorderVariant,

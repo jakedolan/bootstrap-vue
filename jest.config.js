@@ -8,7 +8,7 @@ module.exports = {
     transform: {
         '^.+\\.js$': 'babel-jest'
     },
-    transformIgnorePatterns: ['/node_modules(?![\\\\/]vue-test-utils-compat[\\\\/])'],
+    transformIgnorePatterns: ['/node_modules(?![\\\\/])'],
     coverageDirectory: './coverage/',
     testEnvironmentOptions: {
         pretendToBeVisual: true

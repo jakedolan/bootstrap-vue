@@ -13,7 +13,6 @@ export const props = makePropsConfigurable(BBreadcrumbLinkProps, NAME_BREADCRUMB
 // @vue/component
 export const BBreadcrumbItem = /*#__PURE__*/ defineComponent({
     name: NAME_BREADCRUMB_ITEM,
-    functional: true,
     props,
     render(h, { props, data, children }) {
         return h(

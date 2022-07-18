@@ -141,34 +141,34 @@ describe('calendar', () => {
         expect($navBtns.length).toBe(7)
 
         // Prev Month
-        await $navBtns.at(2).trigger('click')
+        await $navBtns[2].trigger('click')
         expect($grid.attributes('data-month')).toBe('2020-01')
 
         // Next Month
-        await $navBtns.at(4).trigger('click')
+        await $navBtns[4].trigger('click')
         expect($grid.attributes('data-month')).toBe('2020-02')
 
         // Prev Year
-        await $navBtns.at(1).trigger('click')
+        await $navBtns[1].trigger('click')
         expect($grid.attributes('data-month')).toBe('2019-02')
 
         // Next Year
-        await $navBtns.at(5).trigger('click')
+        await $navBtns[5].trigger('click')
         expect($grid.attributes('data-month')).toBe('2020-02')
 
         // Prev Decade
-        await $navBtns.at(0).trigger('click')
+        await $navBtns[0].trigger('click')
         expect($grid.attributes('data-month')).toBe('2010-02')
 
         // Next Decade
-        await $navBtns.at(6).trigger('click')
+        await $navBtns[6].trigger('click')
         expect($grid.attributes('data-month')).toBe('2020-02')
 
         // Current Month
         // Handle the rare case this test is run right at midnight where
         // the current month rolled over at midnight when clicked
         const thisMonth1 = formatYMD(new Date()).slice(0, -3)
-        await $navBtns.at(3).trigger('click')
+        await $navBtns[3].trigger('click')
         const thisMonth2 = formatYMD(new Date()).slice(0, -3)
         const thisMonth = $grid.attributes('data-month')
         expect(thisMonth === thisMonth1 || thisMonth === thisMonth2).toBe(true)
@@ -391,11 +391,11 @@ describe('calendar', () => {
         const $buttons = $nav.findAll('button')
 
         expect($buttons.length).toBe(5)
-        expect($buttons.at(0).classes()).toContain('btn-outline-primary')
-        expect($buttons.at(1).classes()).toContain('btn-outline-primary')
-        expect($buttons.at(2).classes()).toContain('btn-outline-primary')
-        expect($buttons.at(3).classes()).toContain('btn-outline-primary')
-        expect($buttons.at(4).classes()).toContain('btn-outline-primary')
+        expect($buttons[0].classes()).toContain('btn-outline-primary')
+        expect($buttons[1].classes()).toContain('btn-outline-primary')
+        expect($buttons[2].classes()).toContain('btn-outline-primary')
+        expect($buttons[3].classes()).toContain('btn-outline-primary')
+        expect($buttons[4].classes()).toContain('btn-outline-primary')
     })
 
     it('disables dates based on `date-disabled-fn` prop', async() => {
