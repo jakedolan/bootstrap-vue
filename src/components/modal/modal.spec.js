@@ -26,413 +26,411 @@ describe('modal', () => {
     })
 
     afterEach(() => {
-            // Restore prototype
-            Element.prototype.getBoundingClientRect = origGetBCR
-        })
-        /*
-            describe('structure', () => {
-                it('has expected default structure', async() => {
-                    const wrapper = mount(BModal, {
-                        attachTo: document.body,
-                        props: {
-                            static: true,
-                            id: 'test'
-                        }
-                    })
-
-                    expect(wrapper.vm).toBeDefined()
-                    await waitNT(wrapper.vm)
-
-                    // Main outer wrapper (has z-index, etc.)... The stacker <div>
-                    expect(wrapper.element.tagName).toBe('DIV')
-                    expect(wrapper.classes().length).toBe(0)
-                    expect(wrapper.element.style.position).toEqual('absolute')
-                    expect(wrapper.element.style.zIndex).toEqual(`${DEFAULT_ZINDEX}`)
-
-                    // Should not have a backdrop
-                    expect(wrapper.find('div.modal-backdrop').exists()).toBe(false)
-
-                    // Main modal wrapper
-                    const $modal = wrapper.find('div.modal')
-                    expect($modal.exists()).toBe(true)
-                    expect($modal.attributes('id')).toBeDefined()
-                    expect($modal.attributes('id')).toEqual('test')
-                    expect($modal.attributes('role')).toBeDefined()
-                    expect($modal.attributes('role')).toEqual('dialog')
-                    expect($modal.attributes('aria-hidden')).toBeDefined()
-                    expect($modal.attributes('aria-hidden')).toEqual('true')
-                    expect($modal.classes()).toContain('modal')
-                    expect($modal.element.style.display).toEqual('none')
-
-                    // Modal dialog wrapper
-                    const $dialog = $modal.find('div.modal-dialog')
-                    expect($dialog.exists()).toBe(true)
-
-                    // Modal content wrapper
-                    const $content = $dialog.find('div.modal-content')
-                    expect($content.exists()).toBe(true)
-                    expect($content.attributes('tabindex')).toBeDefined()
-                    expect($content.attributes('tabindex')).toEqual('-1')
-
-                    wrapper.unmount()
-                })
-
-                it('has expected default structure when static and lazy', async() => {
-                    const wrapper = mount(BModal, {
-                        attachTo: document.body,
-                        props: {
-                            static: true,
-                            lazy: true
-                        }
-                    })
-
-                    expect(wrapper.vm).toBeDefined()
-
-                    await waitNT(wrapper.vm)
-                    expect(wrapper.element.nodeType).toEqual(Node.COMMENT_NODE)
-
-                    wrapper.unmount()
-                })
-
-                it('has expected default structure when not static', async() => {
-                    const wrapper = mount(BModal, {
-                        attachTo: document.body,
-                        props: {
-                            static: false
-                        }
-                    })
-
-                    expect(wrapper.vm).toBeDefined()
-
-                    await waitNT(wrapper.vm)
-                    expect(wrapper.element.nodeType).toEqual(Node.COMMENT_NODE)
-
-                    wrapper.unmount()
-                })
-
-                it('has expected structure when initially open', async() => {
-                    const wrapper = mount(BModal, {
-                        attachTo: document.body,
-                        props: {
-                            static: true,
-                            id: 'test',
-                            visible: true
-                        }
-                    })
-
-                    expect(wrapper.vm).toBeDefined()
-                    await waitRAF()
-
-                    // Main outer wrapper (has z-index, etc.)... The stacker <div>
-                    expect(wrapper.element.tagName).toBe('DIV')
-                    expect(wrapper.classes().length).toBe(0)
-                    expect(wrapper.element.style.position).toEqual('absolute')
-                    expect(wrapper.element.style.zIndex).toEqual(`${DEFAULT_ZINDEX}`)
-
-                    // Main modal wrapper
-                    const $modal = wrapper.find('div.modal')
-                    expect($modal.exists()).toBe(true)
-                    expect($modal.attributes('id')).toBeDefined()
-                    expect($modal.attributes('id')).toEqual('test')
-                    expect($modal.attributes('role')).toBeDefined()
-                    expect($modal.attributes('role')).toEqual('dialog')
-                    expect($modal.attributes('aria-hidden')).toBeUndefined()
-                    expect($modal.attributes('aria-modal')).toBeDefined()
-                    expect($modal.attributes('aria-modal')).toEqual('true')
-                    expect($modal.classes()).toContain('modal')
-                    expect($modal.element.style.display).toEqual('block')
-
-                    // Should have a backdrop
-                    const $backdrop = wrapper.find('div.modal-backdrop')
-                    expect($backdrop.exists()).toBe(true)
-
-                    // Modal dialog wrapper
-                    const $dialog = $modal.find('div.modal-dialog')
-                    expect($dialog.exists()).toBe(true)
-
-                    // Modal content wrapper
-                    const $content = $dialog.find('div.modal-content')
-                    expect($content.exists()).toBe(true)
-                    expect($content.attributes('tabindex')).toBeDefined()
-                    expect($content.attributes('tabindex')).toEqual('-1')
-
-                    wrapper.unmount()
-                })
-
-                it('renders appended to body when initially open and not static', async() => {
-                    const wrapper = mount(BModal, {
-                        attachTo: document.body,
-                        props: {
-                            static: false,
-                            id: 'test-target',
-                            visible: true
-                        }
-                    })
-
-                    expect(wrapper.vm).toBeDefined()
-
-                    await waitRAF()
-                    expect(wrapper.element.nodeType).toEqual(Node.COMMENT_NODE)
-
-                    const outer = document.getElementById('test-target___BV_modal_outer_')
-                    expect(outer).toBeDefined()
-                    expect(outer).not.toBe(null)
-
-                    expect(getInstanceFromVNode(outer)).toBeDefined() // Target
-                    expect(outer.parentElement).toBeDefined()
-                    expect(outer.parentElement).toBe(document.body)
-
-                    // Destroy modal
-                    wrapper.unmount()
-
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-
-                    // Should no longer be in document
-                    expect(outer.parentElement).toEqual(null)
-                })
-
-                it('has expected structure when closed after being initially open', async() => {
-                    const wrapper = mount(BModal, {
-                        attachTo: document.body,
-                        props: {
-                            static: true,
-                            id: 'test',
-                            visible: true
-                        }
-                    })
-
-                    expect(wrapper.vm).toBeDefined()
-
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-
-                    // Main outer wrapper (has z-index, etc.)... The stacker <div>
-                    expect(wrapper.element.tagName).toBe('DIV')
-                    expect(wrapper.classes().length).toBe(0)
-                    expect(wrapper.element.style.position).toEqual('absolute')
-                    expect(wrapper.element.style.zIndex).toEqual(`${DEFAULT_ZINDEX}`)
-
-                    // Main modal wrapper
-                    const $modal = wrapper.find('div.modal')
-                    expect($modal.exists()).toBe(true)
-                    expect($modal.attributes('aria-hidden')).toBeUndefined()
-                    expect($modal.attributes('aria-modal')).toBeDefined()
-                    expect($modal.attributes('aria-modal')).toEqual('true')
-                    expect($modal.element.style.display).toEqual('block')
-
-                    // Should have a backdrop
-                    const $backdrop = wrapper.find('div.modal-backdrop')
-                    expect($backdrop.exists()).toBe(true)
-
-                    // Now we close the modal via the value prop
-                    await wrapper.setProps({
-                        visible: false
-                    })
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-
-                    expect($modal.attributes('aria-hidden')).toBeDefined()
-                    expect($modal.attributes('aria-hidden')).toEqual('true')
-                    expect($modal.attributes('aria-modal')).toBeUndefined()
-                    expect($modal.element.style.display).toEqual('none')
-
-                    // Backdrop should be removed
-                    expect(wrapper.find('div.modal-backdrop').exists()).toBe(false)
-
-                    wrapper.unmount()
-                })
-
-
-                it('title-html prop works', async() => {
-                    const wrapper = mount(BModal, {
-                        attachTo: document.body,
-                        props: {
-                            static: true,
-                            id: 'test',
-                            titleHtml: '<em>title</em>'
-                        }
-                    })
-
-                    expect(wrapper.vm).toBeDefined()
-
-                    // Modal title
-                    const $title = wrapper.find('.modal-title')
-                    expect($title.exists()).toBe(true)
-                    expect($title.html()).toContain('<em>title</em>')
-
-                    wrapper.unmount()
-                })
-
-                it('has correct header tag when "header-tag" prop is set', async() => {
-                    const wrapper = mount(BModal, {
-                        attachTo: document.body,
-                        props: {
-                            static: true,
-                            id: 'test',
-                            headerTag: 'div'
-                        }
-                    })
-
-                    expect(wrapper.vm).toBeDefined()
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-
-                    const $header = wrapper.find('.modal-header')
-                    expect($header.exists()).toBe(true)
-                    expect($header.element.tagName).toBe('DIV')
-
-                    wrapper.unmount()
-                })
-
-
-
-                it('has correct footer tag when "footer-tag" prop is set', async() => {
-                        const wrapper = mount(BModal, {
-                            attachTo: document.body,
-                            props: {
-                                static: true,
-                                id: 'test',
-                                footerTag: 'div'
-                            }
-                        })
-
-                        expect(wrapper.vm).toBeDefined()
-                        await waitNT(wrapper.vm)
-                        await waitRAF()
-
-                        const $footer = wrapper.find('.modal-footer')
-                        expect($footer.exists()).toBe(true)
-                        expect($footer.element.tagName).toBe('DIV')
-
-                        wrapper.unmount()
-                    })
-                    
-
-                    })
-        */
-        /*
-            describe('default button content, classes and attributes', () => {
-                // We may want to move these tests into individual files for manageability
-                it('default footer ok and cancel buttons', async() => {
-                    const wrapper = mount(BModal, {
-                        attachTo: document.body,
-                        props: {
-                            static: true
-                        }
-                    })
-                    expect(wrapper).toBeDefined()
-
-                    const $buttons = wrapper.findAll('footer button')
-                    expect($buttons.length).toBe(2)
-
-                    // Cancel button (left-most button)
-                    const $cancel = $buttons[0]
-                    expect($cancel.attributes('type')).toBe('button')
-                    expect($cancel.classes()).toContain('btn')
-                    expect($cancel.classes()).toContain('btn-secondary')
-                    expect($cancel.text()).toContain('Cancel')
-
-                    // OK button (right-most button)
-                    const $ok = $buttons[1]
-                    expect($ok.attributes('type')).toBe('button')
-                    expect($ok.classes()).toContain('btn')
-                    expect($ok.classes()).toContain('btn-primary')
-                    expect($ok.text()).toContain('OK')
-
-                    wrapper.unmount()
-                })
-
-                it('default header close button', async() => {
-                    const wrapper = mount(BModal, {
-                        attachTo: document.body,
-                        props: {
-                            static: true
-                        }
-                    })
-                    expect(wrapper).toBeDefined()
-
-                    const $buttons = wrapper.findAll('header button')
-                    expect($buttons.length).toBe(1)
-
-                    // Close button
-                    const $close = $buttons[0]
-                    expect($close.attributes('type')).toBe('button')
-                    expect($close.attributes('aria-label')).toBe('Close')
-                    expect($close.classes()).toContain('close')
-
-                    wrapper.unmount()
-                })
-
-                it('ok-title-html and cancel-title-html works', async() => {
-                    const wrapper = mount(BModal, {
-                        attachTo: document.body,
-                        props: {
-                            static: true,
-                            okTitleHtml: '<em>ok</em>',
-                            cancelTitleHtml: '<em>cancel</em>'
-                        }
-                    })
-                    expect(wrapper).toBeDefined()
-
-                    const $buttons = wrapper.findAll('footer button')
-                    expect($buttons.length).toBe(2)
-
-                    // Cancel button (left-most button)
-                    const $cancel = $buttons[0]
-                    expect($cancel.attributes('type')).toBe('button')
-                    expect($cancel.text()).toContain('cancel')
-                        // `v-html` is applied to a span
-                    expect($cancel.html()).toContain('<em>cancel</em>')
-
-                    // OK button (right-most button)
-                    const $ok = $buttons[1]
-                    expect($ok.attributes('type')).toBe('button')
-                    expect($ok.text()).toContain('ok')
-                        // `v-html` is applied to a span
-                    expect($ok.html()).toContain('<em>ok</em>')
-
-                    wrapper.unmount()
-                })
-
-                it('modal-ok and modal-cancel button content slots works', async() => {
-                    const wrapper = mount(BModal, {
-                        attachTo: document.body,
-                        props: {
-                            static: true
-                        },
-                        slots: {
-                            'modal-ok': '<em>bar ok</em>',
-                            'modal-cancel': '<em>foo cancel</em>'
-                        }
-                    })
-                    expect(wrapper).toBeDefined()
-
-                    const $buttons = wrapper.findAll('footer button')
-                    expect($buttons.length).toBe(2)
-
-                    // Cancel button (left-most button)
-                    const $cancel = $buttons[0]
-                    expect($cancel.attributes('type')).toBe('button')
-                    expect($cancel.text()).toContain('foo cancel')
-                        // `v-html` is applied to a span
-                    expect($cancel.html()).toContain('<em>foo cancel</em>')
-
-                    // OK button (right-most button)
-                    const $ok = $buttons[1]
-                    expect($ok.attributes('type')).toBe('button')
-                    expect($ok.text()).toContain('bar ok')
-                        // `v-html` is applied to a span
-                    expect($ok.html()).toContain('<em>bar ok</em>')
-
-                    wrapper.unmount()
-                })
+        // Restore prototype
+        Element.prototype.getBoundingClientRect = origGetBCR
+    })
+    describe('structure', () => {
+        it('has expected default structure', async() => {
+            const wrapper = mount(BModal, {
+                attachTo: document.body,
+                props: {
+                    static: true,
+                    id: 'test'
+                }
             })
-        */
+
+            expect(wrapper.vm).toBeDefined()
+            await waitNT(wrapper.vm)
+
+            // Main outer wrapper (has z-index, etc.)... The stacker <div>
+            expect(wrapper.element.tagName).toBe('DIV')
+            expect(wrapper.classes().length).toBe(0)
+            expect(wrapper.element.style.position).toEqual('absolute')
+            expect(wrapper.element.style.zIndex).toEqual(`${DEFAULT_ZINDEX}`)
+
+            // Should not have a backdrop
+            expect(wrapper.find('div.modal-backdrop').exists()).toBe(false)
+
+            // Main modal wrapper
+            const $modal = wrapper.find('div.modal')
+            expect($modal.exists()).toBe(true)
+            expect($modal.attributes('id')).toBeDefined()
+            expect($modal.attributes('id')).toEqual('test')
+            expect($modal.attributes('role')).toBeDefined()
+            expect($modal.attributes('role')).toEqual('dialog')
+            expect($modal.attributes('aria-hidden')).toBeDefined()
+            expect($modal.attributes('aria-hidden')).toEqual('true')
+            expect($modal.classes()).toContain('modal')
+            expect($modal.element.style.display).toEqual('none')
+
+            // Modal dialog wrapper
+            const $dialog = $modal.find('div.modal-dialog')
+            expect($dialog.exists()).toBe(true)
+
+            // Modal content wrapper
+            const $content = $dialog.find('div.modal-content')
+            expect($content.exists()).toBe(true)
+            expect($content.attributes('tabindex')).toBeDefined()
+            expect($content.attributes('tabindex')).toEqual('-1')
+
+            wrapper.unmount()
+        })
+
+        it('has expected default structure when static and lazy', async() => {
+            const wrapper = mount(BModal, {
+                attachTo: document.body,
+                props: {
+                    static: true,
+                    lazy: true
+                }
+            })
+
+            expect(wrapper.vm).toBeDefined()
+
+            await waitNT(wrapper.vm)
+            expect(wrapper.element.nodeType).toEqual(Node.COMMENT_NODE)
+
+            wrapper.unmount()
+        })
+
+        it('has expected default structure when not static', async() => {
+            const wrapper = mount(BModal, {
+                attachTo: document.body,
+                props: {
+                    static: false
+                }
+            })
+
+            expect(wrapper.vm).toBeDefined()
+
+            await waitNT(wrapper.vm)
+            expect(wrapper.element.nodeType).toEqual(Node.COMMENT_NODE)
+
+            wrapper.unmount()
+        })
+
+        it('has expected structure when initially open', async() => {
+            const wrapper = mount(BModal, {
+                attachTo: document.body,
+                props: {
+                    static: true,
+                    id: 'test',
+                    visible: true
+                }
+            })
+
+            expect(wrapper.vm).toBeDefined()
+            await waitRAF()
+
+            // Main outer wrapper (has z-index, etc.)... The stacker <div>
+            expect(wrapper.element.tagName).toBe('DIV')
+            expect(wrapper.classes().length).toBe(0)
+            expect(wrapper.element.style.position).toEqual('absolute')
+            expect(wrapper.element.style.zIndex).toEqual(`${DEFAULT_ZINDEX}`)
+
+            // Main modal wrapper
+            const $modal = wrapper.find('div.modal')
+            expect($modal.exists()).toBe(true)
+            expect($modal.attributes('id')).toBeDefined()
+            expect($modal.attributes('id')).toEqual('test')
+            expect($modal.attributes('role')).toBeDefined()
+            expect($modal.attributes('role')).toEqual('dialog')
+            expect($modal.attributes('aria-hidden')).toBeUndefined()
+            expect($modal.attributes('aria-modal')).toBeDefined()
+            expect($modal.attributes('aria-modal')).toEqual('true')
+            expect($modal.classes()).toContain('modal')
+            expect($modal.element.style.display).toEqual('block')
+
+            // Should have a backdrop
+            const $backdrop = wrapper.find('div.modal-backdrop')
+            expect($backdrop.exists()).toBe(true)
+
+            // Modal dialog wrapper
+            const $dialog = $modal.find('div.modal-dialog')
+            expect($dialog.exists()).toBe(true)
+
+            // Modal content wrapper
+            const $content = $dialog.find('div.modal-content')
+            expect($content.exists()).toBe(true)
+            expect($content.attributes('tabindex')).toBeDefined()
+            expect($content.attributes('tabindex')).toEqual('-1')
+
+            wrapper.unmount()
+        })
+
+        it('renders appended to body when initially open and not static', async() => {
+            const wrapper = mount(BModal, {
+                attachTo: document.body,
+                props: {
+                    static: false,
+                    id: 'test-target',
+                    visible: true
+                }
+            })
+
+            expect(wrapper.vm).toBeDefined()
+
+            await waitRAF()
+            expect(wrapper.element.nodeType).toEqual(Node.COMMENT_NODE)
+
+            const outer = document.getElementById('test-target___BV_modal_outer_')
+            expect(outer).toBeDefined()
+            expect(outer).not.toBe(null)
+
+            expect(getInstanceFromVNode(outer)).toBeDefined() // Target
+            expect(outer.parentElement).toBeDefined()
+            expect(outer.parentElement).toBe(document.body)
+
+            // Destroy modal
+            wrapper.unmount()
+
+            await waitNT(wrapper.vm)
+            await waitRAF()
+
+            // Should no longer be in document
+            expect(outer.parentElement).toEqual(null)
+        })
+
+        it('has expected structure when closed after being initially open', async() => {
+            const wrapper = mount(BModal, {
+                attachTo: document.body,
+                props: {
+                    static: true,
+                    id: 'test',
+                    visible: true
+                }
+            })
+
+            expect(wrapper.vm).toBeDefined()
+
+            await waitNT(wrapper.vm)
+            await waitRAF()
+
+            // Main outer wrapper (has z-index, etc.)... The stacker <div>
+            expect(wrapper.element.tagName).toBe('DIV')
+            expect(wrapper.classes().length).toBe(0)
+            expect(wrapper.element.style.position).toEqual('absolute')
+            expect(wrapper.element.style.zIndex).toEqual(`${DEFAULT_ZINDEX}`)
+
+            // Main modal wrapper
+            const $modal = wrapper.find('div.modal')
+            expect($modal.exists()).toBe(true)
+            expect($modal.attributes('aria-hidden')).toBeUndefined()
+            expect($modal.attributes('aria-modal')).toBeDefined()
+            expect($modal.attributes('aria-modal')).toEqual('true')
+            expect($modal.element.style.display).toEqual('block')
+
+            // Should have a backdrop
+            const $backdrop = wrapper.find('div.modal-backdrop')
+            expect($backdrop.exists()).toBe(true)
+
+            // Now we close the modal via the value prop
+            await wrapper.setProps({
+                visible: false
+            })
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+
+            expect($modal.attributes('aria-hidden')).toBeDefined()
+            expect($modal.attributes('aria-hidden')).toEqual('true')
+            expect($modal.attributes('aria-modal')).toBeUndefined()
+            expect($modal.element.style.display).toEqual('none')
+
+            // Backdrop should be removed
+            expect(wrapper.find('div.modal-backdrop').exists()).toBe(false)
+
+            wrapper.unmount()
+        })
+
+
+        it('title-html prop works', async() => {
+            const wrapper = mount(BModal, {
+                attachTo: document.body,
+                props: {
+                    static: true,
+                    id: 'test',
+                    titleHtml: '<em>title</em>'
+                }
+            })
+
+            expect(wrapper.vm).toBeDefined()
+
+            // Modal title
+            const $title = wrapper.find('.modal-title')
+            expect($title.exists()).toBe(true)
+            expect($title.html()).toContain('<em>title</em>')
+
+            wrapper.unmount()
+        })
+
+        it('has correct header tag when "header-tag" prop is set', async() => {
+            const wrapper = mount(BModal, {
+                attachTo: document.body,
+                props: {
+                    static: true,
+                    id: 'test',
+                    headerTag: 'div'
+                }
+            })
+
+            expect(wrapper.vm).toBeDefined()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+
+            const $header = wrapper.find('.modal-header')
+            expect($header.exists()).toBe(true)
+            expect($header.element.tagName).toBe('DIV')
+
+            wrapper.unmount()
+        })
+
+
+
+        it('has correct footer tag when "footer-tag" prop is set', async() => {
+            const wrapper = mount(BModal, {
+                attachTo: document.body,
+                props: {
+                    static: true,
+                    id: 'test',
+                    footerTag: 'div'
+                }
+            })
+
+            expect(wrapper.vm).toBeDefined()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+
+            const $footer = wrapper.find('.modal-footer')
+            expect($footer.exists()).toBe(true)
+            expect($footer.element.tagName).toBe('DIV')
+
+            wrapper.unmount()
+        })
+
+
+    })
+
+    describe('default button content, classes and attributes', () => {
+        // We may want to move these tests into individual files for manageability
+        it('default footer ok and cancel buttons', async() => {
+            const wrapper = mount(BModal, {
+                attachTo: document.body,
+                props: {
+                    static: true
+                }
+            })
+            expect(wrapper).toBeDefined()
+
+            const $buttons = wrapper.findAll('footer button')
+            expect($buttons.length).toBe(2)
+
+            // Cancel button (left-most button)
+            const $cancel = $buttons[0]
+            expect($cancel.attributes('type')).toBe('button')
+            expect($cancel.classes()).toContain('btn')
+            expect($cancel.classes()).toContain('btn-secondary')
+            expect($cancel.text()).toContain('Cancel')
+
+            // OK button (right-most button)
+            const $ok = $buttons[1]
+            expect($ok.attributes('type')).toBe('button')
+            expect($ok.classes()).toContain('btn')
+            expect($ok.classes()).toContain('btn-primary')
+            expect($ok.text()).toContain('OK')
+
+            wrapper.unmount()
+        })
+
+        it('default header close button', async() => {
+            const wrapper = mount(BModal, {
+                attachTo: document.body,
+                props: {
+                    static: true
+                }
+            })
+            expect(wrapper).toBeDefined()
+
+            const $buttons = wrapper.findAll('header button')
+            expect($buttons.length).toBe(1)
+
+            // Close button
+            const $close = $buttons[0]
+            expect($close.attributes('type')).toBe('button')
+            expect($close.attributes('aria-label')).toBe('Close')
+            expect($close.classes()).toContain('close')
+
+            wrapper.unmount()
+        })
+
+        it('ok-title-html and cancel-title-html works', async() => {
+            const wrapper = mount(BModal, {
+                attachTo: document.body,
+                props: {
+                    static: true,
+                    okTitleHtml: '<em>ok</em>',
+                    cancelTitleHtml: '<em>cancel</em>'
+                }
+            })
+            expect(wrapper).toBeDefined()
+
+            const $buttons = wrapper.findAll('footer button')
+            expect($buttons.length).toBe(2)
+
+            // Cancel button (left-most button)
+            const $cancel = $buttons[0]
+            expect($cancel.attributes('type')).toBe('button')
+            expect($cancel.text()).toContain('cancel')
+                // `v-html` is applied to a span
+            expect($cancel.html()).toContain('<em>cancel</em>')
+
+            // OK button (right-most button)
+            const $ok = $buttons[1]
+            expect($ok.attributes('type')).toBe('button')
+            expect($ok.text()).toContain('ok')
+                // `v-html` is applied to a span
+            expect($ok.html()).toContain('<em>ok</em>')
+
+            wrapper.unmount()
+        })
+
+        it('modal-ok and modal-cancel button content slots works', async() => {
+            const wrapper = mount(BModal, {
+                attachTo: document.body,
+                props: {
+                    static: true
+                },
+                slots: {
+                    'modal-ok': '<em>bar ok</em>',
+                    'modal-cancel': '<em>foo cancel</em>'
+                }
+            })
+            expect(wrapper).toBeDefined()
+
+            const $buttons = wrapper.findAll('footer button')
+            expect($buttons.length).toBe(2)
+
+            // Cancel button (left-most button)
+            const $cancel = $buttons[0]
+            expect($cancel.attributes('type')).toBe('button')
+            expect($cancel.text()).toContain('foo cancel')
+                // `v-html` is applied to a span
+            expect($cancel.html()).toContain('<em>foo cancel</em>')
+
+            // OK button (right-most button)
+            const $ok = $buttons[1]
+            expect($ok.attributes('type')).toBe('button')
+            expect($ok.text()).toContain('bar ok')
+                // `v-html` is applied to a span
+            expect($ok.html()).toContain('<em>bar ok</em>')
+
+            wrapper.unmount()
+        })
+    })
+
     describe('button and event functionality', () => {
-        /*
+
         it('header close button triggers modal close and is preventable', async() => {
             let cancelHide = true
             let trigger = null
@@ -892,73 +890,72 @@ describe('modal', () => {
         })
 
         it('show event is cancellable', async() => {
-                let prevent = true
-                let called = 0
-                const wrapper = mount(BModal, {
-                    attachTo: document.body,
-                    attrs: {
-                        onShow: bvEvent => {
-                            called = true
-                            console.log("woot bang")
-                            if (prevent) {
-                                bvEvent.preventDefault()
-                            }
+            let prevent = true
+            let called = 0
+            const wrapper = mount(BModal, {
+                attachTo: document.body,
+                attrs: {
+                    onShow: bvEvent => {
+                        called = true
+                        if (prevent) {
+                            bvEvent.preventDefault()
                         }
-                    },
-                    props: {
-                        static: true,
-                        id: 'test',
-                        visible: false
                     }
-                })
-
-                expect(wrapper.vm).toBeDefined()
-
-                await waitNT(wrapper.vm)
-                await waitRAF()
-                await waitNT(wrapper.vm)
-                await waitRAF()
-
-                const $modal = wrapper.find('div.modal')
-                expect($modal.exists()).toBe(true)
-
-                expect($modal.element.style.display).toEqual('none')
-
-                // Try and open modal via `bv::show::modal`
-                emitter.$emit('bv::show::modal', { id: 'test' })
-
-                await waitNT(wrapper.vm)
-                await waitRAF()
-                await waitNT(wrapper.vm)
-                await waitRAF()
-
-                // Modal should not open
-                expect(called).toBe(true)
-                expect($modal.element.style.display).toEqual('none')
-
-                await waitNT(wrapper.vm)
-                await waitRAF()
-                await waitNT(wrapper.vm)
-                await waitRAF()
-
-                // Allow modal to open
-                prevent = false
-                called = false
-
-                // Try and open modal via `bv::show::modal`
-                emitter.$emit('bv::show::modal', { id: 'test' })
-
-                await waitNT(wrapper.vm)
-                await waitRAF()
-                await waitNT(wrapper.vm)
-                await waitRAF()
-
-                // Modal should now be open
-                expect(called).toBe(true)
-                expect($modal.element.style.display).toEqual('block')
-
-                wrapper.unmount()
+                },
+                props: {
+                    static: true,
+                    id: 'test',
+                    visible: false
+                }
             })
+
+            expect(wrapper.vm).toBeDefined()
+
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+
+            const $modal = wrapper.find('div.modal')
+            expect($modal.exists()).toBe(true)
+
+            expect($modal.element.style.display).toEqual('none')
+
+            // Try and open modal via `bv::show::modal`
+            emitter.$emit('bv::show::modal', { id: 'test' })
+
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+
+            // Modal should not open
+            expect(called).toBe(true)
+            expect($modal.element.style.display).toEqual('none')
+
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+
+            // Allow modal to open
+            prevent = false
+            called = false
+
+            // Try and open modal via `bv::show::modal`
+            emitter.$emit('bv::show::modal', { id: 'test' })
+
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+
+            // Modal should now be open
+            expect(called).toBe(true)
+            expect($modal.element.style.display).toEqual('block')
+
+            wrapper.unmount()
+        })
         it('instance .toggle() methods works', async() => {
             const wrapper = mount(BModal, {
                 attachTo: document.body,
@@ -1006,7 +1003,6 @@ describe('modal', () => {
             wrapper.unmount()
         })
 
-            */
         it('modal closes when no-stacking is true and another modal opens', async() => {
             const wrapper = mount(BModal, {
                 attachTo: document.body,
@@ -1047,380 +1043,387 @@ describe('modal', () => {
             wrapper.unmount()
         })
 
-        /*
-            })
 
-            describe('focus management', () => {
-                it('returns focus to previous active element when return focus not set and not using v-b-toggle', async() => {
-                    const App = {
-                        render() {
-                            return h('div', [
-                                h('button', { class: 'trigger', id: 'trigger', type: 'button' }, 'trigger'),
-                                h(BModal, { static: true, id: 'test', visible: false }, 'modal content')
-                            ])
-                        }
-                    }
-                    const wrapper = mount(App, {
-                        attachTo: document.body
-                    })
-
-                    expect(wrapper.vm).toBeDefined()
-
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-                    await waitNT(wrapper.vm)
-                    await waitNT(wrapper.vm)
-
-                    const $button = wrapper.find('button.trigger')
-                    expect($button.exists()).toBe(true)
-                    expect($button.element.tagName).toBe('BUTTON')
-
-                    const $modal = wrapper.find('div.modal')
-                    expect($modal.exists()).toBe(true)
-
-                    expect($modal.element.style.display).toEqual('none')
-                    expect(document.activeElement).toBe(document.body)
-
-                    // Set the active element to the button
-                    $button.element.focus()
-                    expect(document.activeElement).toBe($button.element)
-
-                    // Try and open modal via `.toggle()` method
-                    wrapper.findComponent(BModal).vm.toggle()
-
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-
-                    // Modal should now be open
-                    expect($modal.element.style.display).toEqual('block')
-                    expect(document.activeElement).not.toBe(document.body)
-                    expect(document.activeElement).not.toBe($button.element)
-                    expect($modal.element.contains(document.activeElement)).toBe(true)
-
-                    // Try and close modal via `.toggle()` method
-                    wrapper.findComponent(BModal).vm.toggle()
-
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-
-                    // Modal should now be closed
-                    expect($modal.element.style.display).toEqual('none')
-                    expect(document.activeElement).toBe($button.element)
-
-                    wrapper.unmount()
-                })
-
-                it('returns focus to element specified in toggle() method', async() => {
-                    const App = {
-                        render() {
-                            return h('div', [
-                                h('button', { class: 'trigger', id: 'trigger', type: 'button' }, 'trigger'),
-                                h(
-                                    'button', { class: 'return-to', id: 'return-to', type: 'button' },
-                                    'trigger'
-                                ),
-                                h(BModal, { static: true, id: 'test', visible: false }, 'modal content')
-                            ])
-                        }
-                    }
-                    const wrapper = mount(App, {
-                        attachTo: document.body
-                    })
-
-                    expect(wrapper.vm).toBeDefined()
-
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-
-                    const $button = wrapper.find('button.trigger')
-                    expect($button.exists()).toBe(true)
-                    expect($button.element.tagName).toBe('BUTTON')
-
-                    const $button2 = wrapper.find('button.return-to')
-                    expect($button2.exists()).toBe(true)
-                    expect($button2.element.tagName).toBe('BUTTON')
-
-                    const $modal = wrapper.find('div.modal')
-                    expect($modal.exists()).toBe(true)
-
-                    expect($modal.element.style.display).toEqual('none')
-                    expect(document.activeElement).toBe(document.body)
-
-                    // Set the active element to the button
-                    $button.element.focus()
-                    expect(document.activeElement).toBe($button.element)
-
-                    // Try and open modal via `.toggle()` method
-                    wrapper.findComponent(BModal).vm.toggle('button.return-to')
-
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-
-                    // Modal should now be open
-                    expect($modal.element.style.display).toEqual('block')
-                    expect(document.activeElement).not.toBe(document.body)
-                    expect(document.activeElement).not.toBe($button.element)
-                    expect(document.activeElement).not.toBe($button2.element)
-                    expect($modal.element.contains(document.activeElement)).toBe(true)
-
-                    // Try and close modal via `.toggle()` method
-                    wrapper.findComponent(BModal).vm.toggle()
-
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-
-                    // Modal should now be closed
-                    expect($modal.element.style.display).toEqual('none')
-                    expect(document.activeElement).toBe($button2.element)
-
-                    wrapper.unmount()
-                })
-
-                it('if focus leaves modal it returns to modal', async() => {
-                    const App = {
-                        render() {
-                            return h('div', [
-                                h('button', { id: 'button', type: 'button' }, 'Button'),
-                                h(BModal, { static: true, id: 'test', visible: true }, 'Modal content')
-                            ])
-                        }
-                    }
-                    const wrapper = mount(App, {
-                        attachTo: document.body
-                    })
-
-                    expect(wrapper.vm).toBeDefined()
-
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-
-                    const $button = wrapper.find('#button')
-                    expect($button.exists()).toBe(true)
-                    expect($button.element.tagName).toBe('BUTTON')
-
-                    const $modal = wrapper.find('div.modal')
-                    expect($modal.exists()).toBe(true)
-                    const $content = $modal.find('div.modal-content')
-                    expect($content.exists()).toBe(true)
-
-                    expect($modal.element.style.display).toEqual('block')
-                    expect(document.activeElement).not.toBe(document.body)
-                    expect(document.activeElement).toBe($content.element)
-
-                    // Try and focus the external button
-                    $button.element.focus()
-                    await $button.trigger('focusin')
-                    expect(document.activeElement).not.toBe($button.element)
-                    expect(document.activeElement).toBe($content.element)
-
-                    // Emulate TAB by focusing the `bottomTrap` span element
-                    // Should focus first button in modal (in the header)
-                    const $bottomTrap = createWrapper(wrapper.findComponent(BModal).vm.$refs['bottom-trap'])
-                    expect($bottomTrap.exists()).toBe(true)
-                    expect($bottomTrap.element.tagName).toBe('SPAN')
-                        // Find the close (x) button (it is the only one with the `.close` class)
-                    const $closeButton = $modal.find('button.close')
-                    expect($closeButton.exists()).toBe(true)
-                    expect($closeButton.element.tagName).toBe('BUTTON')
-                        // Focus the tab trap
-                    $bottomTrap.element.focus()
-                    await $bottomTrap.trigger('focusin')
-                    expect(document.activeElement).not.toBe($bottomTrap.element)
-                    expect(document.activeElement).not.toBe($content.element)
-                        // The close (x) button (first tabable in modal) should be focused
-                    expect(document.activeElement).toBe($closeButton.element)
-
-                    // Emulate CTRL-TAB by focusing the `topTrap` div element
-                    // Should focus last button in modal (in the footer)
-                    const $topTrap = createWrapper(wrapper.findComponent(BModal).vm.$refs['top-trap'])
-                    expect($topTrap.exists()).toBe(true)
-                    expect($topTrap.element.tagName).toBe('SPAN')
-                        // Find the OK button (it is the only one with `.btn-primary` class)
-                    const $okButton = $modal.find('button.btn.btn-primary')
-                    expect($okButton.exists()).toBe(true)
-                    expect($okButton.element.tagName).toBe('BUTTON')
-                        // Focus the tab trap
-                    $topTrap.element.focus()
-                    await $topTrap.trigger('focusin')
-                    expect(document.activeElement).not.toBe($topTrap.element)
-                    expect(document.activeElement).not.toBe($bottomTrap.element)
-                    expect(document.activeElement).not.toBe($content.element)
-                        // The OK button (last tabbable in modal) should be focused
-                    expect(document.activeElement).toBe($okButton.element)
-
-                    wrapper.unmount()
-                })
-
-                it('it allows focus for elements when "no-enforce-focus" enabled', async() => {
-                    const App = {
-                        render() {
-                            return h('div', [
-                                h('button', { id: 'button1', type: 'button' }, 'Button 1'),
-                                h('button', { id: 'button2', type: 'button' }, 'Button 2'),
-                                h(
-                                    BModal, {
-                                        static: true,
-                                        id: 'test',
-                                        visible: true,
-                                        noEnforceFocus: true
-                                    },
-                                    'Modal content'
-                                )
-                            ])
-                        }
-                    }
-                    const wrapper = mount(App, {
-                        attachTo: document.body
-                    })
-
-                    expect(wrapper.vm).toBeDefined()
-
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-
-                    const $button1 = wrapper.find('#button1')
-                    expect($button1.exists()).toBe(true)
-                    expect($button1.element.tagName).toBe('BUTTON')
-
-                    const $button2 = wrapper.find('#button2')
-                    expect($button2.exists()).toBe(true)
-                    expect($button2.element.tagName).toBe('BUTTON')
-
-                    const $modal = wrapper.find('div.modal')
-                    expect($modal.exists()).toBe(true)
-                    const $content = $modal.find('div.modal-content')
-                    expect($content.exists()).toBe(true)
-
-                    expect($modal.element.style.display).toEqual('block')
-                    expect(document.activeElement).not.toBe(document.body)
-                    expect(document.activeElement).toBe($content.element)
-
-                    // Try to focus button1
-                    $button1.element.focus()
-                    await $button1.trigger('focusin')
-                    expect(document.activeElement).toBe($button1.element)
-                    expect(document.activeElement).not.toBe($content.element)
-
-                    // Try to focus button2
-                    $button2.element.focus()
-                    await $button2.trigger('focusin')
-                    expect(document.activeElement).toBe($button2.element)
-                    expect(document.activeElement).not.toBe($content.element)
-
-                    wrapper.unmount()
-                })
-
-                it('it allows focus for elements in "ignore-enforce-focus-selector" prop', async() => {
-                    const App = {
-                        render() {
-                            return h('div', [
-                                h('button', { id: 'button1', type: 'button' }, 'Button 1'),
-                                h('button', { id: 'button2', type: 'button' }, 'Button 2'),
-                                h(
-                                    BModal, {
-                                        props: {
-                                            static: true,
-                                            id: 'test',
-                                            visible: true,
-                                            ignoreEnforceFocusSelector: '#button1'
-                                        }
-                                    },
-                                    'Modal content'
-                                )
-                            ])
-                        }
-                    }
-                    const wrapper = mount(App, {
-                        attachTo: document.body
-                    })
-
-                    expect(wrapper.vm).toBeDefined()
-
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-                    await waitNT(wrapper.vm)
-                    await waitRAF()
-
-                    const $button1 = wrapper.find('#button1')
-                    expect($button1.exists()).toBe(true)
-                    expect($button1.element.tagName).toBe('BUTTON')
-
-                    const $button2 = wrapper.find('#button2')
-                    expect($button2.exists()).toBe(true)
-                    expect($button2.element.tagName).toBe('BUTTON')
-
-                    const $modal = wrapper.find('div.modal')
-                    expect($modal.exists()).toBe(true)
-                    const $content = $modal.find('div.modal-content')
-                    expect($content.exists()).toBe(true)
-
-                    expect($modal.element.style.display).toEqual('block')
-                    expect(document.activeElement).not.toBe(document.body)
-                    expect(document.activeElement).toBe($content.element)
-
-                    // Try to focus button1
-                    $button1.element.focus()
-                    await $button1.trigger('focusin')
-                    expect(document.activeElement).toBe($button1.element)
-                    expect(document.activeElement).not.toBe($content.element)
-
-                    // Try to focus button2
-                    $button2.element.focus()
-                    await $button2.trigger('focusin')
-                    expect(document.activeElement).not.toBe($button2.element)
-                    expect(document.activeElement).toBe($content.element)
-
-                    wrapper.unmount()
-                })
-            })
-            */
     })
+
+
+
+    describe('focus management', () => {
+
+        it('returns focus to previous active element when return focus not set and not using v-b-toggle', async() => {
+            const App = {
+                render() {
+                    return h('div', [
+                        h('button', { class: 'trigger', id: 'trigger', type: 'button' }, 'trigger'),
+                        h(BModal, { static: true, id: 'test', visible: false }, 'modal content')
+                    ])
+                }
+            }
+            const wrapper = mount(App, {
+                attachTo: document.body
+            })
+
+            expect(wrapper.vm).toBeDefined()
+
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitNT(wrapper.vm)
+
+            const $button = wrapper.find('button.trigger')
+            expect($button.exists()).toBe(true)
+            expect($button.element.tagName).toBe('BUTTON')
+
+            const $modal = wrapper.find('div.modal')
+            expect($modal.exists()).toBe(true)
+
+            expect($modal.element.style.display).toEqual('none')
+            expect(document.activeElement).toBe(document.body)
+
+            // Set the active element to the button
+            $button.element.focus()
+            expect(document.activeElement).toBe($button.element)
+
+            // Try and open modal via `.toggle()` method
+            wrapper.findComponent(BModal).vm.toggle()
+
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+
+            // Modal should now be open
+            expect($modal.element.style.display).toEqual('block')
+            expect(document.activeElement).not.toBe(document.body)
+            expect(document.activeElement).not.toBe($button.element)
+            expect($modal.element.contains(document.activeElement)).toBe(true)
+
+            // Try and close modal via `.toggle()` method
+            wrapper.findComponent(BModal).vm.toggle()
+
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+
+            // Modal should now be closed
+            expect($modal.element.style.display).toEqual('none')
+            expect(document.activeElement).toBe($button.element)
+
+            wrapper.unmount()
+        })
+
+        it('returns focus to element specified in toggle() method', async() => {
+            const App = {
+                render() {
+                    return h('div', [
+                        h('button', { class: 'trigger', id: 'trigger', type: 'button' }, 'trigger'),
+                        h(
+                            'button', { class: 'return-to', id: 'return-to', type: 'button' },
+                            'trigger'
+                        ),
+                        h(BModal, { static: true, id: 'test', visible: false }, 'modal content')
+                    ])
+                }
+            }
+            const wrapper = mount(App, {
+                attachTo: document.body
+            })
+
+            expect(wrapper.vm).toBeDefined()
+
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+
+            const $button = wrapper.find('button.trigger')
+            expect($button.exists()).toBe(true)
+            expect($button.element.tagName).toBe('BUTTON')
+
+            const $button2 = wrapper.find('button.return-to')
+            expect($button2.exists()).toBe(true)
+            expect($button2.element.tagName).toBe('BUTTON')
+
+            const $modal = wrapper.find('div.modal')
+            expect($modal.exists()).toBe(true)
+
+            expect($modal.element.style.display).toEqual('none')
+            expect(document.activeElement).toBe(document.body)
+
+            // Set the active element to the button
+            $button.element.focus()
+            expect(document.activeElement).toBe($button.element)
+
+            // Try and open modal via `.toggle()` method
+            wrapper.findComponent(BModal).vm.toggle('button.return-to')
+
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+
+            // Modal should now be open
+            expect($modal.element.style.display).toEqual('block')
+            expect(document.activeElement).not.toBe(document.body)
+            expect(document.activeElement).not.toBe($button.element)
+            expect(document.activeElement).not.toBe($button2.element)
+            expect($modal.element.contains(document.activeElement)).toBe(true)
+
+            // Try and close modal via `.toggle()` method
+            wrapper.findComponent(BModal).vm.toggle()
+
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+
+            // Modal should now be closed
+            expect($modal.element.style.display).toEqual('none')
+            expect(document.activeElement).toBe($button2.element)
+
+            wrapper.unmount()
+        })
+
+        it('if focus leaves modal it returns to modal', async() => {
+            const App = {
+                render() {
+                    return h('div', [
+                        h('button', { id: 'button', type: 'button' }, 'Button'),
+                        h(BModal, { static: true, id: 'test', visible: true }, 'Modal content')
+                    ])
+                }
+            }
+            const wrapper = mount(App, {
+                attachTo: document.body
+            })
+
+            expect(wrapper.vm).toBeDefined()
+
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+
+            const $button = wrapper.find('#button')
+            expect($button.exists()).toBe(true)
+            expect($button.element.tagName).toBe('BUTTON')
+
+            const $modal = wrapper.find('div.modal')
+            expect($modal.exists()).toBe(true)
+            const $content = $modal.find('div.modal-content')
+            expect($content.exists()).toBe(true)
+
+            expect($modal.element.style.display).toEqual('block')
+            expect(document.activeElement).not.toBe(document.body)
+            expect(document.activeElement).toBe($content.element)
+
+            // Try and focus the external button
+            $button.element.focus()
+            await $button.trigger('focusin')
+            expect(document.activeElement).not.toBe($button.element)
+            expect(document.activeElement).toBe($content.element)
+
+            // Emulate TAB by focusing the `bottomTrap` span element
+            // Should focus first button in modal (in the header)
+            const $bottomTrap = wrapper.find('.bottom-trap');
+            expect($bottomTrap.exists()).toBe(true)
+            expect($bottomTrap.element.tagName).toBe('SPAN')
+                // Find the close (x) button (it is the only one with the `.close` class)
+            const $closeButton = $modal.find('button.close')
+            expect($closeButton.exists()).toBe(true)
+            expect($closeButton.element.tagName).toBe('BUTTON')
+                // Focus the tab trap
+            $bottomTrap.element.focus()
+            await $bottomTrap.trigger('focusin')
+            expect(document.activeElement).not.toBe($bottomTrap.element)
+            expect(document.activeElement).not.toBe($content.element)
+                // The close (x) button (first tabable in modal) should be focused
+            expect(document.activeElement).toBe($closeButton.element)
+
+            // Emulate CTRL-TAB by focusing the `topTrap` div element
+            // Should focus last button in modal (in the footer)
+            const $topTrap = wrapper.find('.top-trap')
+            expect($topTrap.exists()).toBe(true)
+            expect($topTrap.element.tagName).toBe('SPAN')
+                // Find the OK button (it is the only one with `.btn-primary` class)
+            const $okButton = $modal.find('button.btn.btn-primary')
+            expect($okButton.exists()).toBe(true)
+            expect($okButton.element.tagName).toBe('BUTTON')
+                // Focus the tab trap
+            $topTrap.element.focus()
+            await $topTrap.trigger('focusin')
+            expect(document.activeElement).not.toBe($topTrap.element)
+            expect(document.activeElement).not.toBe($bottomTrap.element)
+            expect(document.activeElement).not.toBe($content.element)
+                // The OK button (last tabbable in modal) should be focused
+            expect(document.activeElement).toBe($okButton.element)
+
+            wrapper.unmount()
+        })
+
+
+        it('it allows focus for elements when "no-enforce-focus" enabled', async() => {
+            const App = {
+                render() {
+                    return h('div', [
+                        h('button', { id: 'button1', type: 'button' }, 'Button 1'),
+                        h('button', { id: 'button2', type: 'button' }, 'Button 2'),
+                        h(
+                            BModal, {
+                                static: true,
+                                id: 'test',
+                                visible: true,
+                                noEnforceFocus: true
+                            },
+                            'Modal content'
+                        )
+                    ])
+                }
+            }
+            const wrapper = mount(App, {
+                attachTo: document.body
+            })
+
+            expect(wrapper.vm).toBeDefined()
+
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+
+
+            const $button1 = wrapper.find('#button1')
+            expect($button1.exists()).toBe(true)
+            expect($button1.element.tagName).toBe('BUTTON')
+
+            const $button2 = wrapper.find('#button2')
+            expect($button2.exists()).toBe(true)
+            expect($button2.element.tagName).toBe('BUTTON')
+
+            const $modal = wrapper.find('div.modal')
+            expect($modal.exists()).toBe(true)
+            const $content = $modal.find('div.modal-content')
+            expect($content.exists()).toBe(true)
+
+            expect($modal.element.style.display).toEqual('block')
+            expect(document.activeElement).not.toBe(document.body)
+            expect(document.activeElement).toBe($content.element)
+
+            // Try to focus button1
+            $button1.element.focus()
+            await $button1.trigger('focusin')
+            expect(document.activeElement).toBe($button1.element)
+            expect(document.activeElement).not.toBe($content.element)
+
+            // Try to focus button2
+            $button2.element.focus()
+            await $button2.trigger('focusin')
+            expect(document.activeElement).toBe($button2.element)
+            expect(document.activeElement).not.toBe($content.element)
+
+            wrapper.unmount()
+        })
+
+
+
+        it('it allows focus for elements in "ignore-enforce-focus-selector" prop', async() => {
+            const App = {
+                render() {
+                    return h('div', [
+                        h('button', { id: 'button1', type: 'button' }, 'Button 1'),
+                        h('button', { id: 'button2', type: 'button' }, 'Button 2'),
+                        h(
+                            BModal, {
+                                static: true,
+                                id: 'test',
+                                visible: true,
+                                ignoreEnforceFocusSelector: '#button1'
+
+                            },
+                            'Modal content'
+                        )
+                    ])
+                }
+            }
+            const wrapper = mount(App, {
+                attachTo: document.body
+            })
+
+            expect(wrapper.vm).toBeDefined()
+
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+            await waitNT(wrapper.vm)
+            await waitRAF()
+
+            const $button1 = wrapper.find('#button1')
+            expect($button1.exists()).toBe(true)
+            expect($button1.element.tagName).toBe('BUTTON')
+
+            const $button2 = wrapper.find('#button2')
+            expect($button2.exists()).toBe(true)
+            expect($button2.element.tagName).toBe('BUTTON')
+
+            const $modal = wrapper.find('div.modal')
+
+            expect($modal.exists()).toBe(true)
+            const $content = $modal.find('div.modal-content')
+            expect($content.exists()).toBe(true)
+
+            expect($modal.element.style.display).toEqual('block')
+            expect(document.activeElement).not.toBe(document.body)
+            expect(document.activeElement).toBe($content.element)
+
+            // Try to focus button1
+            $button1.element.focus()
+            await $button1.trigger('focusin')
+            expect(document.activeElement).toBe($button1.element)
+            expect(document.activeElement).not.toBe($content.element)
+
+            // Try to focus button2
+            $button2.element.focus()
+            await $button2.trigger('focusin')
+            expect(document.activeElement).not.toBe($button2.element)
+            expect(document.activeElement).toBe($content.element)
+
+            wrapper.unmount()
+        })
+    })
+
+    // })
 })

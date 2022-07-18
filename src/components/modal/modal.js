@@ -418,7 +418,6 @@ export const BModal = /*#__PURE__*/ defineComponent({
         },
         // Public method to show modal
         show() {
-          console.log("this.show!")
             if (this.isVisible || this.isOpening) {
                 // If already open, or in the process of opening, do nothing
                 /* istanbul ignore next */
@@ -598,7 +597,6 @@ export const BModal = /*#__PURE__*/ defineComponent({
             })
         },
         emitEvent(bvEvent) {
-          console.log("emitEvent", bvEvent.type)
             const { type } = bvEvent
             // We emit on `$root` first in case a global listener wants to cancel
             // the event first before the instance emits its event
@@ -702,7 +700,6 @@ export const BModal = /*#__PURE__*/ defineComponent({
         },
         // Root listener handlers
         showHandler(id, triggerEl) {
-          console.log("showHandler", { id, triggerEl})
             if (id === this.modalId) {
                 this.$_returnFocus = triggerEl || this.getActiveElement()
                 this.show()
@@ -913,11 +910,13 @@ export const BModal = /*#__PURE__*/ defineComponent({
             let $tabTrapBottom = null
             if (this.isVisible && !this.noEnforceFocus) {
                 $tabTrapTop = h('span', {
-                    tabindex: '0',
+                    tabindex: '0',                    
+                    class: 'top-trap',
                     ref: 'top-trap'
                 })
                 $tabTrapBottom = h('span', {
                     tabindex: '0',
+                    class: 'bottom-trap',
                     ref: 'bottom-trap'
                 })
             }
