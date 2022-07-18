@@ -288,8 +288,8 @@ export const BSidebar = /*#__PURE__*/ defineComponent({
     },
     mounted() {
         // Add `$root` listeners
-        this.listenOnRoot(ROOT_ACTION_EVENT_NAME_TOGGLE, this.handleToggle)
-        this.listenOnRoot(ROOT_ACTION_EVENT_NAME_REQUEST_STATE, this.handleSync)
+        this.listenOnRoot(ROOT_ACTION_EVENT_NAME_TOGGLE, ({ id }) => this.handleToggle(id))
+        this.listenOnRoot(ROOT_ACTION_EVENT_NAME_REQUEST_STATE, ({ id }) => this.handleSync(id))
             // Send out a gratuitous state event to ensure toggle button is synced
         this.$nextTick(() => {
             this.emitState(this.localShow)
@@ -308,11 +308,10 @@ export const BSidebar = /*#__PURE__*/ defineComponent({
             this.localShow = false
         },
         emitState(state = this.localShow) {   
-            this.emitOnRoot(ROOT_EVENT_NAME_STATE, this.safeId(), state)
+            this.emitOnRoot(ROOT_EVENT_NAME_STATE, { id: this.safeId(), state })
         },
-        emitSync(state = this.localShow) {
-          
-            this.emitOnRoot(ROOT_EVENT_NAME_SYNC_STATE, this.safeId(), state)
+        emitSync(state = this.localShow) {          
+            this.emitOnRoot(ROOT_EVENT_NAME_SYNC_STATE, { id: this.safeId(), state })
         },
         handleToggle(id) {
             // Note `safeId()` can be null until after mount

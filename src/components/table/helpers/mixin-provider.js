@@ -96,7 +96,7 @@ export const providerMixin = defineComponent({
             this._providerUpdate()
         }
         // Listen for global messages to tell us to force refresh the table
-        this.listenOnRoot(ROOT_ACTION_EVENT_NAME_REFRESH, id => {
+        this.listenOnRoot(ROOT_ACTION_EVENT_NAME_REFRESH, ({ id }) => {
             if (id === this.id || id === this) {
                 this.refresh()
             }
@@ -131,7 +131,7 @@ export const providerMixin = defineComponent({
             this.$emit(EVENT_NAME_REFRESHED)
                 // New root emit
             if (this.id) {
-                this.emitOnRoot(ROOT_EVENT_NAME_REFRESHED, this.id)
+                this.emitOnRoot(ROOT_EVENT_NAME_REFRESHED, { id: this.id })
             }
         },
         _providerUpdate() {

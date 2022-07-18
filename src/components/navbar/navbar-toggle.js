@@ -44,8 +44,8 @@ export const BNavbarToggle = /*#__PURE__*/ defineComponent({
         }
     },
     created() {
-        this.listenOnRoot(ROOT_EVENT_NAME_STATE, this.handleStateEvent)
-        this.listenOnRoot(ROOT_EVENT_NAME_SYNC_STATE, this.handleStateEvent)
+        this.listenOnRoot(ROOT_EVENT_NAME_STATE, ({ id, state }) => this.handleStateEvent(id, state))
+        this.listenOnRoot(ROOT_EVENT_NAME_SYNC_STATE, ({ id, state }) => this.handleStateEvent(id, state))
     },
     methods: {
         onClick(event) {
@@ -68,7 +68,7 @@ export const BNavbarToggle = /*#__PURE__*/ defineComponent({
         return withDirectives(
             h(
                 'button', {
-                    class: [CLASS_NAME, { disabled }],                   
+                    class: [CLASS_NAME, { disabled }],
                     type: 'button',
                     disabled,
                     'aria-label': this.label,
@@ -77,7 +77,8 @@ export const BNavbarToggle = /*#__PURE__*/ defineComponent({
                     this.normalizeSlot(SLOT_NAME_DEFAULT, { expanded: this.toggleState }) ||
                     h('span', { class: `${CLASS_NAME}-icon` })
                 ]
-            ), 
-            [['VBToggle', this.target]])
+            ), [
+                ['VBToggle', this.target]
+            ])
     }
 })

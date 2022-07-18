@@ -745,10 +745,10 @@ export const BVTooltip = /*#__PURE__*/ defineComponent({
             // Listen for global `bv::{hide|show}::{tooltip|popover}` hide request event
             const method = on ? 'listenOnRoot' : 'listenOffRoot'
             const type = this.templateType
-            this[method](getRootActionEventName(type, EVENT_NAME_HIDE), this.doHide)
-            this[method](getRootActionEventName(type, EVENT_NAME_SHOW), this.doShow)
-            this[method](getRootActionEventName(type, EVENT_NAME_DISABLE), this.doDisable)
-            this[method](getRootActionEventName(type, EVENT_NAME_ENABLE), this.doEnable)
+            this[method](getRootActionEventName(type, EVENT_NAME_HIDE), ({ id }) => this.doHide(id))
+            this[method](getRootActionEventName(type, EVENT_NAME_SHOW), ({ id }) => this.doShow(id))
+            this[method](getRootActionEventName(type, EVENT_NAME_DISABLE), ({ id }) => this.doDisable(id))
+            this[method](getRootActionEventName(type, EVENT_NAME_ENABLE), ({ id }) => this.doEnable(id))
         },
         setWhileOpenListeners(on) {
             // Events that are only registered when the template is showing

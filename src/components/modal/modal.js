@@ -1,4 +1,4 @@
-import { defineComponent, h, Transition, vShow, withDirectives } from 'vue'
+import { defineComponent, h, Transition, isRef, unRef, vShow, withDirectives, unref } from 'vue'
 import { COMPONENT_UID_KEY, NAME_MODAL } from '../../constants/components'
 import { IS_BROWSER } from '../../constants/env'
 import {
@@ -362,9 +362,9 @@ export const BModal = /*#__PURE__*/ defineComponent({
         this.zIndex = this.modalManager.getBaseZIndex()
             // Listen for events from others to either open or close ourselves
             // and listen to all modals to enable/disable enforce focus
-        this.listenOnRoot(getRootActionEventName(NAME_MODAL, EVENT_NAME_SHOW), this.showHandler)
-        this.listenOnRoot(getRootActionEventName(NAME_MODAL, EVENT_NAME_HIDE), this.hideHandler)
-        this.listenOnRoot(getRootActionEventName(NAME_MODAL, EVENT_NAME_TOGGLE), this.toggleHandler)
+        this.listenOnRoot(getRootActionEventName(NAME_MODAL, EVENT_NAME_SHOW), ({ id, triggerEl }) => this.showHandler(id, triggerEl))
+        this.listenOnRoot(getRootActionEventName(NAME_MODAL, EVENT_NAME_HIDE), ({ id }) => this.hideHandler(id))
+        this.listenOnRoot(getRootActionEventName(NAME_MODAL, EVENT_NAME_TOGGLE), ({ id, triggerEl }) => this.toggleHandler(id, triggerEl))
             // Listen for `bv:modal::show events`, and close ourselves if the
             // opening modal not us
         this.listenOnRoot(getRootEventName(NAME_MODAL, EVENT_NAME_SHOW), this.modalListener)
@@ -418,6 +418,7 @@ export const BModal = /*#__PURE__*/ defineComponent({
         },
         // Public method to show modal
         show() {
+          console.log("this.show!")
             if (this.isVisible || this.isOpening) {
                 // If already open, or in the process of opening, do nothing
                 /* istanbul ignore next */
@@ -513,8 +514,11 @@ export const BModal = /*#__PURE__*/ defineComponent({
         },
         // Private method to finish showing modal
         doShow() {
+          // likely always a ref now, but unreffing to avoid confusion with options API style
+          const modalsAreOpen = isRef(this.modalManager.modalsAreOpen) ? unref(this.modalManager.modalsAreOpen) : this.modalManager.modalsAreOpen;
+
             /* istanbul ignore next: commenting out for now until we can test stacking */
-            if (this.modalManager.modalsAreOpen && this.noStacking) {
+            if (modalsAreOpen && this.noStacking) {
                 // If another modal(s) is already open, wait for it(them) to close
                 this.listenOnRootOnce(getRootEventName(NAME_MODAL, EVENT_NAME_HIDDEN), this.doShow)
                 return
@@ -575,7 +579,8 @@ export const BModal = /*#__PURE__*/ defineComponent({
             this.setEnforceFocus(false)
         },
         onLeave() {
-            // Remove the 'show' class
+            // Remove the 'show' class'
+            
             this.isShow = false
         },
         onAfterLeave() {
@@ -593,10 +598,11 @@ export const BModal = /*#__PURE__*/ defineComponent({
             })
         },
         emitEvent(bvEvent) {
+          console.log("emitEvent", bvEvent.type)
             const { type } = bvEvent
             // We emit on `$root` first in case a global listener wants to cancel
             // the event first before the instance emits its event
-            this.emitOnRoot(getRootEventName(NAME_MODAL, type), bvEvent, bvEvent.componentId)
+            this.emitOnRoot(getRootEventName(NAME_MODAL, type), { bvEvent, componentId: bvEvent.componentId })
             if (this.emitter) {
                 this.emitter.emit(`${type}:${this[COMPONENT_UID_KEY]}`, bvEvent);
             }
@@ -696,6 +702,7 @@ export const BModal = /*#__PURE__*/ defineComponent({
         },
         // Root listener handlers
         showHandler(id, triggerEl) {
+          console.log("showHandler", { id, triggerEl})
             if (id === this.modalId) {
                 this.$_returnFocus = triggerEl || this.getActiveElement()
                 this.show()
@@ -793,7 +800,8 @@ export const BModal = /*#__PURE__*/ defineComponent({
                                 ref: 'close-button'
                             },
                             // TODO: Rename slot to `header-close` and deprecate `modal-header-close`
-                            { default: () => [this.normalizeSlot(SLOT_NAME_MODAL_HEADER_CLOSE)] }
+                            !this.hasNormalizedSlot(SLOT_NAME_MODAL_HEADER_CLOSE) ? {} : { default: () => this.normalizeSlot(SLOT_NAME_MODAL_HEADER_CLOSE) }
+                            
                         )
                     }
 

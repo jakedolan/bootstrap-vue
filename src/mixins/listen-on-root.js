@@ -2,6 +2,9 @@ import { defineComponent } from 'vue'
 import { arrayIncludes } from '../utils/array'
 import { keys } from '../utils/object'
 import { getEventRoot } from '../utils/get-event-root'
+import { emitter } from '../utils/emitter';
+
+
 // --- Constants ---
 
 const PROP = '$_rootListeners'
@@ -19,7 +22,7 @@ export const listenOnRootMixin = defineComponent({
             if (this.emitter) {
                 return this.emitter
             } else {
-                return getEventRoot(this)
+                return emitter;
             }
 
         }
@@ -90,7 +93,7 @@ export const listenOnRootMixin = defineComponent({
          */
         listenOnRootOnce(event, callback) {
 
-            
+
             if (this.bvEventRoot) {
                 const _callback = (...args) => {
                     this.unregisterRootListener(_callback)
@@ -114,7 +117,7 @@ export const listenOnRootMixin = defineComponent({
         listenOffRoot(event, callback) {
             this.unregisterRootListener(event, callback)
 
-            
+
             if (this.bvEventRoot) {
                 this.bvEventRoot.$off(event, callback)
             }
@@ -124,11 +127,12 @@ export const listenOnRootMixin = defineComponent({
          * Convenience method for calling `vm.$emit()` on `$root`
          *
          * @param {string} event
-         * @param {*} args
+         * @param {object} payload
          */
-        emitOnRoot(event, ...args) {
+        emitOnRoot(event, payload) {
             if (this.bvEventRoot) {
-                this.bvEventRoot.$emit(event, ...args)
+                console.log(`emitting on root [${event}] `) //, payload)
+                this.bvEventRoot.$emit(event, payload)
             }
         }
     }

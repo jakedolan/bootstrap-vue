@@ -11,7 +11,7 @@ import {
 } from '../../constants/events'
 import { PROP_TYPE_BOOLEAN, PROP_TYPE_STRING, PROP_TYPE_OBJECT } from '../../constants/props'
 import { SLOT_NAME_DEFAULT } from '../../constants/slots'
-import { addClass, hasClass, removeClass, closest, matches, getCS } from '../../utils/dom'
+import { addClass, hasClass, removeClass, closest, matches, getById, getCS } from '../../utils/dom'
 import { getRootActionEventName, getRootEventName, eventOnOff } from '../../utils/events'
 import { makeModelMixin } from '../../utils/model'
 import { sortKeys } from '../../utils/object'
@@ -63,6 +63,7 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
     },
     mixins: [idMixin, modelMixin, normalizeSlotMixin, listenOnRootMixin],
     props,
+    emits: [EVENT_NAME_HIDE, EVENT_NAME_HIDDEN, EVENT_NAME_SHOW, EVENT_NAME_SHOWN, MODEL_EVENT_NAME],
     data() {
         return {
             show: this[MODEL_PROP_NAME],
@@ -72,7 +73,6 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
     computed: {
         classObject() {
             const { transitioning } = this
-
             return {
                 'navbar-collapse': this.isNav,
                 collapse: !transitioning,
@@ -95,7 +95,6 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
             }
         },
         show(newValue, oldValue) {
-
             if (newValue !== oldValue) {
                 this.emitState()
             }
@@ -105,12 +104,12 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
         this.show = this[MODEL_PROP_NAME]
     },
     mounted() {
-
         this.show = this[MODEL_PROP_NAME]
-            // Listen for toggle events to open/close us
-        this.listenOnRoot(ROOT_ACTION_EVENT_NAME_TOGGLE, this.handleToggleEvent)
+
+        // Listen for toggle events to open/close us
+        this.listenOnRoot(ROOT_ACTION_EVENT_NAME_TOGGLE, ({ id }) => this.handleToggleEvent(id))
             // Listen to other collapses for accordion events
-        this.listenOnRoot(ROOT_EVENT_NAME_ACCORDION, this.handleAccordionEvent)
+        this.listenOnRoot(ROOT_EVENT_NAME_ACCORDION, ({ id, accordion }) => this.handleAccordionEvent(id, accordion))
         if (this.isNav) {
             // Set up handlers
             this.setWindowEvents(true)
@@ -121,8 +120,8 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
             this.emitState(false)
         })
 
-            // Listen for "Sync state" requests from `v-b-toggle`
-        this.listenOnRoot(ROOT_ACTION_EVENT_NAME_REQUEST_STATE, id => {
+        // Listen for "Sync state" requests from `v-b-toggle`
+        this.listenOnRoot(ROOT_ACTION_EVENT_NAME_REQUEST_STATE, ({ id }) => {
             if (id === this.safeId()) {
                 this.$nextTick(this.emitSync)
             }
@@ -185,40 +184,46 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
             const id = this.safeId()
 
             if (localEmit) {
-              this.$emit(MODEL_EVENT_NAME, show)
+                this.$emit(MODEL_EVENT_NAME, show)
             }
 
             // Let `v-b-toggle` know the state of this collapse
-            this.emitOnRoot(ROOT_EVENT_NAME_STATE, id, show)
+            this.emitOnRoot(ROOT_EVENT_NAME_STATE, { id, show })
             if (accordion && show) {
                 // Tell the other collapses in this accordion to close
-                this.emitOnRoot(ROOT_EVENT_NAME_ACCORDION, id, accordion)
+                this.emitOnRoot(ROOT_EVENT_NAME_ACCORDION, { id, accordion })
             }
         },
         emitSync() {
             // Emit a private event every time this component updates to ensure
             // the toggle button is in sync with the collapse's state
             // It is emitted regardless if the visible state changes
-            this.emitOnRoot(ROOT_EVENT_NAME_SYNC_STATE, this.safeId(), this.show)
+            this.emitOnRoot(ROOT_EVENT_NAME_SYNC_STATE, { id: this.safeId(), show: this.show })
         },
         checkDisplayBlock() {
             // Check to see if the collapse has `display: block !important` set
             // We can't set `display: none` directly on `this.$el`, as it would
             // trigger a new transition to start (or cancel a current one)
-            const { $el } = this
-            const restore = hasClass($el, CLASS_NAME_SHOW)
-            removeClass($el, CLASS_NAME_SHOW)
-            const isBlock = getCS($el).display === 'block'
+            const $collapseEl = getById(this.safeId())
+            if (!$collapseEl) return false
+
+            const restore = hasClass($collapseEl, CLASS_NAME_SHOW)
+            removeClass($collapseEl, CLASS_NAME_SHOW)
+            const isBlock = getCS($collapseEl).display === 'block'
             if (restore) {
-                addClass($el, CLASS_NAME_SHOW)
+                addClass($collapseEl, CLASS_NAME_SHOW)
             }
             return isBlock
         },
         clickHandler(event) {
             const { target: el } = event
+
+            const $collapseEl = getById(this.safeId())
+            if (!$collapseEl) return
+
             // If we are in a nav/navbar, close the collapse when non-disabled link clicked
             /* istanbul ignore next: can't test `getComputedStyle()` in JSDOM */
-            if (!this.isNav || !el || getCS(this.$el).display !== 'block') {
+            if (!this.isNav || !el || getCS($collapseEl).display !== 'block') {
                 return
             }
             // Only close the collapse if it is not forced to be `display: block !important`
@@ -235,7 +240,7 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
             }
         },
         handleAccordionEvent(openedId, openAccordion) {
-          
+
             const { accordion, show } = this
             if (!accordion || accordion !== openAccordion) {
                 return
@@ -248,23 +253,28 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
             }
         },
         handleResize() {
+            const $collapseEl = getById(this.safeId())
+            if (!$collapseEl) return
+
             // Handler for orientation/resize to set collapsed state in nav/navbar
-            this.show = getCS(this.$el).display === 'block'
+            this.show = getCS($collapseEl).display === 'block'
         }
     },
     render() {
-        const { appear, visible } = this
+        const { $attrs, appear, classObject, safeId, clickHandler, tag, show, normalizeSlot, slotScope } = this
 
-        const $content = withDirectives(h(
-            this.tag, {
-                class: this.classObject,
-                id: this.safeId(),
-                onClick: this.clickHandler
-            },
-            this.normalizeSlot(SLOT_NAME_DEFAULT, this.slotScope)
-        ), [
-            [vShow, this.show]
-        ])
+        const buildContent = () => {
+            return withDirectives(h(
+                tag, {
+                    class: [$attrs.class, classObject],
+                    id: safeId(),
+                    onClick: clickHandler
+                }, { default: () => normalizeSlot(SLOT_NAME_DEFAULT, slotScope) }
+            ), [
+                [vShow, show]
+            ])
+
+        }
 
         return h('div', {}, {
             default: () => [h(
@@ -275,7 +285,7 @@ export const BCollapse = /*#__PURE__*/ defineComponent({
                     onLeave: this.onLeave,
                     onAfterLeave: this.onAfterLeave
                 }, {
-                    default: () => [$content]
+                    default: () => [buildContent()]
                 }
             )]
         })
