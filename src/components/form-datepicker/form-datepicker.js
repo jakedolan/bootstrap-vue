@@ -17,6 +17,8 @@ import {
     BVFormBtnLabelControl,
     props as BVFormBtnLabelControlProps
 } from '../form-btn-label-control/bv-form-btn-label-control'
+import { normalizeSlot } from '../../utils/normalize-slot.js'
+
 
 // --- Constants ---
 
@@ -203,7 +205,7 @@ export const BFormDatepicker = /*#__PURE__*/ defineComponent({
         }
     },
     render() {
-        const { localYMD, disabled, readonly, dark, $props, $slots } = this
+        const { localYMD, disabled, readonly, dark, $props, $slots, defaultButtonFn } = this
         const placeholder = isUndefinedOrNull(this.placeholder) ?
             this.labelNoDateSelected :
             this.placeholder
@@ -221,8 +223,7 @@ export const BFormDatepicker = /*#__PURE__*/ defineComponent({
                         variant: this.todayButtonVariant,
                         'aria-label': label || null,
                         onClick: this.onTodayButton
-                    },
-                    { default: () => [label] }
+                    }, { default: () => [label] }
                 )
             )
         }
@@ -237,8 +238,7 @@ export const BFormDatepicker = /*#__PURE__*/ defineComponent({
                         variant: this.resetButtonVariant,
                         'aria-label': label || null,
                         onClick: this.onResetButton
-                    },
-                    { default: () => [label] }
+                    }, { default: () => [label] }
                 )
             )
         }
@@ -247,14 +247,13 @@ export const BFormDatepicker = /*#__PURE__*/ defineComponent({
             const label = this.labelCloseButton
             $footer.push(
                 h(
-                    BButton, {                       
+                    BButton, {
                         disabled,
                         size: 'sm',
                         variant: this.closeButtonVariant,
                         'aria-label': label || null,
                         onClick: this.onCloseButton
-                    },
-                    { default: () => [label] }
+                    }, { default: () => [label] }
                 )
             )
         }
@@ -263,13 +262,13 @@ export const BFormDatepicker = /*#__PURE__*/ defineComponent({
             $footer = [
                 h(
                     'div', {
-                        class: ['b-form-date-controls d-flex flex-wrap', 
-                          {
-                            'justify-content-between': $footer.length > 1,
-                            'justify-content-end': $footer.length < 2
-                          }]
-                    },
-                    { default: () => [$footer] }
+                        class: ['b-form-date-controls d-flex flex-wrap',
+                            {
+                                'justify-content-between': $footer.length > 1,
+                                'justify-content-end': $footer.length < 2
+                            }
+                        ]
+                    }, { default: () => [$footer] }
                 )
             ]
         }
@@ -287,21 +286,19 @@ export const BFormDatepicker = /*#__PURE__*/ defineComponent({
                 onContext: this.onContext,
                 key: 'calendar',
                 ref: 'calendar'
-            },
-            {
-              default: () => $footer,
-              ...pick($slots, [
-                'nav-prev-decade',
-                'nav-prev-year',
-                'nav-prev-month',
-                'nav-this-month',
-                'nav-next-month',
-                'nav-next-year',
-                'nav-next-decade'
-              ])
+            }, {
+                default: () => $footer,
+                ...pick($slots, [
+                    'nav-prev-decade',
+                    'nav-prev-year',
+                    'nav-prev-month',
+                    'nav-this-month',
+                    'nav-next-month',
+                    'nav-next-year',
+                    'nav-next-decade'
+                ])
             }
         )
-
 
 
         return h(
@@ -317,18 +314,15 @@ export const BFormDatepicker = /*#__PURE__*/ defineComponent({
                 placeholder,
                 rtl: this.isRTL,
                 value: localYMD,
-                
+
                 onShow: this.onShow,
                 onShown: this.onShown,
                 onHidden: this.onHidden,
-                
+
                 ref: 'control'
-            }, 
-            {
-              default: () => [$calendar],
-              [SLOT_NAME_BUTTON_CONTENT]: ({ isHovered, hasFocus }) => [$slots[SLOT_NAME_BUTTON_CONTENT] || h(BIconCalendar, {
-                'aria-hidden': 'true'
-                })]
+            }, {
+                default: () => [$calendar],
+                [SLOT_NAME_BUTTON_CONTENT]: ({ isHovered, hasFocus }) => normalizeSlot(SLOT_NAME_BUTTON_CONTENT, {}, $slots) || defaultButtonFn({ isHovered, hasFocus })
             }
         )
     }

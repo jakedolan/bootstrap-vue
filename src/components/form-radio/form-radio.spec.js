@@ -747,8 +747,8 @@ describe('form-radio', () => {
             }
         })
         expect(wrapper.vm).toBeDefined()
-        expect(wrapper.vm.localChecked).toBeDefined()
-        expect(wrapper.vm.localChecked).toBe('')
+        expect(wrapper.vm.$data.localChecked).toBeDefined()
+        expect(wrapper.vm.$data.localChecked).toBe('')
 
         wrapper.unmount()
     })
@@ -764,8 +764,8 @@ describe('form-radio', () => {
             }
         })
         expect(wrapper.vm).toBeDefined()
-        expect(wrapper.vm.localChecked).toBeDefined()
-        expect(wrapper.vm.localChecked).toEqual('bar')
+        expect(wrapper.vm.$data.localChecked).toBeDefined()
+        expect(wrapper.vm.$data.localChecked).toEqual('bar')
 
         wrapper.unmount()
     })
@@ -781,16 +781,16 @@ describe('form-radio', () => {
             }
         })
         expect(wrapper.vm).toBeDefined()
-        expect(wrapper.vm.localChecked).toBeDefined()
-        expect(wrapper.vm.localChecked).toBe('')
+        expect(wrapper.vm.$data.localChecked).toBeDefined()
+        expect(wrapper.vm.$data.localChecked).toBe('')
         await wrapper.setProps({
             checked: 'bar'
         })
-        expect(wrapper.vm.localChecked).toEqual('bar')
-        expect(wrapper.emitted('input')).toBeDefined()
-        const last = wrapper.emitted('input').length - 1
-        expect(wrapper.emitted('input')[last]).toBeDefined()
-        expect(wrapper.emitted('input')[last][0]).toEqual('bar')
+        expect(wrapper.vm.$data.localChecked).toEqual('bar')
+        expect(wrapper.emitted('update:checked')).toBeDefined()
+        const last = wrapper.emitted('update:checked').length - 1
+        expect(wrapper.emitted('update:checked')[last]).toBeDefined()
+        expect(wrapper.emitted('update:checked')[last][0]).toEqual('bar')
 
         wrapper.unmount()
     })
@@ -808,8 +808,8 @@ describe('form-radio', () => {
         })
 
         expect(wrapper.vm).toBeDefined()
-        expect(wrapper.vm.localChecked).toBeDefined()
-        expect(wrapper.vm.localChecked).toBe('')
+        expect(wrapper.vm.$data.localChecked).toBeDefined()
+        expect(wrapper.vm.$data.localChecked).toBe('')
         expect(wrapper.emitted('change')).toBeUndefined()
 
         const input = wrapper.find('input')
@@ -836,14 +836,14 @@ describe('form-radio', () => {
         })
 
         expect(wrapper.vm).toBeDefined()
-        expect(wrapper.vm.localChecked).toBeDefined()
-        expect(wrapper.vm.localChecked).toEqual('')
+        expect(wrapper.vm.$data.localChecked).toBeDefined()
+        expect(wrapper.vm.$data.localChecked).toEqual('')
 
         const input = wrapper.find('input')
         expect(input).toBeDefined()
 
         await input.trigger('click')
-        expect(wrapper.vm.localChecked).toEqual({ bar: 1, baz: 2 })
+        expect(wrapper.vm.$data.localChecked).toEqual({ bar: 1, baz: 2 })
 
         wrapper.unmount()
     })

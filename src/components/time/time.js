@@ -36,7 +36,7 @@ const {
     props: modelProps,
     prop: MODEL_PROP_NAME,
     event: MODEL_EVENT_NAME
-} = makeModelMixin('value', {
+} = makeModelMixin('modelValue', {
     type: PROP_TYPE_STRING,
     defaultValue: ''
 })
@@ -242,15 +242,15 @@ export const BTime = /*#__PURE__*/ defineComponent({
             return {
                 increment: ({ hasFocus }) =>
                     h(BIconChevronUp, {
-                      'aria-hidden': 'true',  
-                      scale: hasFocus ? 1.5 : 1.25,
+                        'aria-hidden': 'true',
+                        scale: hasFocus ? 1.5 : 1.25,
                     }),
                 decrement: ({ hasFocus }) =>
                     h(BIconChevronUp, {
-                      'aria-hidden': 'true',
-                      flipV: true, 
-                      scale: hasFocus ? 1.5 : 1.25
-                        
+                        'aria-hidden': 'true',
+                        flipV: true,
+                        scale: hasFocus ? 1.5 : 1.25
+
                     })
             }
         }
@@ -433,29 +433,29 @@ export const BTime = /*#__PURE__*/ defineComponent({
             spinIds.push(id)
 
             return h(BFormSpinbutton, {
-                class: classes,
-                id,
-                placeholder: '--',
-                vertical: true,
-                required: true,
-                disabled,
-                readonly,
-                locale,
-                labelIncrement,
-                labelDecrement,
-                wrap: true,
-                ariaControls: valueId,
-                min: 0,
-                ...spinbuttonProps,
-                // We use `change` event to minimize SR verbosity
-                // As the spinbutton will announce each value change
-                // and we don't want the formatted time to be announced
-                // on each value input if repeat is happening
-                onChange: handler,
-                key,
-                ref: this.setSpinnerRef
-            }, 
-            this.spinScopedSlots)
+                    class: classes,
+                    id,
+                    placeholder: '--',
+                    vertical: true,
+                    required: true,
+                    disabled,
+                    readonly,
+                    locale,
+                    labelIncrement,
+                    labelDecrement,
+                    wrap: true,
+                    ariaControls: valueId,
+                    min: 0,
+                    ...spinbuttonProps,
+                    // We use `change` event to minimize SR verbosity
+                    // As the spinbutton will announce each value change
+                    // and we don't want the formatted time to be announced
+                    // on each value input if repeat is happening
+                    onChange: handler,
+                    key,
+                    ref: this.setSpinnerRef
+                },
+                this.spinScopedSlots)
         }
 
         // Helper method to return a "colon" separator
@@ -464,10 +464,12 @@ export const BTime = /*#__PURE__*/ defineComponent({
                 'div', {
                     class: ['d-flex flex-column', { 'text-muted': disabled || readonly }],
                     'aria-hidden': 'true'
-                }, { default: () => [
-                    h(BIconCircleFill, { shiftV: 4, scale: 0.5  }),
-                    h(BIconCircleFill, { shiftV: -4, scale: 0.5  })
-                ] }
+                }, {
+                    default: () => [
+                        h(BIconCircleFill, { shiftV: 4, scale: 0.5 }),
+                        h(BIconCircleFill, { shiftV: -4, scale: 0.5 })
+                    ]
+                }
             )
         }
 
@@ -545,8 +547,7 @@ export const BTime = /*#__PURE__*/ defineComponent({
                         focusHandler()
                     }
                 }
-            },
-            { default: () => $spinners }
+            }, { default: () => $spinners }
         )
 
         // Selected type display
@@ -564,9 +565,10 @@ export const BTime = /*#__PURE__*/ defineComponent({
                 // Transfer focus/click to focus hours spinner
                 onClick: focusHandler,
                 onFocus: focusHandler
-            }, { default: () => [
-                  h('bdi', this.formattedTimeString), this.computedHMS ? h('span', { class: 'sr-only' }, ` (${this.labelSelected}) `) : ''
-                  ] 
+            }, {
+                default: () => [
+                    h('bdi', this.formattedTimeString), this.computedHMS ? h('span', { class: 'sr-only' }, ` (${this.labelSelected}) `) : ''
+                ]
             }
         )
         const $header = h(

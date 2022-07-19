@@ -17,6 +17,7 @@ import { idMixin, props as idProps } from '../../mixins/id'
 import { normalizeSlotMixin } from '../../mixins/normalize-slot'
 import { BButton } from '../button/button'
 import { sortKeys } from '../../utils/object'
+import { EVENT_NAME_CLICK, EVENT_NAME_HIDE, EVENT_NAME_HIDDEN, EVENT_NAME_SHOW, EVENT_NAME_SHOWN, EVENT_NAME_TOGGLE } from '../../constants/events'
 
 // --- Props ---
 
@@ -61,7 +62,7 @@ export const BDropdown = /*#__PURE__*/ defineComponent({
     name: NAME_DROPDOWN,
     mixins: [idMixin, dropdownMixin, normalizeSlotMixin],
     props,
-    emits: ['click', 'hidden', 'hide', 'show', 'shown', 'toggle'],
+    emits: [EVENT_NAME_CLICK, EVENT_NAME_HIDE, EVENT_NAME_HIDDEN, EVENT_NAME_SHOW, EVENT_NAME_SHOWN, EVENT_NAME_TOGGLE],
     computed: {
         dropdownClasses() {
             const { block, split } = this
@@ -130,14 +131,13 @@ export const BDropdown = /*#__PURE__*/ defineComponent({
             $split = h(
                 BButton, {
                     class: this.splitClass,
-                    id: this.safeId('_BV_button_'), 
+                    id: this.safeId('_BV_button_'),
                     onClick: this.onSplitClick,
                     ...btnProps,
                     ...buttonContentDomProps,
                     ref: 'button'
-                },
-                {
-                  default: () => $splitButtonChildren
+                }, {
+                    default: () => $splitButtonChildren
                 }
             )
 
@@ -164,9 +164,8 @@ export const BDropdown = /*#__PURE__*/ defineComponent({
                 block: block && !split,
                 ...buttonContentDomProps,
                 ref: 'toggle'
-            },
-            {
-              default: () => $buttonChildren
+            }, {
+                default: () => $buttonChildren
             }
         )
 
@@ -180,7 +179,7 @@ export const BDropdown = /*#__PURE__*/ defineComponent({
                 onKeydown: this.onKeydown,
                 ref: 'menu'
             }, {
-              default: () => [!this.lazy || visible ? this.normalizeSlot(SLOT_NAME_DEFAULT, { hide }) : null]
+                default: () => [!this.lazy || visible ? this.normalizeSlot(SLOT_NAME_DEFAULT, { hide }) : null]
             }
         )
 
@@ -189,7 +188,7 @@ export const BDropdown = /*#__PURE__*/ defineComponent({
                 class: ['dropdown b-dropdown', this.dropdownClasses],
                 id: this.safeId()
             }, {
-              default: () => [$split, $toggle, $menu]
+                default: () => [$split, $toggle, $menu]
             }
         )
     }

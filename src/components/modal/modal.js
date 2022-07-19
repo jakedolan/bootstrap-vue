@@ -193,6 +193,16 @@ export const BModal = /*#__PURE__*/ defineComponent({
     inheritAttrs: false,
     props,
     setup: () => ({ modalManager: useModalManager() }),
+    emits: [EVENT_NAME_CANCEL,
+        EVENT_NAME_CHANGE,
+        EVENT_NAME_CLOSE,
+        EVENT_NAME_HIDDEN,
+        EVENT_NAME_HIDE,
+        EVENT_NAME_OK,
+        EVENT_NAME_SHOW,
+        EVENT_NAME_SHOWN,
+        MODEL_EVENT_NAME,
+    ],
     expose: ['hide', 'show', 'toggle'],
     data() {
         return {
@@ -513,8 +523,8 @@ export const BModal = /*#__PURE__*/ defineComponent({
         },
         // Private method to finish showing modal
         doShow() {
-          // likely always a ref now, but unreffing to avoid confusion with options API style
-          const modalsAreOpen = isRef(this.modalManager.modalsAreOpen) ? unref(this.modalManager.modalsAreOpen) : this.modalManager.modalsAreOpen;
+            // likely always a ref now, but unreffing to avoid confusion with options API style
+            const modalsAreOpen = isRef(this.modalManager.modalsAreOpen) ? unref(this.modalManager.modalsAreOpen) : this.modalManager.modalsAreOpen;
 
             /* istanbul ignore next: commenting out for now until we can test stacking */
             if (modalsAreOpen && this.noStacking) {
@@ -579,7 +589,7 @@ export const BModal = /*#__PURE__*/ defineComponent({
         },
         onLeave() {
             // Remove the 'show' class'
-            
+
             this.isShow = false
         },
         onAfterLeave() {
@@ -798,7 +808,7 @@ export const BModal = /*#__PURE__*/ defineComponent({
                             },
                             // TODO: Rename slot to `header-close` and deprecate `modal-header-close`
                             !this.hasNormalizedSlot(SLOT_NAME_MODAL_HEADER_CLOSE) ? {} : { default: () => this.normalizeSlot(SLOT_NAME_MODAL_HEADER_CLOSE) }
-                            
+
                         )
                     }
 
@@ -910,7 +920,7 @@ export const BModal = /*#__PURE__*/ defineComponent({
             let $tabTrapBottom = null
             if (this.isVisible && !this.noEnforceFocus) {
                 $tabTrapTop = h('span', {
-                    tabindex: '0',                    
+                    tabindex: '0',
                     class: 'top-trap',
                     ref: 'top-trap'
                 })

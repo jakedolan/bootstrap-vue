@@ -33,6 +33,7 @@ export const BDropdownItemButton = /*#__PURE__*/ defineComponent({
     },
     inheritAttrs: false,
     props,
+    emits: [EVENT_NAME_CLICK],
     computed: {
         bvDropdown() {
             return this.getBvDropdown()
@@ -70,8 +71,8 @@ export const BDropdownItemButton = /*#__PURE__*/ defineComponent({
                 h(
                     'button', {
                         class: [
-                          'dropdown-item',
-                          this.buttonClass,
+                            'dropdown-item',
+                            this.buttonClass,
                             {
                                 [this.activeClass]: active,
                                 [`text-${variant}`]: variant && !(active || this.disabled)

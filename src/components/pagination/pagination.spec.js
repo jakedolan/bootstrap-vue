@@ -50,7 +50,7 @@ describe('pagination', () => {
         expect(lis).toBeDefined()
         expect(lis.length).toBe(5)
 
-        lis.wrappers.forEach((li, index) => {
+        lis.forEach((li, index) => {
             expect(li.classes()).toContain('page-item')
             const pageLink = li.find('.page-link')
             expect(pageLink).toBeDefined()
@@ -411,7 +411,7 @@ describe('pagination', () => {
         expect(
             wrapper
             .findAll('button.page-link')
-            .wrappers.every(w => w.find('[aria-controls="foo"]').exists())
+            .every(w => w.find('[aria-controls="foo"]').exists())
         ).toBe(true)
 
         await wrapper.setProps({
@@ -421,7 +421,7 @@ describe('pagination', () => {
         expect(wrapper.findAll('li').length).toBe(5)
         expect(wrapper.findAll('button.page-link').length).toBe(4)
         expect(
-            wrapper.findAll('button.page-link').wrappers.every(w => w.find('[aria-controls]').exists())
+            wrapper.findAll('button.page-link').every(w => w.find('[aria-controls]').exists())
         ).toBe(false)
 
         wrapper.unmount()
@@ -477,10 +477,10 @@ describe('pagination', () => {
         expect(wrapper.findAll('li').length).toBe(7)
         expect(wrapper.findAll('.page-item').length).toBe(7)
         expect(
-            wrapper.findAll('.page-item').wrappers.every(w => w.find('li.page-item.disabled').exists())
+            wrapper.findAll('.page-item').every(w => w.find('li.page-item.disabled').exists())
         ).toBe(true)
         expect(
-            wrapper.findAll('.page-link').wrappers.every(w => w.find('span.page-link').exists())
+            wrapper.findAll('.page-link').every(w => w.find('span.page-link').exists())
         ).toBe(true)
         expect(
             wrapper
@@ -520,7 +520,7 @@ describe('pagination', () => {
         // display classes when currentPage = 0
         expect(wrapper.vm.computedCurrentPage).toBe(1)
             // Grab the page buttons (includes bookends)
-        wrapper.findAll('li').wrappers.forEach((li, index) => {
+        wrapper.findAll('li').forEach((li, index) => {
             expect(li.classes()).toContain('page-item')
             if (index === 0) {
                 // First button
@@ -557,7 +557,7 @@ describe('pagination', () => {
         await waitNT(wrapper.vm)
         expect(wrapper.vm.computedCurrentPage).toBe(4)
             // Grab the page buttons (including bookends)
-        wrapper.findAll('li').wrappers.forEach((li, index) => {
+        wrapper.findAll('li').forEach((li, index) => {
             expect(li.classes()).toContain('page-item')
             if (index === 0) {
                 // First button
@@ -594,7 +594,7 @@ describe('pagination', () => {
         await waitNT(wrapper.vm)
         expect(wrapper.vm.computedCurrentPage).toBe(7)
             // Grab the page buttons (including bookends)
-        wrapper.findAll('li').wrappers.forEach((li, index) => {
+        wrapper.findAll('li').forEach((li, index) => {
             expect(li.classes()).toContain('page-item')
                 // Page number buttons
             if (index >= 2 && index <= 5) {

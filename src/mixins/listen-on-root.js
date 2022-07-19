@@ -127,7 +127,6 @@ export const listenOnRootMixin = defineComponent({
          */
         emitOnRoot(event, payload) {
             if (this.bvEventRoot) {
-                console.log(`emitting on root [${event}] `) //, payload)
                 this.bvEventRoot.$emit(event, payload)
             }
         }

@@ -16,6 +16,7 @@ import {
     props as BVFormBtnLabelControlProps
 } from '../form-btn-label-control/bv-form-btn-label-control'
 import { BTime, props as BTimeProps } from '../time/time'
+import { normalizeSlot } from '../../utils/normalize-slot.js'
 
 // --- Constants ---
 
@@ -170,7 +171,7 @@ export const BFormTimepicker = /*#__PURE__*/ defineComponent({
         }
     },
     render() {
-        const { localHMS, disabled, readonly, $props, $slots } = this
+        const { defaultButtonFn, localHMS, disabled, readonly, $props, $slots } = this
         const placeholder = isUndefinedOrNull(this.placeholder) ?
             this.labelNoTimeSelected :
             this.placeholder
@@ -189,8 +190,7 @@ export const BFormTimepicker = /*#__PURE__*/ defineComponent({
                         'aria-label': label || null,
                         onClick: this.onNowButton,
                         key: 'now-btn'
-                    },
-                    { default: () => [label] }
+                    }, { default: () => [label] }
                 )
             )
         }
@@ -210,8 +210,7 @@ export const BFormTimepicker = /*#__PURE__*/ defineComponent({
                         'aria-label': label || null,
                         onClick: this.onResetButton,
                         key: 'reset-btn'
-                    },
-                    { default: () => [label] }
+                    }, { default: () => [label] }
                 )
             )
         }
@@ -233,8 +232,7 @@ export const BFormTimepicker = /*#__PURE__*/ defineComponent({
                         'aria-label': label || null,
                         onClick: this.onCloseButton,
                         key: 'close-btn'
-                    },
-                    { default: () => label }
+                    }, { default: () => label }
                 )
             )
         }
@@ -245,10 +243,9 @@ export const BFormTimepicker = /*#__PURE__*/ defineComponent({
                     'div', {
                         class: ['b-form-date-controls d-flex flex-wrap', {
                             'justify-content-between': $footer.length > 1,
-                                'justify-content-end': $footer.length < 2
+                            'justify-content-end': $footer.length < 2
                         }]
-                    },
-                    { default: () => [$footer] }
+                    }, { default: () => [$footer] }
                 )
             ]
         }
@@ -260,12 +257,11 @@ export const BFormTimepicker = /*#__PURE__*/ defineComponent({
                 value: localHMS,
                 hidden: !this.isVisible,
                 emitter: this.emitter,
-            
+
                 onInput: this.onInput,
                 onContext: this.onContext,
                 ref: 'time'
-            },
-            { default: () => $footer }
+            }, { default: () => $footer }
         )
 
         return h(
@@ -284,10 +280,8 @@ export const BFormTimepicker = /*#__PURE__*/ defineComponent({
                 onHidden: this.onHidden,
                 ref: 'control'
             }, {
-              default: () => [$time],
-              [SLOT_NAME_BUTTON_CONTENT]: () => $slots[SLOT_NAME_BUTTON_CONTENT] || h(BIconClock, {
-                'aria-hidden': 'true'
-                })
+                default: () => [$time],
+                [SLOT_NAME_BUTTON_CONTENT]: ({ isHovered, hasFocus }) => normalizeSlot(SLOT_NAME_BUTTON_CONTENT, {}, $slots) || defaultButtonFn({ isHovered, hasFocus })
             }
         )
     }

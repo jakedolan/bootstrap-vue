@@ -120,7 +120,7 @@ describe('form-timepicker', () => {
         const wrapper = mount(BFormTimepicker, {
             attachTo: document.body,
             props: {
-                value: '',
+                modelValue: '',
                 name: 'foobar',
                 hour12: false
             }
@@ -135,9 +135,9 @@ describe('form-timepicker', () => {
         let $input = wrapper.find('input[type="hidden"]')
         expect($input.exists()).toBe(true)
         expect($input.attributes('name')).toBe('foobar')
-        expect($input.attributes('value')).toBe('')
+        expect($input.attributes('value')).toBeUndefined()
 
-        await wrapper.setProps({ value: '01:02:03' })
+        await wrapper.setProps({ modelValue: '01:02:03' })
         await waitNT(wrapper.vm)
         await waitRAF()
 
@@ -148,7 +148,7 @@ describe('form-timepicker', () => {
 
         await wrapper.setProps({
             showSeconds: true,
-            value: '01:02:33'
+            modelValue: '01:02:33'
         })
         await waitNT(wrapper.vm)
         await waitRAF()
@@ -165,7 +165,7 @@ describe('form-timepicker', () => {
         const wrapper = mount(BFormTimepicker, {
             attachTo: document.body,
             props: {
-                value: '',
+                modelValue: '',
                 hour12: false
             }
         })
@@ -189,7 +189,7 @@ describe('form-timepicker', () => {
         expect($label.text()).not.toContain('No time selected')
         expect($label.text()).toContain('foobar')
 
-        await wrapper.setProps({ value: '01:02:03' })
+        await wrapper.setProps({ modelValue: '01:02:03' })
         await waitNT(wrapper.vm)
         await waitRAF()
 
@@ -205,7 +205,7 @@ describe('form-timepicker', () => {
         const wrapper = mount(BFormTimepicker, {
             attachTo: document.body,
             props: {
-                value: '',
+                modelValue: '',
                 id: 'test-focus-blur'
             }
         })
@@ -240,7 +240,7 @@ describe('form-timepicker', () => {
         const wrapper = mount(BFormTimepicker, {
             attachTo: document.body,
             props: {
-                value: '',
+                modelValue: '',
                 id: 'test-hover'
             }
         })
@@ -282,7 +282,7 @@ describe('form-timepicker', () => {
         const wrapper = mount(BFormTimepicker, {
             attachTo: document.body,
             props: {
-                value: '',
+                modelValue: '',
                 id: 'test-open'
             }
         })
@@ -322,7 +322,7 @@ describe('form-timepicker', () => {
                 showSeconds: true,
                 name: 'foobar',
                 hour12: false,
-                value: '01:02:03',
+                modelValue: '01:02:03',
                 nowButton: true,
                 resetButton: true,
                 noCloseButton: false
@@ -415,7 +415,7 @@ describe('form-timepicker', () => {
             props: {
                 id: 'test-button-slot',
                 showSeconds: true,
-                value: '11:12:13'
+                modelValue: '11:12:13'
             },
             slots: {
                 'button-content': 'foobar'

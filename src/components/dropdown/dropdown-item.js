@@ -33,6 +33,7 @@ export const BDropdownItem = /*#__PURE__*/ defineComponent({
     },
     inheritAttrs: false,
     props,
+    emits: [EVENT_NAME_CLICK],
     computed: {
         bvDropdown() {
             return this.getBvDropdown()
@@ -70,13 +71,13 @@ export const BDropdownItem = /*#__PURE__*/ defineComponent({
                 h(
                     BLink, {
                         class: ['dropdown-item', linkClass, {
-                            [`text-${variant}`]: variant && !(active || disabled) }],
+                            [`text-${variant}`]: variant && !(active || disabled)
+                        }],
                         ...pluckProps(linkProps, $props),
                         ...this.computedAttrs,
                         onClick: onClick,
                         ref: 'item'
-                    },
-                    { default: () => this.normalizeSlot() }
+                    }, { default: () => this.normalizeSlot() }
                 )
             ]
         )

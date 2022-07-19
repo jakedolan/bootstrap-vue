@@ -119,7 +119,7 @@ describe('form-date', () => {
         const wrapper = mount(BFormDatepicker, {
             attachTo: document.body,
             props: {
-                value: '',
+                modelValue: '',
                 placeholder: 'FOOBAR'
             }
         })
@@ -141,7 +141,7 @@ describe('form-date', () => {
         const wrapper = mount(BFormDatepicker, {
             attachTo: document.body,
             props: {
-                value: '',
+                modelValue: '',
                 name: 'foobar'
             }
         })
@@ -155,9 +155,9 @@ describe('form-date', () => {
         let $input = wrapper.find('input[type="hidden"]')
         expect($input.exists()).toBe(true)
         expect($input.attributes('name')).toBe('foobar')
-        expect($input.attributes('value')).toBe('')
+        expect($input.attributes('value')).toBeUndefined()
 
-        await wrapper.setProps({ value: '2020-01-20' })
+        await wrapper.setProps({ modelValue: '2020-01-20' })
         await waitNT(wrapper.vm)
         await waitRAF()
 
@@ -173,7 +173,7 @@ describe('form-date', () => {
         const wrapper = mount(BFormDatepicker, {
             attachTo: document.body,
             props: {
-                value: '',
+                modelValue: '',
                 id: 'test-focus-blur'
             }
         })
@@ -203,12 +203,11 @@ describe('form-date', () => {
 
         wrapper.unmount()
     })
-
     it('hover works to change icons', async() => {
         const wrapper = mount(BFormDatepicker, {
             attachTo: document.body,
             props: {
-                value: '',
+                modelValue: '',
                 id: 'test-hover'
             }
         })
@@ -250,7 +249,7 @@ describe('form-date', () => {
         const wrapper = mount(BFormDatepicker, {
             attachTo: document.body,
             props: {
-                value: '',
+                modelValue: '',
                 id: 'test-open'
             }
         })
@@ -282,11 +281,12 @@ describe('form-date', () => {
         wrapper.unmount()
     })
 
+
     it('emits new value when date updated', async() => {
         const wrapper = mount(BFormDatepicker, {
             attachTo: document.body,
             props: {
-                value: '',
+                modelValue: '',
                 id: 'test-emit-input'
             }
         })
@@ -296,7 +296,7 @@ describe('form-date', () => {
         await waitRAF()
 
         expect(wrapper.element.tagName).toBe('DIV')
-        expect(wrapper.emitted('input')).toBeUndefined()
+        expect(wrapper.emitted('update:modelValue')).toBeUndefined()
 
         const $toggle = wrapper.find('button#test-emit-input')
         const $dropdownMenu = wrapper.find('.dropdown-menu')
@@ -331,9 +331,9 @@ describe('form-date', () => {
         await waitRAF()
         await waitRAF()
         expect($dropdownMenu.classes()).not.toContain('show')
-        expect(wrapper.emitted('input')).toBeDefined()
-        expect(wrapper.emitted('input').length).toBe(1)
-        expect(wrapper.emitted('input')[0][0]).toBe(activeYMD)
+        expect(wrapper.emitted('update:modelValue')).toBeDefined()
+        expect(wrapper.emitted('update:modelValue').length).toBe(1)
+        expect(wrapper.emitted('update:modelValue')[0][0]).toBe(activeYMD)
 
         wrapper.unmount()
     })
@@ -342,7 +342,7 @@ describe('form-date', () => {
         const wrapper = mount(BFormDatepicker, {
             attachTo: document.body,
             props: {
-                value: '',
+                modelValue: '',
                 id: 'test-no-close',
                 noCloseOnSelect: true
             }
@@ -390,9 +390,9 @@ describe('form-date', () => {
         // Calendar should remain open
         expect($dropdownMenu.classes()).toContain('show')
 
-        expect(wrapper.emitted('input')).toBeDefined()
-        expect(wrapper.emitted('input').length).toBe(1)
-        expect(wrapper.emitted('input')[0][0]).toBe(activeYMD)
+        expect(wrapper.emitted('update:modelValue')).toBeDefined()
+        expect(wrapper.emitted('update:modelValue').length).toBe(1)
+        expect(wrapper.emitted('update:modelValue')[0][0]).toBe(activeYMD)
 
         wrapper.unmount()
     })
@@ -402,7 +402,7 @@ describe('form-date', () => {
             attachTo: document.body,
             props: {
                 id: 'test-footer',
-                value: '1900-01-01',
+                modelValue: '1900-01-01',
                 noCloseOnSelect: true,
                 name: 'foobar',
                 todayButton: true,
@@ -479,7 +479,7 @@ describe('form-date', () => {
             attachTo: document.body,
             props: {
                 id: 'test-reset',
-                value: '2020-01-15',
+                modelValue: '2020-01-15',
                 resetValue: '1900-01-01',
                 name: 'foobar',
                 resetButton: true
@@ -537,7 +537,7 @@ describe('form-date', () => {
             attachTo: document.body,
             props: {
                 id: 'test-button-slot',
-                value: '2020-01-15'
+                modelValue: '2020-01-15'
             },
             slots: {
                 'button-content': 'foobar'
@@ -554,9 +554,12 @@ describe('form-date', () => {
 
         const $toggle = wrapper.find('button#test-button-slot')
 
+
         expect($toggle.exists()).toBe(true)
         expect($toggle.text()).toEqual('foobar')
 
         wrapper.unmount()
     })
+
+
 })

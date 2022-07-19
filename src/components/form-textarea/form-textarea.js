@@ -214,12 +214,13 @@ export const BFormTextarea = /*#__PURE__*/ defineComponent({
                 value: this.localValue,
                 ...this.computedListeners,
                 ref: 'input'
-            }), 
-            [[
-              'b-visible',
-              this.visibleCallback,
-              // If textarea is within 640px of viewport, consider it visible
-              { '640': true }
-            ]])
+            }), [
+                [
+                    VBVisible,
+                    this.visibleCallback,
+                    // If textarea is within 640px of viewport, consider it visible
+                    { '640': true }
+                ]
+            ])
     }
 })

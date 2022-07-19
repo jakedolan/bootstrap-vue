@@ -30,9 +30,9 @@ describe('form-rating', () => {
 
         const $stars = wrapper.findAll('.b-rating-star')
         expect($stars.length).toBe(5)
-        expect($stars.wrappers.every(s => s.find('.flex-grow-1'))).toBe(true)
+        expect($stars.every(s => s.find('.flex-grow-1'))).toBe(true)
             // Since value is `null` all stars will be empty
-        expect($stars.wrappers.every(s => s.find('.b-rating-star-empty'))).toBe(true)
+        expect($stars.every(s => s.find('.b-rating-star-empty'))).toBe(true)
 
         // `show-value` is `false` by default
         const $value = wrapper.find('.b-rating-value')
@@ -61,14 +61,14 @@ describe('form-rating', () => {
 
         const $stars = wrapper.findAll('.b-rating-star')
         expect($stars.length).toBe(5)
-        expect($stars.wrappers.every(s => s.find('.flex-grow-1').exists())).toBe(true)
-        expect($stars.wrappers.every(s => s.find('.b-rating-star-empty').exists())).toBe(true)
+        expect($stars.every(s => s.find('.flex-grow-1').exists())).toBe(true)
+        expect($stars.every(s => s.find('.b-rating-star-empty').exists())).toBe(true)
 
         const $icons = wrapper.findAll('.b-icon')
         expect($icons.length).toBe(5)
-        expect($icons.wrappers.every(i => i.find('.bi-star').exists())).toBe(true)
-        expect($icons.wrappers.every(i => i.find('.text-primary').exists())).toBe(true)
-        expect($icons.wrappers.every(i => i.find('.text-warning').exists())).toBe(false)
+        expect($icons.every(i => i.find('.bi-star').exists())).toBe(true)
+        expect($icons.every(i => i.find('.text-primary').exists())).toBe(true)
+        expect($icons.every(i => i.find('.text-warning').exists())).toBe(false)
 
         wrapper.unmount()
     })
@@ -85,8 +85,8 @@ describe('form-rating', () => {
 
         const $stars = wrapper.findAll('.b-rating-star')
         expect($stars.length).toBe(10)
-        expect($stars.wrappers.every(s => s.find('.flex-grow-1').exists())).toBe(true)
-        expect($stars.wrappers.every(s => s.find('.b-rating-star-empty').exists())).toBe(true)
+        expect($stars.every(s => s.find('.flex-grow-1').exists())).toBe(true)
+        expect($stars.every(s => s.find('.b-rating-star-empty').exists())).toBe(true)
 
         wrapper.unmount()
     })

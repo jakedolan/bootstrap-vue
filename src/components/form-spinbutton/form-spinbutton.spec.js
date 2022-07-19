@@ -226,7 +226,7 @@ describe('form-spinbutton', () => {
         const $hidden = wrapper.find('input[type="hidden"]')
         expect($hidden.exists()).toBe(true)
         expect($hidden.attributes('name')).toBe('foobar')
-        expect($hidden.attributes('value')).toBe('')
+        expect($hidden.attributes('value')).toBeUndefined()
 
         await wrapper.setProps({
             value: 50
@@ -511,14 +511,14 @@ describe('form-spinbutton', () => {
         expect($output.attributes('aria-valuenow')).toEqual('1')
         expect($output.attributes('aria-valuetext')).toEqual('1')
 
-        expect(wrapper.emitted('input')).toBeUndefined()
+        expect(wrapper.emitted('update:value')).toBeUndefined()
         expect(wrapper.emitted('change')).toBeUndefined()
 
         await wrapper.trigger('keydown.up')
         expect($output.attributes('aria-valuenow')).toEqual('2')
         expect($output.attributes('aria-valuetext')).toEqual('2')
-        expect(wrapper.emitted('input')).toBeDefined()
-        expect(wrapper.emitted('input').length).toBe(1)
+        expect(wrapper.emitted('update:value')).toBeDefined()
+        expect(wrapper.emitted('update:value').length).toBe(1)
         expect(wrapper.emitted('change')).toBeUndefined()
 
         // Advance past delay time
@@ -528,7 +528,7 @@ describe('form-spinbutton', () => {
             // Now we have to wait for interval to happen
         expect($output.attributes('aria-valuenow')).toEqual('2')
         expect($output.attributes('aria-valuetext')).toEqual('2')
-        expect(wrapper.emitted('input').length).toBe(1)
+        expect(wrapper.emitted('update:value').length).toBe(1)
         expect(wrapper.emitted('change')).toBeUndefined()
 
         // Advance past interval time
@@ -538,7 +538,7 @@ describe('form-spinbutton', () => {
         await waitRAF()
         expect($output.attributes('aria-valuenow')).toEqual('3')
         expect($output.attributes('aria-valuetext')).toEqual('3')
-        expect(wrapper.emitted('input').length).toBe(2)
+        expect(wrapper.emitted('update:value').length).toBe(2)
         expect(wrapper.emitted('change')).toBeUndefined()
 
         // Repeat #2
@@ -547,7 +547,7 @@ describe('form-spinbutton', () => {
         await waitRAF()
         expect($output.attributes('aria-valuenow')).toEqual('4')
         expect($output.attributes('aria-valuetext')).toEqual('4')
-        expect(wrapper.emitted('input').length).toBe(3)
+        expect(wrapper.emitted('update:value').length).toBe(3)
         expect(wrapper.emitted('change')).toBeUndefined()
 
         // Repeat #3
@@ -556,7 +556,7 @@ describe('form-spinbutton', () => {
         await waitRAF()
         expect($output.attributes('aria-valuenow')).toEqual('5')
         expect($output.attributes('aria-valuetext')).toEqual('5')
-        expect(wrapper.emitted('input').length).toBe(4)
+        expect(wrapper.emitted('update:value').length).toBe(4)
         expect(wrapper.emitted('change')).toBeUndefined()
 
         // Repeat #4
@@ -565,7 +565,7 @@ describe('form-spinbutton', () => {
         await waitRAF()
         expect($output.attributes('aria-valuenow')).toEqual('6')
         expect($output.attributes('aria-valuetext')).toEqual('6')
-        expect(wrapper.emitted('input').length).toBe(5)
+        expect(wrapper.emitted('update:value').length).toBe(5)
         expect(wrapper.emitted('change')).toBeUndefined()
 
         // Repeat #5
@@ -574,7 +574,7 @@ describe('form-spinbutton', () => {
         await waitRAF()
         expect($output.attributes('aria-valuenow')).toEqual('7')
         expect($output.attributes('aria-valuetext')).toEqual('7')
-        expect(wrapper.emitted('input').length).toBe(6)
+        expect(wrapper.emitted('update:value').length).toBe(6)
         expect(wrapper.emitted('change')).toBeUndefined()
 
         // Repeat #6
@@ -583,7 +583,7 @@ describe('form-spinbutton', () => {
         await waitRAF()
         expect($output.attributes('aria-valuenow')).toEqual('8')
         expect($output.attributes('aria-valuetext')).toEqual('8')
-        expect(wrapper.emitted('input').length).toBe(7)
+        expect(wrapper.emitted('update:value').length).toBe(7)
         expect(wrapper.emitted('change')).toBeUndefined()
 
         // Repeat #7
@@ -592,7 +592,7 @@ describe('form-spinbutton', () => {
         await waitRAF()
         expect($output.attributes('aria-valuenow')).toEqual('9')
         expect($output.attributes('aria-valuetext')).toEqual('9')
-        expect(wrapper.emitted('input').length).toBe(8)
+        expect(wrapper.emitted('update:value').length).toBe(8)
         expect(wrapper.emitted('change')).toBeUndefined()
 
         // Repeat #8
@@ -601,7 +601,7 @@ describe('form-spinbutton', () => {
         await waitRAF()
         expect($output.attributes('aria-valuenow')).toEqual('10')
         expect($output.attributes('aria-valuetext')).toEqual('10')
-        expect(wrapper.emitted('input').length).toBe(9)
+        expect(wrapper.emitted('update:value').length).toBe(9)
         expect(wrapper.emitted('change')).toBeUndefined()
 
         // Repeat #9
@@ -610,7 +610,7 @@ describe('form-spinbutton', () => {
         await waitRAF()
         expect($output.attributes('aria-valuenow')).toEqual('11')
         expect($output.attributes('aria-valuetext')).toEqual('11')
-        expect(wrapper.emitted('input').length).toBe(10)
+        expect(wrapper.emitted('update:value').length).toBe(10)
         expect(wrapper.emitted('change')).toBeUndefined()
 
         // Repeat #10
@@ -619,7 +619,7 @@ describe('form-spinbutton', () => {
         await waitRAF()
         expect($output.attributes('aria-valuenow')).toEqual('12')
         expect($output.attributes('aria-valuetext')).toEqual('12')
-        expect(wrapper.emitted('input').length).toBe(11)
+        expect(wrapper.emitted('update:value').length).toBe(11)
         expect(wrapper.emitted('change')).toBeUndefined()
 
         // Repeat #11 - Multiplier kicks in
@@ -631,7 +631,7 @@ describe('form-spinbutton', () => {
             // If min was set to `0`, then this would have been `16`
         expect($output.attributes('aria-valuenow')).toEqual('17')
         expect($output.attributes('aria-valuetext')).toEqual('17')
-        expect(wrapper.emitted('input').length).toBe(12)
+        expect(wrapper.emitted('update:value').length).toBe(12)
         expect(wrapper.emitted('change')).toBeUndefined()
 
         // Repeat #12
@@ -640,14 +640,14 @@ describe('form-spinbutton', () => {
         await waitRAF()
         expect($output.attributes('aria-valuenow')).toEqual('21')
         expect($output.attributes('aria-valuetext')).toEqual('21')
-        expect(wrapper.emitted('input').length).toBe(13)
+        expect(wrapper.emitted('update:value').length).toBe(13)
         expect(wrapper.emitted('change')).toBeUndefined()
 
         // Un-press key
         await wrapper.trigger('keyup.up')
         expect($output.attributes('aria-valuenow')).toEqual('21')
         expect($output.attributes('aria-valuetext')).toEqual('21')
-        expect(wrapper.emitted('input').length).toBe(13)
+        expect(wrapper.emitted('update:value').length).toBe(13)
         expect(wrapper.emitted('change')).toBeDefined()
         expect(wrapper.emitted('change').length).toBe(1)
 
@@ -687,6 +687,8 @@ describe('form-spinbutton', () => {
 
         $output.element.focus()
         await waitNT(wrapper.vm)
+        await waitRAF()
+
         expect(wrapper.classes()).toContain('focus')
         expect(document.activeElement).toBe($output.element)
 

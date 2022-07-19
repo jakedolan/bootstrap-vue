@@ -1,5 +1,5 @@
 import { h } from 'vue';
-import { createWrapper, mount } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { waitNT, waitRAF } from '../../../tests/utils'
 import { getInstanceFromVNode } from '../../utils/get-instance-from-vnode'
 import { BModal } from './modal'

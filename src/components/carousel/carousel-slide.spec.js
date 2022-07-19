@@ -143,10 +143,12 @@ describe('carousel-slide', () => {
 
     it('has style background inherited from carousel parent', async() => {
         const wrapper = mount(BCarouselSlide, {
-            provide: {
-                getBvCarousel: () => ({
-                    background: 'rgb(1, 2, 3)'
-                })
+            global: {
+                provide: {
+                    getBvCarousel: () => ({
+                        background: 'rgb(1, 2, 3)'
+                    })
+                }
             }
         })
 
@@ -252,16 +254,19 @@ describe('carousel-slide', () => {
 
     it('has image with "width" and "height" attrs inherited from carousel parent', async() => {
         const wrapper = mount(BCarouselSlide, {
-            provide: {
-                // Mock carousel injection
-                getBvCarousel: () => ({
-                    imgWidth: '1024',
-                    imgHeight: '480'
-                })
-            },
             props: {
                 imgSrc: 'https://picsum.photos/1024/480/?image=52'
+            },
+            global: {
+                provide: {
+                    // Mock carousel injection
+                    getBvCarousel: () => ({
+                        imgWidth: '1024',
+                        imgHeight: '480'
+                    })
+                },
             }
+
         })
 
         expect(wrapper.find('img').exists()).toBe(true)

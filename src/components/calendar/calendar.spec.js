@@ -44,7 +44,7 @@ describe('calendar', () => {
         const wrapper = mount(BCalendar, {
             attachTo: document.body,
             props: {
-                value: '2020-02-15' // Leap year
+                modelValue: '2020-02-15' // Leap year
             }
         })
 
@@ -64,7 +64,7 @@ describe('calendar', () => {
         const wrapper = mount(BCalendar, {
             attachTo: document.body,
             props: {
-                value: '2020-01-01' // Leap year
+                modelValue: '2020-01-01' // Leap year
             }
         })
 
@@ -75,7 +75,7 @@ describe('calendar', () => {
         expect(wrapper.vm.selectedYMD).toBe('2020-01-01')
 
         await wrapper.setProps({
-            value: '2020-01-15'
+            modelValue: '2020-01-15'
         })
 
         await waitNT(wrapper.vm)
@@ -90,7 +90,7 @@ describe('calendar', () => {
         const wrapper = mount(BCalendar, {
             attachTo: document.body,
             props: {
-                value: '2020-01-01' // Leap year
+                modelValue: '2020-01-01' // Leap year
             }
         })
 
@@ -125,7 +125,7 @@ describe('calendar', () => {
             attachTo: document.body,
             props: {
                 showDecadeNav: true,
-                value: '2020-02-15' // Leap year
+                modelValue: '2020-02-15' // Leap year
             }
         })
 
@@ -180,7 +180,7 @@ describe('calendar', () => {
         const wrapper = mount(BCalendar, {
             attachTo: document.body,
             props: {
-                value: '2020-02-15' // Leap year
+                modelValue: '2020-02-15' // Leap year
             }
         })
 
@@ -213,7 +213,7 @@ describe('calendar', () => {
         const wrapper = mount(BCalendar, {
             attachTo: document.body,
             props: {
-                value: '2020-02-15' // Leap year
+                modelValue: '2020-02-15' // Leap year
             }
         })
 
@@ -248,7 +248,7 @@ describe('calendar', () => {
         const wrapper = mount(BCalendar, {
             attachTo: document.body,
             props: {
-                value: '2020-02-15', // Leap year,
+                modelValue: '2020-02-15', // Leap year,
                 headerTag: 'div'
             }
         })
@@ -268,7 +268,7 @@ describe('calendar', () => {
         const wrapper = mount(BCalendar, {
             attachTo: document.body,
             props: {
-                value: '2020-02-15' // Leap year
+                modelValue: '2020-02-15' // Leap year
             }
         })
 
@@ -402,7 +402,7 @@ describe('calendar', () => {
         const wrapper = mount(BCalendar, {
             attachTo: document.body,
             props: {
-                value: '2020-01-01',
+                modelValue: '2020-01-01',
                 dateDisabledFn(ymd) {
                     return ymd === '2020-01-02'
                 }
@@ -435,7 +435,7 @@ describe('calendar', () => {
         const wrapper = mount(BCalendar, {
             attachTo: document.body,
             props: {
-                value: '2020-01-01',
+                modelValue: '2020-01-01',
                 dateInfoFn(ymd) {
                     return ymd === '2020-01-02' ? 'my-info' : null
                 }

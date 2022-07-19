@@ -44,7 +44,7 @@ describe('time', () => {
                 locale: 'en',
                 hour12: false,
                 showSeconds: true,
-                value: '13:14:15'
+                modelValue: '13:14:15'
             }
         })
 
@@ -54,11 +54,12 @@ describe('time', () => {
 
         const $spinners = wrapper.findAll('[role="spinbutton"]')
         expect($spinners.length).toBe(3)
+
         expect($spinners[0].text()).toEqual('13')
         expect($spinners[1].text()).toEqual('14')
         expect($spinners[2].text()).toEqual('15')
 
-        await wrapper.setProps({ value: '01:02:03' })
+        await wrapper.setProps({ modelValue: '01:02:03' })
         await waitRAF()
         expect($spinners[0].text()).toEqual('01')
         expect($spinners[1].text()).toEqual('02')
@@ -72,7 +73,7 @@ describe('time', () => {
             props: {
                 locale: 'en',
                 hour12: true,
-                value: '01:02:00'
+                modelValue: '01:02:00'
             }
         })
 
@@ -86,7 +87,7 @@ describe('time', () => {
         expect($spinners[1].text()).toEqual('02')
         expect($spinners[2].text()).toEqual('AM')
 
-        await wrapper.setProps({ value: '13:14:00' })
+        await wrapper.setProps({ modelValue: '13:14:00' })
         await waitRAF()
         expect($spinners[0].text()).toEqual('01')
         expect($spinners[1].text()).toEqual('14')
@@ -100,7 +101,7 @@ describe('time', () => {
             props: {
                 locale: 'en',
                 hour12: false,
-                value: '01:02:00'
+                modelValue: '01:02:00'
             }
         })
 
@@ -113,7 +114,7 @@ describe('time', () => {
         expect($spinners[0].text()).toEqual('01')
         expect($spinners[1].text()).toEqual('02')
 
-        await wrapper.setProps({ value: '13:14:00' })
+        await wrapper.setProps({ modelValue: '13:14:00' })
         await waitRAF()
         expect($spinners[0].text()).toEqual('13')
         expect($spinners[1].text()).toEqual('14')
@@ -127,7 +128,7 @@ describe('time', () => {
                 locale: 'en',
                 hour12: false,
                 showSeconds: true,
-                value: '01:02:03'
+                modelValue: '01:02:03'
             }
         })
 
@@ -186,11 +187,12 @@ describe('time', () => {
         wrapper.unmount()
     })
 
+
     it('spin buttons work', async() => {
         const wrapper = mount(BTime, {
             props: {
                 showSeconds: true,
-                value: '00:00:00',
+                modelValue: '00:00:00',
                 // force to 12 hour mode
                 hour12: true
             }
@@ -200,7 +202,7 @@ describe('time', () => {
         await waitNT(wrapper.vm)
         await waitRAF()
 
-        expect(wrapper.emitted('input')).toBeUndefined()
+        expect(wrapper.emitted('update:modelValue')).toBeUndefined()
 
         const $spinners = wrapper.findAll('[role="spinbutton"]')
         expect($spinners.length).toBe(4)
@@ -213,33 +215,33 @@ describe('time', () => {
         await $hours.trigger('keydown.up')
         await $hours.trigger('keyup.up')
         await waitRAF()
-        expect(wrapper.emitted('input')).toBeDefined()
-        expect(wrapper.emitted('input').length).toBe(1)
-        expect(wrapper.emitted('input')[0][0]).toBe('01:00:00')
+        expect(wrapper.emitted('update:modelValue')).toBeDefined()
+        expect(wrapper.emitted('update:modelValue')).toHaveLength(1)
+        expect(wrapper.emitted('update:modelValue')[0][0]).toBe('01:00:00')
 
         await $minutes.trigger('keydown.up')
         await $minutes.trigger('keyup.up')
         await waitRAF()
-        expect(wrapper.emitted('input').length).toBe(2)
-        expect(wrapper.emitted('input')[1][0]).toBe('01:01:00')
+        expect(wrapper.emitted('update:modelValue')).toHaveLength(2)
+        expect(wrapper.emitted('update:modelValue')[1][0]).toBe('01:01:00')
 
         await $seconds.trigger('keydown.up')
         await $seconds.trigger('keyup.up')
         await waitRAF()
-        expect(wrapper.emitted('input').length).toBe(3)
-        expect(wrapper.emitted('input')[2][0]).toBe('01:01:01')
+        expect(wrapper.emitted('update:modelValue')).toHaveLength(3)
+        expect(wrapper.emitted('update:modelValue')[2][0]).toBe('01:01:01')
 
         await $ampm.trigger('keydown.up')
         await $ampm.trigger('keyup.up')
         await waitRAF()
-        expect(wrapper.emitted('input').length).toBe(4)
-        expect(wrapper.emitted('input')[3][0]).toBe('13:01:01')
+        expect(wrapper.emitted('update:modelValue')).toHaveLength(4)
+        expect(wrapper.emitted('update:modelValue')[3][0]).toBe('13:01:01')
 
         await $ampm.trigger('keydown.up')
         await $ampm.trigger('keyup.up')
         await waitRAF()
-        expect(wrapper.emitted('input').length).toBe(5)
-        expect(wrapper.emitted('input')[4][0]).toBe('01:01:01')
+        expect(wrapper.emitted('update:modelValue')).toHaveLength(5)
+        expect(wrapper.emitted('update:modelValue')[4][0]).toBe('01:01:01')
 
         wrapper.unmount()
     })
@@ -278,7 +280,7 @@ describe('time', () => {
             attachTo: document.body,
             props: {
                 showSeconds: true,
-                value: '00:00:00',
+                modelValue: '00:00:00',
                 // force to 12 hour mode
                 hour12: true
             }

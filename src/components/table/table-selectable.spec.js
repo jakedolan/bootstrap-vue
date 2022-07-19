@@ -45,9 +45,9 @@ describe('table > row select', () => {
         const $rows = wrapper.findAll('tbody > tr')
         expect($rows.length).toBe(4)
             // Doesn't have aria-selected attribute on all TRs
-        expect($rows.wrappers.every(r => !r.find('tr[aria-selected]').exists())).toBe(true)
+        expect($rows.every(r => !r.find('tr[aria-selected]').exists())).toBe(true)
             // Doesn't have tabindex attribute on all TRs
-        expect($rows.wrappers.every(r => !r.find('tr[tabindex]').exists())).toBe(true)
+        expect($rows.every(r => !r.find('tr[tabindex]').exists())).toBe(true)
 
         wrapper.unmount()
     })
@@ -119,9 +119,9 @@ describe('table > row select', () => {
         const $rows = wrapper.findAll('tbody > tr')
         expect($rows.length).toBe(4)
             // Doesn't have aria-selected attribute on all TRs
-        expect($rows.wrappers.every(r => !r.find('tr[aria-selected]').exists())).toBe(true)
+        expect($rows.every(r => !r.find('tr[aria-selected]').exists())).toBe(true)
             // Does have tabindex attribute on all TRs
-        expect($rows.wrappers.every(r => r.find('tr[tabindex]').exists())).toBe(true)
+        expect($rows.every(r => r.find('tr[tabindex]').exists())).toBe(true)
 
         wrapper.unmount()
     })
@@ -178,9 +178,9 @@ describe('table > row select', () => {
 
         let $rows = wrapper.findAll('tbody > tr')
         expect($rows.length).toBe(4)
-        expect($rows.wrappers.every(r => r.find('[aria-selected="false"]').exists())).toBe(true)
-        expect($rows.wrappers.every(r => r.find('[aria-selected="false"]').exists())).toBe(true)
-        expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+        expect($rows.every(r => r.find('[aria-selected="false"]').exists())).toBe(true)
+        expect($rows.every(r => r.find('[aria-selected="false"]').exists())).toBe(true)
+        expect($rows.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
 
         // Click first row
         await wrapper
@@ -192,7 +192,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[0]])
 
         $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+        expect($rows.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('true')
         expect($rows[1].attributes('aria-selected')).toBe('false')
         expect($rows[2].attributes('aria-selected')).toBe('false')
@@ -212,7 +212,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[1][0]).toEqual([testItems[2]])
 
         $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+        expect($rows.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('false')
         expect($rows[1].attributes('aria-selected')).toBe('false')
         expect($rows[2].attributes('aria-selected')).toBe('true')
@@ -232,7 +232,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[2][0]).toEqual([])
 
         $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+        expect($rows.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('false')
         expect($rows[1].attributes('aria-selected')).toBe('false')
         expect($rows[2].attributes('aria-selected')).toBe('false')
@@ -277,7 +277,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[0]])
 
         let $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+        expect($rows.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('true')
         expect($rows[1].attributes('aria-selected')).toBe('false')
         expect($rows[2].attributes('aria-selected')).toBe('false')
@@ -297,7 +297,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[1][0]).toEqual([testItems[0], testItems[2]])
 
         $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+        expect($rows.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('true')
         expect($rows[1].attributes('aria-selected')).toBe('false')
         expect($rows[2].attributes('aria-selected')).toBe('true')
@@ -317,7 +317,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[2][0]).toEqual([testItems[0]])
 
         $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+        expect($rows.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('true')
         expect($rows[1].attributes('aria-selected')).toBe('false')
         expect($rows[2].attributes('aria-selected')).toBe('false')
@@ -337,7 +337,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[3][0]).toEqual([])
 
         $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+        expect($rows.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('false')
         expect($rows[1].attributes('aria-selected')).toBe('false')
         expect($rows[2].attributes('aria-selected')).toBe('false')
@@ -374,8 +374,8 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')).toBeUndefined()
 
         let $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
-        expect($rows.wrappers.every(r => r.find('[aria-selected="false"]').exists())).toBe(true)
+        expect($rows.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+        expect($rows.every(r => r.find('[aria-selected="false"]').exists())).toBe(true)
 
         // Click first row
         await wrapper
@@ -387,7 +387,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[0]])
 
         $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+        expect($rows.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('true')
         expect($rows[1].attributes('aria-selected')).toBe('false')
         expect($rows[2].attributes('aria-selected')).toBe('false')
@@ -411,7 +411,7 @@ describe('table > row select', () => {
         ])
 
         $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+        expect($rows.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('true')
         expect($rows[1].attributes('aria-selected')).toBe('true')
         expect($rows[2].attributes('aria-selected')).toBe('true')
@@ -431,7 +431,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[2][0]).toEqual([testItems[2]])
 
         $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+        expect($rows.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('false')
         expect($rows[1].attributes('aria-selected')).toBe('false')
         expect($rows[2].attributes('aria-selected')).toBe('true')
@@ -451,7 +451,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[3][0]).toEqual([testItems[3]])
 
         $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+        expect($rows.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('false')
         expect($rows[1].attributes('aria-selected')).toBe('false')
         expect($rows[2].attributes('aria-selected')).toBe('false')
@@ -471,7 +471,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected').length).toBe(4)
 
         $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
+        expect($rows.every(r => r.find('[tabindex="0"]').exists())).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('false')
         expect($rows[1].attributes('aria-selected')).toBe('false')
         expect($rows[2].attributes('aria-selected')).toBe('false')
@@ -491,7 +491,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[4][0]).toEqual([testItems[1], testItems[3]])
 
         $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(w => w.element.matches('[tabindex="0"]'))).toBe(true)
+        expect($rows.every(w => w.element.matches('[tabindex="0"]'))).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('false')
         expect($rows[1].attributes('aria-selected')).toBe('true')
         expect($rows[2].attributes('aria-selected')).toBe('false')
@@ -511,7 +511,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[5][0]).toEqual([testItems[3]])
 
         $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(w => w.element.matches('[tabindex="0"]'))).toBe(true)
+        expect($rows.every(w => w.element.matches('[tabindex="0"]'))).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('false')
         expect($rows[1].attributes('aria-selected')).toBe('false')
         expect($rows[2].attributes('aria-selected')).toBe('false')
@@ -531,7 +531,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[6][0]).toEqual([])
 
         $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(w => w.element.matches('[tabindex="0"]'))).toBe(true)
+        expect($rows.every(w => w.element.matches('[tabindex="0"]'))).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('false')
         expect($rows[1].attributes('aria-selected')).toBe('false')
         expect($rows[2].attributes('aria-selected')).toBe('false')
@@ -597,7 +597,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[0]])
 
         let $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(w => w.element.matches('[tabindex="0"]'))).toBe(true)
+        expect($rows.every(w => w.element.matches('[tabindex="0"]'))).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('true')
         expect($rows[1].attributes('aria-selected')).toBe('false')
         expect($rows[2].attributes('aria-selected')).toBe('false')
@@ -614,8 +614,8 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[1][0]).toEqual([])
 
         $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(w => w.element.matches('[tabindex="0"]'))).toBe(true)
-        expect($rows.wrappers.every(w => w.element.matches('[aria-selected="false"]'))).toBe(true)
+        expect($rows.every(w => w.element.matches('[tabindex="0"]'))).toBe(true)
+        expect($rows.every(w => w.element.matches('[aria-selected="false"]'))).toBe(true)
 
         wrapper.unmount()
     })
@@ -636,8 +636,8 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')).toBeUndefined()
 
         let $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(w => w.element.matches('[tabindex="0"]'))).toBe(true)
-        expect($rows.wrappers.every(w => w.element.matches('[aria-selected="false"]'))).toBe(true)
+        expect($rows.every(w => w.element.matches('[tabindex="0"]'))).toBe(true)
+        expect($rows.every(w => w.element.matches('[aria-selected="false"]'))).toBe(true)
 
         // Click first row
         await wrapper
@@ -649,7 +649,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[0]])
 
         $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.every(w => w.attributes('tabindex') === '0')).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('true')
         expect($rows[1].attributes('aria-selected')).toBe('false')
         expect($rows[2].attributes('aria-selected')).toBe('false')
@@ -662,8 +662,8 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[1][0]).toEqual([])
 
         $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-        expect($rows.wrappers.every(w => w.attributes('aria-selected') === 'false')).toBe(true)
+        expect($rows.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.every(w => w.attributes('aria-selected') === 'false')).toBe(true)
 
         wrapper.unmount()
     })
@@ -687,8 +687,8 @@ describe('table > row select', () => {
 
         let $rows = wrapper.findAll('tbody > tr')
         expect($rows.length).toBe(3)
-        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-        expect($rows.wrappers.every(w => w.attributes('aria-selected') === 'false')).toBe(true)
+        expect($rows.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.every(w => w.attributes('aria-selected') === 'false')).toBe(true)
 
         // Click first row
         await wrapper
@@ -701,7 +701,7 @@ describe('table > row select', () => {
 
         $rows = wrapper.findAll('tbody > tr')
         expect($rows.length).toBe(3)
-        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.every(w => w.attributes('tabindex') === '0')).toBe(true)
             // We only have 3 rows max per page
         expect($rows[0].attributes('aria-selected')).toBe('true')
         expect($rows[1].attributes('aria-selected')).toBe('false')
@@ -715,8 +715,8 @@ describe('table > row select', () => {
 
         $rows = wrapper.findAll('tbody > tr')
         expect($rows.length).toBe(1)
-        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-        expect($rows.wrappers.every(w => w.attributes('aria-selected') === 'false')).toBe(true)
+        expect($rows.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.every(w => w.attributes('aria-selected') === 'false')).toBe(true)
 
         wrapper.unmount()
     })
@@ -746,7 +746,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[0]])
 
         let $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.every(w => w.attributes('tabindex') === '0')).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('true')
         expect($rows[1].attributes('aria-selected')).toBe('false')
         expect($rows[2].attributes('aria-selected')).toBe('false')
@@ -760,8 +760,8 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[1][0]).toEqual([])
 
         $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
-        expect($rows.wrappers.every(w => w.attributes('aria-selected') === 'false')).toBe(true)
+        expect($rows.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.every(w => w.attributes('aria-selected') === 'false')).toBe(true)
 
         wrapper.unmount()
     })
@@ -791,7 +791,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[0]])
 
         let $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.every(w => w.attributes('tabindex') === '0')).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('true')
         expect($rows[1].attributes('aria-selected')).toBe('false')
         expect($rows[2].attributes('aria-selected')).toBe('false')
@@ -807,8 +807,8 @@ describe('table > row select', () => {
 
         $rows = wrapper.findAll('tbody > tr')
             // Should remove tabindex and aria-selected attributes
-        expect($rows.wrappers.every(w => w.attributes('tabindex') === undefined)).toBe(true)
-        expect($rows.wrappers.every(w => w.attributes('aria-selected') === undefined)).toBe(true)
+        expect($rows.every(w => w.attributes('tabindex') === undefined)).toBe(true)
+        expect($rows.every(w => w.attributes('aria-selected') === undefined)).toBe(true)
         expect(wrapper.classes()).not.toContain('b-table-selectable')
         expect(wrapper.classes()).not.toContain('b-table-selecting-range')
 
@@ -838,7 +838,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[0][0].length).toBe(1)
         expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[0]])
         const $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.every(w => w.attributes('tabindex') === '0')).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('true')
         expect($rows[1].attributes('aria-selected')).toBe('false')
         expect($rows[2].attributes('aria-selected')).toBe('false')
@@ -870,7 +870,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[0][0].length).toBe(4)
         expect(wrapper.emitted('row-selected')[0][0]).toEqual(testItems)
         const $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.every(w => w.attributes('tabindex') === '0')).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('true')
         expect($rows[1].attributes('aria-selected')).toBe('true')
         expect($rows[2].attributes('aria-selected')).toBe('true')
@@ -904,7 +904,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[0][0]).toEqual(testItems)
 
         const $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.every(w => w.attributes('tabindex') === '0')).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('true')
         expect($rows[1].attributes('aria-selected')).toBe('true')
         expect($rows[2].attributes('aria-selected')).toBe('true')
@@ -938,7 +938,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[1]])
 
         let $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.every(w => w.attributes('tabindex') === '0')).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('false')
         expect($rows[1].attributes('aria-selected')).toBe('true')
         expect($rows[2].attributes('aria-selected')).toBe('false')
@@ -954,7 +954,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[1][0]).toEqual([testItems[3]])
 
         $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.every(w => w.attributes('tabindex') === '0')).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('false')
         expect($rows[1].attributes('aria-selected')).toBe('false')
         expect($rows[2].attributes('aria-selected')).toBe('false')
@@ -970,7 +970,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[1][0]).toEqual([testItems[3]])
 
         $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.every(w => w.attributes('tabindex') === '0')).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('false')
         expect($rows[1].attributes('aria-selected')).toBe('false')
         expect($rows[2].attributes('aria-selected')).toBe('false')
@@ -986,7 +986,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[2][0]).toEqual([])
 
         $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.every(w => w.attributes('tabindex') === '0')).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('false')
         expect($rows[1].attributes('aria-selected')).toBe('false')
         expect($rows[2].attributes('aria-selected')).toBe('false')
@@ -1020,7 +1020,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[1]])
 
         let $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.every(w => w.attributes('tabindex') === '0')).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('false')
         expect($rows[1].attributes('aria-selected')).toBe('true')
         expect($rows[2].attributes('aria-selected')).toBe('false')
@@ -1036,7 +1036,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[1][0]).toEqual([testItems[1], testItems[3]])
 
         $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.every(w => w.attributes('tabindex') === '0')).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('false')
         expect($rows[1].attributes('aria-selected')).toBe('true')
         expect($rows[2].attributes('aria-selected')).toBe('false')
@@ -1052,7 +1052,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[1][0]).toEqual([testItems[1], testItems[3]])
 
         $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.every(w => w.attributes('tabindex') === '0')).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('false')
         expect($rows[1].attributes('aria-selected')).toBe('true')
         expect($rows[2].attributes('aria-selected')).toBe('false')
@@ -1068,7 +1068,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[2][0]).toEqual([testItems[1]])
 
         $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.every(w => w.attributes('tabindex') === '0')).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('false')
         expect($rows[1].attributes('aria-selected')).toBe('true')
         expect($rows[2].attributes('aria-selected')).toBe('false')
@@ -1102,7 +1102,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[0][0]).toEqual([testItems[1]])
 
         let $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.every(w => w.attributes('tabindex') === '0')).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('false')
         expect($rows[1].attributes('aria-selected')).toBe('true')
         expect($rows[2].attributes('aria-selected')).toBe('false')
@@ -1118,7 +1118,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[1][0]).toEqual([testItems[1], testItems[3]])
 
         $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.every(w => w.attributes('tabindex') === '0')).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('false')
         expect($rows[1].attributes('aria-selected')).toBe('true')
         expect($rows[2].attributes('aria-selected')).toBe('false')
@@ -1134,7 +1134,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[1][0]).toEqual([testItems[1], testItems[3]])
 
         $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.every(w => w.attributes('tabindex') === '0')).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('false')
         expect($rows[1].attributes('aria-selected')).toBe('true')
         expect($rows[2].attributes('aria-selected')).toBe('false')
@@ -1150,7 +1150,7 @@ describe('table > row select', () => {
         expect(wrapper.emitted('row-selected')[2][0]).toEqual([testItems[1]])
 
         $rows = wrapper.findAll('tbody > tr')
-        expect($rows.wrappers.every(w => w.attributes('tabindex') === '0')).toBe(true)
+        expect($rows.every(w => w.attributes('tabindex') === '0')).toBe(true)
         expect($rows[0].attributes('aria-selected')).toBe('false')
         expect($rows[1].attributes('aria-selected')).toBe('true')
         expect($rows[2].attributes('aria-selected')).toBe('false')

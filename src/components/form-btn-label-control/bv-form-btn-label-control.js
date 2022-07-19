@@ -1,7 +1,7 @@
 //
 // Private component used by `b-form-datepicker` and `b-form-timepicker`
 //
-import { defineComponent, h, withDirectives } from 'vue'
+import { defineComponent, h, withDirectives, withModifiers } from 'vue'
 import { NAME_FORM_BUTTON_LABEL_CONTROL } from '../../constants/components'
 import {
     PROP_TYPE_ARRAY_OBJECT_STRING,
@@ -123,51 +123,53 @@ export const BVFormBtnLabelControl = /*#__PURE__*/ defineComponent({
             hasFocus,
             labelSelected,
             buttonVariant,
-            buttonOnly
+            buttonOnly,
+            $slots
         } = this
         const value = toString(this.value) || ''
         const invalid = state === false || (required && !value)
 
         const btnScope = { isHovered, hasFocus, state, opened: visible }
+
         const $button = withDirectives(
             h(
-              'button', {
-                  class: ['btn', {
-                      [`btn-${buttonVariant}`]: buttonOnly,
-                      [`btn-${size}`]: size,
-                      'h-auto': !buttonOnly,
-                      // `dropdown-toggle` is needed for proper
-                      // corner rounding in button only mode
-                      'dropdown-toggle': buttonOnly,
-                      'dropdown-toggle-no-caret': buttonOnly
-                  }],
-                  id: idButton,
-                  type: 'button',
-                  disabled,
-                  'aria-haspopup': 'dialog',
-                  'aria-expanded': visible ? 'true' : 'false',
-                  'aria-invalid': invalid ? 'true' : null,
-                  'aria-required': required ? 'true' : null,
-                  onMousedown: this.onMousedown,
-                  onClick: this.toggle,
-                  // Handle ENTER, SPACE and DOWN
-                  onKeydown: this.toggle, 
-                  // We use capture phase (`!` prefix) since focus and blur do not bubble
-                  // '!onFocus': this.setFocus,
-                  // '!onBlur': this.setFocus,
-                  onBlur: this.setFocus,
-                  onFocus: this.setFocus,
-                  ref: 'toggle'
-              }, {
-                default: () => [
-                  this.hasNormalizedSlot(SLOT_NAME_BUTTON_CONTENT) ?
-                  this.normalizeSlot(SLOT_NAME_BUTTON_CONTENT, btnScope) :
-                  /* istanbul ignore next */
-                  h(BIconChevronDown, { scale: 1.25 })
-                 ]
-              }
-            ), 
-            [['b-hover', this.handleHover]])
+                'button', {
+                    class: ['btn', {
+                        [`btn-${buttonVariant}`]: buttonOnly,
+                        [`btn-${size}`]: size,
+                        'h-auto': !buttonOnly,
+                        // `dropdown-toggle` is needed for proper
+                        // corner rounding in button only mode
+                        'dropdown-toggle': buttonOnly,
+                        'dropdown-toggle-no-caret': buttonOnly
+                    }],
+                    id: idButton,
+                    type: 'button',
+                    disabled,
+                    'aria-haspopup': 'dialog',
+                    'aria-expanded': visible ? 'true' : 'false',
+                    'aria-invalid': invalid ? 'true' : null,
+                    'aria-required': required ? 'true' : null,
+                    onMousedown: this.onMousedown,
+                    onClick: this.toggle,
+                    // Handle ENTER, SPACE and DOWN
+                    onKeydown: this.toggle,
+                    onBlur: withModifiers(() => this.setFocus, ['capture']),
+                    onFocus: withModifiers(() => this.setFocus, ['capture']),
+                    ref: 'toggle'
+                }, {
+                    default: () => {
+                        return [
+                            this.hasNormalizedSlot(SLOT_NAME_BUTTON_CONTENT) ?
+                            this.normalizeSlot(SLOT_NAME_BUTTON_CONTENT, btnScope) :
+                            /* istanbul ignore next */
+                            h(BIconChevronDown, { scale: 1.25 })
+                        ];
+                    }
+                }
+            ), [
+                [VBHover, this.handleHover]
+            ])
 
         // Hidden input
         let $hidden = null
@@ -195,11 +197,11 @@ export const BVFormBtnLabelControl = /*#__PURE__*/ defineComponent({
                 tabindex: '-1',
                 'aria-modal': 'false',
                 'aria-labelledby': idLabel,
-                 // Handle ESC
+                // Handle ESC
                 onKeydown: this.onKeydown,
                 ref: 'menu'
             }, {
-              default: () => [this.normalizeSlot(SLOT_NAME_DEFAULT, { opened: visible })]
+                default: () => [this.normalizeSlot(SLOT_NAME_DEFAULT, { opened: visible })]
             }
         )
 
@@ -227,29 +229,30 @@ export const BVFormBtnLabelControl = /*#__PURE__*/ defineComponent({
                         stopEvent(event, { preventDefault: false })
                     }
                 }, {
-                  default: () => [
-                    value ? this.formattedValue || value : this.placeholder || '',
-                    // Add the selected label for screen readers when a value is provided
-                    value && labelSelected ? h('bdi', { class: 'sr-only' }, labelSelected) : ''
-                  ]
+                    default: () => [
+                        value ? this.formattedValue || value : this.placeholder || '',
+                        // Add the selected label for screen readers when a value is provided
+                        value && labelSelected ? h('bdi', { class: 'sr-only' }, labelSelected) : ''
+                    ]
                 }
-            ), 
-            [['b-hover', this.handleHover]])
+            ), [
+                [VBHover, this.handleHover]
+            ])
 
         // Return the custom form control wrapper
         return h(
             'div', {
                 class: ['b-form-btn-label-control dropdown',
-                            this.directionClass,
-                            this.boundaryClass, {
-                            'btn-group': buttonOnly,
-                            'form-control': !buttonOnly,
-                            focus: hasFocus && !buttonOnly,
-                            show: visible,
-                            'is-valid': state === true,
-                            'is-invalid': state === false
-                        },
-                        buttonOnly ? null : this.sizeFormClass
+                    this.directionClass,
+                    this.boundaryClass, {
+                        'btn-group': buttonOnly,
+                        'form-control': !buttonOnly,
+                        focus: hasFocus && !buttonOnly,
+                        show: visible,
+                        'is-valid': state === true,
+                        'is-invalid': state === false
+                    },
+                    buttonOnly ? null : this.sizeFormClass
                 ],
                 id: idWrapper,
                 role: buttonOnly ? null : 'group',
@@ -261,7 +264,7 @@ export const BVFormBtnLabelControl = /*#__PURE__*/ defineComponent({
                 'aria-invalid': state === false || (required && !value) ? 'true' : null,
                 'aria-required': required ? 'true' : null
             }, {
-              default: () => [$button, $hidden, $menu, $label]
+                default: () => [$button, $hidden, $menu, $label]
             }
         )
     }

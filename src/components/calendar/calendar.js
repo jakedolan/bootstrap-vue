@@ -479,6 +479,7 @@ export const BCalendar = defineComponent({
                         isPlainObject(dateInfo) ? { class: '', ...dateInfo } :
                         /* istanbul ignore next */
                         { class: '' }
+
                     matrix[week].push({
                         ymd: dayYMD,
                         // Cell content
@@ -788,15 +789,14 @@ export const BCalendar = defineComponent({
                 // and focus active date (or today if no selection)
                 onClick: this.onHeaderClick,
                 onFocus: this.onHeaderClick
-            },
-            { default: () => 
-              this.selectedDate ? [
-                  // We use `bdi` elements here in case the label doesn't match the locale
-                  // Although IE 11 does not deal with <BDI> at all (equivalent to a span)
-                  h('bdi', { class: ['sr-only'] }, ` (${toString(this.labelSelected)}) `),
-                  h('bdi', this.formatDateString(this.selectedDate))
-              ] :
-              this.labelNoDateSelected || '\u00a0' // '&nbsp;'
+            }, {
+                default: () =>
+                    this.selectedDate ? [
+                        // We use `bdi` elements here in case the label doesn't match the locale
+                        // Although IE 11 does not deal with <BDI> at all (equivalent to a span)
+                        h('bdi', { class: ['sr-only'] }, ` (${toString(this.labelSelected)}) `),
+                        h('bdi', this.formatDateString(this.selectedDate))
+                    ] : this.labelNoDateSelected || '\u00a0' // '&nbsp;'
             }
         )
         $header = h(
@@ -813,25 +813,25 @@ export const BCalendar = defineComponent({
         const navNextProps = {...navProps, flipH: !isRTL }
         const $prevDecadeIcon =
             this.normalizeSlot(SLOT_NAME_NAV_PEV_DECADE, navScope) ||
-            h(BIconChevronBarLeft, { ...navPrevProps })
+            h(BIconChevronBarLeft, {...navPrevProps })
         const $prevYearIcon =
             this.normalizeSlot(SLOT_NAME_NAV_PEV_YEAR, navScope) ||
-            h(BIconChevronDoubleLeft, { ...navPrevProps })
+            h(BIconChevronDoubleLeft, {...navPrevProps })
         const $prevMonthIcon =
             this.normalizeSlot(SLOT_NAME_NAV_PEV_MONTH, navScope) ||
-            h(BIconChevronLeft, { ...navPrevProps })
+            h(BIconChevronLeft, {...navPrevProps })
         const $thisMonthIcon =
             this.normalizeSlot(SLOT_NAME_NAV_THIS_MONTH, navScope) ||
-            h(BIconCircleFill, { ...navProps })
+            h(BIconCircleFill, {...navProps })
         const $nextMonthIcon =
             this.normalizeSlot(SLOT_NAME_NAV_NEXT_MONTH, navScope) ||
-            h(BIconChevronLeft, { ...navNextProps })
+            h(BIconChevronLeft, {...navNextProps })
         const $nextYearIcon =
             this.normalizeSlot(SLOT_NAME_NAV_NEXT_YEAR, navScope) ||
-            h(BIconChevronDoubleLeft, { ...navNextProps })
+            h(BIconChevronDoubleLeft, {...navNextProps })
         const $nextDecadeIcon =
             this.normalizeSlot(SLOT_NAME_NAV_NEXT_DECADE, navScope) ||
-            h(BIconChevronBarLeft, { ...navNextProps })
+            h(BIconChevronBarLeft, {...navNextProps })
 
         // Utility to create the date navigation buttons
         const makeNavBtn = (content, label, handler, btnDisabled, shortcut) => {
@@ -846,7 +846,7 @@ export const BCalendar = defineComponent({
                     'aria-keyshortcuts': shortcut || null,
                     onClick: btnDisabled ? null : handler
                 }, {
-                  default: () => [h('div', { 'aria-hidden': 'true' }, [content])]
+                    default: () => [h('div', { 'aria-hidden': 'true' }, [content])]
                 }
             )
         }
@@ -861,58 +861,59 @@ export const BCalendar = defineComponent({
                 'aria-hidden': disabled ? 'true' : null,
                 'aria-label': this.labelNav || null,
                 'aria-controls': gridId
-            }, { default: () => [
-                hideDecadeNav ? null : makeNavBtn(
-                    $prevDecadeIcon,
-                    this.labelPrevDecade,
-                    this.gotoPrevDecade,
-                    this.prevDecadeDisabled,
-                    'Ctrl+Alt+PageDown'
-                ),
-                makeNavBtn(
-                    $prevYearIcon,
-                    this.labelPrevYear,
-                    this.gotoPrevYear,
-                    this.prevYearDisabled,
-                    'Alt+PageDown'
-                ),
-                makeNavBtn(
-                    $prevMonthIcon,
-                    this.labelPrevMonth,
-                    this.gotoPrevMonth,
-                    this.prevMonthDisabled,
-                    'PageDown'
-                ),
-                makeNavBtn(
-                    $thisMonthIcon,
-                    this.labelCurrentMonth,
-                    this.gotoCurrentMonth,
-                    this.thisMonthDisabled,
-                    'Home'
-                ),
-                makeNavBtn(
-                    $nextMonthIcon,
-                    this.labelNextMonth,
-                    this.gotoNextMonth,
-                    this.nextMonthDisabled,
-                    'PageUp'
-                ),
-                makeNavBtn(
-                    $nextYearIcon,
-                    this.labelNextYear,
-                    this.gotoNextYear,
-                    this.nextYearDisabled,
-                    'Alt+PageUp'
-                ),
-                hideDecadeNav ? null : makeNavBtn(
-                    $nextDecadeIcon,
-                    this.labelNextDecade,
-                    this.gotoNextDecade,
-                    this.nextDecadeDisabled,
-                    'Ctrl+Alt+PageUp'
-                )
-            ] 
-          }
+            }, {
+                default: () => [
+                    hideDecadeNav ? null : makeNavBtn(
+                        $prevDecadeIcon,
+                        this.labelPrevDecade,
+                        this.gotoPrevDecade,
+                        this.prevDecadeDisabled,
+                        'Ctrl+Alt+PageDown'
+                    ),
+                    makeNavBtn(
+                        $prevYearIcon,
+                        this.labelPrevYear,
+                        this.gotoPrevYear,
+                        this.prevYearDisabled,
+                        'Alt+PageDown'
+                    ),
+                    makeNavBtn(
+                        $prevMonthIcon,
+                        this.labelPrevMonth,
+                        this.gotoPrevMonth,
+                        this.prevMonthDisabled,
+                        'PageDown'
+                    ),
+                    makeNavBtn(
+                        $thisMonthIcon,
+                        this.labelCurrentMonth,
+                        this.gotoCurrentMonth,
+                        this.thisMonthDisabled,
+                        'Home'
+                    ),
+                    makeNavBtn(
+                        $nextMonthIcon,
+                        this.labelNextMonth,
+                        this.gotoNextMonth,
+                        this.nextMonthDisabled,
+                        'PageUp'
+                    ),
+                    makeNavBtn(
+                        $nextYearIcon,
+                        this.labelNextYear,
+                        this.gotoNextYear,
+                        this.nextYearDisabled,
+                        'Alt+PageUp'
+                    ),
+                    hideDecadeNav ? null : makeNavBtn(
+                        $nextDecadeIcon,
+                        this.labelNextDecade,
+                        this.gotoNextDecade,
+                        this.nextDecadeDisabled,
+                        'Ctrl+Alt+PageUp'
+                    )
+                ]
+            }
         )
 
         // Caption for calendar grid
@@ -923,8 +924,7 @@ export const BCalendar = defineComponent({
                 'aria-live': isLive ? 'polite' : null,
                 'aria-atomic': isLive ? 'true' : null,
                 key: 'grid-caption'
-            },
-            { default: () => this.formatYearMonth(this.calendarFirstDay) }
+            }, { default: () => this.formatYearMonth(this.calendarFirstDay) }
         )
 
         // Calendar weekday headings
@@ -960,34 +960,28 @@ export const BCalendar = defineComponent({
                             class: ['btn border-0 rounded-circle text-nowrap', {
                                 // Give the fake button a focus ring
                                 focus: isActive && this.gridHasFocus,
-                                    // Styling
-                                    disabled: day.isDisabled || disabled,
-                                    active: isSelected, // makes the button look "pressed"
-                                    // Selected date style (need to computed from variant)
-                                    [this.computedVariant]: isSelected,
-                                    // Today day style (if not selected), same variant color as selected date
-                                    [this.computedTodayVariant]:
-                                    isToday && highlightToday && !isSelected && day.isThisMonth,
-                                    // Non selected/today styling
-                                    'btn-outline-light': !(isToday && highlightToday) && !isSelected && !isActive,
-                                    'btn-light': !(isToday && highlightToday) && !isSelected && isActive,
-                                    // Text styling
-                                    'text-muted': !day.isThisMonth && !isSelected,
-                                    'text-dark':
+                                // Styling
+                                disabled: day.isDisabled || disabled,
+                                active: isSelected, // makes the button look "pressed"
+                                // Selected date style (need to computed from variant)
+                                [this.computedVariant]: isSelected,
+                                // Today day style (if not selected), same variant color as selected date
+                                [this.computedTodayVariant]: isToday && highlightToday && !isSelected && day.isThisMonth,
+                                // Non selected/today styling
+                                'btn-outline-light': !(isToday && highlightToday) && !isSelected && !isActive,
+                                'btn-light': !(isToday && highlightToday) && !isSelected && isActive,
+                                // Text styling
+                                'text-muted': !day.isThisMonth && !isSelected,
+                                'text-dark':
                                     !(isToday && highlightToday) && !isSelected && !isActive && day.isThisMonth,
-                                    'font-weight-bold': (isSelected || day.isThisMonth) && !day.isDisabled
+                                'font-weight-bold': (isSelected || day.isThisMonth) && !day.isDisabled
                             }],
                             onClick: () => this.onClickDay(day)
                         },
                         day.day
                     )
 
-                    let cellClasses = '';
-                    if (day.isDisabled) {
-                      cellClasses = 'bg-light';
-                    } else  {
-                      cellClasses = day.info.classes || '';
-                    }
+                    const cellClasses = (day.isDisabled) ? 'bg-light' : day.info.class || '';
 
                     return h(
                         'div', // Cell with button
@@ -1022,8 +1016,7 @@ export const BCalendar = defineComponent({
                 'div', {
                     class: ['row no-gutters'],
                     key: week[0].ymd
-                },
-                { default: () => $cells }
+                }, { default: () => $cells }
             )
         })
         $gridBody = h(
@@ -1040,7 +1033,7 @@ export const BCalendar = defineComponent({
             'div', {
                 class: ['b-calendar-grid-help border-top small text-muted text-center bg-light'],
                 id: gridHelpId
-                
+
             }, { default: () => [h('div', { class: ['small'] }, this.labelHelp)] }
         )
 

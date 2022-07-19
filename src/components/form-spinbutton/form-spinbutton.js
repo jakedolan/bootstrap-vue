@@ -1,4 +1,4 @@
-import { defineComponent, h } from 'vue'
+import { defineComponent, h, withModifiers } from 'vue'
 import { NAME_FORM_SPINBUTTON } from '../../constants/components'
 import { EVENT_NAME_CHANGE } from '../../constants/events'
 import {
@@ -525,11 +525,12 @@ export const BFormSpinbutton = /*#__PURE__*/ defineComponent({
                     'border-right': !vertical
                 }],
                 ...this.computedSpinAttrs,
+                onFocus: withModifiers((e) => this.onFocusBlur(e), ['capture']),
+                onBlur: withModifiers((e) => this.onFocusBlur(e), ['capture']),
                 key: 'output',
                 ref: 'spinner'
             }, { default: () => [h('bdi', hasValue ? computedFormatter(value) : this.placeholder || '')] }
         )
-
         return h(
             'div', {
                 class: [
@@ -545,17 +546,12 @@ export const BFormSpinbutton = /*#__PURE__*/ defineComponent({
                     },
                     this.sizeFormClass,
                     this.stateClass,
-
-
                 ],
                 ...this.computedAttrs,
                 onKeydown: this.onKeydown,
                 onKeyup: this.onKeyup,
-                // We use capture phase (`!` prefix) since focus and blur do not bubble
-                // '!onFocus': this.onFocusBlur,
-                // '!onBlur': this.onFocusBlur
-                onFocus: this.onFocusBlur,
-                onBlur: this.onFocusBlur
+                onFocus: withModifiers((e) => this.onFocusBlur(e), ['capture']),
+                onBlur: withModifiers((e) => this.onFocusBlur(e), ['capture'])
             }, { default: () => vertical ? [$increment, $hidden, $spin, $decrement] : [$decrement, $hidden, $spin, $increment] }
 
         )

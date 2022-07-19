@@ -127,7 +127,7 @@ export const formRadioCheckGroupMixin = defineComponent({
                     // Individual radios or checks can be disabled in a group
                     disabled: option.disabled || false,
                     id: this.safeId(key),
-                    modelValue: option.value,
+                    value: option.value,
                     // We don't need to include these, since the input's will know they are inside here
                     // form: this.form || null,
                     // name: this.groupName,
@@ -152,7 +152,7 @@ export const formRadioCheckGroupMixin = defineComponent({
                 style: this.$attrs.style,
                 // Add `tabindex="-1"` to allow group to be focused if needed by screen readers
                 tabindex: '-1'
-            }, [this.normalizeSlot(SLOT_NAME_FIRST), $inputs, this.normalizeSlot()]
+            }, { default: () => [this.normalizeSlot(SLOT_NAME_FIRST), $inputs, this.normalizeSlot()] }
         )
     }
 })

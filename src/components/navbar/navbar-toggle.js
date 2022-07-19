@@ -74,7 +74,7 @@ export const BNavbarToggle = /*#__PURE__*/ defineComponent({
                     h('span', { class: `${CLASS_NAME}-icon` })
                 ]
             ), [
-                ['VBToggle', this.target]
+                [VBToggle, this.target]
             ])
     }
 })

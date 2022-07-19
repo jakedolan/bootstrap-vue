@@ -40,7 +40,7 @@ export const formStateMixin = defineComponent({
             if (ariaInvalid === true || ariaInvalid === 'true' || ariaInvalid === '') {
                 return 'true'
             }
-            return this.computedState === false ? 'true' : ariaInvalid
+            return this.computedState === false ? 'true' : null 
         }
     }
 })

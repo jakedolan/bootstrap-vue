@@ -20,6 +20,7 @@ import { listenOnRootMixin } from '../../mixins/listen-on-root'
 import { listenersMixin } from '../../mixins/listeners'
 import { normalizeSlotMixin } from '../../mixins/normalize-slot'
 import { normalizeSlot } from '../../utils/normalize-slot'
+import { EVENT_NAME_CLICK } from '../../constants/events'
 
 
 // --- Constants ---
@@ -194,10 +195,10 @@ export const BLink = /*#__PURE__*/ defineComponent({
         const component = this.computedTag === 'a' ? this.computedTag : resolveComponent(this.computedTag);
 
         const componentAttrs = {
-          class: { active, disabled },
-          ...this.computedAttrs,
-          ...this.computedProps,
-          ...this.computedListeners
+            class: [{ active, disabled, }, this.computedAttrs.class],
+            ...(omit(this.computedAttrs, ['class'])),
+            ...this.computedProps,
+            ...this.computedListeners
         };
 
         return h(component, componentAttrs, {

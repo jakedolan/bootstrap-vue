@@ -1,4 +1,4 @@
-import { createWrapper, mount } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { waitNT, waitRAF } from '../../../tests/utils'
 import { BSidebar } from './sidebar'
 import { emitter } from '../../utils/emitter.js'
@@ -228,6 +228,12 @@ describe('sidebar', () => {
     })
 
     it('handles state sync requests', async() => {
+        const spyRootEventNameState = jest.fn()
+        const spyRootEventNameSyncState = jest.fn()
+
+        emitter.$on(ROOT_EVENT_NAME_STATE, spyRootEventNameState)
+        emitter.$on(ROOT_EVENT_NAME_SYNC_STATE, spyRootEventNameSyncState)
+
         const wrapper = mount(BSidebar, {
             attachTo: document.body,
             props: {
@@ -238,24 +244,26 @@ describe('sidebar', () => {
 
         expect(wrapper.vm).toBeDefined()
 
-        const rootWrapper = createWrapper(wrapper.vm.$root)
         await waitNT(wrapper.vm)
         await waitRAF()
         await waitRAF()
-        expect(rootWrapper.emitted(ROOT_EVENT_NAME_STATE)).toBeDefined()
-        expect(rootWrapper.emitted(ROOT_EVENT_NAME_STATE).length).toBe(1)
-        expect(rootWrapper.emitted(ROOT_EVENT_NAME_STATE)[0][0]).toBe('test-sync') // ID
-        expect(rootWrapper.emitted(ROOT_EVENT_NAME_STATE)[0][1]).toBe(true) // Visible state
-        expect(rootWrapper.emitted(ROOT_EVENT_NAME_SYNC_STATE)).toBeUndefined()
 
-        rootWrapper.vm.$root.$emit(ROOT_ACTION_EVENT_NAME_REQUEST_STATE, 'test-sync')
+        expect(spyRootEventNameState).toHaveBeenCalled()
+        expect(spyRootEventNameState).toHaveBeenCalledTimes(1);
+        expect(spyRootEventNameState.mock.calls[0][0].id).toBe('test-sync') // ID
+        expect(spyRootEventNameState.mock.calls[0][0].state).toBe(true) // Visible state
+        expect(spyRootEventNameSyncState).not.toHaveBeenCalled()
+
+        emitter.$emit(ROOT_ACTION_EVENT_NAME_REQUEST_STATE, { id: 'test-sync' })
+
         await waitNT(wrapper.vm)
         await waitRAF()
         await waitRAF()
-        expect(rootWrapper.emitted(ROOT_EVENT_NAME_SYNC_STATE)).toBeDefined()
-        expect(rootWrapper.emitted(ROOT_EVENT_NAME_SYNC_STATE).length).toBe(1)
-        expect(rootWrapper.emitted(ROOT_EVENT_NAME_SYNC_STATE)[0][0]).toBe('test-sync') // ID
-        expect(rootWrapper.emitted(ROOT_EVENT_NAME_SYNC_STATE)[0][1]).toBe(true) // Visible state
+
+        expect(spyRootEventNameSyncState).toHaveBeenCalled()
+        expect(spyRootEventNameSyncState).toHaveBeenCalledTimes(1);
+        expect(spyRootEventNameSyncState.mock.calls[0][0].id).toBe('test-sync') // ID
+        expect(spyRootEventNameSyncState.mock.calls[0][0].state).toBe(true) // Visible state
 
         wrapper.unmount()
     })

@@ -37,10 +37,12 @@ describe('progress-bar', () => {
 
     it('has class bg-info when parent variant=info', async() => {
         const wrapper = mount(BProgressBar, {
-            provide: {
-                getBvProgress: () => ({
-                    variant: 'info'
-                })
+            global: {
+                provide: {
+                    getBvProgress: () => ({
+                        variant: 'info'
+                    })
+                }
             }
         })
 
@@ -52,14 +54,17 @@ describe('progress-bar', () => {
 
     it('has class bg-primary when prop variant=primary and parent variant=info', async() => {
         const wrapper = mount(BProgressBar, {
-            provide: {
-                getBvProgress: () => ({
-                    variant: 'info'
-                })
-            },
             props: {
                 variant: 'primary'
+            },
+            global: {
+                provide: {
+                    getBvProgress: () => ({
+                        variant: 'info'
+                    })
+                },
             }
+
         })
 
         expect(wrapper.classes()).toContain('bg-primary')
@@ -82,10 +87,12 @@ describe('progress-bar', () => {
 
     it('has class progress-bar-striped when parent prop striped set', async() => {
         const wrapper = mount(BProgressBar, {
-            provide: {
-                getBvProgress: () => ({
-                    striped: true
-                })
+            global: {
+                provide: {
+                    getBvProgress: () => ({
+                        striped: true
+                    })
+                }
             }
         })
 
@@ -111,10 +118,12 @@ describe('progress-bar', () => {
 
     it('has class progress-bar-animated and progress-bar-striped when parent prop animated set', async() => {
         const wrapper = mount(BProgressBar, {
-            provide: {
-                getBvProgress: () => ({
-                    animated: true
-                })
+            global: {
+                provide: {
+                    getBvProgress: () => ({
+                        animated: true
+                    })
+                }
             }
         })
 
@@ -158,14 +167,17 @@ describe('progress-bar', () => {
 
     it('has max set when parent max set', async() => {
         const wrapper = mount(BProgressBar, {
-            provide: {
-                getBvProgress: () => ({
-                    max: 50
-                })
-            },
             props: {
                 value: 25
+            },
+            global: {
+                provide: {
+                    getBvProgress: () => ({
+                        max: 50
+                    })
+                }
             }
+
         })
 
         expect(wrapper.attributes('style')).toContain('width: 50%;')

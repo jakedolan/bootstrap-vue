@@ -1,5 +1,6 @@
 import { defineComponent } from 'vue'
 import { NAME_FORM_RADIO } from '../../constants/components'
+import { EVENT_NAME_CHANGE } from '../../constants/events'
 import { looseEqual } from '../../utils/loose-equal'
 import { makePropsConfigurable } from '../../utils/props'
 import {
@@ -25,7 +26,8 @@ export const BFormRadio = /*#__PURE__*/ defineComponent({
         }
     },
     props,
-    expose: ['focus'],
+    emits: [EVENT_NAME_CHANGE, MODEL_EVENT_NAME],
+    expose: ['blur', 'focus'],
     computed: {
         bvGroup() {
             return this.getBvGroup()

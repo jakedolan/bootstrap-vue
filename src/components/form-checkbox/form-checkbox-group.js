@@ -1,9 +1,11 @@
 import { defineComponent } from 'vue'
 import { NAME_FORM_CHECKBOX_GROUP } from '../../constants/components'
+import { EVENT_NAME_CHANGE } from '../../constants/events'
 import { PROP_TYPE_ARRAY, PROP_TYPE_BOOLEAN } from '../../constants/props'
 import { sortKeys } from '../../utils/object'
 import { makeProp, makePropsConfigurable } from '../../utils/props'
 import {
+    MODEL_EVENT_NAME,
     MODEL_PROP_NAME,
     formRadioCheckGroupMixin,
     props as formRadioCheckGroupProps
@@ -33,6 +35,7 @@ export const BFormCheckboxGroup = /*#__PURE__*/ defineComponent({
             getBvCheckGroup: () => this
         }
     },
+    emits: [EVENT_NAME_CHANGE, MODEL_EVENT_NAME],
     props,
     computed: {
         isRadioGroup() {

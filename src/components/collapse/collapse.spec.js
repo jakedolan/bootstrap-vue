@@ -34,13 +34,13 @@ describe('collapse', () => {
 
     it('should have expected default structure', async() => {
         const wrapper = mount(BCollapse, {
-                // attachTo: document.body,
-                props: {
-                    // 'id' is a required prop
-                    id: 'test'
-                }
-            })
-            // const rootWrapper = createWrapper(wrapper.vm.$root)
+            // attachTo: document.body,
+            props: {
+                // 'id' is a required prop
+                id: 'test'
+            }
+        })
+
         expect(wrapper.vm).toBeDefined()
         await waitNT(wrapper.vm)
         await waitRAF()
@@ -185,7 +185,7 @@ describe('collapse', () => {
         expect(spyRootEventNameState.mock.calls[0][0].id).toBe('test')
         expect(spyRootEventNameState.mock.calls[0][0].show).toBe(false)
 
-        expect(wrapper.find('#test').wrapperElement.style.display).toEqual('none')
+        expect(wrapper.find('#test').element.style.display).toEqual('none')
 
         wrapper.unmount()
     })
@@ -226,7 +226,7 @@ describe('collapse', () => {
         expect(spyRootEventNameState.mock.calls[0][0].id).toBe('test') // ID
         expect(spyRootEventNameState.mock.calls[0][0].show).toBe(true) // Visible state
 
-        expect(wrapper.find('#test').wrapperElement.style.display).toEqual('')
+        expect(wrapper.find('#test').element.style.display).toEqual('')
 
         wrapper.unmount()
     })
@@ -257,7 +257,7 @@ describe('collapse', () => {
         await waitNT(wrapper.vm)
         await waitRAF()
 
-        expect(wrapper.find('#test').wrapperElement.style.display).toEqual('')
+        expect(wrapper.find('#test').element.style.display).toEqual('')
 
 
         expect(wrapper.emitted('show')).toBeUndefined() // Does not emit show when initially visible
@@ -322,7 +322,7 @@ describe('collapse', () => {
         expect(spyRootEventNameState.mock.calls[0][0].id).toBe('test') // ID
         expect(spyRootEventNameState.mock.calls[0][0].show).toBe(false) // Visible state
 
-        expect(wrapper.find('#test').wrapperElement.style.display).toEqual('none')
+        expect(wrapper.find('#test').element.style.display).toEqual('none')
 
         // Change visible prop
         await wrapper.setProps({
@@ -341,7 +341,7 @@ describe('collapse', () => {
         expect(spyRootEventNameState.mock.calls[1][0].id).toBe('test') // ID
         expect(spyRootEventNameState.mock.calls[1][0].show).toBe(true) // Visible state
 
-        expect(wrapper.find('#test').wrapperElement.style.display).toEqual('')
+        expect(wrapper.find('#test').element.style.display).toEqual('')
 
         wrapper.unmount()
     })
@@ -369,7 +369,7 @@ describe('collapse', () => {
         await waitNT(wrapper.vm)
         await waitRAF()
 
-        expect(wrapper.find('#test').wrapperElement.style.display).toEqual('')
+        expect(wrapper.find('#test').element.style.display).toEqual('')
         expect(wrapper.emitted('show')).toBeUndefined()
 
         // turned off this initial in component emit as it creates weird behavior when used with v-model.
@@ -397,7 +397,7 @@ describe('collapse', () => {
         expect(spyRootEventNameAccordion).toHaveBeenCalledTimes(2) // The event we just emitted
         expect(spyRootEventNameAccordion.mock.calls[1][0].id).toBe('test')
         expect(spyRootEventNameAccordion.mock.calls[1][0].accordion).toBe('bar')
-        expect(wrapper.find('#test').wrapperElement.style.display).toEqual('')
+        expect(wrapper.find('#test').element.style.display).toEqual('')
 
         // Should respond to accordion events
         emitter.$emit(ROOT_EVENT_NAME_ACCORDION, { id: 'nottest', accordion: 'foo' })
@@ -415,7 +415,7 @@ describe('collapse', () => {
         expect(spyRootEventNameAccordion.mock.calls[2][0].id).toBe('nottest')
         expect(spyRootEventNameAccordion.mock.calls[2][0].accordion).toBe('foo')
 
-        expect(wrapper.find('#test').wrapperElement.style.display).toEqual('none')
+        expect(wrapper.find('#test').element.style.display).toEqual('none')
 
         // Toggling this closed collapse emits accordion event
         emitter.$emit(ROOT_ACTION_EVENT_NAME_TOGGLE, { id: 'test' })
@@ -432,7 +432,7 @@ describe('collapse', () => {
         expect(spyRootEventNameAccordion).toHaveBeenCalledTimes(4) // The event emitted by collapse
         expect(spyRootEventNameAccordion.mock.calls[3][0].id).toBe('test')
         expect(spyRootEventNameAccordion.mock.calls[3][0].accordion).toBe('foo')
-        expect(wrapper.find('#test').wrapperElement.style.display).toEqual('')
+        expect(wrapper.find('#test').element.style.display).toEqual('')
 
         // Toggling this open collapse to be closed
         emitter.$emit(ROOT_ACTION_EVENT_NAME_TOGGLE, { id: 'test' })
@@ -440,7 +440,7 @@ describe('collapse', () => {
         await waitRAF()
         await waitNT(wrapper.vm)
         await waitRAF()
-        expect(wrapper.find('#test').wrapperElement.style.display).toEqual('none')
+        expect(wrapper.find('#test').element.style.display).toEqual('none')
 
         // Should respond to accordion events targeting this ID when closed
         emitter.$emit(ROOT_EVENT_NAME_ACCORDION, { id: 'test', accordion: 'foo' })
@@ -448,7 +448,7 @@ describe('collapse', () => {
         await waitRAF()
         await waitNT(wrapper.vm)
         await waitRAF()
-        expect(wrapper.find('#test').wrapperElement.style.display).toEqual('')
+        expect(wrapper.find('#test').element.style.display).toEqual('')
 
         wrapper.unmount()
     })
@@ -487,16 +487,16 @@ describe('collapse', () => {
         await waitNT(wrapper.vm)
         await waitRAF()
 
-        expect($collapse.find('#test').wrapperElement.classList).toContain('show')
-        expect($collapse.find('#test').wrapperElement.style.display).toEqual('')
+        expect($collapse.find('#test').element.classList).toContain('show')
+        expect($collapse.find('#test').element.style.display).toEqual('')
         expect($collapse.find('.nav-link').exists()).toBe(true)
 
         // Click on link
         await wrapper.find('.nav-link').trigger('click')
         await waitRAF()
         await waitRAF()
-        expect($collapse.find('#test').wrapperElement.classList).not.toContain('show')
-        expect($collapse.find('#test').wrapperElement.style.display).toEqual('none')
+        expect($collapse.find('#test').element.classList).not.toContain('show')
+        expect($collapse.find('#test').element.style.display).toEqual('none')
 
         wrapper.unmount()
     })
@@ -536,16 +536,16 @@ describe('collapse', () => {
         await waitNT(wrapper.vm)
         await waitRAF()
 
-        expect($collapse.find('#test').wrapperElement.classList).toContain('show')
-        expect($collapse.find('#test').wrapperElement.style.display).toEqual('')
+        expect($collapse.find('#test').element.classList).toContain('show')
+        expect($collapse.find('#test').element.style.display).toEqual('')
         expect($collapse.find('.nav-link').exists()).toBe(true)
 
         // Click on link
         await wrapper.find('.nav-link').trigger('click')
         await waitRAF()
         await waitRAF()
-        expect($collapse.find('#test').wrapperElement.classList).toContain('show')
-        expect($collapse.find('#test').wrapperElement.style.display).toEqual('')
+        expect($collapse.find('#test').element.classList).toContain('show')
+        expect($collapse.find('#test').element.style.display).toEqual('')
 
         wrapper.unmount()
     })
@@ -553,21 +553,21 @@ describe('collapse', () => {
 
     it('should not respond to root toggle event that does not match ID', async() => {
         const wrapper = mount(BCollapse, {
-                attachTo: document.body,
-                props: {
-                    // 'id' is a required prop
-                    id: 'test'
-                },
-                slots: {
-                    default: '<div>foobar</div>'
-                }
-            })
-            // const rootWrapper = createWrapper(wrapper.vm.$root)
+            attachTo: document.body,
+            props: {
+                // 'id' is a required prop
+                id: 'test'
+            },
+            slots: {
+                default: '<div>foobar</div>'
+            }
+        })
+
         expect(wrapper.vm).toBeDefined()
         await waitNT(wrapper.vm)
         await waitRAF()
-        expect(wrapper.find('#test').wrapperElement.classList).not.toContain('show')
-        expect(wrapper.find('#test').wrapperElement.style.display).toEqual('none')
+        expect(wrapper.find('#test').element.classList).not.toContain('show')
+        expect(wrapper.find('#test').element.style.display).toEqual('none')
 
         // Emit root event with different ID
         emitter.$emit(ROOT_ACTION_EVENT_NAME_TOGGLE, { id: 'not-test' })
@@ -575,8 +575,8 @@ describe('collapse', () => {
         await waitRAF()
         await waitNT(wrapper.vm)
         await waitRAF()
-        expect(wrapper.find('#test').wrapperElement.classList).not.toContain('show')
-        expect(wrapper.find('#test').wrapperElement.style.display).toEqual('none')
+        expect(wrapper.find('#test').element.classList).not.toContain('show')
+        expect(wrapper.find('#test').element.style.display).toEqual('none')
 
         wrapper.unmount()
     })
@@ -608,7 +608,7 @@ describe('collapse', () => {
         await waitNT(wrapper.vm)
         await waitRAF()
 
-        expect(wrapper.find("#test").wrapperElement.style.display).toEqual('')
+        expect(wrapper.find("#test").element.style.display).toEqual('')
         expect(wrapper.emitted('show')).toBeUndefined() // Does not emit show when initially visible
 
         // turned off this initial in component emit as it creates weird behavior when used with v-model.

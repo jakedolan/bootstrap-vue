@@ -41,4 +41,33 @@
  <li>on is flattend and listeners renamed from 'eventName' to 'onEventName'</li>
 </ul>
 
-<p><b>Starting to work through tests.</b></p>
+<h2>Tests</h2>
+<ul>
+  <li>Test Suites: 121 failed, 40 passed, 161 total</li>
+  <li>Tests:       776 failed, 674 passed, 1450 total</li>
+</ul>
+
+<h3>Components fully passing</h3>
+<ul>
+  <li>B-Alert</li>
+  <li>B-Button</li>
+  <li>B-Button-Close</li>
+  <li>B-Calendar</li>
+  <li>B-Collapse</li>  
+  <li>B-Dropdown</li>
+  <li>B-Dropdown-Item</li>
+  <li>B-Dropdown-Item-Button</li>
+  <li>B-Form-Checkbox</li>
+  <li>B-Form-Checkbox-Group</li>
+  <li>B-Form-Datepicker</li>
+  <li>B-Form-Radio</li>
+  <li>B-Form-Radio-Group</li>
+  <li>B-Form-Spinbutton</li>
+  <li>B-Form-Timepicker</li>
+  <li>B-Link</li>
+  <li>B-Modal</li>
+  <li>B-Sidebar</li>
+  <li>B-Time</li>
+  <li>VB-Hover</li>
+</ul>
+

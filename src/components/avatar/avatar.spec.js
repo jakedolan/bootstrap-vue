@@ -248,9 +248,11 @@ describe('avatar', () => {
 
     it('should handle b-avatar-group variant', async() => {
         const wrapper1 = mount(BAvatar, {
-            provide: {
-                // Emulate `undefined`/`null` props
-                getBvAvatarGroup: () => ({})
+            global: {
+                provide: {
+                    // Emulate `undefined`/`null` props
+                    getBvAvatarGroup: () => ({})
+                }
             }
         })
 
@@ -264,10 +266,12 @@ describe('avatar', () => {
         wrapper1.destroy()
 
         const wrapper2 = mount(BAvatar, {
-            provide: {
-                getBvAvatarGroup: () => ({
-                    variant: 'danger'
-                })
+            global: {
+                provide: {
+                    getBvAvatarGroup: () => ({
+                        variant: 'danger'
+                    })
+                }
             }
         })
 
@@ -287,9 +291,11 @@ describe('avatar', () => {
             props: {
                 size: '5em'
             },
-            provide: {
-                // Emulate `undefined`/`null` props
-                getBvAvatarGroup: () => ({})
+            global: {
+                provide: {
+                    // Emulate `undefined`/`null` props
+                    getBvAvatarGroup: () => ({})
+                }
             }
         })
 
@@ -306,10 +312,12 @@ describe('avatar', () => {
             props: {
                 size: '2em'
             },
-            provide: {
-                getBvAvatarGroup: () => ({
-                    size: '5em'
-                })
+            global: {
+                provide: {
+                    getBvAvatarGroup: () => ({
+                        size: '5em'
+                    })
+                }
             }
         })
 

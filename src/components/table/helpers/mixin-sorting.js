@@ -105,7 +105,8 @@ export const sortingMixin = defineComponent({
                 const field = this.computedFieldsObj[sortBy] || {}
                 const sortByFormatted = field.sortByFormatted
                 const formatter = isFunction(sortByFormatted) ?
-                    /* istanbul ignore next */ sortByFormatted :
+                    /* istanbul ignore next */
+                    sortByFormatted :
                     sortByFormatted ?
                     this.getFieldFormatter(sortBy) :
                     undefined
@@ -244,7 +245,7 @@ export const sortingMixin = defineComponent({
             }
 
             const sortable = field.sortable
-            const sortKey = !localSorting ? field.sortKey ?? key : key
+            const sortKey = !localSorting ? field.sortKey || key : key
 
             // Assemble the aria-sort attribute value
             const ariaSort =
