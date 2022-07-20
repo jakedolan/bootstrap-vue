@@ -5,8 +5,7 @@ import { COMPONENT_UID_KEY } from '../constants/components'
 import { defineComponent } from 'vue'
 import { PROP_TYPE_STRING } from '../constants/props'
 import { makeProp } from '../utils/props'
-
-const uuidv1 = require('uuid/v1');
+import { v1 as uuidv1 } from 'uuid';
 
 // --- Props ---
 

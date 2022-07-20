@@ -67,9 +67,7 @@ import { BvEvent } from '../../../utils/bv-event.class'
 import { createNewChildComponent } from '../../../utils/create-new-child-component'
 import { listenOnRootMixin } from '../../../mixins/listen-on-root'
 import { BVTooltipTemplate } from './bv-tooltip-template'
-
-
-const uuidv1 = require('uuid/v1');
+import { v1 as uuidv1 } from 'uuid';
 
 // --- Constants ---
 

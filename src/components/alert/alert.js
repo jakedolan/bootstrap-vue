@@ -17,8 +17,8 @@ import { makeProp, makePropsConfigurable } from '../../utils/props'
 import { normalizeSlotMixin } from '../../mixins/normalize-slot'
 import { BButtonClose } from '../button/button-close'
 import { BVTransition } from '../transition/bv-transition'
+import { v1 as uuidv1 } from 'uuid';
 
-const uuidv1 = require('uuid/v1');
 // --- Constants ---
 
 const {
