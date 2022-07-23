@@ -55,6 +55,7 @@ export function useModalManager() {
                 setScrollbar()
                 addClass(document.body, 'modal-open')
             } else if (newCount === 0 && oldCount > 0) {
+                console.log("## Resetting Scrollbar (watch)");
                 // Transitioning to modal(s) closed
                 resetScrollbar()
                 removeClass(document.body, 'modal-open')
@@ -72,7 +73,7 @@ export function useModalManager() {
 
     // Public methods
     function registerModal(modal) {
-            // Register the modal if not already registered
+        // Register the modal if not already registered
         if (modal && modals.value.indexOf(modal) === -1) {
             modals.value.push(modal)
         }
@@ -83,10 +84,20 @@ export function useModalManager() {
         if (index > -1) {
             // Remove modal from modals array
             modals.value.splice(index, 1)
-                // Reset the modal's data
+
+            // Reset the modal's data
             if (!modal._isBeingDestroyed && !modal._isDestroyed) {
                 resetModal(modal)
             }
+
+            if (modals.value.length === 0) {
+                console.log("## Resetting Scrollbar (unregister)");
+                // Transitioning to modal(s) closed
+                resetScrollbar()
+                removeClass(document.body, 'modal-open')
+            }
+
+
         }
     }
 
@@ -126,7 +137,7 @@ export function useModalManager() {
             modal.scrollbarWidth = localScrollbarWidth
             modal.isTop = index === localModals.length - 1
             modal.isBodyOverflowing = isBodyOverflowing.value
-            
+
         })
     }
 
@@ -134,7 +145,7 @@ export function useModalManager() {
         if (modal) {
             modal.zIndex = getBaseZIndex()
             modal.isTop = true
-            modal.isBodyOverflowing = false          
+            modal.isBodyOverflowing = false
         }
     }
 
