@@ -55,7 +55,6 @@ export function useModalManager() {
                 setScrollbar()
                 addClass(document.body, 'modal-open')
             } else if (newCount === 0 && oldCount > 0) {
-                console.log("## Resetting Scrollbar (watch)");
                 // Transitioning to modal(s) closed
                 resetScrollbar()
                 removeClass(document.body, 'modal-open')
@@ -91,7 +90,6 @@ export function useModalManager() {
             }
 
             if (modals.value.length === 0) {
-                console.log("## Resetting Scrollbar (unregister)");
                 // Transitioning to modal(s) closed
                 resetScrollbar()
                 removeClass(document.body, 'modal-open')
