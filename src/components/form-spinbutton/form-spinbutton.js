@@ -45,7 +45,7 @@ const {
     props: modelProps,
     prop: MODEL_PROP_NAME,
     event: MODEL_EVENT_NAME
-} = makeModelMixin('value', {
+} = makeModelMixin('modelValue', {
     // Should this really be String, to match native number inputs?
     type: PROP_TYPE_BOOLEAN_NUMBER
 })

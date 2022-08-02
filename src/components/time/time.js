@@ -479,7 +479,7 @@ export const BTime = /*#__PURE__*/ defineComponent({
         // Hours
         $spinners.push(
             makeSpinbutton(this.setHours, 'hours', 'b-time-hours', {
-                value: this.modelHours,
+                modelValue: this.modelHours,
                 max: 23,
                 step: 1,
                 formatterFn: this.formatHours,
@@ -493,7 +493,7 @@ export const BTime = /*#__PURE__*/ defineComponent({
         // Minutes
         $spinners.push(
             makeSpinbutton(this.setMinutes, 'minutes', 'b-time-minutes', {
-                value: this.modelMinutes,
+              modelValue: this.modelMinutes,
                 max: 59,
                 step: this.minutesStep || 1,
                 formatterFn: this.formatMinutes,
@@ -507,7 +507,7 @@ export const BTime = /*#__PURE__*/ defineComponent({
                 // Seconds
             $spinners.push(
                 makeSpinbutton(this.setSeconds, 'seconds', 'b-time-seconds', {
-                    value: this.modelSeconds,
+                  modelValue: this.modelSeconds,
                     max: 59,
                     step: this.secondsStep || 1,
                     formatterFn: this.formatSeconds,
@@ -524,7 +524,7 @@ export const BTime = /*#__PURE__*/ defineComponent({
             //   Note some LTR locales (i.e. zh) also place AM/PM to the left
             $spinners.push(
                 makeSpinbutton(this.setAmpm, 'ampm', 'b-time-ampm', {
-                    value: this.modelAmpm,
+                    modelValue: this.modelAmpm,
                     max: 1,
                     formatterFn: this.formatAmpm,
                     ariaLabel: this.labelAmpm,
