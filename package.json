@@ -18,8 +18,7 @@
         "tags": "dist/vetur-tags.json",
         "attributes": "dist/vetur-attributes.json"
     },
-    "contributors": [
-        {
+    "contributors": [{
             "name": "Pooya Parsa",
             "url": "https://github.com/pi0"
         },
@@ -83,7 +82,7 @@
         "bootstrap": ">=4.5.3 <5.0.0",
         "mitt": "^3.0.0",
         "popper.js": "^1.16.1",
-        "uuid": "^3.3.3",
+        "uuid": "^8.3.2",
         "vue-functional-data-merge": "^3.1.0"
     },
     "devDependencies": {
