@@ -29,7 +29,7 @@ describe('mixins/listen-on-document', () => {
                 }
             },
             render() {
-                return h('div', this.$slots.default)
+                return h('div', {}, { default: () => [this.$slots.default()] })
             }
         }
 
@@ -49,11 +49,13 @@ describe('mixins/listen-on-document', () => {
                 const props = {
                     offClickOne: this.offClickOne
                 }
-                return h('div', [
-                    h('span', ''),
-                    h('input', { type: 'text' }),
-                    this.destroy ? h() : h(TestComponent, { props }, 'test-component')
-                ])
+                return h('div', {}, {
+                    default: () => [
+                        h('span', ''),
+                        h('input', { type: 'text' }),
+                        this.destroy ? null : h(TestComponent, {...props }, { default: () => ['test-component'] })
+                    ]
+                })
             }
         }
 
@@ -88,6 +90,7 @@ describe('mixins/listen-on-document', () => {
         expect(spyFocusin).toHaveBeenCalledTimes(1)
 
         await wrapper.setProps({ offClickOne: true })
+
         await $span.trigger('click')
         expect(spyClick1).toHaveBeenCalledTimes(1)
         expect(spyClick2).toHaveBeenCalledTimes(2)
