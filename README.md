@@ -46,8 +46,8 @@
 
 <h2>Tests</h2>
 <ul>
-  <li>Test Suites: 121 failed, 40 passed, 161 total</li>
-  <li>Tests:       776 failed, 674 passed, 1450 total</li>
+  <li>Test Suites: 108 failed, 53 passed, 161 total</li>
+  <li>Tests:       769 failed, 837 passed, 1606 total</li>
 </ul>
 
 <h3>Components fully passing</h3>
@@ -76,8 +76,10 @@
 <ul>
   <li>VB-Hover</li>
 </ul>
-<h3>Mixins fully passing</h3>
+<h3>Mixins fully passing (100% passing that have any test coverage)</h3>
 <ul>
+  <li>clickOut</li>
+  <li>focusIn</li>
   <li>listenOnDocument</li>
   <li>listenOnRoot</li>
   <li>listenOnWindow</li>
