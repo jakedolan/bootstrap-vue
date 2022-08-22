@@ -44,11 +44,10 @@ describe('form-valid-feedback', () => {
 
     it('default should have user supplied id', async() => {
         const wrapper = mount(BFormValidFeedback, {
-            context: {
-                props: {
-                    id: 'foobar'
-                }
+            props: {
+                id: 'foobar'
             }
+
         })
 
         expect(wrapper.attributes('id')).toBe('foobar')
@@ -58,10 +57,8 @@ describe('form-valid-feedback', () => {
 
     it('should have tag small when tag=small', async() => {
         const wrapper = mount(BFormValidFeedback, {
-            context: {
-                props: {
-                    tag: 'small'
-                }
+            props: {
+                tag: 'small'
             }
         })
 
@@ -72,10 +69,8 @@ describe('form-valid-feedback', () => {
 
     it('should contain class d-block when force-show is set', async() => {
         const wrapper = mount(BFormValidFeedback, {
-            context: {
-                props: {
-                    forceShow: true
-                }
+            props: {
+                forceShow: true
             }
         })
 
@@ -86,10 +81,8 @@ describe('form-valid-feedback', () => {
 
     it('should contain class d-block when state is true', async() => {
         const wrapper = mount(BFormValidFeedback, {
-            context: {
-                props: {
-                    state: true
-                }
+            props: {
+                state: true
             }
         })
 
@@ -100,10 +93,8 @@ describe('form-valid-feedback', () => {
 
     it('should not contain class d-block when state is false', async() => {
         const wrapper = mount(BFormValidFeedback, {
-            context: {
-                props: {
-                    state: false
-                }
+            props: {
+                state: false
             }
         })
 
@@ -114,11 +105,9 @@ describe('form-valid-feedback', () => {
 
     it('should contain class d-block when force-show is true and state is false', async() => {
         const wrapper = mount(BFormValidFeedback, {
-            context: {
-                props: {
-                    forceShow: true,
-                    state: false
-                }
+            props: {
+                forceShow: true,
+                state: false
             }
         })
 
@@ -129,10 +118,8 @@ describe('form-valid-feedback', () => {
 
     it('should contain class valid-tooltip when tooltip is set', async() => {
         const wrapper = mount(BFormValidFeedback, {
-            context: {
-                props: {
-                    tooltip: true
-                }
+            props: {
+                tooltip: true
             }
         })
 
@@ -143,10 +130,8 @@ describe('form-valid-feedback', () => {
 
     it('should not contain class valid-feedback when tooltip is set', async() => {
         const wrapper = mount(BFormValidFeedback, {
-            context: {
-                props: {
-                    tooltip: true
-                }
+            props: {
+                tooltip: true
             }
         })
 

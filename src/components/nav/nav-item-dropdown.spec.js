@@ -1,3 +1,4 @@
+import { h } from 'vue';
 import { mount } from '@vue/test-utils'
 import { waitNT, waitRAF } from '../../../tests/utils'
 import { BNavItemDropdown } from './nav-item-dropdown'
@@ -169,7 +170,7 @@ describe('nav-item-dropdown', () => {
             scopedSlots: {
                 default (scope) {
                     slotScope = scope
-                    return this.$createElement('div', 'foo')
+                    return h('div', 'foo')
                 }
             }
         })
@@ -194,7 +195,7 @@ describe('nav-item-dropdown', () => {
             },
             scopedSlots: {
                 default () {
-                    return this.$createElement('div', 'bar')
+                    return h('div', 'bar')
                 }
             }
         })

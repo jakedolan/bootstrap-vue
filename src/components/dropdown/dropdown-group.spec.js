@@ -25,9 +25,7 @@ describe('dropdown > dropdown-header', () => {
 
     it('renders header element when prop header set', async() => {
         const wrapper = mount(BDropdownGroup, {
-            context: {
-                props: { header: 'foobar' }
-            }
+            props: { header: 'foobar' }
         })
 
         expect(wrapper.element.tagName).toBe('LI')
@@ -44,11 +42,9 @@ describe('dropdown > dropdown-header', () => {
 
     it('renders custom header element when prop header-tag set', async() => {
         const wrapper = mount(BDropdownGroup, {
-            context: {
-                props: {
-                    header: 'foobar',
-                    headerTag: 'h6'
-                }
+            props: {
+                header: 'foobar',
+                headerTag: 'h6'
             }
         })
 
@@ -64,9 +60,7 @@ describe('dropdown > dropdown-header', () => {
 
     it('user supplied id when prop id set', async() => {
         const wrapper = mount(BDropdownGroup, {
-            context: {
-                props: { id: 'foo' }
-            }
+            props: { id: 'foo' }
         })
 
         expect(wrapper.element.tagName).toBe('LI')

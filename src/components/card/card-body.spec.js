@@ -21,11 +21,10 @@ describe('card-body', () => {
 
     it('has custom root element when prop bodyTag is set', async() => {
         const wrapper = mount(BCardBody, {
-            context: {
-                props: {
-                    bodyTag: 'article'
-                }
+            props: {
+                bodyTag: 'article'
             }
+
         })
 
         expect(wrapper.element.tagName).toBe('ARTICLE')
@@ -36,9 +35,8 @@ describe('card-body', () => {
 
     it('has class bg-info when prop bodyBgVariant=info', async() => {
         const wrapper = mount(BCardBody, {
-            context: {
-                props: { bodyBgVariant: 'info' }
-            }
+            props: { bodyBgVariant: 'info' }
+
         })
 
         expect(wrapper.classes()).toContain('card-body')
@@ -50,9 +48,9 @@ describe('card-body', () => {
 
     it('has class text-info when prop bodyTextVariant=info', async() => {
         const wrapper = mount(BCardBody, {
-            context: {
-                props: { bodyTextVariant: 'info' }
-            }
+
+            props: { bodyTextVariant: 'info' }
+
         })
 
         expect(wrapper.classes()).toContain('card-body')
@@ -64,9 +62,8 @@ describe('card-body', () => {
 
     it('has class border-info when prop bodyBorderVariant=info', async() => {
         const wrapper = mount(BCardBody, {
-            context: {
-                props: { bodyBorderVariant: 'info' }
-            }
+            props: { bodyBorderVariant: 'info' }
+
         })
 
         expect(wrapper.classes()).toContain('card-body')
@@ -78,13 +75,12 @@ describe('card-body', () => {
 
     it('has all variant classes when all variant props set', async() => {
         const wrapper = mount(BCardBody, {
-            context: {
-                props: {
-                    bodyTextVariant: 'info',
-                    bodyBgVariant: 'danger',
-                    bodyBorderVariant: 'dark'
-                }
+            props: {
+                bodyTextVariant: 'info',
+                bodyBgVariant: 'danger',
+                bodyBorderVariant: 'dark'
             }
+
         })
 
         expect(wrapper.classes()).toContain('card-body')
@@ -98,11 +94,10 @@ describe('card-body', () => {
 
     it('has class "card-img-overlay" when overlay="true"', async() => {
         const wrapper = mount(BCardBody, {
-            context: {
-                props: {
-                    overlay: true
-                }
+            props: {
+                overlay: true
             }
+
         })
 
         expect(wrapper.classes()).toContain('card-body')
@@ -114,11 +109,10 @@ describe('card-body', () => {
 
     it('has card-title when title prop is set', async() => {
         const wrapper = mount(BCardBody, {
-            context: {
-                props: {
-                    title: 'title'
-                }
+            props: {
+                title: 'title'
             }
+
         })
 
         expect(wrapper.find('div.card-title')).toBeDefined()
@@ -128,11 +122,11 @@ describe('card-body', () => {
 
     it('has card-sub-title when sub-title prop is set', async() => {
         const wrapper = mount(BCardBody, {
-            context: {
-                props: {
-                    subTitle: 'sub title'
-                }
+
+            props: {
+                subTitle: 'sub title'
             }
+
         })
 
         expect(wrapper.find('div.card-subtitle')).toBeDefined()

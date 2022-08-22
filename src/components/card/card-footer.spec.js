@@ -21,11 +21,11 @@ describe('card-footer', () => {
 
     it('has custom root element when prop footerTag is set', async() => {
         const wrapper = mount(BCardFooter, {
-            context: {
-                props: {
-                    footerTag: 'footer'
-                }
+
+            props: {
+                footerTag: 'footer'
             }
+
         })
 
         expect(wrapper.element.tagName).toBe('FOOTER')
@@ -36,9 +36,8 @@ describe('card-footer', () => {
 
     it('has class bg-info when prop footerBgVariant=info', async() => {
         const wrapper = mount(BCardFooter, {
-            context: {
-                props: { footerBgVariant: 'info' }
-            }
+            props: { footerBgVariant: 'info' }
+
         })
 
         expect(wrapper.classes()).toContain('card-footer')
@@ -50,9 +49,9 @@ describe('card-footer', () => {
 
     it('has class text-info when prop footerTextVariant=info', async() => {
         const wrapper = mount(BCardFooter, {
-            context: {
-                props: { footerTextVariant: 'info' }
-            }
+
+            props: { footerTextVariant: 'info' }
+
         })
 
         expect(wrapper.classes()).toContain('card-footer')
@@ -64,9 +63,8 @@ describe('card-footer', () => {
 
     it('has class border-info when prop footerBorderVariant=info', async() => {
         const wrapper = mount(BCardFooter, {
-            context: {
-                props: { footerBorderVariant: 'info' }
-            }
+            props: { footerBorderVariant: 'info' }
+
         })
 
         expect(wrapper.classes()).toContain('card-footer')
@@ -78,13 +76,12 @@ describe('card-footer', () => {
 
     it('has all variant classes when all variant props set', async() => {
         const wrapper = mount(BCardFooter, {
-            context: {
-                props: {
-                    footerTextVariant: 'info',
-                    footerBgVariant: 'danger',
-                    footerBorderVariant: 'dark'
-                }
+            props: {
+                footerTextVariant: 'info',
+                footerBgVariant: 'danger',
+                footerBorderVariant: 'dark'
             }
+
         })
 
         expect(wrapper.classes()).toContain('card-footer')

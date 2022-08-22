@@ -25,10 +25,8 @@ describe('nav-item', () => {
 
     it('has attrs on link when link-attrs set', async() => {
         const wrapper = mount(BNavItem, {
-            context: {
-                props: {
-                    linkAttrs: { role: 'tab' }
-                }
+            props: {
+                linkAttrs: { role: 'tab' }
             }
         })
 
@@ -46,10 +44,8 @@ describe('nav-item', () => {
 
     it('has custom classes on link when link-classes set', async() => {
         const wrapper = mount(BNavItem, {
-            context: {
-                props: {
-                    linkClasses: ['foo', { bar: true }]
-                }
+            props: {
+                linkClasses: ['foo', { bar: true }]
             }
         })
 
@@ -66,9 +62,7 @@ describe('nav-item', () => {
 
     it('has class "disabled" on link when disabled set', async() => {
         const wrapper = mount(BNavItem, {
-            context: {
-                props: { disabled: true }
-            }
+            props: { disabled: true }
         })
 
         const link = wrapper.find('a')
@@ -83,9 +77,7 @@ describe('nav-item', () => {
     it('emits click event when clicked', async() => {
         const spy = jest.fn()
         const wrapper = mount(BNavItem, {
-            context: {
-                on: { click: spy }
-            }
+            attrs: { onClick: spy }
         })
 
         expect(spy).not.toHaveBeenCalled()
@@ -105,9 +97,9 @@ describe('nav-item', () => {
     it('does not emit a click event when clicked and disabled', async() => {
         const spy = jest.fn()
         const wrapper = mount(BNavItem, {
-            context: {
-                props: { disabled: true },
-                on: { click: spy }
+            props: { disabled: true },
+            attrs: {
+                onClick: spy
             }
         })
 

@@ -23,19 +23,19 @@ describe('mixins > listeners', () => {
                 listeners() {
                     const listeners = {}
                     if (this.listenClick) {
-                        listeners.click = event => this.$emit('click', event)
+                        listeners.onCllick = event => this.$emit('click', event)
                     }
                     if (this.listenFocus) {
-                        listeners.focus = event => this.$emit('focus', event)
+                        listeners.onFocus = event => this.$emit('focus', event)
                     }
                     if (this.listenBlur) {
-                        listeners.blur = event => this.$emit('blur', event)
+                        listeners.onBlur = event => this.$emit('blur', event)
                     }
                     return listeners
                 }
             },
             render() {
-                return h(BTest, { on: this.listeners })
+                return h(BTest, {...this.listeners })
             }
         }
 
@@ -98,9 +98,11 @@ describe('mixins > listeners', () => {
             render() {
                 input1RenderCount++
                 return h('input', {
-                    attrs: { value: this.value },
-                    domProps: { value: this.value },
-                    on: {...this.$listeners, input: e => this.$emit('input', e.target.value) }
+                    ...this.$attrs,
+                    value: this.value,
+                    // Unclear to me when this would and not be an attribute. So commented it out.
+                    // domProps: { value: this.value },
+                    onInput: e => this.$emit('input', e.target.value)
                 })
             }
         }

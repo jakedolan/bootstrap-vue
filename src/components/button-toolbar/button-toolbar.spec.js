@@ -84,9 +84,9 @@ describe('button-toolbar', () => {
         // Test App for keynav
         const App = {
             render() {
-                return h(BButtonToolbar, { props: { keyNav: true } }, [
+                return h(BButtonToolbar, { keyNav: true }, [
                     h(BButtonGroup, [h(BButton, 'a'), h(BButton, 'b')]),
-                    h(BButtonGroup, [h(BButton, { props: { disabled: true } }, 'c'), h(BButton, 'd')]),
+                    h(BButtonGroup, [h(BButton, { disabled: true }, 'c'), h(BButton, 'd')]),
                     h(BButtonGroup, [h(BButton, 'e'), h(BButton, 'f')])
                 ])
             }

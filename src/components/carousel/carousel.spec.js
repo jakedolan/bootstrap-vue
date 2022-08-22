@@ -28,7 +28,7 @@ const App = {
             h(BCarouselSlide, { key: `slide-${i}` }, `Slide ${i + 1}`)
         )
 
-        return h(BCarousel, { props }, $slides)
+        return h(BCarousel, {...props }, $slides)
     }
 }
 

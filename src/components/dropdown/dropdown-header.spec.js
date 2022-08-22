@@ -19,9 +19,7 @@ describe('dropdown > dropdown-header', () => {
 
     it('renders custom header element when prop tag set', async() => {
         const wrapper = mount(BDropdownHeader, {
-            context: {
-                props: { tag: 'h2' }
-            }
+            props: { tag: 'h2' }
         })
 
         expect(wrapper.element.tagName).toBe('LI')
@@ -38,9 +36,7 @@ describe('dropdown > dropdown-header', () => {
 
     it('user supplied id when prop id set', async() => {
         const wrapper = mount(BDropdownHeader, {
-            context: {
-                props: { id: 'foo' }
-            }
+            props: { id: 'foo' }
         })
 
         expect(wrapper.element.tagName).toBe('LI')

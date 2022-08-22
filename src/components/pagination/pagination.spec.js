@@ -666,12 +666,10 @@ describe('pagination', () => {
             },
             render() {
                 return h(BPagination, {
-                    props: {
-                        totalRows: 5,
-                        perPage: 1,
-                        value: 1
-                    },
-                    on: { 'page-click': this.onPageClick }
+                    totalRows: 5,
+                    perPage: 1,
+                    value: 1,
+                    onPageClick: this.onPageClick
                 })
             }
         }

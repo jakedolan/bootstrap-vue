@@ -4,10 +4,8 @@ import { BCardImgLazy } from './card-img-lazy'
 describe('card-image', () => {
     it('default has tag "img"', async() => {
         const wrapper = mount(BCardImgLazy, {
-            context: {
-                props: {
-                    src: 'https://picsum.photos/600/300/?image=25'
-                }
+            props: {
+                src: 'https://picsum.photos/600/300/?image=25'
             }
         })
 
@@ -19,10 +17,8 @@ describe('card-image', () => {
 
     it('default does not have alt attribute', async() => {
         const wrapper = mount(BCardImgLazy, {
-            context: {
-                props: {
-                    src: 'https://picsum.photos/600/300/?image=25'
-                }
+            props: {
+                src: 'https://picsum.photos/600/300/?image=25'
             }
         })
 
@@ -33,10 +29,8 @@ describe('card-image', () => {
 
     it('default has attributes width and height set to 1', async() => {
         const wrapper = mount(BCardImgLazy, {
-            context: {
-                props: {
-                    src: 'https://picsum.photos/600/300/?image=25'
-                }
+            props: {
+                src: 'https://picsum.photos/600/300/?image=25'
             }
         })
 
@@ -50,10 +44,8 @@ describe('card-image', () => {
 
     it('default has class "card-img"', async() => {
         const wrapper = mount(BCardImgLazy, {
-            context: {
-                props: {
-                    src: 'https://picsum.photos/600/300/?image=25'
-                }
+            props: {
+                src: 'https://picsum.photos/600/300/?image=25'
             }
         })
 
@@ -64,11 +56,9 @@ describe('card-image', () => {
 
     it('has class "card-img-top" when prop top=true', async() => {
         const wrapper = mount(BCardImgLazy, {
-            context: {
-                props: {
-                    src: 'https://picsum.photos/600/300/?image=25',
-                    top: true
-                }
+            props: {
+                src: 'https://picsum.photos/600/300/?image=25',
+                top: true
             }
         })
 
@@ -79,11 +69,9 @@ describe('card-image', () => {
 
     it('has class "card-img-bottom" when prop bottom=true', async() => {
         const wrapper = mount(BCardImgLazy, {
-            context: {
-                props: {
-                    src: 'https://picsum.photos/600/300/?image=25',
-                    bottom: true
-                }
+            props: {
+                src: 'https://picsum.photos/600/300/?image=25',
+                bottom: true
             }
         })
 
@@ -94,12 +82,10 @@ describe('card-image', () => {
 
     it('has class "card-img-top" when props top=true and bottom=true', async() => {
         const wrapper = mount(BCardImgLazy, {
-            context: {
-                props: {
-                    src: 'https://picsum.photos/600/300/?image=25',
-                    top: true,
-                    bottom: true
-                }
+            props: {
+                src: 'https://picsum.photos/600/300/?image=25',
+                top: true,
+                bottom: true
             }
         })
 
@@ -110,11 +96,9 @@ describe('card-image', () => {
 
     it('has class "card-img-left" when prop left=true', async() => {
         const wrapper = mount(BCardImgLazy, {
-            context: {
-                props: {
-                    src: 'https://picsum.photos/600/300/?image=25',
-                    left: true
-                }
+            props: {
+                src: 'https://picsum.photos/600/300/?image=25',
+                left: true
             }
         })
 
@@ -125,11 +109,9 @@ describe('card-image', () => {
 
     it('has class "card-img-right" when prop right=true', async() => {
         const wrapper = mount(BCardImgLazy, {
-            context: {
-                props: {
-                    src: 'https://picsum.photos/600/300/?image=25',
-                    right: true
-                }
+            props: {
+                src: 'https://picsum.photos/600/300/?image=25',
+                right: true
             }
         })
 
@@ -140,11 +122,9 @@ describe('card-image', () => {
 
     it('has attribute alt when prop alt set', async() => {
         const wrapper = mount(BCardImgLazy, {
-            context: {
-                props: {
-                    src: 'https://picsum.photos/600/300/?image=25',
-                    alt: 'image'
-                }
+            props: {
+                src: 'https://picsum.photos/600/300/?image=25',
+                alt: 'image'
             }
         })
 
@@ -156,11 +136,9 @@ describe('card-image', () => {
 
     it('has attribute alt when prop `alt` is empty', async() => {
         const wrapper = mount(BCardImgLazy, {
-            context: {
-                props: {
-                    src: 'https://picsum.photos/600/300/?image=25',
-                    alt: ''
-                }
+            props: {
+                src: 'https://picsum.photos/600/300/?image=25',
+                alt: ''
             }
         })
 
@@ -172,11 +150,9 @@ describe('card-image', () => {
 
     it('has attribute width when prop width set', async() => {
         const wrapper = mount(BCardImgLazy, {
-            context: {
-                props: {
-                    src: 'https://picsum.photos/600/300/?image=25',
-                    width: '600'
-                }
+            props: {
+                src: 'https://picsum.photos/600/300/?image=25',
+                width: '600'
             }
         })
 
@@ -188,11 +164,9 @@ describe('card-image', () => {
 
     it('has attribute height when prop height set', async() => {
         const wrapper = mount(BCardImgLazy, {
-            context: {
-                props: {
-                    src: 'https://picsum.photos/600/300/?image=25',
-                    height: '300'
-                }
+            props: {
+                src: 'https://picsum.photos/600/300/?image=25',
+                height: '300'
             }
         })
 

@@ -20,9 +20,7 @@ describe('dropdown > dropdown-divider', () => {
 
     it('renders custom root element when prop tag set', async() => {
         const wrapper = mount(BDropdownDivider, {
-            context: {
-                props: { tag: 'span' }
-            }
+            props: { tag: 'span' }
         })
 
         expect(wrapper.element.tagName).toBe('LI')

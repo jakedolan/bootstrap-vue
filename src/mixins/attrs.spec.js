@@ -12,7 +12,7 @@ describe('mixins > attrs', () => {
             mixins: [attrsMixin],
             inheritAttrs: false,
             render() {
-                return h('section', [h('article', { attrs: this.bvAttrs })])
+                return h('section', [h('article', {...this.bvAttrs })])
             }
         }
         const App = {
@@ -24,7 +24,7 @@ describe('mixins > attrs', () => {
                 }
             },
             render() {
-                return h(BTest, { attrs: this.attrs })
+                return h(BTest, {...this.attrs })
             }
         }
 
@@ -102,9 +102,11 @@ describe('mixins > attrs', () => {
             render() {
                 input1RenderCount++
                 return h('input', {
-                    attrs: {...this.$attrs, value: this.value },
-                    domProps: { value: this.value },
-                    on: { input: e => this.$emit('input', e.target.value) }
+                    ...this.$attrs,
+                    value: this.value,
+                    // Unclear to me when this would and not be an attribute. So commented it out.
+                    // domProps: { value: this.value },
+                    onInput: e => this.$emit('input', e.target.value)
                 })
             }
         }
@@ -114,9 +116,11 @@ describe('mixins > attrs', () => {
             render() {
                 input2RenderCount++
                 return h('input', {
-                    attrs: {...this.bvAttrs, value: this.value },
-                    domProps: { value: this.value },
-                    on: { input: e => this.$emit('input', e.target.value) }
+                    ...this.bvAttrs,
+                    value: this.value,
+                    // Unclear to me when this would and not be an attribute. So commented it out.
+                    // domProps: { value: this.value },
+                    onInput: e => this.$emit('input', e.target.value)
                 })
             }
         }

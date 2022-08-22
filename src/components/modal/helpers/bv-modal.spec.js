@@ -10,7 +10,7 @@ describe('$bvModal', () => {
     it('$bvModal.show() and $bvModal.hide() works', async() => {
         const App = {
             render() {
-                return h('b-modal', { props: { static: true, id: 'test1' } }, 'content')
+                return h('b-modal', { static: true, id: 'test1' }, 'content')
             }
         }
         const wrapper = mount(App, {

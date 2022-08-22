@@ -17,34 +17,28 @@ const App = {
         'customClass'
     ],
     render() {
-        return h('article', { attrs: { id: 'wrapper' } }, [
+        return h('article', { id: 'wrapper' }, [
             h(
                 'button', {
-                    attrs: {
-                        id: 'foo',
-                        type: 'button',
-                        disabled: this.btnDisabled || null,
-                        title: this.titleAttr || null
-                    }
+                    id: 'foo',
+                    type: 'button',
+                    disabled: this.btnDisabled || null,
+                    title: this.titleAttr || null
                 },
                 'text'
             ),
             h(
                 BPopover, {
-                    attrs: {
-                        id: 'bar',
-                        'data-foo': 'bar'
-                    },
-                    props: {
-                        target: 'foo',
-                        triggers: this.triggers,
-                        show: this.show,
-                        disabled: this.disabled,
-                        noFade: this.noFade || false,
-                        variant: this.variant,
-                        customClass: this.customClass
-                    }
-                }, [h('template', { slot: 'title' }, this.$slots.title), this.$slots.default || '']
+                    id: 'bar',
+                    'data-foo': 'bar',
+                    target: 'foo',
+                    triggers: this.triggers,
+                    show: this.show,
+                    disabled: this.disabled,
+                    noFade: this.noFade || false,
+                    variant: this.variant,
+                    customClass: this.customClass
+                }, [h('template', { slot: 'title' }, { default: () => [this.$slots.title()] }), this.$slots.default() || '']
             )
         ])
     }

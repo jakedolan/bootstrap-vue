@@ -37,26 +37,24 @@ const App = {
             delay: this.delay
         }
         const wrapperData = {
-            attrs: { id: 'wrapper' },
+            id: 'wrapper',
             // Class to simulate being in a modal
             class: { 'modal-content': !!this.isModal }
         }
         return h('article', wrapperData, [
             h(
                 'button', {
-                    attrs: {
-                        id: 'foo',
-                        type: 'button',
-                        disabled: this.btnDisabled || null,
-                        title: this.titleAttr || null
-                    },
+                    id: 'foo',
+                    type: 'button',
+                    disabled: this.btnDisabled || null,
+                    title: this.titleAttr || null,
                     ref: 'target'
                 },
                 'text'
             ),
-            typeof this.$slots.default === `undefined` || !this.$slots.default ?
-            h(BTooltip, { props: tipProps }) :
-            h(BTooltip, { props: tipProps }, this.$slots.default)
+            typeof this.$slots.default() === `undefined` || !this.$slots.default() ?
+            h(BTooltip, {...tipProps }) :
+            h(BTooltip, {...tipProps }, { default: () => [this.$slots.default] })
         ])
     }
 }

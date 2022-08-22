@@ -1,3 +1,4 @@
+import { h } from 'vue';
 import { mount } from '@vue/test-utils'
 import { waitNT } from '../../../tests/utils'
 import { normalizeFields } from './helpers/normalize-fields'
@@ -57,7 +58,7 @@ describe('table > colgroup', () => {
                 'table-colgroup': function(scope) {
                     fields = scope.fields
                     columns = scope.columns
-                    return this.$createElement('col', { attrs: { span: columns } })
+                    return h('col', { span: columns })
                 }
             }
         })

@@ -22,9 +22,7 @@ describe('card-sub-title', () => {
 
     it('renders custom tag', async() => {
         const wrapper = mount(BCardSubTitle, {
-            context: {
-                props: { subTitleTag: 'div' }
-            }
+            props: { subTitleTag: 'div' }
         })
 
         expect(wrapper.element.tagName).toBe('DIV')
@@ -34,9 +32,7 @@ describe('card-sub-title', () => {
 
     it('accepts subTitleTextVariant value', async() => {
         const wrapper = mount(BCardSubTitle, {
-            context: {
-                props: { subTitleTextVariant: 'info' }
-            }
+            props: { subTitleTextVariant: 'info' }
         })
 
         expect(wrapper.classes()).toContain('card-subtitle')

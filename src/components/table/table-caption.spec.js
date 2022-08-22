@@ -1,3 +1,4 @@
+import { h } from 'vue';
 import { mount } from '@vue/test-utils'
 import { waitNT } from '../../../tests/utils'
 import { BTable } from './table'
@@ -50,7 +51,7 @@ describe('table > caption', () => {
             scopedSlots: {
                 'table-caption': function(props) {
                     scope = props
-                    return this.$createElement('b', 'foobar')
+                    return h('b', 'foobar')
                 }
             }
         })

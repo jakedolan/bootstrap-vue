@@ -20,10 +20,8 @@ describe('card-text', () => {
 
     it('has custom root element "div" when prop text-tag=div', async() => {
         const wrapper = mount(BCardText, {
-            context: {
-                props: {
-                    textTag: 'div'
-                }
+            props: {
+                textTag: 'div'
             }
         })
 
@@ -35,9 +33,7 @@ describe('card-text', () => {
 
     it('accepts custom classes', async() => {
         const wrapper = mount(BCardText, {
-            context: {
-                class: ['foobar']
-            }
+            class: ['foobar']
         })
 
         expect(wrapper.classes()).toContain('card-text')

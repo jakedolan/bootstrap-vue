@@ -21,9 +21,7 @@ describe('card-title', () => {
 
     it('renders custom tag', async() => {
         const wrapper = mount(BCardTitle, {
-            context: {
-                props: { titleTag: 'div' }
-            }
+            props: { titleTag: 'div' }
         })
 
         expect(wrapper.element.tagName).toBe('DIV')

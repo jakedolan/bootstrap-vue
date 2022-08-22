@@ -1,3 +1,4 @@
+import { h } from 'vue';
 import { mount } from '@vue/test-utils'
 import { BTable } from './table'
 import { normalizeFields } from './helpers/normalize-fields'
@@ -63,7 +64,7 @@ describe('table > tbody bottom-row slot', () => {
                 'bottom-row': function(scope) {
                     fields = scope.fields
                     columns = scope.columns
-                    return this.$createElement('td', { attrs: { span: columns } }, 'foobar')
+                    return h('td', { span: columns }, 'foobar')
                 }
             }
         })

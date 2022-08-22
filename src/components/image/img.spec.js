@@ -32,10 +32,8 @@ describe('img', () => {
 
     it('default does not have attributes alt, width, or height', async() => {
         const wrapper = mount(BImg, {
-            context: {
-                props: {
-                    src: 'https://picsum.photos/600/300/?image=25'
-                }
+            props: {
+                src: 'https://picsum.photos/600/300/?image=25'
             }
         })
 

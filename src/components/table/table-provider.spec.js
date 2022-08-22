@@ -369,11 +369,10 @@ describe('table > provider functions', () => {
             },
             render() {
                 return h(BTable, {
-                    props: {
-                        items: this.provider,
-                        fields: this.fields,
-                        filter: this.filter
-                    }
+                    items: this.provider,
+                    fields: this.fields,
+                    filter: this.filter
+
                 })
             }
         }

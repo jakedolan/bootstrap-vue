@@ -654,11 +654,10 @@ describe('form-tags', () => {
             render() {
                 return h('form', [
                     h(BFormTags, {
-                        props: {
-                            value: ['one', 'two'],
-                            addOnChange: true,
-                            tagValidator: tag => tag.length < 4
-                        }
+                        value: ['one', 'two'],
+                        addOnChange: true,
+                        tagValidator: tag => tag.length < 4
+
                     })
                 ])
             }

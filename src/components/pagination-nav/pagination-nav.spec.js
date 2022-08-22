@@ -419,13 +419,11 @@ describe('pagination-nav', () => {
             },
             render() {
                 return h(BPaginationNav, {
-                    props: {
-                        baseUrl: '#', // Needed to prevent JSDOM errors
-                        numberOfPages: 5,
-                        value: 1,
-                        limit: 10
-                    },
-                    on: { 'page-click': this.onPageClick }
+                    baseUrl: '#', // Needed to prevent JSDOM errors
+                    numberOfPages: 5,
+                    value: 1,
+                    limit: 10,
+                    onPageClick: this.onPageClick
                 })
             }
         }

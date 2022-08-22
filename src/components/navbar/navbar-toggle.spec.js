@@ -1,3 +1,4 @@
+import { h } from 'vue';
 import { mount } from '@vue/test-utils'
 import { waitNT, waitRAF } from '../../../tests/utils'
 import { BNavbarToggle } from './navbar-toggle'
@@ -85,7 +86,7 @@ describe('navbar-toggle', () => {
             scopedSlots: {
                 default (ctx) {
                     scope = ctx
-                    return this.$createElement('div', 'foobar')
+                    return h('div', 'foobar')
                 }
             }
         })

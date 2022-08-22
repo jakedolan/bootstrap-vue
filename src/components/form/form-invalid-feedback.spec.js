@@ -44,10 +44,8 @@ describe('form-invalid-feedback', () => {
 
     it('default should have user supplied id', async() => {
         const wrapper = mount(BFormInvalidFeedback, {
-            context: {
-                props: {
-                    id: 'foobar'
-                }
+            props: {
+                id: 'foobar'
             }
         })
 
@@ -58,10 +56,8 @@ describe('form-invalid-feedback', () => {
 
     it('should have tag small when tag=small', async() => {
         const wrapper = mount(BFormInvalidFeedback, {
-            context: {
-                props: {
-                    tag: 'small'
-                }
+            props: {
+                tag: 'small'
             }
         })
 
@@ -72,10 +68,8 @@ describe('form-invalid-feedback', () => {
 
     it('should contain class d-block when force-show is set', async() => {
         const wrapper = mount(BFormInvalidFeedback, {
-            context: {
-                props: {
-                    forceShow: true
-                }
+            props: {
+                forceShow: true
             }
         })
 
@@ -86,10 +80,8 @@ describe('form-invalid-feedback', () => {
 
     it('should contain class d-block when state is false', async() => {
         const wrapper = mount(BFormInvalidFeedback, {
-            context: {
-                props: {
-                    state: false
-                }
+            props: {
+                state: false
             }
         })
 
@@ -100,10 +92,8 @@ describe('form-invalid-feedback', () => {
 
     it('should not contain class d-block when state is true', async() => {
         const wrapper = mount(BFormInvalidFeedback, {
-            context: {
-                props: {
-                    state: true
-                }
+            props: {
+                state: true
             }
         })
 
@@ -114,11 +104,9 @@ describe('form-invalid-feedback', () => {
 
     it('should contain class d-block when force-show is true and state is true', async() => {
         const wrapper = mount(BFormInvalidFeedback, {
-            context: {
-                props: {
-                    forceShow: true,
-                    state: true
-                }
+            props: {
+                forceShow: true,
+                state: true
             }
         })
 
@@ -129,10 +117,8 @@ describe('form-invalid-feedback', () => {
 
     it('should contain class invalid-tooltip when tooltip is set', async() => {
         const wrapper = mount(BFormInvalidFeedback, {
-            context: {
-                props: {
-                    tooltip: true
-                }
+            props: {
+                tooltip: true
             }
         })
 
@@ -143,10 +129,8 @@ describe('form-invalid-feedback', () => {
 
     it('should not contain class invalid-feedback when tooltip is set', async() => {
         const wrapper = mount(BFormInvalidFeedback, {
-            context: {
-                props: {
-                    tooltip: true
-                }
+            props: {
+                tooltip: true
             }
         })
 
@@ -157,9 +141,7 @@ describe('form-invalid-feedback', () => {
 
     it('should have children in the default slot when supplied', async() => {
         const wrapper = mount(BFormInvalidFeedback, {
-            context: {
-                children: ['foo', '<span>bar</span>']
-            }
+            children: ['foo', '<span>bar</span>']
         })
 
         expect(wrapper.text()).toContain('foo')

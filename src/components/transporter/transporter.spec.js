@@ -10,7 +10,7 @@ describe('utils/transporter component', () => {
     it('renders in-pace when disabled=true', async() => {
         const App = {
             render() {
-                return h(BVTransporter, { props: { disabled: true } }, [h('div', 'content')])
+                return h(BVTransporter, { disabled: true }, [h('div', 'content')])
             }
         }
 
@@ -28,8 +28,8 @@ describe('utils/transporter component', () => {
     it('does not render in-pace when disabled=false', async() => {
         const App = {
             render() {
-                return h(BVTransporter, { props: { disabled: false } }, [
-                    h('div', { attrs: { id: 'foobar' } }, 'content')
+                return h(BVTransporter, { disabled: false }, [
+                    h('div', { id: 'foobar' }, 'content')
                 ])
             }
         }

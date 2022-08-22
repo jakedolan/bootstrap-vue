@@ -126,9 +126,7 @@ describe('skeleton-img', () => {
 
     it('accepts custom classes', async() => {
         const wrapper = mount(BSkeletonImg, {
-            context: {
-                class: ['foobar']
-            }
+            class: ['foobar']
         })
 
         expect(wrapper.find('.b-aspect-content > .b-skeleton-img').exists()).toBe(true)
