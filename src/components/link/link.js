@@ -63,7 +63,6 @@ export const props = makePropsConfigurable(
         active: makeProp(PROP_TYPE_BOOLEAN, false),
         ariaDisabled: makeProp(PROP_TYPE_BOOLEAN, null),
         disabled: makeProp(PROP_TYPE_BOOLEAN, false),
-        emitter: makeProp(PROP_TYPE_OBJECT, null),
         href: makeProp(PROP_TYPE_STRING),
         // Must be `null` if no value provided
         rel: makeProp(PROP_TYPE_STRING, null),

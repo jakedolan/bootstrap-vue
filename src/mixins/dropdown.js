@@ -153,11 +153,7 @@ export const dropdownMixin = defineComponent({
                     this.visibleChangePrevented = true
                     this.visible = oldValue
                         // Just in case a child element triggered `this.hide(true)`
-                    if (this.emitter) {
-                        this.emitter.off(`${EVENT_NAME_HIDDEN}:${this[COMPONENT_UID_KEY]}`, this.focusToggler)
-                    } else {
-                        emitter.off(EVENT_NAME_HIDDEN, this.focusToggler)
-                    }
+                    emitter.off(EVENT_NAME_HIDDEN, this.focusToggler)
 
                     return
                 }
@@ -198,9 +194,6 @@ export const dropdownMixin = defineComponent({
         emitEvent(bvEvent) {
             const { type } = bvEvent
             this.emitOnRoot(getRootEventName(NAME_DROPDOWN, type), bvEvent)
-            if (this.emitter) {
-                this.emitter.emit(`${type}:${this[COMPONENT_UID_KEY]}`, bvEvent);
-            }
             this.$emit(type, bvEvent)
         },
         showMenu() {
@@ -241,9 +234,6 @@ export const dropdownMixin = defineComponent({
         hideMenu() {
             this.whileOpenListen(false)
             this.emitOnRoot(ROOT_EVENT_NAME_HIDDEN, { vm: this })
-            if (this.emitter) {
-                this.emitter.emit(`EVENT_NAME_HIDDEN:${this[COMPONENT_UID_KEY]}`);
-            }
             this.$emit(EVENT_NAME_HIDDEN)
             this.destroyPopper()
         },
@@ -326,13 +316,7 @@ export const dropdownMixin = defineComponent({
             this.visible = false
             if (refocus) {
                 // Child element is closing the dropdown on click
-
-                // REPLACING: this.$once(EVENT_NAME_HIDDEN, this.focusToggler)
-                if (this.emitter) {
-                    this.emitter.once(`${EVENT_NAME_HIDDEN}:${this[COMPONENT_UID_KEY]}`, this.focusToggler)
-                } else {
-                    emitter.once(EVENT_NAME_HIDDEN, this.focusToggler)
-                }
+                emitter.once(EVENT_NAME_HIDDEN, this.focusToggler)
             }
         },
         // Called only by a button that toggles the menu
@@ -393,13 +377,8 @@ export const dropdownMixin = defineComponent({
             if (this.visible) {
                 this.visible = false
                 stopEvent(event)
-                    // Return focus to original trigger button
-                    // REPLACING: this.$once(EVENT_NAME_HIDDEN, this.focusToggler)
-                if (this.emitter) {
-                    this.emitter.once(`${EVENT_NAME_HIDDEN}:${this[COMPONENT_UID_KEY]}`, this.focusToggler)
-                } else {
-                    emitter.once(EVENT_NAME_HIDDEN, this.focusToggler)
-                }
+                // Return focus to original trigger button
+                emitter.once(EVENT_NAME_HIDDEN, this.focusToggler)
             }
         },
         // Called only in split button mode, for the split button

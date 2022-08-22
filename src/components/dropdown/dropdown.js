@@ -29,8 +29,6 @@ export const props = makePropsConfigurable(
         html: makeProp(PROP_TYPE_STRING),
         // If `true`, only render menu contents when open
         lazy: makeProp(PROP_TYPE_BOOLEAN, false),
-        // Adding custom emitter
-        emitter: makeProp(PROP_TYPE_OBJECT, null),
         menuClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
         noCaret: makeProp(PROP_TYPE_BOOLEAN, false),
         role: makeProp(PROP_TYPE_STRING, 'menu'),

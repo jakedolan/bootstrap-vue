@@ -36,9 +36,6 @@ export const props = sortKeys({
     buttonOnly: makeProp(PROP_TYPE_BOOLEAN, false),
     // Applicable in button mode only
     buttonVariant: makeProp(PROP_TYPE_STRING, 'secondary'),
-
-    // Adding custom emitter
-    emitter: makeProp(PROP_TYPE_OBJECT, null),
     // This is the value shown in the label
     // Defaults back to `value`
     formattedValue: makeProp(PROP_TYPE_STRING),

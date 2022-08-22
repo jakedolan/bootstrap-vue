@@ -46,7 +46,6 @@ export const props = makePropsConfigurable(
         // If `true` (and `visible` is `true` on mount), animate initially visible
         accordion: makeProp(PROP_TYPE_STRING),
         appear: makeProp(PROP_TYPE_BOOLEAN, false),
-        emitter: makeProp(PROP_TYPE_OBJECT, null),
         isNav: makeProp(PROP_TYPE_BOOLEAN, false),
         tag: makeProp(PROP_TYPE_STRING, 'div')
     }),

@@ -68,7 +68,6 @@ export const props = makePropsConfigurable(
         bodyClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
         // `aria-label` for close button
         closeLabel: makeProp(PROP_TYPE_STRING, null),
-        emitter: makeProp(PROP_TYPE_OBJECT, null),
         footerClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
         footerTag: makeProp(PROP_TYPE_STRING, 'footer'),
         headerClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),

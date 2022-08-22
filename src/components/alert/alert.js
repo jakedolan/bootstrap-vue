@@ -61,7 +61,6 @@ export const props = makePropsConfigurable(
         ...modelProps,
         dismissLabel: makeProp(PROP_TYPE_STRING, 'Close'),
         dismissible: makeProp(PROP_TYPE_BOOLEAN, false),
-        emitter: makeProp(PROP_TYPE_OBJECT, null),
         fade: makeProp(PROP_TYPE_BOOLEAN, false),
         variant: makeProp(PROP_TYPE_STRING, 'info')
     }),

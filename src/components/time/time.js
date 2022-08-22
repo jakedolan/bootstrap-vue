@@ -79,8 +79,6 @@ export const props = makePropsConfigurable(
         // ID of label element
         ariaLabelledby: makeProp(PROP_TYPE_STRING),
         disabled: makeProp(PROP_TYPE_BOOLEAN, false),
-        // Adding custom emitter
-        emitter: makeProp(PROP_TYPE_OBJECT, null),
         footerTag: makeProp(PROP_TYPE_STRING, 'footer'),
         headerTag: makeProp(PROP_TYPE_STRING, 'header'),
         hidden: makeProp(PROP_TYPE_BOOLEAN, false),
@@ -493,7 +491,7 @@ export const BTime = /*#__PURE__*/ defineComponent({
         // Minutes
         $spinners.push(
             makeSpinbutton(this.setMinutes, 'minutes', 'b-time-minutes', {
-              modelValue: this.modelMinutes,
+                modelValue: this.modelMinutes,
                 max: 59,
                 step: this.minutesStep || 1,
                 formatterFn: this.formatMinutes,
@@ -507,7 +505,7 @@ export const BTime = /*#__PURE__*/ defineComponent({
                 // Seconds
             $spinners.push(
                 makeSpinbutton(this.setSeconds, 'seconds', 'b-time-seconds', {
-                  modelValue: this.modelSeconds,
+                    modelValue: this.modelSeconds,
                     max: 59,
                     step: this.secondsStep || 1,
                     formatterFn: this.formatSeconds,

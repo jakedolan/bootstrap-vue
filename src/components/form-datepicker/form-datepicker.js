@@ -61,8 +61,6 @@ export const props = makePropsConfigurable(
         closeButtonVariant: makeProp(PROP_TYPE_STRING, 'outline-secondary'),
         // Dark mode
         dark: makeProp(PROP_TYPE_BOOLEAN, false),
-        // Adding custom emitter
-        emitter: makeProp(PROP_TYPE_OBJECT, null),
         labelCloseButton: makeProp(PROP_TYPE_STRING, 'Close'),
         labelResetButton: makeProp(PROP_TYPE_STRING, 'Reset'),
         labelTodayButton: makeProp(PROP_TYPE_STRING, 'Select today'),
@@ -306,8 +304,6 @@ export const BFormDatepicker = /*#__PURE__*/ defineComponent({
                 class: 'b-form-datepicker',
                 ...pluckProps(formBtnLabelControlProps, $props),
                 formattedValue: localYMD ? this.formattedValue : '',
-
-                emitter: this.emitter,
                 id: this.safeId(),
                 lang: this.computedLang,
                 menuClass: [{ 'bg-dark': dark, 'text-light': dark }, this.menuClass],

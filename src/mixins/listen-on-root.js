@@ -15,12 +15,7 @@ const PROP = '$_rootListeners'
 export const listenOnRootMixin = defineComponent({
     computed: {
         bvEventRoot() {
-            if (this.emitter) {
-                return this.emitter
-            } else {
-                return emitter;
-            }
-
+            return emitter;
         }
     },
     created() {

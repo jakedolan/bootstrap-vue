@@ -63,6 +63,7 @@ import { BVTransition } from '../transition/bv-transition'
 import { BVTransporter } from '../transporter/transporter'
 import { BvModalEvent } from './helpers/bv-modal-event.class'
 import { useModalManager } from '../../composables/modal-manager'
+import { emitter } from '../../utils/emitter.js'
 
 // --- Constants ---
 
@@ -126,7 +127,6 @@ export const props = makePropsConfigurable(
         centered: makeProp(PROP_TYPE_BOOLEAN, false),
         contentClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
         dialogClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
-        emitter: makeProp(PROP_TYPE_OBJECT, null),
         footerBgVariant: makeProp(PROP_TYPE_STRING),
         footerBorderVariant: makeProp(PROP_TYPE_STRING),
         footerClass: makeProp(PROP_TYPE_ARRAY_OBJECT_STRING),
@@ -437,11 +437,7 @@ export const BModal = /*#__PURE__*/ defineComponent({
             if (this.isClosing) {
                 // If we are in the process of closing, wait until hidden before re-opening
                 /* istanbul ignore next */
-                if (this.emitter) {
-                    this.emitter.once(`${EVENT_NAME_HIDDEN}:${this[COMPONENT_UID_KEY]}`, this.show)
-                } else {
-                    this.$once(EVENT_NAME_HIDDEN, this.show)
-                }
+                emitter.once(EVENT_NAME_HIDDEN, this.show)
                 /* istanbul ignore next */
                 return
             }
@@ -611,9 +607,6 @@ export const BModal = /*#__PURE__*/ defineComponent({
             // We emit on `$root` first in case a global listener wants to cancel
             // the event first before the instance emits its event
             this.emitOnRoot(getRootEventName(NAME_MODAL, type), { bvEvent, componentId: bvEvent.componentId })
-            if (this.emitter) {
-                this.emitter.emit(`${type}:${this[COMPONENT_UID_KEY]}`, bvEvent);
-            }
             this.$emit(type, bvEvent)
         },
         // UI event handlers

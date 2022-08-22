@@ -49,9 +49,6 @@ export const props = makePropsConfigurable(
         ...timeProps,
         ...formBtnLabelControlProps,
         closeButtonVariant: makeProp(PROP_TYPE_STRING, 'outline-secondary'),
-
-        // Adding custom emitter
-        emitter: makeProp(PROP_TYPE_OBJECT, null),
         labelCloseButton: makeProp(PROP_TYPE_STRING, 'Close'),
         labelNowButton: makeProp(PROP_TYPE_STRING, 'Select now'),
         labelResetButton: makeProp(PROP_TYPE_STRING, 'Reset'),
@@ -256,8 +253,6 @@ export const BFormTimepicker = /*#__PURE__*/ defineComponent({
                 ...pluckProps(timeProps, $props),
                 value: localHMS,
                 hidden: !this.isVisible,
-                emitter: this.emitter,
-
                 onInput: this.onInput,
                 onContext: this.onContext,
                 ref: 'time'
@@ -270,7 +265,6 @@ export const BFormTimepicker = /*#__PURE__*/ defineComponent({
                 ...pluckProps(formBtnLabelControlProps, $props),
                 id: this.safeId(),
                 value: localHMS,
-                emitter: this.emitter,
                 formattedValue: localHMS ? this.formattedValue : '',
                 placeholder,
                 rtl: this.isRTL,
