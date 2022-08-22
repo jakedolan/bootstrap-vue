@@ -20,3 +20,4 @@ src/components/time/time.spec.js
 src/directives/hover/hover.spec.js
 src/mixins/listen-on-document.spec.js
 src/mixins/listen-on-root.spec.js
+src/mixins/listen-on-window.spec.js
