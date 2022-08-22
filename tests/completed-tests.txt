@@ -18,3 +18,4 @@ src/components/modal/modal.spec.js
 src/components/sidebar/sidebar.spec.js
 src/components/time/time.spec.js
 src/directives/hover/hover.spec.js
+src/mixins/listen-on-root.spec.js

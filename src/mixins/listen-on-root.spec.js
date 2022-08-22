@@ -1,6 +1,7 @@
 import { h } from 'vue';
 import { mount } from '@vue/test-utils'
 import { listenOnRootMixin } from './listen-on-root'
+import { emitter } from '../utils/emitter.js'
 
 describe('mixins/listen-on-root', () => {
     it('works', async() => {
@@ -14,7 +15,9 @@ describe('mixins/listen-on-root', () => {
                 this.listenOnRootOnce('root-once', spyOnce)
             },
             render() {
-                return h('div', this.$slots.default)
+                return h('div', {}, {
+                    default: () => [this.$slots.default()]
+                })
             }
         }
 
@@ -27,7 +30,9 @@ describe('mixins/listen-on-root', () => {
                 }
             },
             render() {
-                return h('div', [this.destroy ? h() : h(TestComponent, 'test-component')])
+                return h('div', {}, {
+                    default: () => [this.destroy ? null : h(TestComponent, {}, { default: () => ['test-component'] })]
+                })
             }
         }
 
@@ -43,21 +48,19 @@ describe('mixins/listen-on-root', () => {
         expect(spyOn).not.toHaveBeenCalled()
         expect(spyOnce).not.toHaveBeenCalled()
 
-        const $root = wrapper.vm.$root
-
-        $root.$emit('root-on')
+        emitter.emit('root-on')
         expect(spyOn).toHaveBeenCalledTimes(1)
         expect(spyOnce).not.toHaveBeenCalled()
 
-        $root.$emit('root-once')
+        emitter.emit('root-once')
         expect(spyOn).toHaveBeenCalledTimes(1)
         expect(spyOnce).toHaveBeenCalledTimes(1)
 
-        $root.$emit('root-on')
+        emitter.emit('root-on')
         expect(spyOn).toHaveBeenCalledTimes(2)
         expect(spyOnce).toHaveBeenCalledTimes(1)
 
-        $root.$emit('root-once')
+        emitter.emit('root-once')
         expect(spyOn).toHaveBeenCalledTimes(2)
         expect(spyOnce).toHaveBeenCalledTimes(1)
 
@@ -65,11 +68,11 @@ describe('mixins/listen-on-root', () => {
         expect(spyOn).toHaveBeenCalledTimes(2)
         expect(spyOnce).toHaveBeenCalledTimes(1)
 
-        $root.$emit('root-on')
+        emitter.emit('root-on')
         expect(spyOn).toHaveBeenCalledTimes(2)
         expect(spyOnce).toHaveBeenCalledTimes(1)
 
-        $root.$emit('root-once')
+        emitter.emit('root-once')
         expect(spyOn).toHaveBeenCalledTimes(2)
         expect(spyOnce).toHaveBeenCalledTimes(1)
 
