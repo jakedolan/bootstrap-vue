@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { mergeData } from 'vue-functional-data-merge'
 import { NAME_SKELETON_WRAPPER } from '../../constants/components'
 import { PROP_TYPE_BOOLEAN } from '../../constants/props'

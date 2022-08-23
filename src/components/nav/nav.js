@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { mergeData } from 'vue-functional-data-merge'
 import { NAME_NAV } from '../../constants/components'
 import { PROP_TYPE_BOOLEAN, PROP_TYPE_STRING } from '../../constants/props'
@@ -43,12 +43,13 @@ export const BNav = /*#__PURE__*/ defineComponent({
                 class: ['nav', {
                     'nav-tabs': tabs,
                     'nav-pills': pills && !tabs,
-                        'card-header-tabs': !vertical && cardHeader && tabs,
-                        'card-header-pills': !vertical && cardHeader && pills && !tabs,
-                        'flex-column': vertical,
-                        'nav-fill': !vertical && props.fill,
-                        'nav-justified': !vertical && props.justified, [computeJustifyContent(align)]: !vertical && align,
-                        small: props.small
+                    'card-header-tabs': !vertical && cardHeader && tabs,
+                    'card-header-pills': !vertical && cardHeader && pills && !tabs,
+                    'flex-column': vertical,
+                    'nav-fill': !vertical && props.fill,
+                    'nav-justified': !vertical && props.justified,
+                    [computeJustifyContent(align)]: !vertical && align,
+                    small: props.small
                 }]
             }),
             children

@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { mergeData } from 'vue-functional-data-merge'
 import { NAME_NAVBAR_NAV } from '../../constants/components'
 import { pick } from '../../utils/object'
@@ -33,8 +33,9 @@ export const BNavbarNav = /*#__PURE__*/ defineComponent({
             mergeData(data, {
                 class: ['navbar-nav', {
                     'nav-fill': props.fill,
-                        'nav-justified': props.justified, [computeJustifyContent(align)]: align,
-                        small: props.small
+                    'nav-justified': props.justified,
+                    [computeJustifyContent(align)]: align,
+                    small: props.small
                 }]
             }),
             children

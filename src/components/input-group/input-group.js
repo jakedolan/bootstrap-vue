@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { mergeData } from 'vue-functional-data-merge'
 import { NAME_INPUT_GROUP } from '../../constants/components'
 import { PROP_TYPE_STRING } from '../../constants/props'
@@ -42,7 +42,7 @@ export const BInputGroup = /*#__PURE__*/ defineComponent({
             $prepend = h(BInputGroupPrepend, [
                 hasPrependSlot ?
                 normalizeSlot(SLOT_NAME_PREPEND, slotScope, $scopedSlots, $slots) :
-                h(BInputGroupText, { ...htmlOrText(prependHtml, prepend) })
+                h(BInputGroupText, {...htmlOrText(prependHtml, prepend) })
             ])
         }
 
@@ -52,14 +52,15 @@ export const BInputGroup = /*#__PURE__*/ defineComponent({
             $append = h(BInputGroupAppend, [
                 hasAppendSlot ?
                 normalizeSlot(SLOT_NAME_APPEND, slotScope, $scopedSlots, $slots) :
-                h(BInputGroupText, { ...htmlOrText(appendHtml, append) })
+                h(BInputGroupText, {...htmlOrText(appendHtml, append) })
             ])
         }
 
         return h(
             props.tag,
             mergeData(data, {
-                class: ['input-group', { [`input-group-${size}`]: size }],
+                class: ['input-group', {
+                    [`input-group-${size}`]: size }],
                 id: props.id || null,
                 role: 'group'
             }), [$prepend, normalizeSlot(SLOT_NAME_DEFAULT, slotScope, $scopedSlots, $slots), $append]

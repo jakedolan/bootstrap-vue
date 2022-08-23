@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { mergeData } from 'vue-functional-data-merge'
 import { NAME_FORM_INVALID_FEEDBACK } from '../../constants/components'
 import { PROP_TYPE_BOOLEAN, PROP_TYPE_STRING } from '../../constants/props'
@@ -41,7 +41,7 @@ export const BFormInvalidFeedback = /*#__PURE__*/ defineComponent({
                 role: props.role || null,
                 'aria-live': ariaLive || null,
                 'aria-atomic': ariaLive ? 'true' : null
-                
+
             }),
             children
         )

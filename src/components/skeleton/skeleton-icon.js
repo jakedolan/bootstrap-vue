@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { mergeData } from 'vue-functional-data-merge'
 import { NAME_SKELETON_ICON } from '../../constants/components'
 import { PROP_TYPE_OBJECT, PROP_TYPE_STRING } from '../../constants/props'
@@ -34,8 +34,8 @@ export const BSkeletonIcon = /*#__PURE__*/ defineComponent({
             'div',
             mergeData(data, {
                 class: ['b-skeleton-icon-wrapper position-relative d-inline-block overflow-hidden', {
-                        [`b-skeleton-animate-${animation}`]: animation }
-                ]
+                    [`b-skeleton-animate-${animation}`]: animation
+                }]
             }), [$icon]
         )
     }

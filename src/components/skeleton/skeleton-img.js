@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { mergeData } from 'vue-functional-data-merge'
 import { NAME_SKELETON_IMG } from '../../constants/components'
 import { PROP_TYPE_BOOLEAN, PROP_TYPE_STRING } from '../../constants/props'
@@ -38,7 +38,8 @@ export const BSkeletonImg = /*#__PURE__*/ defineComponent({
                 animation,
                 variant,
                 class: {
-                    [`card-img-${cardImg}`]: cardImg }
+                    [`card-img-${cardImg}`]: cardImg
+                }
             })
         )
 

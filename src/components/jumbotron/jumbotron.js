@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { mergeData } from 'vue-functional-data-merge'
 import { NAME_JUMBOTRON } from '../../constants/components'
 import {
@@ -53,7 +53,8 @@ export const BJumbotron = /*#__PURE__*/ defineComponent({
             $header = h(
                 props.headerTag, {
                     class: {
-                        [`display-${headerLevel}`]: headerLevel },
+                        [`display-${headerLevel}`]: headerLevel
+                    },
                     ...(hasHeaderSlot ? {} : htmlOrText(headerHtml, header))
                 },
                 normalizeSlot(SLOT_NAME_HEADER, slotScope, $scopedSlots, $slots)
@@ -86,14 +87,15 @@ export const BJumbotron = /*#__PURE__*/ defineComponent({
         return h(
             props.tag,
             mergeData(data, {
-                class: ['jumbotron', 
-                        { 
-                          'jumbotron-fluid': props.fluid, 
-                          [`text-${textVariant}`]: textVariant, 
-                          [`bg-${bgVariant}`]: bgVariant, 
-                          [`border-${borderVariant}`]: borderVariant,
-                          border: borderVariant
-                        }]
+                class: ['jumbotron',
+                    {
+                        'jumbotron-fluid': props.fluid,
+                        [`text-${textVariant}`]: textVariant,
+                        [`bg-${bgVariant}`]: bgVariant,
+                        [`border-${borderVariant}`]: borderVariant,
+                        border: borderVariant
+                    }
+                ]
             }),
             $children
         )

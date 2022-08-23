@@ -1,13 +1,14 @@
 import { mount } from '@vue/test-utils'
 import { IconsPlugin } from '../../icons'
-import { Vue } from '../../vue'
 import { BSkeletonIcon } from './skeleton-icon'
-
-Vue.use(IconsPlugin)
 
 describe('skeleton-icon', () => {
     it('root element is DIV and contains SVG', async() => {
-        const wrapper = mount(BSkeletonIcon)
+        const wrapper = mount(BSkeletonIcon, {
+            global: {
+                plugins: [IconsPlugin]
+            }
+        })
 
         expect(wrapper).toBeDefined()
         expect(wrapper.element.tagName).toBe('DIV')
@@ -17,7 +18,11 @@ describe('skeleton-icon', () => {
     })
 
     it('default animation is `wave`', async() => {
-        const wrapper = mount(BSkeletonIcon)
+        const wrapper = mount(BSkeletonIcon, {
+            global: {
+                plugins: [IconsPlugin]
+            }
+        })
 
         expect(wrapper).toBeDefined()
         expect(wrapper.classes()).toContain('b-skeleton-animate-wave')
@@ -29,6 +34,9 @@ describe('skeleton-icon', () => {
         const wrapper = mount(BSkeletonIcon, {
             props: {
                 animation: 'fade'
+            },
+            global: {
+                plugins: [IconsPlugin]
             }
         })
 
@@ -42,6 +50,9 @@ describe('skeleton-icon', () => {
         const wrapper = mount(BSkeletonIcon, {
             props: {
                 icon: 'heart'
+            },
+            global: {
+                plugins: [IconsPlugin]
             }
         })
 
@@ -60,6 +71,9 @@ describe('skeleton-icon', () => {
                     fontScale: 2,
                     variant: 'primary'
                 }
+            },
+            global: {
+                plugins: [IconsPlugin]
             }
         })
 
@@ -73,7 +87,12 @@ describe('skeleton-icon', () => {
 
     it('accepts custom classes', async() => {
         const wrapper = mount(BSkeletonIcon, {
-            class: ['foobar']
+            attrs: {
+                class: ['foobar'],
+            },
+            global: {
+                plugins: [IconsPlugin]
+            }
         })
 
         expect(wrapper.classes()).toContain('b-skeleton-icon-wrapper')

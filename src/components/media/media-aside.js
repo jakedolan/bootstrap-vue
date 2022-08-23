@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { mergeData } from 'vue-functional-data-merge'
 import { NAME_MEDIA_ASIDE } from '../../constants/components'
 import { PROP_TYPE_BOOLEAN, PROP_TYPE_STRING } from '../../constants/props'
@@ -27,14 +27,15 @@ export const BMediaAside = /*#__PURE__*/ defineComponent({
             'start' :
             verticalAlign === 'bottom' ?
             'end' :
-            /* istanbul ignore next */ verticalAlign
+            /* istanbul ignore next */
+            verticalAlign
 
         return h(
             props.tag,
             mergeData(data, {
                 class: ['media-aside', {
-                        'media-aside-right': props.right, 
-                        [`align-self-${align}`]: align
+                    'media-aside-right': props.right,
+                    [`align-self-${align}`]: align
                 }]
             }),
             children

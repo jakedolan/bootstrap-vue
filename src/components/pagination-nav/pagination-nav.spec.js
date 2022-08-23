@@ -1,11 +1,8 @@
 import { h } from 'vue';
-import VueRouter from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import { mount } from '@vue/test-utils'
 import { waitNT, waitRAF } from '../../../tests/utils'
-import { Vue } from '../../vue'
 import { BPaginationNav } from './pagination-nav'
-
-Vue.use(VueRouter)
 
 // The majority of tests for the core of pagination mixin are performed
 // in pagination.spec.js. Here we just test the differences that
@@ -525,9 +522,6 @@ describe('pagination-nav', () => {
             await waitRAF()
             await waitNT(wrapper.vm)
 
-            expect(wrapper.vm.$router).toBeUndefined()
-            expect(wrapper.vm.$route).toBeUndefined()
-
             expect(wrapper.element.tagName).toBe('NAV')
             const $ul = wrapper.find('ul.pagination')
             expect($ul.exists()).toBe(true)
@@ -541,6 +535,8 @@ describe('pagination-nav', () => {
         })
 
         it('works with $router to detect path and linkGen returns location object', async() => {
+
+
             const App = {
                     components: { BPaginationNav },
                     methods: {
@@ -560,20 +556,24 @@ describe('pagination-nav', () => {
                 }
                 // Our router view component
             const FooRoute = {
-                    render() {
-                        return h('div', { class: 'foo-content' }, ['stub'])
-                    }
+                render() {
+                    return h('div', { class: 'foo-content' }, ['stub'])
                 }
-                // Create router instance
-            const router = new VueRouter({
+            }
+
+            // Testing Router: https://test-utils.vuejs.org/guide/advanced/vue-router.html#using-a-real-router
+            const router = createRouter({
+                history: createWebHistory(),
                 routes: [{ path: '/', component: FooRoute }, { path: '/:page', component: FooRoute }]
             })
-            const wrapper = mount(App, { router })
+            router.push('/')
+            await router.isReady()
+
+            const wrapper = mount(App, global: {
+                plugins: [router],
+            })
 
             expect(wrapper).toBeDefined()
-
-            // Wait for the router to initialize
-            await new Promise(resolve => router.onReady(resolve))
 
             // Wait for the guessCurrentPage to complete
             await waitNT(wrapper.vm)
@@ -586,7 +586,7 @@ describe('pagination-nav', () => {
             expect(wrapper.findComponent(BPaginationNav).vm.currentPage).toBe(2)
 
             // Push router to a new page
-            wrapper.vm.$router.push('/3')
+            router.push('/3')
 
             // Wait for the guessCurrentPage to complete
             await waitNT(wrapper.vm)
@@ -621,20 +621,26 @@ describe('pagination-nav', () => {
                 }
                 // Our router view component
             const FooRoute = {
-                    render() {
-                        return h('div', { class: 'foo-content' }, ['stub'])
-                    }
+                render() {
+                    return h('div', { class: 'foo-content' }, ['stub'])
                 }
-                // Create router instance
-            const router = new VueRouter({
+            }
+
+            // Testing Router: https://test-utils.vuejs.org/guide/advanced/vue-router.html#using-a-real-router
+            const router = createRouter({
+                history: createWebHistory(),
                 routes: [{ path: '/', component: FooRoute }, { path: '/:page', component: FooRoute }]
             })
-            const wrapper = mount(App, { router })
+            router.push('/')
+            await router.isReady()
+
+            const wrapper = mount(App, {
+                global: {
+                    plugins: [router],
+                }
+            })
 
             expect(wrapper).toBeDefined()
-
-            // Wait for the router to initialize
-            await new Promise(resolve => router.onReady(resolve))
 
             // Wait for the guessCurrentPage to complete
             await waitNT(wrapper.vm)
@@ -647,7 +653,7 @@ describe('pagination-nav', () => {
             expect(wrapper.findComponent(BPaginationNav).vm.currentPage).toBe(2)
 
             // Push router to a new page
-            wrapper.vm.$router.push('/3')
+            router.push('/3')
 
             // Wait for the guessCurrentPage to complete
             await waitNT(wrapper.vm)

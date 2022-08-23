@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { mergeData } from 'vue-functional-data-merge'
 import { NAME_DROPDOWN_TEXT } from '../../constants/components'
 import { PROP_TYPE_ARRAY_OBJECT_STRING, PROP_TYPE_STRING } from '../../constants/props'
@@ -28,7 +28,8 @@ export const BDropdownText = /*#__PURE__*/ defineComponent({
             h(
                 tag, {
                     class: ['b-dropdown-text', textClass, {
-                        [`text-${variant}`]: variant }],
+                        [`text-${variant}`]: variant
+                    }],
                     ...(props || {}),
                     ...(data.attrs || {}),
                     ref: 'text'

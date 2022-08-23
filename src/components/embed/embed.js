@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { mergeData } from 'vue-functional-data-merge'
 import { NAME_EMBED } from '../../constants/components'
 import { PROP_TYPE_STRING } from '../../constants/props'
@@ -33,7 +33,8 @@ export const BEmbed = /*#__PURE__*/ defineComponent({
 
         return h(
             props.tag, {
-                class: ['embed-responsive', { [`embed-responsive-${aspect}`]: aspect }],
+                class: ['embed-responsive', {
+                    [`embed-responsive-${aspect}`]: aspect }],
                 ref: data.ref
             }, [
                 h(

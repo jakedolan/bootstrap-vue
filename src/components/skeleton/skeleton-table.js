@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { mergeData } from 'vue-functional-data-merge'
 import { NAME_SKELETON_TABLE } from '../../constants/components'
 import {
@@ -48,7 +48,7 @@ export const BSkeletonTable = /*#__PURE__*/ defineComponent({
         const $thead = !props.hideHeader ? h('thead', [$thTr]) : h()
         const $tfoot = props.showFooter ? h('tfoot', [$thTr]) : h()
 
-        return h(BTableSimple, mergeData(data, { ...(props.tableProps || {}) }), [
+        return h(BTableSimple, mergeData(data, {...(props.tableProps || {}) }), [
             $thead,
             $tbody,
             $tfoot

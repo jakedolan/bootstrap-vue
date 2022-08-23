@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { mergeData } from 'vue-functional-data-merge'
 import { NAME_SKELETON } from '../../constants/components'
 import { PROP_TYPE_STRING } from '../../constants/props'
@@ -29,7 +29,7 @@ export const BSkeleton = /*#__PURE__*/ defineComponent({
         return h(
             'div',
             mergeData(data, {
-                
+
                 style: {
                     width: size || props.width,
                     height: size || props.height

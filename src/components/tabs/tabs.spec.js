@@ -600,216 +600,232 @@ describe('tabs', () => {
     })
 
     it('disabling active tab selects first non-disabled tab', async() => {
-            const App = {
-                props: {
-                    disabledTabs: { type: Array, default: () => [] }
-                },
-                render() {
-                    const { disabledTabs } = this
+        const App = {
+            props: {
+                disabledTabs: { type: Array, default: () => [] }
+            },
+            render() {
+                const { disabledTabs } = this
 
-                    return h(BTabs, { value: 2 }
-                    }, [
+                return h(BTabs, { value: 2 }, {
+                    default: () => [
                         h(BTab, { disabled: disabledTabs.indexOf(0) !== -1 }, 'Tab 1'),
                         h(BTab, { disabled: disabledTabs.indexOf(1) !== -1 }, 'Tab 2'),
                         h(BTab, { disabled: disabledTabs.indexOf(2) !== -1 }, 'Tab 3')
-                    ])
+                    ]
+                })
             }
         }
 
         const wrapper = mount(App)
 
-        await waitNT(wrapper.vm) expect(wrapper).toBeDefined()
+        await waitNT(wrapper.vm)
+        expect(wrapper).toBeDefined()
 
         const $tabs = wrapper.findComponent(BTabs)
-        expect($tabs).toBeDefined() expect($tabs.findAllComponents(BTab).length).toBe(3)
+
+        expect($tabs).toBeDefined()
+        expect($tabs.findAllComponents(BTab).length).toBe(3)
 
         const tab1 = $tabs.findAllComponents(BTab)[0]
         const tab2 = $tabs.findAllComponents(BTab)[1]
         const tab3 = $tabs.findAllComponents(BTab)[2]
 
         // Expect 3rd tab (index 2) to be active
-        expect($tabs.vm.currentTab).toBe(2) expect(tab1.vm.localActive).toBe(false) expect(tab2.vm.localActive).toBe(false) expect(tab3.vm.localActive).toBe(true)
+
+        expect($tabs.vm.currentTab).toBe(2)
+        expect(tab1.vm.localActive).toBe(false)
+        expect(tab2.vm.localActive).toBe(false)
+        expect(tab3.vm.localActive).toBe(true)
 
         // Disable 3rd tab
         await wrapper.setProps({ disabledTabs: [2] })
 
         // Expect 1st tab to be active
-        expect($tabs.vm.currentTab).toBe(0) expect(tab1.vm.localActive).toBe(true) expect(tab2.vm.localActive).toBe(false) expect(tab3.vm.localActive).toBe(false)
+
+        expect($tabs.vm.currentTab).toBe(0)
+        expect(tab1.vm.localActive).toBe(true)
+        expect(tab2.vm.localActive).toBe(false)
+        expect(tab3.vm.localActive).toBe(false)
 
         // Enable 3rd tab and Disable 1st tab
         await wrapper.setProps({ disabledTabs: [0] })
 
         // Expect 2nd tab to be active
-        expect($tabs.vm.currentTab).toBe(1) expect(tab1.vm.localActive).toBe(false) expect(tab2.vm.localActive).toBe(true) expect(tab3.vm.localActive).toBe(false)
+
+        expect($tabs.vm.currentTab).toBe(1)
+        expect(tab1.vm.localActive).toBe(false)
+        expect(tab2.vm.localActive).toBe(true)
+        expect(tab3.vm.localActive).toBe(false)
 
         wrapper.unmount()
     })
 
-it('tab title slots are reactive', async() => {
-    const App = {
-        render() {
-            return h(BTabs, { value: 2 }, [
-                h(BTab, { title: 'original' }, 'tab content')
-            ])
-        }
-    }
-
-    const wrapper = mount(App)
-
-    await waitNT(wrapper.vm)
-    expect(wrapper).toBeDefined()
-
-    const $tabs = wrapper.findComponent(BTabs)
-    expect($tabs).toBeDefined()
-    expect($tabs.findAllComponents(BTab).length).toBe(1)
-
-    // Expect tab button content to be `original`
-    expect(wrapper.find('.nav-link').text()).toBe('original')
-
-    // Get the BTab's instance
-    const tabVm = wrapper.findComponent(BTab).vm
-    expect(tabVm).toBeDefined()
-
-    // Change title slot content
-    tabVm.$slots.title = [h('span', 'foobar')]
-    tabVm.$forceUpdate()
-    await waitNT(wrapper.vm)
-
-    // Expect tab button content to be `foobar`
-    expect(wrapper.find('.nav-link').text()).toBe('foobar')
-
-    wrapper.unmount()
-})
-
-it('"active-nav-item-class" is applied to active nav item', async() => {
-    const activeNavItemClass = 'text-success'
-    const App = {
-        props: {
-            activeTab: { type: Number, default: 0 }
-        },
-        render() {
-            return h(BTabs, { value: this.activeTab, activeNavItemClass }, [
-                h(BTab, 'Tab 1'),
-                h(BTab, 'Tab 2'),
-                h(BTab, 'Tab 3')
-            ])
-        }
-    }
-
-    const wrapper = mount(App)
-
-    await waitNT(wrapper.vm)
-    expect(wrapper).toBeDefined()
-
-    const $tabs = wrapper.findComponent(BTabs)
-    expect($tabs).toBeDefined()
-    expect($tabs.findAllComponents(BTab).length).toBe(3)
-
-    const getNavItemByTab = tab => wrapper.find(`#${tab.$el.id}___BV_tab_button__`)
-
-    // Expect 1st tab (index 0) to be active
-    expect($tabs.vm.currentTab).toBe(0)
-    expect($tabs.vm.tabs[0].localActive).toBe(true)
-        // Expect 1st tabs nav item to have "active-nav-item-class" applied
-    expect(getNavItemByTab($tabs.vm.tabs[0]).classes(activeNavItemClass)).toBe(true)
-
-    // Set 2nd tab to be active
-    wrapper.setProps({ activeTab: 1 })
-    await waitNT(wrapper.vm)
-    expect($tabs.vm.currentTab).toBe(1)
-        // Expect 2nd tabs nav item to have "active-nav-item-class" applied
-    expect(getNavItemByTab($tabs.vm.tabs[1]).classes(activeNavItemClass)).toBe(true)
-        // Expect 1st tabs nav item to don't have "active-nav-item-class" applied anymore
-    expect(getNavItemByTab($tabs.vm.tabs[0]).classes(activeNavItemClass)).toBe(false)
-
-    wrapper.unmount()
-})
-
-it('"active-tab-class" is applied to active tab', async() => {
-    const activeTabClass = 'text-success'
-    const App = {
-        props: {
-            activeTab: { type: Number, default: 0 }
-        },
-        render() {
-            return h(BTabs, { value: this.activeTab, activeTabClass }, [
-                h(BTab, 'Tab 1'),
-                h(BTab, 'Tab 2'),
-                h(BTab, 'Tab 3')
-            ])
-        }
-    }
-
-    const wrapper = mount(App)
-
-    await waitNT(wrapper.vm)
-    expect(wrapper).toBeDefined()
-
-    const $tabs = wrapper.findComponent(BTabs)
-    expect($tabs).toBeDefined()
-    expect($tabs.findAllComponents(BTab).length).toBe(3)
-
-    // Expect 1st tab (index 0) to be active
-    expect($tabs.vm.currentTab).toBe(0)
-    expect($tabs.vm.tabs[0].localActive).toBe(true)
-        // Expect 1st tab to have "active-tab-class" applied
-    expect($tabs.vm.tabs[0].$el.classList.contains(activeTabClass)).toBe(true)
-
-    // Set 2nd tab to be active
-    await wrapper.setProps({ activeTab: 1 })
-    expect($tabs.vm.currentTab).toBe(1)
-        // Expect 2nd tab to have "active-tab-class" applied
-    expect($tabs.vm.tabs[1].$el.classList.contains(activeTabClass)).toBe(true)
-        // Expect 1st tab to don't have "active-tab-class" applied anymore
-    expect($tabs.vm.tabs[0].$el.classList.contains(activeTabClass)).toBe(false)
-
-    wrapper.unmount()
-})
-
-it('emits "changed" event when tabs change', async() => {
-    const App = {
-        props: {
-            tabs: {
-                type: Array,
-                default: () => ['Tab 1', 'Tab 2', 'Tab 3']
+    it('tab title slots are reactive', async() => {
+        const App = {
+            render() {
+                return h(BTabs, { value: 2 }, [
+                    h(BTab, { title: 'original' }, 'tab content')
+                ])
             }
-        },
-        render() {
-            return h(BTabs, this.tabs.map(tab => h(BTab, tab)))
         }
-    }
 
-    const wrapper = mount(App)
+        const wrapper = mount(App)
 
-    await waitNT(wrapper.vm)
-    expect(wrapper).toBeDefined()
+        await waitNT(wrapper.vm)
+        expect(wrapper).toBeDefined()
 
-    const $tabs = wrapper.findComponent(BTabs)
-    expect($tabs).toBeDefined()
-    expect($tabs.findAllComponents(BTab).length).toBe(3)
-    expect($tabs.emitted('changed')).toBeDefined()
-    expect($tabs.emitted('changed').length).toBe(1)
-    expect($tabs.emitted('changed')[0][0].length).toBe(3)
-    expect($tabs.emitted('changed')[0][1].length).toBe(0)
+        const $tabs = wrapper.findComponent(BTabs)
+        expect($tabs).toBeDefined()
+        expect($tabs.findAllComponents(BTab).length).toBe(1)
 
-    // Add a tab
-    await wrapper.setProps({ tabs: ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4'] })
-    await waitNT(wrapper.vm)
-    expect($tabs.findAllComponents(BTab).length).toBe(4)
-    expect($tabs.emitted('changed')).toBeDefined()
-    expect($tabs.emitted('changed').length).toBe(2)
-    expect($tabs.emitted('changed')[1][0].length).toBe(4)
-    expect($tabs.emitted('changed')[1][1].length).toBe(3)
+        // Expect tab button content to be `original`
+        expect(wrapper.find('.nav-link').text()).toBe('original')
 
-    // Remove a tabs
-    await wrapper.setProps({ tabs: ['Tab 1', 'Tab 2'] })
-    await waitNT(wrapper.vm)
-    expect($tabs.findAllComponents(BTab).length).toBe(2)
-    expect($tabs.emitted('changed')).toBeDefined()
-    expect($tabs.emitted('changed').length).toBe(3)
-    expect($tabs.emitted('changed')[2][0].length).toBe(2)
-    expect($tabs.emitted('changed')[2][1].length).toBe(4)
+        // Get the BTab's instance
+        const tabVm = wrapper.findComponent(BTab).vm
+        expect(tabVm).toBeDefined()
 
-    wrapper.unmount()
-})
+        // Change title slot content
+        tabVm.$slots.title = [h('span', 'foobar')]
+        tabVm.$forceUpdate()
+        await waitNT(wrapper.vm)
+
+        // Expect tab button content to be `foobar`
+        expect(wrapper.find('.nav-link').text()).toBe('foobar')
+
+        wrapper.unmount()
+    })
+
+    it('"active-nav-item-class" is applied to active nav item', async() => {
+        const activeNavItemClass = 'text-success'
+        const App = {
+            props: {
+                activeTab: { type: Number, default: 0 }
+            },
+            render() {
+                return h(BTabs, { value: this.activeTab, activeNavItemClass }, [
+                    h(BTab, 'Tab 1'),
+                    h(BTab, 'Tab 2'),
+                    h(BTab, 'Tab 3')
+                ])
+            }
+        }
+
+        const wrapper = mount(App)
+
+        await waitNT(wrapper.vm)
+        expect(wrapper).toBeDefined()
+
+        const $tabs = wrapper.findComponent(BTabs)
+        expect($tabs).toBeDefined()
+        expect($tabs.findAllComponents(BTab).length).toBe(3)
+
+        const getNavItemByTab = tab => wrapper.find(`#${tab.$el.id}___BV_tab_button__`)
+
+        // Expect 1st tab (index 0) to be active
+        expect($tabs.vm.currentTab).toBe(0)
+        expect($tabs.vm.tabs[0].localActive).toBe(true)
+            // Expect 1st tabs nav item to have "active-nav-item-class" applied
+        expect(getNavItemByTab($tabs.vm.tabs[0]).classes(activeNavItemClass)).toBe(true)
+
+        // Set 2nd tab to be active
+        wrapper.setProps({ activeTab: 1 })
+        await waitNT(wrapper.vm)
+        expect($tabs.vm.currentTab).toBe(1)
+            // Expect 2nd tabs nav item to have "active-nav-item-class" applied
+        expect(getNavItemByTab($tabs.vm.tabs[1]).classes(activeNavItemClass)).toBe(true)
+            // Expect 1st tabs nav item to don't have "active-nav-item-class" applied anymore
+        expect(getNavItemByTab($tabs.vm.tabs[0]).classes(activeNavItemClass)).toBe(false)
+
+        wrapper.unmount()
+    })
+
+    it('"active-tab-class" is applied to active tab', async() => {
+        const activeTabClass = 'text-success'
+        const App = {
+            props: {
+                activeTab: { type: Number, default: 0 }
+            },
+            render() {
+                return h(BTabs, { value: this.activeTab, activeTabClass }, [
+                    h(BTab, 'Tab 1'),
+                    h(BTab, 'Tab 2'),
+                    h(BTab, 'Tab 3')
+                ])
+            }
+        }
+
+        const wrapper = mount(App)
+
+        await waitNT(wrapper.vm)
+        expect(wrapper).toBeDefined()
+
+        const $tabs = wrapper.findComponent(BTabs)
+        expect($tabs).toBeDefined()
+        expect($tabs.findAllComponents(BTab).length).toBe(3)
+
+        // Expect 1st tab (index 0) to be active
+        expect($tabs.vm.currentTab).toBe(0)
+        expect($tabs.vm.tabs[0].localActive).toBe(true)
+            // Expect 1st tab to have "active-tab-class" applied
+        expect($tabs.vm.tabs[0].$el.classList.contains(activeTabClass)).toBe(true)
+
+        // Set 2nd tab to be active
+        await wrapper.setProps({ activeTab: 1 })
+        expect($tabs.vm.currentTab).toBe(1)
+            // Expect 2nd tab to have "active-tab-class" applied
+        expect($tabs.vm.tabs[1].$el.classList.contains(activeTabClass)).toBe(true)
+            // Expect 1st tab to don't have "active-tab-class" applied anymore
+        expect($tabs.vm.tabs[0].$el.classList.contains(activeTabClass)).toBe(false)
+
+        wrapper.unmount()
+    })
+
+    it('emits "changed" event when tabs change', async() => {
+        const App = {
+            props: {
+                tabs: {
+                    type: Array,
+                    default: () => ['Tab 1', 'Tab 2', 'Tab 3']
+                }
+            },
+            render() {
+                return h(BTabs, this.tabs.map(tab => h(BTab, tab)))
+            }
+        }
+
+        const wrapper = mount(App)
+
+        await waitNT(wrapper.vm)
+        expect(wrapper).toBeDefined()
+
+        const $tabs = wrapper.findComponent(BTabs)
+        expect($tabs).toBeDefined()
+        expect($tabs.findAllComponents(BTab).length).toBe(3)
+        expect($tabs.emitted('changed')).toBeDefined()
+        expect($tabs.emitted('changed').length).toBe(1)
+        expect($tabs.emitted('changed')[0][0].length).toBe(3)
+        expect($tabs.emitted('changed')[0][1].length).toBe(0)
+
+        // Add a tab
+        await wrapper.setProps({ tabs: ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4'] })
+        await waitNT(wrapper.vm)
+        expect($tabs.findAllComponents(BTab).length).toBe(4)
+        expect($tabs.emitted('changed')).toBeDefined()
+        expect($tabs.emitted('changed').length).toBe(2)
+        expect($tabs.emitted('changed')[1][0].length).toBe(4)
+        expect($tabs.emitted('changed')[1][1].length).toBe(3)
+
+        // Remove a tabs
+        await wrapper.setProps({ tabs: ['Tab 1', 'Tab 2'] })
+        await waitNT(wrapper.vm)
+        expect($tabs.findAllComponents(BTab).length).toBe(2)
+        expect($tabs.emitted('changed')).toBeDefined()
+        expect($tabs.emitted('changed').length).toBe(3)
+        expect($tabs.emitted('changed')[2][0].length).toBe(2)
+        expect($tabs.emitted('changed')[2][1].length).toBe(4)
+
+        wrapper.unmount()
+    })
 })

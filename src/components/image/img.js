@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { mergeData } from 'vue-functional-data-merge'
 import { NAME_IMG } from '../../constants/components'
 import {
@@ -115,12 +115,12 @@ export const BImg = /*#__PURE__*/ defineComponent({
         return h(
             'img',
             mergeData(data, {
-                    src,
-                    alt,
-                    width: width ? toString(width) : null,
-                    height: height ? toString(height) : null,
-                    srcset: srcset || null,
-                    sizes: sizes || null,
+                src,
+                alt,
+                width: width ? toString(width) : null,
+                height: height ? toString(height) : null,
+                srcset: srcset || null,
+                sizes: sizes || null,
                 class: {
                     'img-thumbnail': props.thumbnail,
                         'img-fluid': props.fluid || fluidGrow,

@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { mergeData } from 'vue-functional-data-merge'
 import { NAME_FORM_SELECT_OPTION } from '../../constants/components'
 import { PROP_TYPE_ANY, PROP_TYPE_BOOLEAN } from '../../constants/props'

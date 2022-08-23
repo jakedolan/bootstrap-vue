@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { mergeData } from 'vue-functional-data-merge'
 import { NAME_CARD_IMG_LAZY } from '../../constants/components'
 import { keys, omit, sortKeys } from '../../utils/object'

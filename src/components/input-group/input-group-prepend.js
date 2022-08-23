@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { mergeData } from 'vue-functional-data-merge'
 import { NAME_INPUT_GROUP_PREPEND } from '../../constants/components'
 import { omit } from '../../utils/object'
@@ -23,7 +23,7 @@ export const BInputGroupPrepend = /*#__PURE__*/ defineComponent({
         return h(
             BInputGroupAddon,
             mergeData(data, {
-                ...props, 
+                ...props,
                 append: false
             }),
             children

@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { mergeData } from 'vue-functional-data-merge'
 import { NAME_CONTAINER } from '../../constants/components'
 import { PROP_TYPE_BOOLEAN_STRING, PROP_TYPE_STRING } from '../../constants/props'

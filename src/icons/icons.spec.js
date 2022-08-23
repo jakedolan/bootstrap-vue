@@ -2,15 +2,15 @@ import { mount } from '@vue/test-utils'
 import { IconsPlugin } from './index'
 import { BIcon } from './icon'
 import { makeIcon } from './helpers/make-icon'
-import { Vue } from '../vue'
-
-Vue.use(IconsPlugin)
 
 describe('icons', () => {
     it('b-icon has expected structure', async() => {
         const wrapper = mount(BIcon, {
             props: {
                 icon: 'alarm-fill'
+            },
+            global: {
+                plugins: [IconsPlugin]
             }
         })
 
@@ -42,6 +42,9 @@ describe('icons', () => {
             props: {
                 icon: 'alarm-fill',
                 stacked: true
+            },
+            global: {
+                plugins: [IconsPlugin]
             }
         })
 
@@ -77,6 +80,9 @@ describe('icons', () => {
         const wrapper = mount(BIcon, {
             props: {
                 icon: ''
+            },
+            global: {
+                plugins: [IconsPlugin]
             }
         })
 
@@ -98,6 +104,9 @@ describe('icons', () => {
         const wrapper = mount(BIcon, {
             props: {
                 icon: undefined
+            },
+            global: {
+                plugins: [IconsPlugin]
             }
         })
 
@@ -115,6 +124,9 @@ describe('icons', () => {
         const wrapper = mount(BIcon, {
             props: {
                 icon: 'unknown-icon-name'
+            },
+            global: {
+                plugins: [IconsPlugin]
             }
         })
 
@@ -136,6 +148,9 @@ describe('icons', () => {
             props: {
                 icon: 'alarm-fill',
                 variant: 'danger'
+            },
+            global: {
+                plugins: [IconsPlugin]
             }
         })
 
@@ -161,6 +176,9 @@ describe('icons', () => {
             props: {
                 icon: 'alarm-fill',
                 fontScale: '1.25'
+            },
+            global: {
+                plugins: [IconsPlugin]
             }
         })
 
@@ -216,6 +234,9 @@ describe('icons', () => {
             props: {
                 icon: 'alarm-fill',
                 rotate: '45'
+            },
+            global: {
+                plugins: [IconsPlugin]
             }
         })
 
@@ -240,6 +261,9 @@ describe('icons', () => {
             props: {
                 icon: 'alarm-fill',
                 scale: '1.5'
+            },
+            global: {
+                plugins: [IconsPlugin]
             }
         })
 
@@ -264,6 +288,9 @@ describe('icons', () => {
             props: {
                 icon: 'alarm-fill',
                 flipH: true
+            },
+            global: {
+                plugins: [IconsPlugin]
             }
         })
 
@@ -288,6 +315,9 @@ describe('icons', () => {
             props: {
                 icon: 'alarm-fill',
                 flipV: true
+            },
+            global: {
+                plugins: [IconsPlugin]
             }
         })
 
@@ -313,6 +343,9 @@ describe('icons', () => {
                 icon: 'alarm-fill',
                 flipH: true,
                 flipV: true
+            },
+            global: {
+                plugins: [IconsPlugin]
             }
         })
 
@@ -338,6 +371,9 @@ describe('icons', () => {
                 icon: 'alarm-fill',
                 scale: '1.5',
                 flipH: true
+            },
+            global: {
+                plugins: [IconsPlugin]
             }
         })
 
@@ -363,6 +399,9 @@ describe('icons', () => {
                 icon: 'alarm-fill',
                 scale: '1.5',
                 flipV: true
+            },
+            global: {
+                plugins: [IconsPlugin]
             }
         })
 
@@ -389,6 +428,9 @@ describe('icons', () => {
                 scale: '1.5',
                 flipH: true,
                 flipV: true
+            },
+            global: {
+                plugins: [IconsPlugin]
             }
         })
 
@@ -414,6 +456,9 @@ describe('icons', () => {
                 icon: 'alarm-fill',
                 shiftH: 8,
                 shiftV: 16
+            },
+            global: {
+                plugins: [IconsPlugin]
             }
         })
 
@@ -440,6 +485,9 @@ describe('icons', () => {
                 rotate: 45,
                 shiftH: 8,
                 shiftV: 16
+            },
+            global: {
+                plugins: [IconsPlugin]
             }
         })
 
@@ -467,6 +515,9 @@ describe('icons', () => {
             props: {
                 icon: 'circle-fill',
                 animation: 'spin'
+            },
+            global: {
+                plugins: [IconsPlugin]
             }
         })
 
@@ -485,6 +536,9 @@ describe('icons', () => {
             props: {
                 icon: 'circle-fill',
                 title: 'Circle'
+            },
+            global: {
+                plugins: [IconsPlugin]
             }
         })
 
@@ -505,6 +559,9 @@ describe('icons', () => {
         const wrapper = mount(BIcon, {
             props: {
                 icon: 'circle-fill'
+            },
+            global: {
+                plugins: [IconsPlugin]
             }
         })
 

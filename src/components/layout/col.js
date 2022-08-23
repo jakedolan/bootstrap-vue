@@ -1,3 +1,4 @@
+import { h } from 'vue';
 import { mergeData } from 'vue-functional-data-merge'
 import { NAME_COL } from '../../constants/components'
 import {

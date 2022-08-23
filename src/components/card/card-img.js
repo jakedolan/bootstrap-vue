@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { mergeData } from 'vue-functional-data-merge'
 import { NAME_CARD_IMG } from '../../constants/components'
 import { PROP_TYPE_BOOLEAN } from '../../constants/props'
@@ -43,9 +43,9 @@ export const BCardImg = /*#__PURE__*/ defineComponent({
             'img',
             mergeData(data, {
                 class: baseClass,
-                src, 
-                alt, 
-                width, 
+                src,
+                alt,
+                width,
                 height
             })
         )

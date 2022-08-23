@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { mergeData } from 'vue-functional-data-merge'
 import { NAME_LIST_GROUP } from '../../constants/components'
 import {
@@ -31,7 +31,8 @@ export const BListGroup = /*#__PURE__*/ defineComponent({
         const componentData = {
             class: ['list-group', {
                 'list-group-flush': props.flush,
-                    'list-group-horizontal': horizontal === true, [`list-group-horizontal-${horizontal}`]: isString(horizontal)
+                'list-group-horizontal': horizontal === true,
+                [`list-group-horizontal-${horizontal}`]: isString(horizontal)
             }]
         }
         return h(props.tag, mergeData(data, componentData), children)

@@ -1,3 +1,4 @@
+import { h } from 'vue';
 import { mergeData } from 'vue-functional-data-merge'
 import { NAME_ROW } from '../../constants/components'
 import { PROP_TYPE_BOOLEAN, PROP_TYPE_NUMBER_STRING, PROP_TYPE_STRING } from '../../constants/props'

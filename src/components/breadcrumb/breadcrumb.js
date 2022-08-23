@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { mergeData } from 'vue-functional-data-merge'
 import { NAME_BREADCRUMB } from '../../constants/components'
 import { PROP_TYPE_ARRAY } from '../../constants/props'

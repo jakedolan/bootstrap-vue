@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { mergeData } from 'vue-functional-data-merge'
 import { NAME_MEDIA_BODY } from '../../constants/components'
 import { PROP_TYPE_STRING } from '../../constants/props'

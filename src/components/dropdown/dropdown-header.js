@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { mergeData } from 'vue-functional-data-merge'
 import { NAME_DROPDOWN_HEADER } from '../../constants/components'
 import { PROP_TYPE_STRING } from '../../constants/props'
@@ -28,7 +28,8 @@ export const BDropdownHeader = /*#__PURE__*/ defineComponent({
         return h('li', mergeData(omit(data, ['attrs']), { role: 'presentation' }), [
             h(
                 tag, {
-                    class: ['dropdown-header', { [`text-${variant}`]: variant } ],
+                    class: ['dropdown-header', {
+                        [`text-${variant}`]: variant }],
                     ...(data.attrs || {}),
                     id: props.id || null,
                     role: isTag(tag, 'header') ? null : 'heading',

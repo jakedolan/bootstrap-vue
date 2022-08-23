@@ -122,7 +122,7 @@ describe('table > thead events', () => {
             attrs: {
                 // Head-clicked will only be emitted if there is a registered listener
                 onHeadClicked: () => {}
-            }
+            },
             slots: {
                 // In Vue 2.6x, slots get translated into scopedSlots
                 'head(a)': '<button id="a">button</button>',
