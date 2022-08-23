@@ -46,8 +46,8 @@
 
 <h2>Tests</h2>
 <ul>
-  <li>Test Suites: 108 failed, 53 passed, 161 total</li>
-  <li>Tests:       769 failed, 837 passed, 1606 total</li>
+  <li>Test Suites: 107 failed, 54 passed, 161 total</li>
+  <li>Tests:       768 failed, 839 passed, 1607 total</li>
 </ul>
 
 <h3>Components fully passing</h3>
@@ -78,6 +78,7 @@
 </ul>
 <h3>Mixins fully passing (100% passing that have any test coverage)</h3>
 <ul>
+  <li>attrs - (seems some slight change in the rerender count; Unclear if that will be a performance hit in Vue 3)</li>
   <li>clickOut</li>
   <li>focusIn</li>
   <li>listenOnDocument</li>

@@ -1,4 +1,4 @@
-import { h } from 'vue';
+import { h, computed, onUpdated, onMounted } from 'vue';
 import { mount } from '@vue/test-utils'
 import { attrsMixin } from './attrs'
 
@@ -6,13 +6,14 @@ const isVue3 = true;
 // Note: The following tests indirectly test `utils/cache`
 
 describe('mixins > attrs', () => {
+
     it('works', async() => {
         const BTest = {
             name: 'BTest',
             mixins: [attrsMixin],
             inheritAttrs: false,
             render() {
-                return h('section', [h('article', {...this.bvAttrs })])
+                return h('section', {}, { default: () => [h('article', {...this.bvAttrs })] })
             }
         }
         const App = {
@@ -98,102 +99,272 @@ describe('mixins > attrs', () => {
         let input2RenderCount = 0
 
         const Input1 = {
-            props: ['value'],
+            props: ['modelValue'],
             render() {
-                input1RenderCount++
+                input1RenderCount++;
                 return h('input', {
                     ...this.$attrs,
-                    value: this.value,
-                    // Unclear to me when this would and not be an attribute. So commented it out.
-                    // domProps: { value: this.value },
-                    onInput: e => this.$emit('input', e.target.value)
+                    value: this.modelValue,
+                    onInput: e => this.$emit('update:modelValue', e.target.value)
                 })
             }
         }
         const Input2 = {
-            props: ['value'],
-            mixins: [attrsMixin],
+            props: ['modelValue'],
+            computed: {
+                bvAttrs() {
+                    return this.$attrs
+                }
+            },
             render() {
-                input2RenderCount++
+                input2RenderCount++;
                 return h('input', {
                     ...this.bvAttrs,
-                    value: this.value,
-                    // Unclear to me when this would and not be an attribute. So commented it out.
-                    // domProps: { value: this.value },
-                    onInput: e => this.$emit('input', e.target.value)
+                    value: this.modelValue,
+                    onInput: e => this.$emit('update:modelValue', e.target.value)
                 })
             }
         }
 
         const App1 = {
-            components: { Input1 },
             props: ['value1', 'value2'],
-            template: `<div>
-        <Input1 v-model="value1" />
-        <Input1 v-model="value2" />
-      </div>`
-        }
-        const App2 = {
-            components: { Input2 },
-            props: ['value1', 'value2'],
-            template: `<div>
-        <Input2 v-model="value1" />
-        <Input2 v-model="value2" />
-      </div>`
+            global: {
+                components: { Input1 },
+            },
+            render() {
+                return h('div', {}, {
+                    default: () => [
+                        h(Input1, { modelValue: this.value1, 'onUpdate:modelValue': (value) => this.$emit('update:modelValue', value) }, { default: () => [] }),
+                        h(Input1, { modelValue: this.value2, 'onUpdate:modelValue': (value) => this.$emit('update:modelValue', value) }, { default: () => [] })
+                    ]
+                })
+            }
         }
 
-        const wrapper1 = mount(App1)
+        const App2 = {
+            props: ['value1', 'value2'],
+            global: {
+                components: { Input2 },
+            },
+            render() {
+                return h('div', {}, {
+                    default: () => [
+                        h(Input2, { modelValue: this.value1, 'onUpdate:modelValue': (value) => this.$emit('update:modelValue', value) }, { default: () => [] }),
+                        h(Input2, { modelValue: this.value2, 'onUpdate:modelValue': (value) => this.$emit('update:modelValue', value) }, { default: () => [] }),
+                    ]
+                })
+            }
+        };
+
+
+
+        const wrapper1 = mount(App1);
+
         const wrapper2 = mount(App2)
 
         const $inputs1 = wrapper1.findAllComponents(Input1)
         expect($inputs1.length).toBe(2)
         expect($inputs1[0]).toBeDefined()
-        expect($inputs1[0].vm.value).toBe(undefined)
+        expect($inputs1[0].vm.modelValue).toBe(undefined)
         expect($inputs1[1]).toBeDefined()
-        expect($inputs1[1].vm.value).toBe(undefined)
+        expect($inputs1[1].vm.modelValue).toBe(undefined)
         expect(input1RenderCount).toBe(2)
 
         const $inputs2 = wrapper2.findAllComponents(Input2)
+
         expect($inputs2.length).toBe(2)
         expect($inputs2[0]).toBeDefined()
-        expect($inputs2[0].vm.value).toBe(undefined)
+        expect($inputs2[0].vm.modelValue).toBe(undefined)
         expect($inputs2[1]).toBeDefined()
-        expect($inputs2[1].vm.value).toBe(undefined)
+        expect($inputs2[1].vm.modelValue).toBe(undefined)
         expect(input2RenderCount).toBe(2)
 
         // Update the value for the first `Input1`
         await wrapper1.setProps({ value1: 'foo' })
-        expect($inputs1[0].vm.value).toBe('foo')
-        expect($inputs1[1].vm.value).toBe(undefined)
-        if (!isVue3) {
-            // Both `Input1`'s are re-rendered (See: https://github.com/vuejs/vue/issues/7257)
-            expect(input1RenderCount).toBe(4)
-        }
+        expect($inputs1[0].vm.modelValue).toBe('foo')
+        expect($inputs1[1].vm.modelValue).toBe(undefined)
+
+        // Both `Input1`'s are re-rendered (See: https://github.com/vuejs/vue/issues/7257)
+        expect(input1RenderCount).toBe(4)
 
         // Update the value for the second `Input1`
         await wrapper1.setProps({ value2: 'bar' })
-        expect($inputs1[0].vm.value).toBe('foo')
-        expect($inputs1[1].vm.value).toBe('bar')
-        if (!isVue3) {
-            // Both `Input1`'s are re-rendered (See: https://github.com/vuejs/vue/issues/7257)
-            expect(input1RenderCount).toBe(6)
-        }
+        expect($inputs1[0].vm.modelValue).toBe('foo')
+        expect($inputs1[1].vm.modelValue).toBe('bar')
+
+        // Both `Input1`'s are re-rendered (See: https://github.com/vuejs/vue/issues/7257)
+        expect(input1RenderCount).toBe(6)
 
         // Update the value for the first `Input2`
         await wrapper2.setProps({ value1: 'foo' })
-        expect($inputs2[0].vm.value).toBe('foo')
-        expect($inputs2[1].vm.value).toBe(undefined)
-            // With `attrsMixin` only the affected `Input2` is re-rendered
-        expect(input2RenderCount).toBe(3)
+        expect($inputs2[0].vm.modelValue).toBe('foo')
+        expect($inputs2[1].vm.modelValue).toBe(undefined)
+
+        // VUE 2: With `attrsMixin` only the affected `Input2` is re-rendered
+        // VUE 3: With $listeners now merged with $attrs seems to be rerendering both,
+        //  not 100% sure why as it rerenders without the any listeners; possibly something under the hood how the listeners
+        //  are merged into $attrs. (See: https://github.com/vuejs/vue/issues/7257)
+        expect(input2RenderCount).toBe(4)
 
         // Update the value for the second `Input2`
         await wrapper2.setProps({ value2: 'bar' })
-        expect($inputs2[0].vm.value).toBe('foo')
-        expect($inputs2[1].vm.value).toBe('bar')
-            // With `attrsMixin` only the affected `Input2` is re-rendered
+        expect($inputs2[0].vm.modelValue).toBe('foo')
+        expect($inputs2[1].vm.modelValue).toBe('bar')
+
+        // VUE 2: With `attrsMixin` only the affected `Input2` is re-rendered
+        // VUE 3: With $listeners now merged with $attrs seems to be rerendering both,
+        //  not 100% sure why as it rerenders without the any listeners; possibly something under the hood how the listeners
+        //  are merged into $attrs. (See: https://github.com/vuejs/vue/issues/7257)
+        expect(input2RenderCount).toBe(6)
+
+        wrapper1.unmount()
+        wrapper2.unmount()
+    })
+
+    // This was intended to test to see if the change behavior was different with the composition api and without the mixin.
+    // Updates to re-renders are the same. I suspect this is all related to how parent/child rerenders happen.
+    it('[Composition API] does not re-render parent child components', async() => {
+
+        let input1RenderCount = 0
+        let input2RenderCount = 0
+
+        const Input1 = {
+            props: ['modelValue'],
+            emits: ['update:modelValue'],
+            setup(props, { attrs, emit }) {
+
+                onMounted(() => {
+                    input1RenderCount++;
+                })
+
+                onUpdated(() => {
+                    input1RenderCount++;
+                })
+
+                return () => h('input', {
+                    ...attrs,
+                    value: props.modelValue,
+                    onInput: e => emit('update:modelValue', e.target.value)
+                })
+            }
+        }
+
+        const Input2 = {
+            props: ['modelValue'],
+            emits: ['update:modelValue'],
+            setup(props, { attrs, emit }) {
+                const bvAttrs = computed(() => {
+                    return attrs;
+                })
+
+                onMounted(() => {
+                    input2RenderCount++;
+                })
+
+                onUpdated(() => {
+                    input2RenderCount++;
+                })
+
+                return () => h('input', {
+                    ...bvAttrs,
+                    value: props.modelValue,
+                    onInput: e => emit('update:modelValue', e.target.value)
+                })
+            }
+        }
+
+        const App1 = {
+            props: ['value1', 'value2'],
+            setup(props, { emit }) {
+                return () => h('div', {}, {
+                    default: () => [
+                        h(Input1, { modelValue: props.value1, 'onUpdate:modelValue': (value) => emit('update:modelValue', value) }, { default: () => [] }),
+                        h(Input1, { modelValue: props.value2, 'onUpdate:modelValue': (value) => emit('update:modelValue', value) }, { default: () => [] })
+                    ]
+                })
+            }
+        }
+
+        const App2 = {
+            props: ['value1', 'value2'],
+            setup(props, { emit }) {
+                return () => h('div', {}, {
+                    default: () => [
+                        h(Input2, { modelValue: props.value1, 'onUpdate:modelValue': (value) => emit('update:modelValue', value) }, { default: () => [] }),
+                        h(Input2, { modelValue: props.value2, 'onUpdate:modelValue': (value) => emit('update:modelValue', value) }, { default: () => [] }),
+                    ]
+                })
+            }
+        };
+
+
+        const wrapper1 = mount(App1, {
+            global: {
+                components: { Input1 },
+            }
+        });
+        const wrapper2 = mount(App2, {
+            global: {
+                components: { Input2 },
+            }
+        })
+
+        const $inputs1 = wrapper1.findAllComponents(Input1)
+        expect($inputs1.length).toBe(2)
+        expect($inputs1[0]).toBeDefined()
+        expect($inputs1[0].vm.modelValue).toBe(undefined)
+        expect($inputs1[1]).toBeDefined()
+        expect($inputs1[1].vm.modelValue).toBe(undefined)
+        expect(input1RenderCount).toBe(2)
+
+        const $inputs2 = wrapper2.findAllComponents(Input2)
+
+
+        expect($inputs2.length).toBe(2)
+        expect($inputs2[0]).toBeDefined()
+        expect($inputs2[0].vm.modelValue).toBe(undefined)
+        expect($inputs2[1]).toBeDefined()
+        expect($inputs2[1].vm.modelValue).toBe(undefined)
+        expect(input2RenderCount).toBe(2)
+
+        // Update the value for the first `Input1`
+        await wrapper1.setProps({ value1: 'foo' })
+        expect($inputs1[0].vm.modelValue).toBe('foo')
+        expect($inputs1[1].vm.modelValue).toBe(undefined)
+
+        // Both `Input1`'s are re-rendered (See: https://github.com/vuejs/vue/issues/7257)
+        expect(input1RenderCount).toBe(4)
+
+        // Update the value for the second `Input1`
+        await wrapper1.setProps({ value2: 'bar' })
+        expect($inputs1[0].vm.modelValue).toBe('foo')
+        expect($inputs1[1].vm.modelValue).toBe('bar')
+
+        // Both `Input1`'s are re-rendered (See: https://github.com/vuejs/vue/issues/7257)
+        expect(input1RenderCount).toBe(6)
+
+        // Update the value for the first `Input2`
+        await wrapper2.setProps({ value1: 'foo' })
+        expect($inputs2[0].vm.modelValue).toBe('foo')
+        expect($inputs2[1].vm.modelValue).toBe(undefined)
+
+        // VUE 3: With $listeners now merged with $attrs seems to be rerendering both,
+        //  not 100% sure why as it rerenders without the any listeners; possibly something under the hood how the listeners
+        //  are merged into $attrs. (See: https://github.com/vuejs/vue/issues/7257)
         expect(input2RenderCount).toBe(4)
 
-        wrapper1.destroy()
-        wrapper2.destroy()
+        // Update the value for the second `Input2`
+        await wrapper2.setProps({ value2: 'bar' })
+        expect($inputs2[0].vm.modelValue).toBe('foo')
+        expect($inputs2[1].vm.modelValue).toBe('bar')
+
+        // VUE 2: With `attrsMixin` only the affected `Input2` is re-rendered
+        // VUE 3: With $listeners now merged with $attrs seems to be rerendering both,
+        //  not 100% sure why as it rerenders without the any listeners; possibly something under the hood how the listeners
+        //  are merged into $attrs. (See: https://github.com/vuejs/vue/issues/7257)
+        expect(input2RenderCount).toBe(6)
+
+        wrapper1.unmount()
+        wrapper2.unmount()
     })
 })
