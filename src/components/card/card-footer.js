@@ -25,8 +25,12 @@ export const props = makePropsConfigurable(
 export const BCardFooter = /*#__PURE__*/ defineComponent({
     name: NAME_CARD_FOOTER,
     props,
-    render(h, { props, data, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         const { footerBgVariant, footerBorderVariant, footerTextVariant } = props
+
+        // TODO: Review Children's use here. Temp creating children = {};
+        const children = {};
 
         return h(
             props.footerTag,
@@ -41,7 +45,7 @@ export const BCardFooter = /*#__PURE__*/ defineComponent({
                 ],
                 ...(children ? {} : htmlOrText(props.footerHtml, props.footer))
             }),
-            children
+            slots
         )
     }
 })

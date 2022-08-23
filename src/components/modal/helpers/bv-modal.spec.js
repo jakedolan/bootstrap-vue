@@ -1,10 +1,7 @@
 import { h } from 'vue';
-import { Vue } from '../../../vue'
 import { createWrapper, mount } from '@vue/test-utils'
 import { waitNT, waitRAF } from '../../../../tests/utils'
 import { ModalPlugin } from '../index'
-
-Vue.use(ModalPlugin)
 
 describe('$bvModal', () => {
     it('$bvModal.show() and $bvModal.hide() works', async() => {
@@ -14,7 +11,10 @@ describe('$bvModal', () => {
             }
         }
         const wrapper = mount(App, {
-            attachTo: document.body
+            attachTo: document.body,
+            global: {
+                plugins: [ModalPlugin]
+            }
         })
 
         expect(wrapper.vm).toBeDefined()
@@ -61,7 +61,10 @@ describe('$bvModal', () => {
             }
         }
         const wrapper = mount(App, {
-            attachTo: document.body
+            attachTo: document.body,
+            global: {
+                plugins: [ModalPlugin]
+            }
         })
 
         expect(wrapper.vm).toBeDefined()
@@ -122,7 +125,10 @@ describe('$bvModal', () => {
             }
         }
         const wrapper = mount(App, {
-            attachTo: document.body
+            attachTo: document.body,
+            global: {
+                plugins: [ModalPlugin]
+            }
         })
 
         expect(wrapper.vm).toBeDefined()

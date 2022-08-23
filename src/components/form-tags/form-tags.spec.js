@@ -861,7 +861,7 @@ describe('form-tags', () => {
         expect(onBlur).not.toHaveBeenCalled()
 
         const $input = wrapper.find('input')
-        expect(typeof wrapper.vm.$listeners.focus).toBe('function')
+        expect(typeof wrapper.vm.onFocus).toBe('function')
 
         $input.trigger('focus')
         $input.trigger('focusin')

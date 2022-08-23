@@ -79,7 +79,8 @@ export const BRow = {
         this.props = generateProps()
         return this.props
     },
-    render(h, { props, data, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         const { alignV, alignH, alignContent } = props
 
         // Loop through row-cols breakpoint props and generate the classes
@@ -104,7 +105,7 @@ export const BRow = {
             mergeData(data, {
                 class: ['row', classList]
             }),
-            children
+            slots
         )
     }
 }

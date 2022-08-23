@@ -26,7 +26,8 @@ export const props = makePropsConfigurable(
 export const BNavbarBrand = /*#__PURE__*/ defineComponent({
     name: NAME_NAVBAR_BRAND,
     props,
-    render(h, { props, data, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         const isLink = props.to || props.href
         const tag = isLink ? BLink : props.tag
 
@@ -36,7 +37,7 @@ export const BNavbarBrand = /*#__PURE__*/ defineComponent({
                 class: 'navbar-brand',
                 ...(isLink ? pluckProps(linkProps, props) : {})
             }),
-            children
+            slots
         )
     }
 })

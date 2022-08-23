@@ -12,7 +12,8 @@ export const props = {}
 export const BNavText = /*#__PURE__*/ defineComponent({
     name: NAME_NAV_TEXT,
     props,
-    render(h, { data, children }) {
-        return h('li', mergeData(data, { class: 'navbar-text' }), children)
+    render() {
+        const { $data: data, $slots: slots } = this;
+        return h('li', mergeData(data, { class: 'navbar-text' }), slots)
     }
 })

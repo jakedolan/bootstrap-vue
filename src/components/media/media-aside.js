@@ -20,7 +20,8 @@ export const props = makePropsConfigurable({
 export const BMediaAside = /*#__PURE__*/ defineComponent({
     name: NAME_MEDIA_ASIDE,
     props,
-    render(h, { props, data, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         const { verticalAlign } = props
         const align =
             verticalAlign === 'top' ?
@@ -38,7 +39,7 @@ export const BMediaAside = /*#__PURE__*/ defineComponent({
                     [`align-self-${align}`]: align
                 }]
             }),
-            children
+            slots
         )
     }
 })

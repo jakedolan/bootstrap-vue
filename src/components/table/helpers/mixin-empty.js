@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { PROP_TYPE_BOOLEAN, PROP_TYPE_STRING } from '../../../constants/props'
 import {
     SLOT_NAME_EMPTY,
@@ -30,7 +30,7 @@ export const emptyMixin = defineComponent({
     methods: {
         renderEmpty() {
             const { computedItems: items, computedBusy } = safeVueInstance(this)
-            const h = this.$createElement
+
 
             let $empty = h()
             if (
@@ -81,11 +81,13 @@ export const emptyMixin = defineComponent({
                     BTr, {
                         class: ['b-table-empty-row',
                             isFunction(tbodyTrClass) ?
-                            /* istanbul ignore next */ tbodyTrClass(null, 'row-empty') :
+                            /* istanbul ignore next */
+                            tbodyTrClass(null, 'row-empty') :
                             tbodyTrClass
                         ],
                         ...(isFunction(tbodyTrAttr) ?
-                            /* istanbul ignore next */ tbodyTrAttr(null, 'row-empty') || {} :
+                            /* istanbul ignore next */
+                            tbodyTrAttr(null, 'row-empty') || {} :
                             tbodyTrAttr || {}),
                         key: isFiltered ? 'b-empty-filtered-row' : 'b-empty-row'
                     }, [$empty]

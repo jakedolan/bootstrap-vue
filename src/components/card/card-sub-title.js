@@ -21,7 +21,12 @@ export const props = makePropsConfigurable({
 export const BCardSubTitle = /*#__PURE__*/ defineComponent({
     name: NAME_CARD_SUB_TITLE,
     props,
-    render(h, { props, data, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
+
+        // TODO: Review Children's use here. Temp creating children = {};
+        const children = {};
+
         return h(
             props.subTitleTag,
             mergeData(data, {

@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import {
     EVENT_NAME_ROW_CLICKED,
     EVENT_NAME_ROW_HOVERED,
@@ -20,6 +20,7 @@ import { BTr } from '../tr'
 import { BTd } from '../td'
 import { BTh } from '../th'
 import { FIELD_KEY_CELL_VARIANT, FIELD_KEY_ROW_VARIANT, FIELD_KEY_SHOW_DETAILS } from './constants'
+import { eventToListener } from '../../../utils/listeners'
 
 // --- Props ---
 
@@ -103,7 +104,7 @@ export const tbodyRowMixin = defineComponent({
         renderTbodyRowCell(field, colIndex, item, rowIndex) {
             const { isStacked } = this
             const { key, label, isRowHeader } = field
-            const h = this.$createElement
+
             const hasDetailsSlot = this.hasNormalizedSlot(SLOT_NAME_ROW_DETAILS)
             const formatted = this.getFormattedValue(item, field)
             const stickyColumn = !isStacked && (this.isResponsive || this.stickyHeader) && field.stickyColumn
@@ -193,10 +194,9 @@ export const tbodyRowMixin = defineComponent({
                 tbodyTrAttr,
                 hasSelectableRowClick
             } = safeVueInstance(this)
-            const h = this.$createElement
             const hasDetailsSlot = this.hasNormalizedSlot(SLOT_NAME_ROW_DETAILS)
             const rowShowDetails = item[FIELD_KEY_SHOW_DETAILS] && hasDetailsSlot
-            const hasRowClickHandler = this.$listeners[EVENT_NAME_ROW_CLICKED] || hasSelectableRowClick
+            const hasRowClickHandler = eventToListener(EVENT_NAME_ROW_CLICKED) || hasSelectableRowClick
 
             // We can return more than one TR if rowDetails enabled
             const $rows = []
@@ -230,16 +230,15 @@ export const tbodyRowMixin = defineComponent({
 
             // Selectable classes and attributes
             const selectableClasses = safeVueInstance(this).selectableRowClasses ?
-                this.selectableRowClasses(rowIndex) :
-                {}
+                this.selectableRowClasses(rowIndex) : {}
             const selectableAttrs = safeVueInstance(this).selectableRowAttrs ?
-                this.selectableRowAttrs(rowIndex) :
-                {}
+                this.selectableRowAttrs(rowIndex) : {}
 
             // Additional classes and attributes
             const userTrClasses = isFunction(tbodyTrClass) ? tbodyTrClass(item, 'row') : tbodyTrClass
             const userTrAttrs = isFunction(tbodyTrAttr) ?
-                /* istanbul ignore next */ tbodyTrAttr(item, 'row') :
+                /* istanbul ignore next */
+                tbodyTrAttr(item, 'row') :
                 tbodyTrAttr
 
             // Add the item row
@@ -248,7 +247,7 @@ export const tbodyRowMixin = defineComponent({
                     BTr, {
                         class: [userTrClasses, selectableClasses, rowShowDetails ? 'b-table-has-details' : ''],
                         variant: item[FIELD_KEY_ROW_VARIANT] || null,
-                        
+
                         id: rowId,
                         ...userTrAttrs,
                         // Users cannot override the following attributes
@@ -261,7 +260,7 @@ export const tbodyRowMixin = defineComponent({
                         // Note: These events are not A11Y friendly!
                         onMouseenter: this.rowHovered,
                         onMouseleave: this.rowUnhovered,
-                        
+
                         key: `__b-table-row-${rowKey}__`,
                         ref: 'item-rows',
                         refInFor: true
@@ -310,10 +309,12 @@ export const tbodyRowMixin = defineComponent({
 
                 // Add the actual details row
                 const userDetailsTrClasses = isFunction(this.tbodyTrClass) ?
-                    /* istanbul ignore next */ this.tbodyTrClass(item, SLOT_NAME_ROW_DETAILS) :
+                    /* istanbul ignore next */
+                    this.tbodyTrClass(item, SLOT_NAME_ROW_DETAILS) :
                     this.tbodyTrClass
                 const userDetailsTrAttrs = isFunction(this.tbodyTrAttr) ?
-                    /* istanbul ignore next */ this.tbodyTrAttr(item, SLOT_NAME_ROW_DETAILS) :
+                    /* istanbul ignore next */
+                    this.tbodyTrAttr(item, SLOT_NAME_ROW_DETAILS) :
                     this.tbodyTrAttr
                 $rows.push(
                     h(

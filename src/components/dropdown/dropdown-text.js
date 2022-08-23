@@ -21,7 +21,8 @@ export const props = makePropsConfigurable({
 export const BDropdownText = /*#__PURE__*/ defineComponent({
     name: NAME_DROPDOWN_TEXT,
     props,
-    render(h, { props, data, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         const { tag, textClass, variant } = props
 
         return h('li', mergeData(omit(data, ['attrs']), { role: 'presentation' }), [
@@ -34,7 +35,7 @@ export const BDropdownText = /*#__PURE__*/ defineComponent({
                     ...(data.attrs || {}),
                     ref: 'text'
                 },
-                children
+                slots
             )
         ])
     }

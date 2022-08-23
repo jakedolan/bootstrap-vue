@@ -25,7 +25,8 @@ export const props = makePropsConfigurable(
 export const BBreadcrumbLink = /*#__PURE__*/ defineComponent({
     name: NAME_BREADCRUMB_LINK,
     props,
-    render(h, { props: suppliedProps, data, children }) {
+    render() {
+        const { $props: suppliedProps, $data: data, $slots: slots } = this;
         const { active } = suppliedProps
         const tag = active ? 'span' : BLink
 
@@ -35,6 +36,6 @@ export const BBreadcrumbLink = /*#__PURE__*/ defineComponent({
             ...(!children ? htmlOrText(suppliedProps.html, suppliedProps.text) : {})
         }
 
-        return h(tag, mergeData(data, componentData), children)
+        return h(tag, mergeData(data, componentData), slots)
     }
 })

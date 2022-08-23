@@ -25,7 +25,8 @@ export const props = makePropsConfigurable({
 export const BFormValidFeedback = /*#__PURE__*/ defineComponent({
     name: NAME_FORM_VALID_FEEDBACK,
     props,
-    render(h, { props, data, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         const { tooltip, ariaLive } = props
         const show = props.forceShow === true || props.state === true
 
@@ -42,7 +43,7 @@ export const BFormValidFeedback = /*#__PURE__*/ defineComponent({
                 'aria-live': ariaLive || null,
                 'aria-atomic': ariaLive ? 'true' : null
             }),
-            children
+            slots
         )
     }
 })

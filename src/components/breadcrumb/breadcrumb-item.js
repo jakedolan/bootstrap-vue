@@ -14,12 +14,13 @@ export const props = makePropsConfigurable(BBreadcrumbLinkProps, NAME_BREADCRUMB
 export const BBreadcrumbItem = /*#__PURE__*/ defineComponent({
     name: NAME_BREADCRUMB_ITEM,
     props,
-    render(h, { props, data, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         return h(
             'li',
             mergeData(data, {
                 class: ['breadcrumb-item', { active: props.active }]
-            }), [h(BBreadcrumbLink, { props }, children)]
+            }), [h(BBreadcrumbLink, { props }, slots)]
         )
     }
 })

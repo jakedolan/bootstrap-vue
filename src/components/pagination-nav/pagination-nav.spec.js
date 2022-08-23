@@ -569,8 +569,10 @@ describe('pagination-nav', () => {
             router.push('/')
             await router.isReady()
 
-            const wrapper = mount(App, global: {
-                plugins: [router],
+            const wrapper = mount(App, {
+                global: {
+                    plugins: [router],
+                }
             })
 
             expect(wrapper).toBeDefined()

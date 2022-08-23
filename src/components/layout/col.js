@@ -120,7 +120,8 @@ export const BCol = {
             // eslint-disable-next-line no-return-assign
         return (this.props = generateProps())
     },
-    render(h, { props, data, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         const { cols, offset, order, alignSelf } = props
 
         const classList = []
@@ -149,6 +150,6 @@ export const BCol = {
             [`align-self-${alignSelf}`]: alignSelf
         })
 
-        return h(props.tag, mergeData(data, { class: classList }), children)
+        return h(props.tag, mergeData(data, { class: classList }), slots)
     }
 }

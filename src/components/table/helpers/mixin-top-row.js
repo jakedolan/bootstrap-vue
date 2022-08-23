@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { SLOT_NAME_TOP_ROW } from '../../../constants/slots'
 import { isFunction } from '../../../utils/inspect'
 import { BTr } from '../tr'
@@ -14,7 +14,6 @@ export const topRowMixin = defineComponent({
     methods: {
         renderTopRow() {
             const { computedFields: fields, stacked, tbodyTrClass, tbodyTrAttr } = this
-            const h = this.$createElement
 
             // Add static Top Row slot (hidden in visibly stacked mode as we can't control the data-label)
             // If in *always* stacked mode, we don't bother rendering the row

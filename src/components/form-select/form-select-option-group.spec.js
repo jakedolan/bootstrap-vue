@@ -70,21 +70,9 @@ describe('form-select-option-group', () => {
         expect($options[0].attributes('value')).toBe('1')
         expect($options[1].attributes('value')).toBe('2')
         expect($options[2].attributes('value')).toBe('3')
-        expect(
-            $options[0]
-            .find('[disabled]')
-            .exists()
-        ).toBe(false)
-        expect(
-            $options[1]
-            .find('[disabled]')
-            .exists()
-        ).toBe(true)
-        expect(
-            $options[2]
-            .find('[disabled]')
-            .exists()
-        ).toBe(false)
+        expect($options[0].attributes('disabled')).not.toBeDefined()
+        expect($options[1].attributes('disabled')).toBeDefined()
+        expect($options[2].attributes('disabled')).not.toBeDefined()
 
         wrapper.unmount()
     })
@@ -147,4 +135,5 @@ describe('form-select-option-group', () => {
 
         wrapper.unmount()
     })
+
 })

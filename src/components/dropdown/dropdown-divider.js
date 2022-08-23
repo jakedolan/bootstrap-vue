@@ -19,15 +19,14 @@ export const props = makePropsConfigurable({
 export const BDropdownDivider = /*#__PURE__*/ defineComponent({
     name: NAME_DROPDOWN_DIVIDER,
     props,
-    render(h, { props, data }) {
+    render() {
+        const { $props: props, $data: data } = this;
         return h('li', mergeData(omit(data, ['attrs']), { role: 'presentation' }), [
-            h(props.tag, {
-                class: 'dropdown-divider',
-                ...(data.attrs || {}),
+            h(props.tag, mergeData({ class: 'dropdown-divider' }, data.attrs || {}, {
                 role: 'separator',
                 'aria-orientation': 'horizontal',
                 ref: 'divider'
-            })
+            }))
         ])
     }
 })

@@ -39,8 +39,13 @@ export const props = makePropsConfigurable({
 export const BJumbotron = /*#__PURE__*/ defineComponent({
     name: NAME_JUMBOTRON,
     props,
-    render(h, { props, data, slots, scopedSlots }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         const { header, headerHtml, lead, leadHtml, textVariant, bgVariant, borderVariant } = props
+
+        // TODO: Review scopedSlots use here. Temp creating scopedSlots = {};
+        const scopedSlots = {};
+
         const $scopedSlots = scopedSlots || {}
         const $slots = slots()
         const slotScope = {}

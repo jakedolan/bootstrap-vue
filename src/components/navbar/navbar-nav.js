@@ -25,7 +25,8 @@ export const props = makePropsConfigurable(
 export const BNavbarNav = /*#__PURE__*/ defineComponent({
     name: NAME_NAVBAR_NAV,
     props,
-    render(h, { props, data, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         const { align } = props
 
         return h(
@@ -38,7 +39,7 @@ export const BNavbarNav = /*#__PURE__*/ defineComponent({
                     small: props.small
                 }]
             }),
-            children
+            slots
         )
     }
 })

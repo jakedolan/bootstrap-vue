@@ -28,19 +28,21 @@ export const props = makePropsConfigurable({
 export const BEmbed = /*#__PURE__*/ defineComponent({
     name: NAME_EMBED,
     props,
-    render(h, { props, data, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         const { aspect } = props
 
         return h(
             props.tag, {
                 class: ['embed-responsive', {
-                    [`embed-responsive-${aspect}`]: aspect }],
+                    [`embed-responsive-${aspect}`]: aspect
+                }],
                 ref: data.ref
             }, [
                 h(
                     props.type,
                     mergeData(omit(data, ['ref']), { class: 'embed-responsive-item' }),
-                    children
+                    slots
                 )
             ]
         )

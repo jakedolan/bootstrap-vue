@@ -18,13 +18,14 @@ export const props = makePropsConfigurable({
 export const BInputGroupText = /*#__PURE__*/ defineComponent({
     name: NAME_INPUT_GROUP_TEXT,
     props,
-    render(h, { props, data, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         return h(
             props.tag,
             mergeData(data, {
                 class: 'input-group-text'
             }),
-            children
+            slots
         )
     }
 })

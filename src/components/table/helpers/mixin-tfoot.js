@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import {
     PROP_TYPE_ARRAY_OBJECT_STRING,
     PROP_TYPE_BOOLEAN,
@@ -28,7 +28,6 @@ export const tfootMixin = defineComponent({
     props,
     methods: {
         renderTFootCustom() {
-            const h = this.$createElement
             if (this.hasNormalizedSlot(SLOT_NAME_CUSTOM_FOOT)) {
                 return h(
                     BTfoot, {

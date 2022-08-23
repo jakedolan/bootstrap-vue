@@ -20,7 +20,8 @@ export const props = makePropsConfigurable({
 export const BContainer = /*#__PURE__*/ defineComponent({
     name: NAME_CONTAINER,
     props,
-    render(h, { props, data, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         const { fluid } = props
 
         return h(
@@ -33,7 +34,7 @@ export const BContainer = /*#__PURE__*/ defineComponent({
                         [`container-${fluid}`]: fluid && fluid !== true
                 }
             }),
-            children
+            slots
         )
     }
 })

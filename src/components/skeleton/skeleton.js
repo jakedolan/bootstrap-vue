@@ -23,7 +23,8 @@ export const props = makePropsConfigurable({
 export const BSkeleton = /*#__PURE__*/ defineComponent({
     name: NAME_SKELETON,
     props,
-    render(h, { data, props }) {
+    render() {
+        const { $props: props, $data: data } = this;
         const { size, animation, variant } = props
 
         return h(

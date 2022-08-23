@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { PROP_TYPE_STRING } from '../../../constants/props'
 import { SLOT_NAME_TABLE_CAPTION } from '../../../constants/slots'
 import { htmlOrText } from '../../../utils/html'
@@ -26,7 +26,7 @@ export const captionMixin = defineComponent({
     methods: {
         renderCaption() {
             const { caption, captionHtml } = this
-            const h = this.$createElement
+
 
             let $caption = null
             const hasCaptionSlot = this.hasNormalizedSlot(SLOT_NAME_TABLE_CAPTION)

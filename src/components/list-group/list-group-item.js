@@ -36,7 +36,8 @@ export const props = makePropsConfigurable(
 export const BListGroupItem = /*#__PURE__*/ defineComponent({
     name: NAME_LIST_GROUP_ITEM,
     props,
-    render(h, { props, data, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         const { button, variant, active, disabled } = props
         const link = isLink(props)
         const tag = button ? 'button' : !link ? props.tag : BLink
@@ -69,7 +70,7 @@ export const BListGroupItem = /*#__PURE__*/ defineComponent({
                     disabled
                 }]
             }),
-            children
+            slots
         )
     }
 })

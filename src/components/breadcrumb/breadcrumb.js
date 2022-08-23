@@ -21,8 +21,12 @@ export const props = makePropsConfigurable({
 export const BBreadcrumb = /*#__PURE__*/ defineComponent({
     name: NAME_BREADCRUMB,
     props,
-    render(h, { props, data, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         const { items } = props
+
+        // TODO: Review Children's use here. Temp creating children = {};
+        const children = {};
 
         // Build child nodes from items, if given
         let childNodes = children
@@ -46,6 +50,6 @@ export const BBreadcrumb = /*#__PURE__*/ defineComponent({
             })
         }
 
-        return h('ol', mergeData(data, { class: 'breadcrumb' }), childNodes)
+        return h('ol', mergeData(data, { class: 'breadcrumb' }), slots)
     }
 })

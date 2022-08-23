@@ -20,7 +20,12 @@ export const props = makePropsConfigurable({
 export const BSkeletonWrapper = /*#__PURE__*/ defineComponent({
     name: NAME_SKELETON_WRAPPER,
     props,
-    render(h, { data, props, slots, scopedSlots }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
+
+        // TODO: Review children adn scopedSlots use here. Temp creating objects;
+        const scopedSlots = {};
+
         const $slots = slots()
         const $scopedSlots = scopedSlots || {}
         const slotScope = {}

@@ -26,7 +26,9 @@ export const props = makePropsConfigurable({
 export const BSkeletonImg = /*#__PURE__*/ defineComponent({
     name: NAME_SKELETON_IMG,
     props,
-    render(h, { data, props }) {
+    render() {
+
+        const { $props: props, $data: data } = this;
         const { aspect, width, height, animation, variant, cardImg } = props
 
         const $img = h(

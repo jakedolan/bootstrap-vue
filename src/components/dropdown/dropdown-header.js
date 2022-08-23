@@ -22,20 +22,22 @@ export const props = makePropsConfigurable({
 export const BDropdownHeader = /*#__PURE__*/ defineComponent({
     name: NAME_DROPDOWN_HEADER,
     props,
-    render(h, { props, data, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         const { tag, variant } = props
 
         return h('li', mergeData(omit(data, ['attrs']), { role: 'presentation' }), [
             h(
                 tag, {
                     class: ['dropdown-header', {
-                        [`text-${variant}`]: variant }],
+                        [`text-${variant}`]: variant
+                    }],
                     ...(data.attrs || {}),
                     id: props.id || null,
                     role: isTag(tag, 'header') ? null : 'heading',
                     ref: 'header'
                 },
-                children
+                slots
             )
         ])
     }

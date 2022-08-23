@@ -25,8 +25,12 @@ export const props = makePropsConfigurable(
 export const BCardHeader = /*#__PURE__*/ defineComponent({
     name: NAME_CARD_HEADER,
     props,
-    render(h, { props, data, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         const { headerBgVariant, headerBorderVariant, headerTextVariant } = props
+
+        // TODO: Review Children's use here. Temp creating children = {};
+        const children = {};
 
         return h(
             props.headerTag,
@@ -41,7 +45,7 @@ export const BCardHeader = /*#__PURE__*/ defineComponent({
                 ],
                 ...(children ? {} : htmlOrText(props.headerHtml, props.header))
             }),
-            children
+            slots
         )
     }
 })

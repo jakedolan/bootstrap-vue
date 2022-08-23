@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { SLOT_NAME_TABLE_COLGROUP } from '../../../constants/slots'
 
 // --- Props ---
@@ -12,7 +12,6 @@ export const colgroupMixin = defineComponent({
     methods: {
         renderColgroup() {
             const { computedFields: fields } = this
-            const h = this.$createElement
 
             let $colgroup = h()
             if (this.hasNormalizedSlot(SLOT_NAME_TABLE_COLGROUP)) {

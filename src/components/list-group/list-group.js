@@ -25,7 +25,8 @@ export const props = makePropsConfigurable({
 export const BListGroup = /*#__PURE__*/ defineComponent({
     name: NAME_LIST_GROUP,
     props,
-    render(h, { props, data, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         let horizontal = props.horizontal === '' ? true : props.horizontal
         horizontal = props.flush ? false : horizontal
         const componentData = {
@@ -35,6 +36,6 @@ export const BListGroup = /*#__PURE__*/ defineComponent({
                 [`list-group-horizontal-${horizontal}`]: isString(horizontal)
             }]
         }
-        return h(props.tag, mergeData(data, componentData), children)
+        return h(props.tag, mergeData(data, componentData), slots)
     }
 })

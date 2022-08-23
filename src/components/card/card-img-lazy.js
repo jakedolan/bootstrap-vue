@@ -23,7 +23,8 @@ export const props = makePropsConfigurable(
 export const BCardImgLazy = /*#__PURE__*/ defineComponent({
     name: NAME_CARD_IMG_LAZY,
     props,
-    render(h, { props, data }) {
+    render() {
+        const { $props: props, $data: data } = this;
         let baseClass = 'card-img'
         if (props.top) {
             baseClass += '-top'

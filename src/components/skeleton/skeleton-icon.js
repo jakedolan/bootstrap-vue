@@ -21,7 +21,8 @@ export const props = makePropsConfigurable({
 export const BSkeletonIcon = /*#__PURE__*/ defineComponent({
     name: NAME_SKELETON_ICON,
     props,
-    render(h, { data, props }) {
+    render() {
+        const { $props: props, $data: data } = this;
         const { icon, animation } = props
 
         const $icon = h(BIcon, {

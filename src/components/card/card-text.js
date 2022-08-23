@@ -18,7 +18,8 @@ export const props = makePropsConfigurable({
 export const BCardText = /*#__PURE__*/ defineComponent({
     name: NAME_CARD_TEXT,
     props,
-    render(h, { props, data, children }) {
-        return h(props.textTag, mergeData(data, { class: 'card-text' }), children)
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
+        return h(props.textTag, mergeData(data, { class: 'card-text' }), slots)
     }
 })

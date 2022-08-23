@@ -551,7 +551,6 @@ export const BFormTags = /*#__PURE__*/ defineComponent({
             tagVariant,
             tags
         }) {
-            const h = this.$createElement
 
             // Make the list of tags
             const $tags = tags.map(tag => {
@@ -595,22 +594,22 @@ export const BFormTags = /*#__PURE__*/ defineComponent({
                 .join(' ')
 
             // Handle different types of inputClass
-            const inputClassContent = inputClass && Array.isArray(inputClass) ? { ...inputClass } : inputClass
+            const inputClassContent = inputClass && Array.isArray(inputClass) ? {...inputClass } : inputClass
 
             // Input
             // Directive needed to get `event.target.composing` set (if needed)
             const $input = h('input', {
-                    class: ['b-form-tags-input w-100 flex-grow-1 p-0 m-0 bg-transparent border-0', inputClassContent],
-                    style: { outline: 0, minWidth: '5rem' },
-                    ...inputAttrs,
-                    'aria-describedby': ariaDescribedby || null,
-                    type: inputType,
-                    placeholder: placeholder || null,
-                    value: inputAttrs.modelValue,
-                    ...inputHandlers,
-                    ref: 'input'
-                })
-                    
+                class: ['b-form-tags-input w-100 flex-grow-1 p-0 m-0 bg-transparent border-0', inputClassContent],
+                style: { outline: 0, minWidth: '5rem' },
+                ...inputAttrs,
+                'aria-describedby': ariaDescribedby || null,
+                type: inputType,
+                placeholder: placeholder || null,
+                value: inputAttrs.modelValue,
+                ...inputHandlers,
+                ref: 'input'
+            })
+
 
             // Add button
             const $button = h(

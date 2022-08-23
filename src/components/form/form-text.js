@@ -21,7 +21,8 @@ export const props = makePropsConfigurable({
 export const BFormText = /*#__PURE__*/ defineComponent({
     name: NAME_FORM_TEXT,
     props,
-    render(h, { props, data, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         return h(
             props.tag,
             mergeData(data, {
@@ -30,7 +31,7 @@ export const BFormText = /*#__PURE__*/ defineComponent({
                 },
                 id: props.id
             }),
-            children
+            slots
         )
     }
 })

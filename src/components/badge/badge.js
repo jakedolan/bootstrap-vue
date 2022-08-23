@@ -29,7 +29,8 @@ export const props = makePropsConfigurable(
 export const BBadge = /*#__PURE__*/ defineComponent({
     name: NAME_BADGE,
     props,
-    render(h, { props, data, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         const { active, disabled } = props
         const link = isLink(props)
         const tag = link ? BLink : props.tag
@@ -49,7 +50,7 @@ export const BBadge = /*#__PURE__*/ defineComponent({
                 ],
                 ...(link ? pluckProps(linkProps, props) : {})
             }),
-            children
+            slots
         )
     }
 })

@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import {
     EVENT_NAME_ROW_CLICKED,
     EVENT_NAME_ROW_CONTEXTMENU,
@@ -167,7 +167,6 @@ export const tbodyMixin = defineComponent({
                 renderBottomRow,
                 hasSelectableRowClick
             } = safeVueInstance(this)
-            const h = this.$createElement
             const hasRowClickHandler = this.hasListener(EVENT_NAME_ROW_CLICKED) || hasSelectableRowClick
 
             // Prepare the tbody rows

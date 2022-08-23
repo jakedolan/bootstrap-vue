@@ -418,19 +418,19 @@ export const paginationMixin = defineComponent({
             const scope = { disabled: isDisabled, page: pageNumber, index: pageNumber - 1 }
             const $btnContent = this.normalizeSlot(btnSlot, scope) || toString(btnText) || h()
 
-            
+
             const innerPropsContent = isDisabled || !isNav ? {} : this.linkProps(linkTo)
             const innerOnContent = isDisabled ? {} : {
-              '!onClick': event => {
-                  this.onClick(event, linkTo)
-              },
-              onKeydown: onSpaceKey
+                onClick: event => {
+                    this.onClick(event, linkTo)
+                },
+                onKeydown: onSpaceKey
             }
 
             const $inner = h(
                 isDisabled ? 'span' : isNav ? BLink : 'button', {
-                    class: [ 'page-link', { 'flex-grow-1': !isNav && !isDisabled && fill }],
-                    ...innerPropsContent, 
+                    class: ['page-link', { 'flex-grow-1': !isNav && !isDisabled && fill }],
+                    ...innerPropsContent,
                     role: isNav ? null : 'menuitem',
                     type: isNav || isDisabled ? null : 'button',
                     tabindex: isDisabled || isNav ? null : '-1',
@@ -504,23 +504,23 @@ export const paginationMixin = defineComponent({
 
             const innerPropsContent = disabled || !isNav ? {} : this.linkProps(pageNumber)
             const innerOnContent = disabled ? {} : {
-              '!onClick': event => {
-                  this.onClick(event, pageNumber)
-              },
-              keydown: onSpaceKey
+                onClick: event => {
+                    this.onClick(event, pageNumber)
+                },
+                keydown: onSpaceKey
             }
             const $inner = h(
                 disabled ? 'span' : isNav ? BLink : 'button', {
-                ...innerPropsContent,
-                class: ['page-link', { 'flex-grow-1': !isNav && !disabled && fill }],
-                ...attrs,
-                ...innerOnContent,
+                    ...innerPropsContent,
+                    class: ['page-link', { 'flex-grow-1': !isNav && !disabled && fill }],
+                    ...attrs,
+                    ...innerOnContent,
                 }, [this.normalizeSlot(SLOT_NAME_PAGE, scope) || btnContent]
             )
 
             return h(
                 'li', {
-                    class: ['page-item',{
+                    class: ['page-item', {
                             disabled,
                             active,
                             'flex-fill': fill,
@@ -625,7 +625,7 @@ export const paginationMixin = defineComponent({
                 'aria-disabled': disabled ? 'true' : 'false',
                 'aria-label': isNav ? null : ariaLabel || null,
                 // We disable keyboard left/right nav when `<b-pagination-nav>`
-                ...pageOnContent, 
+                ...pageOnContent,
                 ref: 'ul'
             },
             $buttons

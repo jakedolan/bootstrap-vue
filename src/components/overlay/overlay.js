@@ -74,7 +74,7 @@ export const BOverlay = /*#__PURE__*/ defineComponent({
     },
     methods: {
         defaultOverlayFn({ spinnerType, spinnerVariant, spinnerSmall }) {
-            return this.$createElement(BSpinner, {
+            return h(BSpinner, {
                 type: spinnerType,
                 variant: spinnerVariant,
                 small: spinnerSmall
@@ -100,8 +100,8 @@ export const BOverlay = /*#__PURE__*/ defineComponent({
                 'div', {
                     class: 'position-absolute',
                     style: this.noCenter ?
-                        /* istanbul ignore next */ {...POSITION_COVER } :
-                        { top: '50%', left: '50%', transform: 'translateX(-50%) translateY(-50%)' }
+                        /* istanbul ignore next */
+                        {...POSITION_COVER } : { top: '50%', left: '50%', transform: 'translateX(-50%) translateY(-50%)' }
                 }, [this.normalizeSlot(SLOT_NAME_OVERLAY, slotScope) || this.defaultOverlayFn(slotScope)]
             )
 
@@ -109,7 +109,7 @@ export const BOverlay = /*#__PURE__*/ defineComponent({
                 this.overlayTag, {
                     class: ['b-overlay', {
                         'position-absolute': !noWrap || (noWrap && !fixed),
-                            'position-fixed': noWrap && fixed
+                        'position-fixed': noWrap && fixed
                     }],
                     style: {
                         ...POSITION_COVER,
@@ -138,7 +138,7 @@ export const BOverlay = /*#__PURE__*/ defineComponent({
         return h(
             this.wrapTag, {
                 class: 'b-overlay-wrap position-relative',
-                'aria-busy': show ? 'true' : null 
+                'aria-busy': show ? 'true' : null
             },
             noWrap ? [$overlay] : [this.normalizeSlot(), $overlay]
         )

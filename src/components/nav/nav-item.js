@@ -25,7 +25,9 @@ export const props = makePropsConfigurable(
 export const BNavItem = /*#__PURE__*/ defineComponent({
     name: NAME_NAV_ITEM,
     props,
-    render(h, { props, data, listeners, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
+        // TODO: [listners] the omit "on" does not work here now.
         return h(
             'li',
             mergeData(omit(data, ['on']), {
@@ -36,9 +38,10 @@ export const BNavItem = /*#__PURE__*/ defineComponent({
                         class: ['nav-link', props.linkClasses],
                         ...(props.linkAttrs || {}),
                         ...pluckProps(linkProps, props),
+
                         on: listeners
                     },
-                    children
+                    slots
                 )
             ]
         )

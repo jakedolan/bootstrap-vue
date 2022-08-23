@@ -18,13 +18,14 @@ export const props = makePropsConfigurable({
 export const BFormRow = /*#__PURE__*/ defineComponent({
     name: NAME_FORM_ROW,
     props,
-    render(h, { props, data, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         return h(
             props.tag,
             mergeData(data, {
                 class: 'form-row'
             }),
-            children
+            slots
         )
     }
 })

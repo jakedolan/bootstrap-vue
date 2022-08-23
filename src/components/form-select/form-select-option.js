@@ -19,16 +19,16 @@ export const props = makePropsConfigurable({
 export const BFormSelectOption = /*#__PURE__*/ defineComponent({
     name: NAME_FORM_SELECT_OPTION,
     props,
-    render(h, { props, data, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         const { value, disabled } = props
-
         return h(
             'option',
             mergeData(data, {
                 disabled,
                 value
             }),
-            children
+            slots
         )
     }
 })

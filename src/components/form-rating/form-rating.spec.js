@@ -61,8 +61,8 @@ describe('form-rating', () => {
 
         const $stars = wrapper.findAll('.b-rating-star')
         expect($stars.length).toBe(5)
-        expect($stars.every(s => s.find('.flex-grow-1').exists())).toBe(true)
-        expect($stars.every(s => s.find('.b-rating-star-empty').exists())).toBe(true)
+        expect($stars.every(s => s.find('.flex-grow-1'))).toBe(true)
+        expect($stars.every(s => s.find('.b-rating-star-empty'))).toBe(true)
 
         const $icons = wrapper.findAll('.b-icon')
         expect($icons.length).toBe(5)

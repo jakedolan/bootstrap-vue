@@ -25,7 +25,8 @@ export const props = makePropsConfigurable(
 export const BCardImg = /*#__PURE__*/ defineComponent({
     name: NAME_CARD_IMG,
     props,
-    render(h, { props, data }) {
+    render() {
+        const { $props: props, $data: data } = this;
         const { src, alt, width, height } = props
 
         let baseClass = 'card-img'

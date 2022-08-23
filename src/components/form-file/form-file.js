@@ -281,7 +281,7 @@ export const BFormFile = /*#__PURE__*/ defineComponent({
                     this.normalizeSlot(SLOT_NAME_DROP_PLACEHOLDER, { allowed: this.dropAllowed }) ||
                     (this.dropAllowed ?
                         this.dropPlaceholder :
-                        this.$createElement('span', { class: 'text-danger' }, this.noDropPlaceholder))
+                        h('span', { class: 'text-danger' }, this.noDropPlaceholder))
                 )
             }
 

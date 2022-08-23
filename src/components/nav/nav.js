@@ -34,7 +34,8 @@ export const props = makePropsConfigurable({
 export const BNav = /*#__PURE__*/ defineComponent({
     name: NAME_NAV,
     props,
-    render(h, { props, data, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         const { tabs, pills, vertical, align, cardHeader } = props
 
         return h(
@@ -52,7 +53,7 @@ export const BNav = /*#__PURE__*/ defineComponent({
                     small: props.small
                 }]
             }),
-            children
+            slots
         )
     }
 })

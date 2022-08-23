@@ -8,6 +8,7 @@ import { makeProp, makePropsConfigurable } from '../../utils/props'
 import { formOptionsMixin, props as formOptionsProps } from '../../mixins/form-options'
 import { normalizeSlotMixin } from '../../mixins/normalize-slot'
 import { BFormSelectOption } from './form-select-option'
+import { mergeData } from 'vue-functional-data-merge'
 
 // --- Props ---
 
@@ -31,11 +32,10 @@ export const BFormSelectOptionGroup = /*#__PURE__*/ defineComponent({
 
         const $options = this.formOptions.map((option, index) => {
             const { value, text, html, disabled } = option
- 
             return h(BFormSelectOption, {
-                value, 
+                value,
                 disabled,
-                ...htmlOrText(html, text),
+                ...(htmlOrText(html, text) || {}),
                 key: `option_${index}`
             })
         })

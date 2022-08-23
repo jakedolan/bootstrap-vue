@@ -33,7 +33,8 @@ export const props = makePropsConfigurable(
 export const BCardBody = /*#__PURE__*/ defineComponent({
     name: NAME_CARD_BODY,
     props,
-    render(h, { props, data, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         const { bodyBgVariant, bodyBorderVariant, bodyTextVariant } = props
 
         let $title = h()
@@ -49,6 +50,8 @@ export const BCardBody = /*#__PURE__*/ defineComponent({
             })
         }
 
+        // TODO: Review use of 'slots' here.
+
         return h(
             props.bodyTag,
             mergeData(data, {
@@ -62,7 +65,7 @@ export const BCardBody = /*#__PURE__*/ defineComponent({
                     },
                     props.bodyClass
                 ]
-            }), [$title, $subTitle, children]
+            }), [$title, $subTitle, slots]
         )
     }
 })

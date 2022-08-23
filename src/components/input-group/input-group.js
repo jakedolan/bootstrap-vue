@@ -30,8 +30,13 @@ export const props = makePropsConfigurable({
 export const BInputGroup = /*#__PURE__*/ defineComponent({
     name: NAME_INPUT_GROUP,
     props,
-    render(h, { props, data, slots, scopedSlots }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         const { prepend, prependHtml, append, appendHtml, size } = props
+
+        // TODO: Review scopedSlots use here. Temp creating scopedSlots = {};
+        const scopedSlots = {};
+
         const $scopedSlots = scopedSlots || {}
         const $slots = slots()
         const slotScope = {}
@@ -60,7 +65,8 @@ export const BInputGroup = /*#__PURE__*/ defineComponent({
             props.tag,
             mergeData(data, {
                 class: ['input-group', {
-                    [`input-group-${size}`]: size }],
+                    [`input-group-${size}`]: size
+                }],
                 id: props.id || null,
                 role: 'group'
             }), [$prepend, normalizeSlot(SLOT_NAME_DEFAULT, slotScope, $scopedSlots, $slots), $append]

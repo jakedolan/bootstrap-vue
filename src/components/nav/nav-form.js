@@ -24,16 +24,14 @@ export const props = makePropsConfigurable(
 export const BNavForm = /*#__PURE__*/ defineComponent({
     name: NAME_NAV_FORM,
     props,
-    render(h, { props, data, children, listeners }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         const $form = h(
-            BForm, {
+            BForm, mergeData({
                 class: props.formClass,
-                ...pluckProps(formProps, props),
                 inline: true,
-                ...(data.attrs || {}),
-                on: listeners
-            },
-            children
+            }, pluckProps(formProps, props), data.attrs || {}),
+            slots
         )
 
         return h(

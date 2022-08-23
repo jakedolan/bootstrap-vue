@@ -90,10 +90,10 @@ const BVFormRatingStar = defineComponent({
                 class: ['b-rating-star', {
                     // When not hovered, we use this class to focus the current (or first) star
                     focused: (focused && rating === star) || (!toInteger(rating) && star === minStar),
-                        // We add type classes to we can handle RTL styling
-                        'b-rating-star-empty': type === 'empty',
-                        'b-rating-star-half': type === 'half',
-                        'b-rating-star-full': type === 'full'
+                    // We add type classes to we can handle RTL styling
+                    'b-rating-star-empty': type === 'empty',
+                    'b-rating-star-half': type === 'half',
+                    'b-rating-star-full': type === 'full'
                 }],
                 tabindex: !disabled && !readonly ? '-1' : null,
                 onClick: this.onClick
@@ -255,7 +255,7 @@ export const BFormRating = /*#__PURE__*/ defineComponent({
         },
         // --- Render methods ---
         renderIcon(icon) {
-            return this.$createElement(BIcon, {
+            return h(BIcon, {
                 icon,
                 variant: this.disabled || this.color ? null : this.variant || null
             })
@@ -270,7 +270,7 @@ export const BFormRating = /*#__PURE__*/ defineComponent({
             return this.renderIcon(this.iconFull)
         },
         iconClearFn() {
-            return this.$createElement(BIcon, { icon: this.iconClear })
+            return h(BIcon, { icon: this.iconClear })
         }
     },
     render() {
@@ -361,7 +361,7 @@ export const BFormRating = /*#__PURE__*/ defineComponent({
 
         return h(
             'output', {
-                class: ['b-rating form-control align-items-center',  {
+                class: ['b-rating form-control align-items-center', {
                         'd-inline-flex': inline,
                         'd-flex': !inline,
                         'border-0': noBorder,

@@ -18,7 +18,8 @@ export const props = makePropsConfigurable(
 export const BInputGroupAppend = /*#__PURE__*/ defineComponent({
     name: NAME_INPUT_GROUP_APPEND,
     props,
-    render(h, { props, data, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         // Pass all our data down to child, and set `append` to `true`
         return h(
             BInputGroupAddon,
@@ -26,7 +27,7 @@ export const BInputGroupAppend = /*#__PURE__*/ defineComponent({
                 ...props,
                 append: true
             }),
-            children
+            slots
         )
     }
 })

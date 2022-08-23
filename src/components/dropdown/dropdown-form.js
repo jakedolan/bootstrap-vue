@@ -23,20 +23,19 @@ export const props = makePropsConfigurable(
 export const BDropdownForm = /*#__PURE__*/ defineComponent({
     name: NAME_DROPDOWN_FORM,
     props,
-    render(h, { props, data, listeners, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         return h('li', mergeData(omit(data, ['attrs', 'on']), { role: 'presentation' }), [
             h(
-                BForm, {
+                BForm, mergeData({
                     class: ['b-dropdown-form', props.formClass, { disabled: props.disabled }],
-                    props,
-                    ...(data.attrs || {}),
+                }, omit(props, ['disabled', 'formClass']), data.attrs || {}, {
                     disabled: props.disabled,
                     // Tab index of -1 for keyboard navigation
                     tabindex: props.disabled ? null : '-1',
-                    on: listeners,
                     ref: 'form'
-                },
-                children
+                }),
+                slots
             )
         ])
     }

@@ -25,8 +25,14 @@ export const props = makePropsConfigurable({
 export const BMedia = /*#__PURE__*/ defineComponent({
     name: NAME_MEDIA,
     props,
-    render(h, { props, data, slots, scopedSlots, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         const { noBody, rightAlign, verticalAlign } = props
+
+        // TODO: Review children adn scopedSlots use here. Temp creating objects;
+        const children = {};
+        const scopedSlots = {};
+
         const $children = noBody ? children : []
 
         if (!noBody) {

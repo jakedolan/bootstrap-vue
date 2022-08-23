@@ -20,13 +20,12 @@ export const props = makePropsConfigurable({
 export const BCardGroup = /*#__PURE__*/ defineComponent({
     name: NAME_CARD_GROUP,
     props,
-    render(h, { props, data, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         return h(
             props.tag,
-            mergeData(data, {
-                class: props.deck ? 'card-deck' : props.columns ? 'card-columns' : 'card-group'
-            }),
-            children
-        )
+            mergeData({
+                class: [props.deck ? 'card-deck' : props.columns ? 'card-columns' : 'card-group', data.attrs ? data.attrs.class : {}],
+            }, data), slots)
     }
 })

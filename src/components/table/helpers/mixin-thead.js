@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { EVENT_NAME_HEAD_CLICKED } from '../../../constants/events'
 import { CODE_ENTER, CODE_SPACE } from '../../../constants/key-codes'
 import { PROP_TYPE_ARRAY_OBJECT_STRING, PROP_TYPE_STRING } from '../../../constants/props'
@@ -70,7 +70,6 @@ export const theadMixin = defineComponent({
                 headRowVariant,
                 footRowVariant
             } = safeVueInstance(this)
-            const h = this.$createElement
 
             // In always stacked mode, we don't bother rendering the head/foot
             // Or if no field headings (empty table)
@@ -122,7 +121,8 @@ export const theadMixin = defineComponent({
                         this.fieldClasses(field),
                         sortClass
                     ],
-                    variant, stickyColumn,
+                    variant,
+                    stickyColumn,
                     style: field.thStyle || {},
                     // We only add a `tabindex` of `0` if there is a head-clicked listener
                     // and the current field is sortable
@@ -169,7 +169,7 @@ export const theadMixin = defineComponent({
 
                 const $content =
                     this.normalizeSlot(slotNames, scope) ||
-                    h('div', { ...htmlOrText(labelHtml, label) })
+                    h('div', {...htmlOrText(labelHtml, label) })
 
                 const $srLabel = sortLabel ? h('span', { class: 'sr-only' }, ` (${sortLabel})`) : null
 
@@ -188,9 +188,10 @@ export const theadMixin = defineComponent({
                         BTr, {
                             class: this.tfootTrClass,
                             variant: isUndefinedOrNull(footRowVariant) ?
-                                    headRowVariant :
-                                    /* istanbul ignore next */ footRowVariant
-                            
+                                headRowVariant :
+                                /* istanbul ignore next */
+                                footRowVariant
+
                         },
                         $cells
                     )
@@ -219,9 +220,7 @@ export const theadMixin = defineComponent({
             return h(
                 isFoot ? BTfoot : BThead, {
                     class: (isFoot ? this.tfootClass : this.theadClass) || null,
-                    ...(isFoot ?
-                        { footVariant: footVariant || headVariant || null } :
-                        { headVariant: headVariant || null }),
+                    ...(isFoot ? { footVariant: footVariant || headVariant || null } : { headVariant: headVariant || null }),
                     key: isFoot ? 'bv-tfoot' : 'bv-thead'
                 },
                 $trs

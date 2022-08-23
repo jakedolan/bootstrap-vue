@@ -67,7 +67,6 @@ describe('form-select-option', () => {
         expect(wrapper.attributes('value')).toBeDefined()
         expect(wrapper.attributes('value')).toEqual('foo')
         expect(wrapper.attributes('disabled')).toBeDefined()
-        expect(wrapper.attributes('disabled')).toEqual('disabled')
         expect(wrapper.text()).toEqual('')
 
         wrapper.unmount()

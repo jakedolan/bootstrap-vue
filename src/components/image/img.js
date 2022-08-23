@@ -75,7 +75,9 @@ export const props = makePropsConfigurable({
 export const BImg = /*#__PURE__*/ defineComponent({
     name: NAME_IMG,
     props,
-    render(h, { props, data }) {
+    render() {
+        const { $props: props, $data: data } = this;
+
         let { alt, src, block, fluidGrow, rounded } = props
         let width = toInteger(props.width) || null
         let height = toInteger(props.height) || null

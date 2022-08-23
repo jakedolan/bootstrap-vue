@@ -35,7 +35,9 @@ export const props = makePropsConfigurable({
 export const BSkeletonTable = /*#__PURE__*/ defineComponent({
     name: NAME_SKELETON_TABLE,
     props,
-    render(h, { data, props }) {
+    render() {
+
+        const { $props: props, $data: data } = this;
         const { animation, columns } = props
 
         const $th = h('th', [h(BSkeleton, { animation })])

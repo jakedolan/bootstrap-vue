@@ -22,7 +22,8 @@ export const props = makePropsConfigurable({
 export const BInputGroupAddon = /*#__PURE__*/ defineComponent({
     name: NAME_INPUT_GROUP_ADDON,
     props,
-    render(h, { props, data, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         const { append } = props
 
         return h(
@@ -34,7 +35,7 @@ export const BInputGroupAddon = /*#__PURE__*/ defineComponent({
                 },
                 id: props.id
             }),
-            props.isText ? [h(BInputGroupText, children)] : children
+            props.isText ? [h(BInputGroupText, slots)] : slots
         )
     }
 })

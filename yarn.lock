@@ -8483,10 +8483,10 @@ vue-eslint-parser@^7.10.0:
     lodash "^4.17.21"
     semver "^6.3.0"
 
-vue-functional-data-merge@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/vue-functional-data-merge/-/vue-functional-data-merge-3.1.0.tgz#08a7797583b7f35680587f8a1d51d729aa1dc657"
-  integrity sha512-leT4kdJVQyeZNY1kmnS1xiUlQ9z1B/kdBFCILIjYYQDqZgLqCLa0UhjSSeRX6c3mUe6U5qYeM8LrEqkHJ1B4LA==
+vue-functional-data-merge@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/vue-functional-data-merge/-/vue-functional-data-merge-4.0.1.tgz#62d81ad155f997645ef9df860603a3104515c3f7"
+  integrity sha512-aRSqeqmNll7J42BME13zg9TsmWi3nG+JOGxzXiLLTRVkGQizfnHDO/Tg2lybbk6PG/wOzKFXG35EHN3K47Pl9w==
 
 vue-router@^4.0.0:
   version "4.1.2"

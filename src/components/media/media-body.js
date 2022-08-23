@@ -18,7 +18,8 @@ export const props = makePropsConfigurable({
 export const BMediaBody = /*#__PURE__*/ defineComponent({
     name: NAME_MEDIA_BODY,
     props,
-    render(h, { props, data, children }) {
-        return h(props.tag, mergeData(data, { class: 'media-body' }), children)
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
+        return h(props.tag, mergeData(data, { class: 'media-body' }), slots)
     }
 })

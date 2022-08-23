@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { defineComponent, h } from 'vue'
 import { MODEL_EVENT_NAME_PREFIX } from '../../../constants/events'
 import { PROP_TYPE_BOOLEAN } from '../../../constants/props'
 import { SLOT_NAME_TABLE_BUSY } from '../../../constants/slots'
@@ -54,7 +54,6 @@ export const busyMixin = defineComponent({
         // Render the busy indicator or return `null` if not busy
         renderBusy() {
             const { tbodyTrClass, tbodyTrAttr } = this
-            const h = this.$createElement
 
             // Return a busy indicator row, or `null` if not busy
             if (this.computedBusy && this.hasNormalizedSlot(SLOT_NAME_TABLE_BUSY)) {
@@ -62,11 +61,13 @@ export const busyMixin = defineComponent({
                     BTr, {
                         class: ['b-table-busy-slot',
                             isFunction(tbodyTrClass) ?
-                            /* istanbul ignore next */ tbodyTrClass(null, SLOT_NAME_TABLE_BUSY) :
+                            /* istanbul ignore next */
+                            tbodyTrClass(null, SLOT_NAME_TABLE_BUSY) :
                             tbodyTrClass
                         ],
                         ...(isFunction(tbodyTrAttr) ?
-                            /* istanbul ignore next */ tbodyTrAttr(null, SLOT_NAME_TABLE_BUSY) || {} :
+                            /* istanbul ignore next */
+                            tbodyTrAttr(null, SLOT_NAME_TABLE_BUSY) || {} :
                             tbodyTrAttr || {}),
                         key: 'table-busy-slot'
                     }, [
