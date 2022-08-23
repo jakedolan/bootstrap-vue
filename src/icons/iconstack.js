@@ -18,14 +18,15 @@ export const props = makePropsConfigurable(
 export const BIconstack = /*#__PURE__*/ defineComponent({
     name: NAME_ICONSTACK,
     props,
-    render(h, { data, props, children }) {
+    render() {
+        const { $props: props, $data: data, $slots: slots } = this;
         return h(
             BVIconBase,
             mergeData(data, {
                 class: 'b-iconstack',
                 ...(props || {})
             }),
-            children
+            slots
         )
     }
 })

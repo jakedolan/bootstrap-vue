@@ -25,19 +25,19 @@ export const makeIcon = (name, content) => {
         name: iconName,
         props: iconProps,
         render() {
-          const { $data, $props } = this;
-          const componentData = {
-            'aria-label': iconTitle,
-            class: iconNameClass,
-            title: iconTitle,
-            ...$props,
-            content: svgContent
-          }
+            const { $props } = this;
+            const componentData = {
+                'aria-label': iconTitle,
+                class: iconNameClass,
+                title: iconTitle,
+                ...$props,
+                content: svgContent
+            }
 
-            return h(
-                BVIconBase,
-                componentData
-            )
+            return (h(BVIconBase,
+                componentData))
         }
     })
+
+    return component;
 }

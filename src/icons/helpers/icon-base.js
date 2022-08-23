@@ -56,7 +56,7 @@ export const BVIconBase = /*#__PURE__*/ defineComponent({
     name: NAME_ICON_BASE,
     props,
     render() {
-        const { $data, $props, $slots } = this
+        const { $props, $slots } = this
         const { animation, content, flipH, flipV, stacked, title, variant } = $props
         const fontScale = mathMax(toFloat($props.fontScale, 1), 0) || 1
         const scale = mathMax(toFloat($props.scale, 1), 0) || 1
@@ -105,24 +105,25 @@ export const BVIconBase = /*#__PURE__*/ defineComponent({
 
         const $content = [$title, $inner].filter(identity)
 
-        const stackedData = stacked ? { ...STACKED_ATTRS } : {}
+        const stackedData = stacked ? {...STACKED_ATTRS } : {}
+
         const componentData = {
-          class: ['b-icon bi', {
-            [`text-${variant}`]: variant,
-            [`b-icon-animation-${animation}`]: animation
-          }],
-          ...BASE_ATTRS,
-          style: stacked ? {} : { fontSize: fontScale === 1 ? null : `${fontScale * 100}%` },
-          // If icon is stacked, null-out some attrs
-          ...stackedData,
-          // These cannot be overridden by users
-          xmlns: stacked ? null : 'http://www.w3.org/2000/svg',
-          fill: 'currentColor'
+            class: ['b-icon bi', {
+                [`text-${variant}`]: variant || null,
+                [`b-icon-animation-${animation}`]: animation || null,
+            }],
+            ...BASE_ATTRS,
+            style: stacked ? {} : { fontSize: fontScale === 1 ? null : `${fontScale * 100}%` },
+            // If icon is stacked, null-out some attrs
+            ...stackedData,
+            // These cannot be overridden by users
+            xmlns: stacked ? null : 'http://www.w3.org/2000/svg',
+            fill: 'currentColor'
 
         }
 
         return h(
-            'svg',componentData,
+            'svg', componentData,
             $content
         )
     }
