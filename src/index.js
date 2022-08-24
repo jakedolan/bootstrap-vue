@@ -44,6 +44,7 @@ export {
 //   parent directory (i.e. `/src/injections`)
 export { BVModalPlugin } from './components/modal/helpers/bv-modal'
 
+
 // Webpack 4 has optimization difficulties with re-export of re-exports,
 // so we import the components individually here for better tree shaking
 //
@@ -137,6 +138,9 @@ export { BDropdownText } from './components/dropdown/dropdown-text'
 // export * from './components/embed'
 export { EmbedPlugin } from './components/embed'
 export { BEmbed } from './components/embed/embed'
+
+// [NEW] Vue 3 export for emitter to communicate with BV components via listen/emit on root.
+export { BvEmitterPlugin } from './plugins/emitter'
 
 // export * from './components/form'
 export { FormPlugin } from './components/form'
