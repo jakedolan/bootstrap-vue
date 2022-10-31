@@ -44,6 +44,10 @@ export const stopEvent = (
   event,
   { preventDefault = true, propagation = true, immediatePropagation = false } = {}
 ) => {
+  if (!event) {
+    return
+  }
+
   if (preventDefault) {
     event.preventDefault()
   }
