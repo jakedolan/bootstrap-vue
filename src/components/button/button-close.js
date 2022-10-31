@@ -9,50 +9,48 @@ import { hasNormalizedSlot, normalizeSlot } from '../../utils/normalize-slot'
 
 // --- Props ---
 
-export const props = makePropsConfigurable({
-        ariaLabel: makeProp(PROP_TYPE_STRING, 'Close'),
-        content: makeProp(PROP_TYPE_STRING, '&times;'),
-        disabled: makeProp(PROP_TYPE_BOOLEAN, false),
-        textVariant: makeProp(PROP_TYPE_STRING)
-    },
-    NAME_BUTTON_CLOSE
+export const props = makePropsConfigurable(
+  {
+    ariaLabel: makeProp(PROP_TYPE_STRING, 'Close'),
+    content: makeProp(PROP_TYPE_STRING, '&times;'),
+    disabled: makeProp(PROP_TYPE_BOOLEAN, false),
+    textVariant: makeProp(PROP_TYPE_STRING)
+  },
+  NAME_BUTTON_CLOSE
 )
 
 // --- Main component ---
 
 // @vue/component
 export const BButtonClose = /*#__PURE__*/ defineComponent({
-    name: NAME_BUTTON_CLOSE,
-    props,
-    render() {
-        const { $props, $slots } = this
+  name: NAME_BUTTON_CLOSE,
+  props,
+  render() {
+    const { $props, $slots } = this
 
-        const componentData = {
-            class: ['close', {
-                [`text-${$props.textVariant}`]: $props.textVariant
-            }],
-            type: 'button',
-            disabled: $props.disabled,
-            'aria-label': $props.ariaLabel ? String($props.ariaLabel) : null,
-            onClick: (event) => {
-                // Ensure click on button HTML content is also disabled
-                /* istanbul ignore if: bug in JSDOM still emits click on inner element */
-                if ($props.disabled && isEvent(event)) {
-                    stopEvent(event)
-                }
-            }
+    const componentData = {
+      class: [
+        'close',
+        {
+          [`text-${$props.textVariant}`]: $props.textVariant
         }
-
-        if (!hasNormalizedSlot(SLOT_NAME_DEFAULT, $slots)) {
-
-            componentData.innerHTML = $props.content;
+      ],
+      type: 'button',
+      disabled: $props.disabled,
+      'aria-label': $props.ariaLabel ? String($props.ariaLabel) : null,
+      onClick: event => {
+        // Ensure click on button HTML content is also disabled
+        /* istanbul ignore if: bug in JSDOM still emits click on inner element */
+        if ($props.disabled && isEvent(event)) {
+          stopEvent(event)
         }
-
-        return h(
-            'button',
-            componentData,
-            normalizeSlot(SLOT_NAME_DEFAULT, {}, $slots)
-
-        )
+      }
     }
+
+    if (!hasNormalizedSlot(SLOT_NAME_DEFAULT, $slots)) {
+      componentData.innerHTML = $props.content
+    }
+
+    return h('button', componentData, normalizeSlot(SLOT_NAME_DEFAULT, {}, $slots))
+  }
 })
